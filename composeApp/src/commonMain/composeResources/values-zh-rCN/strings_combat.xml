@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="combat">战斗</string>
+    <string name="combat_victory">胜利</string>
+    <string name="combat_defeat">失败</string>
+
+    <string name="combat_choose_action">选择%1$s的行动。</string>
+    <plurals name="combat_choose_target">
+        <item quantity="other">选择%1$s个目标。</item>
+    </plurals>
+    <string name="combat_choose_action_attack">攻击</string>
+    <string name="combat_choose_action_defend">防守</string>
+    <string name="combat_choose_action_function">函数</string>
+    <string name="combat_choose_action_relax">休息</string>
+    <string name="combat_choose_action_item">道具</string>
+    <string name="combat_choose_action_back">&lt;- 返回</string>
+    <string name="combat_choose_action_target_selected_count">已选择 %1$s / %2$s 个目标</string>
+    <string name="combat_choose_action_execute">执行</string>
+    <string name="combat_choose_action_auto_combat">自动战斗</string>
+
+    <string name="combat_log_welcome">欢迎访问战斗系统v%1$s！！！</string>
+
+    <string name="combat_log_action_attack">%1$s攻击了%2$s！！！</string>
+    <string name="combat_log_action_defend">%1$s开始防守！！！</string>
+    <string name="combat_log_action_relax">%1$s开始短暂的休整！！！</string>
+    <string name="combat_log_action_invoke">%2$s对%3$s调用了%1$s()！！！</string>
+    <string name="combat_log_action_throw">%2$s对%3$s抛出了%1$s！！！</string>
+    <string name="combat_log_action_item">%2$s使用了"%1$s"！！！</string>
+    <string name="combat_log_action_effect">%3$s正处于被%2$s附加的"%1$s"状态下。</string>
+    <string name="combat_log_action_effect_self">%2$s正处于"%1$s"状态下。</string>
+    <plurals name="combat_log_action_effect_turns">
+        <item quantity="other">剩余%1$s轮！</item>
+    </plurals>
+    <string name="combat_log_action_frozen">%1$s由于%2$s无法行动！！！</string>
+
+    <string name="combat_log_result_damage">对%2$s造成%1$s伤害！！</string>
+    <string name="combat_log_result_heal">%2$s恢复了%1$s体力！</string>
+    <string name="combat_log_result_missed">但是没有命中%1$s…</string>
+    <string name="combat_log_result_no_effect">对%1$s没有效果…</string>
+    <string name="combat_log_result_critical">会心一击！！！</string>
+    <string name="combat_log_result_attach_effect">给%2$s附加了"%1$s"状态！！</string>
+    <string name="combat_log_result_remove_effect">被%3$s附加的"%1$s"已从%2$s移除！！</string>
+
+    <string name="combat_log_entity_defeated">%1$s被%2$s击败了！！！</string>
+    <string name="combat_log_entity_revived">%1$s恢复活力了！！！</string>
+
+    <string name="combat_log_end_win">你战胜了bug。</string>
+    <string name="combat_log_end_lose">你在bug的乱流中迷失了…</string>
+</resources>

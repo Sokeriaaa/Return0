@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="combat">Combat</string>
+    <string name="combat_victory">VICTORY</string>
+    <string name="combat_defeat">DEFEAT</string>
+
+    <string name="combat_choose_action">Select an action for %1$s.</string>
+    <plurals name="combat_choose_target">
+        <item quantity="one">Select %1$s target.</item>
+        <item quantity="other">Select %1$s targets.</item>
+    </plurals>
+    <string name="combat_choose_action_attack">ATTACK</string>
+    <string name="combat_choose_action_defend">DEFEND</string>
+    <string name="combat_choose_action_function">FUNCTION</string>
+    <string name="combat_choose_action_relax">RELAX</string>
+    <string name="combat_choose_action_item">ITEM</string>
+    <string name="combat_choose_action_back">&lt;- BACK</string>
+    <string name="combat_choose_action_target_selected_count">%1$s / %2$s SELECTED</string>
+    <string name="combat_choose_action_execute">EXECUTE</string>
+    <string name="combat_choose_action_auto_combat">Auto-combat</string>
+
+    <string name="combat_log_welcome">Welcome to Combat System v%1$s!!!</string>
+
+    <string name="combat_log_action_attack">%1$s attacks %2$s!!!</string>
+    <string name="combat_log_action_defend">%1$s starts defending!!!</string>
+    <string name="combat_log_action_relax">%1$s takes a short relax!!!</string>
+    <string name="combat_log_action_invoke">%2$s invokes %1$s() on %3$s!!!</string>
+    <string name="combat_log_action_throw">%2$s throws %1$s on %3$s!!!</string>
+    <string name="combat_log_action_item">%2$s used item "%1$s"!!!</string>
+    <string name="combat_log_action_effect">%3$s is currently in the "%1$s" effect attached by %2$s.</string>
+    <string name="combat_log_action_effect_self">%2$s is currently in the "%1$s" effect.</string>
+    <plurals name="combat_log_action_effect_turns">
+        <item quantity="one">%1$s turn left!</item>
+        <item quantity="other">%1$s turns left!</item>
+    </plurals>
+    <string name="combat_log_action_frozen">%1$s is unable to take action due to %2$s!!!</string>
+
+    <string name="combat_log_result_damage">Does %1$s damage to %2$s!!</string>
+    <string name="combat_log_result_heal">Heals %1$s for %2$s!!</string>
+    <string name="combat_log_result_missed">But missed to %1$s…</string>
+    <string name="combat_log_result_no_effect">Has no effect on %1$s…</string>
+    <string name="combat_log_result_critical">CRITICAL!!!</string>
+    <string name="combat_log_result_attach_effect">Attached effect "%1$s" on %2$s!!</string>
+    <string name="combat_log_result_remove_effect">Effect "%1$s" attached by %3$s is removed from %2$s!!</string>
+
+    <string name="combat_log_entity_defeated">%1$s has been defeated by %2$s!!!</string>
+    <string name="combat_log_entity_revived">%1$s is revived!!!</string>
+
+    <string name="combat_log_end_win">You defeated the bugs.</string>
+    <string name="combat_log_end_lose">You got lost in the bug flow…</string>
+</resources>
