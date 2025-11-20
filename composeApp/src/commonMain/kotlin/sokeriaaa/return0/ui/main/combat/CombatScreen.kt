@@ -161,22 +161,19 @@ fun CombatScreen(
     AppScaffold(
         viewModel = viewModel,
         topBar = {
-            // Hide the top bar when the screen is landscape.
-            if (windowAdaptiveInfo.windowSizeClass.isHeightAtLeastBreakpoint(600)) {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(
-                            stringResource(
-                                when (viewModel.combatStatus) {
-                                    true -> Res.string.combat_victory
-                                    false -> Res.string.combat_defeat
-                                    null -> Res.string.combat
-                                }
-                            )
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        stringResource(
+                            when (viewModel.combatStatus) {
+                                true -> Res.string.combat_victory
+                                false -> Res.string.combat_defeat
+                                null -> Res.string.combat
+                            }
                         )
-                    }
-                )
-            }
+                    )
+                }
+            )
         }
     ) { paddingValues ->
         Column(
