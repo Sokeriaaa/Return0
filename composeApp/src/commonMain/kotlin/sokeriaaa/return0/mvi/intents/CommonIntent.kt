@@ -20,4 +20,5 @@ package sokeriaaa.return0.mvi.intents
 sealed class CommonIntent : BaseIntent {
     data object ShowLoading : CommonIntent()
     data object HideLoading : CommonIntent()
+    data class ShowSnackBar(val message: String) : CommonIntent()
 }
