@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">return 0;</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="general_level">Level</string>
+    <string name="general_level_w_value">Lv.%1$s</string>
+    <string name="general_please_select">Please select…</string>
+
+    <string name="emulator">Emulator</string>
+    <string name="emulator_party">Party</string>
+    <string name="emulator_enemy">Enemy</string>
+    <string name="emulator_party_w_count">Party (%1$s)</string>
+    <string name="emulator_enemy_w_count">Enemy (%1$s)</string>
+    <string name="emulator_combat">COMBAT</string>
+
+    <string name="emulator_picker_add">Add entity</string>
+    <string name="emulator_picker_edit">Edit entity</string>
+    <string name="emulator_picker_remove">Remove entity</string>
+    <string name="emulator_picker_remove_warn">Remove %1$s?</string>
+    <string name="emulator_picker_entity">Entity</string>
+
+    <string name="emulator_warning_entity_not_enough">Please select at least one party and one enemy.</string>
+    <string name="emulator_picker_warning_select_entity">Please select the entity.</string>
 </resources>

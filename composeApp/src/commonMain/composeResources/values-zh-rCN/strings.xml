@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">return 0;</string>
+
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
+    <string name="general_level">等级</string>
+    <string name="general_level_w_value">%1$s级</string>
+    <string name="general_please_select">请选择…</string>
+
+    <string name="emulator">模拟器</string>
+    <string name="emulator_party">我方</string>
+    <string name="emulator_enemy">敌方</string>
+    <string name="emulator_party_w_count">我方 (%1$s)</string>
+    <string name="emulator_enemy_w_count">敌方 (%1$s)</string>
+    <string name="emulator_combat">开始战斗</string>
+
+    <string name="emulator_picker_add">添加对象</string>
+    <string name="emulator_picker_edit">修改对象</string>
+    <string name="emulator_picker_remove">删除对象</string>
+    <string name="emulator_picker_remove_warn">删除%1$s吗？</string>
+    <string name="emulator_picker_entity">对象</string>
+
+    <string name="emulator_warning_entity_not_enough">请为我方和敌方各选择至少一个对象。</string>
+    <string name="emulator_picker_warning_select_entity">请选择对象。</string>
 </resources>

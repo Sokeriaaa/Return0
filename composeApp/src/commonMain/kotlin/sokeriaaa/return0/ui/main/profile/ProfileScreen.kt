@@ -24,7 +24,8 @@ import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(
-        factory = koinInject()
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
     ),
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,

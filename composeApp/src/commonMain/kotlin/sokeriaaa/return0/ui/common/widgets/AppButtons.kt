@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -133,6 +134,37 @@ fun AppIconButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
+        colors = colors,
+        interactionSource = interactionSource,
+    ) {
+        Icon(
+            painter = painterResource(iconRes),
+            contentDescription = contentDescription,
+        )
+    }
+}
+
+/**
+ * Simplified for default buttons to avoid nesting.
+ *
+ * @see FilledIconButton
+ */
+@Composable
+fun AppFilledIconButton(
+    modifier: Modifier = Modifier,
+    iconRes: DrawableResource,
+    onClick: () -> Unit,
+    contentDescription: String?,
+    enabled: Boolean = true,
+    shape: Shape = IconButtonDefaults.filledShape,
+    colors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(),
+    interactionSource: MutableInteractionSource? = null,
+) {
+    FilledIconButton(
+        modifier = modifier,
+        onClick = onClick,
+        enabled = enabled,
+        shape = shape,
         colors = colors,
         interactionSource = interactionSource,
     ) {

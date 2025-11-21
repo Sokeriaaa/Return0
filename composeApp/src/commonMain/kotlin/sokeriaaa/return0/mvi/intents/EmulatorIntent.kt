@@ -14,15 +14,11 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.return0.shared.data.models.entity.EnemyData
-import sokeriaaa.return0.shared.data.models.entity.PartyData
+import sokeriaaa.return0.shared.data.models.combat.EntityState
 
 sealed class EmulatorIntent : BaseIntent {
-    data class AddParty(val partyData: PartyData) : EmulatorIntent()
-    data class AlterParty(val before: PartyData, val after: PartyData) : EmulatorIntent()
-    data class RemoveParty(val partyData: PartyData) : EmulatorIntent()
-    data class AddEnemy(val enemyData: EnemyData) : EmulatorIntent()
-    data class AlterEnemy(val before: EnemyData, val after: EnemyData) : EmulatorIntent()
-    data class RemoveEnemy(val enemyData: EnemyData) : EmulatorIntent()
+    data class AddEntity(val entityState: EntityState) : EmulatorIntent()
+    data class AlterEntity(val before: EntityState, val after: EntityState) : EmulatorIntent()
+    data class RemoveEntity(val entityState: EntityState) : EmulatorIntent()
     data object StartCombat : EmulatorIntent()
 }

@@ -14,7 +14,54 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
+import androidx.compose.runtime.mutableStateListOf
+import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.EmulatorIntent
+import sokeriaaa.return0.shared.data.models.combat.EnemyState
+import sokeriaaa.return0.shared.data.models.combat.PartyState
+
 /**
  * The emulator that allows to start custom combats for testing/debugging.
  */
-class EmulatorViewModel : BaseViewModel()
+class EmulatorViewModel : BaseViewModel() {
+
+    private val _parties: MutableList<PartyState> = mutableStateListOf()
+    val parties: List<PartyState> = _parties
+
+    private val _enemies: MutableList<EnemyState> = mutableStateListOf()
+    val enemies: List<EnemyState> = _enemies
+
+    override fun onIntent(intent: BaseIntent) {
+        super.onIntent(intent)
+        when (intent) {
+            is EmulatorIntent.AddEntity -> {
+                when (intent.entityState) {
+                    is PartyState -> _parties.add(intent.entityState)
+                    is EnemyState -> _enemies.add(intent.entityState)
+                }
+            }
+
+            is EmulatorIntent.AlterEntity -> {
+                when (intent.before) {
+                    is PartyState -> {
+                        _parties[_parties.indexOf(intent.before)] = intent.after as PartyState
+                    }
+
+                    is EnemyState -> {
+                        _enemies[_enemies.indexOf(intent.before)] = intent.after as EnemyState
+                    }
+                }
+            }
+
+            is EmulatorIntent.RemoveEntity -> {
+                when (intent.entityState) {
+                    is PartyState -> _parties.remove(intent.entityState)
+                    is EnemyState -> _enemies.remove(intent.entityState)
+                }
+            }
+
+            else -> {}
+        }
+    }
+
+}

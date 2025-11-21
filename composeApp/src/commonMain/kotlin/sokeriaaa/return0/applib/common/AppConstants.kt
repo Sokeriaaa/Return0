@@ -24,4 +24,6 @@ object AppConstants {
 
     const val ARENA_TICK_MILLIS = 16
     const val ARENA_PLAY_SPEED = 50L
+    const val ARENA_MAX_PARTY = 4
+    const val ARENA_MAX_ENEMY = 5
 }

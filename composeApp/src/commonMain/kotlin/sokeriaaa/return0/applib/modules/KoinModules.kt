@@ -14,6 +14,8 @@
  */
 package sokeriaaa.return0.applib.modules
 
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.dsl.module
@@ -33,6 +35,12 @@ object KoinModules {
                 initializer { CombatViewModel() }
                 initializer { ProfileViewModel() }
                 initializer { EmulatorViewModel() }
+            }
+        }
+        // ViewModelStoreOwner
+        single<ViewModelStoreOwner> {
+            object : ViewModelStoreOwner {
+                override val viewModelStore = ViewModelStore()
             }
         }
         // Repo

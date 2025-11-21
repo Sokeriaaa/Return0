@@ -24,7 +24,8 @@ import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel(
-        factory = koinInject()
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
     ),
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,

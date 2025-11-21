@@ -64,14 +64,6 @@ import return0.composeapp.generated.resources.ic_outline_autoplay_24
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
-import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.return0.shared.data.models.combat.EnemyState
-import sokeriaaa.return0.shared.data.models.combat.PartyState
-import sokeriaaa.return0.shared.data.models.entity.EnemyData
-import sokeriaaa.return0.shared.data.models.entity.EnemyRewardTable
-import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
-import sokeriaaa.return0.shared.data.models.entity.PartyData
-import sokeriaaa.return0.temp.TempData
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 
@@ -82,80 +74,14 @@ import sokeriaaa.return0.ui.common.entity.EntityHPBar
 @Composable
 fun CombatScreen(
     viewModel: CombatViewModel = viewModel(
-        factory = koinInject()
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
     ),
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
-    LaunchedEffect(viewModel) {
-        // Start a testing combat.
-        viewModel.onIntent(
-            CombatIntent.Prepare(
-                config = ArenaConfig(
-                    parties = listOf(
-                        PartyState(
-                            partyData = PartyData(
-                                entityData = TempData.objectEntity,
-                                growth = EntityGrowth(
-                                    atkGrowth = 0.25f,
-                                    defGrowth = 0.25f,
-                                    spdGrowth = 0.25f,
-                                    hpGrowth = 0.25f,
-                                    spGrowth = 0.25f,
-                                )
-                            ),
-                            level = 100,
-                        ),
-                        PartyState(
-                            partyData = PartyData(
-                                entityData = TempData.iteratorEntity,
-                                growth = EntityGrowth(
-                                    atkGrowth = 0.25f,
-                                    defGrowth = 0.25f,
-                                    spdGrowth = 0.25f,
-                                    hpGrowth = 0.25f,
-                                    spGrowth = 0.25f,
-                                )
-                            ),
-                            level = 100,
-                        ),
-                        PartyState(
-                            partyData = PartyData(
-                                entityData = TempData.systemEntity,
-                                growth = EntityGrowth(
-                                    atkGrowth = 0.25f,
-                                    defGrowth = 0.25f,
-                                    spdGrowth = 0.25f,
-                                    hpGrowth = 0.25f,
-                                    spGrowth = 0.25f,
-                                )
-                            ),
-                            level = 100,
-                        ),
-                    ),
-                    enemies = listOf(
-                        EnemyState(
-                            enemyData = EnemyData(
-                                entityData = TempData.objectEntity,
-                                growth = EntityGrowth(
-                                    atkGrowth = 0.25f,
-                                    defGrowth = 0.25f,
-                                    spdGrowth = 0.25f,
-                                    hpGrowth = 0.25f,
-                                    spGrowth = 0.25f,
-                                ),
-                                rewardTable = EnemyRewardTable(
-                                    token = 1,
-                                    exp = 1,
-                                )
-                            ),
-                            level = 100,
-                        ),
-                    )
-                )
-            )
-        )
-        // Start testing combat.
+    LaunchedEffect(Unit) {
+        // Start combat.
         viewModel.onIntent(CombatIntent.StartCombat)
     }
     AppScaffold(

@@ -25,6 +25,7 @@ import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 
 /**
  * This is a misc temporary class for storing some data of entities, stories and effects.
@@ -170,6 +171,17 @@ object TempData {
                 tierBonus = 0.05F,
             )
         )
+    )
+
+    /**
+     * Common Growth.
+     */
+    val growth = EntityGrowth(
+        atkGrowth = 0.25f,
+        defGrowth = 0.25f,
+        spdGrowth = 0.25f,
+        hpGrowth = 0.25f,
+        spGrowth = 0.25f,
     )
 
 }
