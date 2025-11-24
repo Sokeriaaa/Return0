@@ -1,3 +1,6 @@
 [submodule "composeApp/src/commonMain/kotlin/sokeriaaa/return0/shared"]
     path = composeApp/src/commonMain/kotlin/sokeriaaa/return0/shared
     url = https://github.com/Sokeriaaa/Return0-shared.git
+[submodule "composeApp/src/commonTest/kotlin/sokeriaaa/return0/test/shared"]
+	path = composeApp/src/commonTest/kotlin/sokeriaaa/return0/test/shared
+	url = https://github.com/Sokeriaaa/Return0-shared-test.git
