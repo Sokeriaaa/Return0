@@ -16,7 +16,6 @@ package sokeriaaa.return0.models.action.function
 
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.action.effect.CommonEffects
-import sokeriaaa.return0.models.entity.category.Category
 import sokeriaaa.return0.shared.data.api.component.extra.extrasGroupOf
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.api.component.value.times
@@ -25,6 +24,7 @@ import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 object CommonFunctions {
 

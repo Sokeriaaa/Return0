@@ -23,12 +23,12 @@ import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.CommonFunctions
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.action.function.generateFunctionFor
-import sokeriaaa.return0.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.EnemyData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.PartyData
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 fun PartyData.generate(
     index: Int,

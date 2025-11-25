@@ -14,7 +14,6 @@
  */
 package sokeriaaa.return0.temp
 
-import sokeriaaa.return0.models.entity.category.Category
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
@@ -26,6 +25,7 @@ import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 /**
  * This is a misc temporary class for storing some data of entities, stories and effects.

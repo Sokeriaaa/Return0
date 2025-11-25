@@ -16,7 +16,7 @@ package sokeriaaa.return0.models.entity
 
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
-import sokeriaaa.return0.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 /**
  * Super class of all entities.
