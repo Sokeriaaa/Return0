@@ -80,7 +80,7 @@ class ArchiveRepo internal constructor() {
         ?: error("EntityGrowth of the category $category is not registered.")
 
     fun getCategoryEffectiveness(category: Category): CategoryEffectiveness =
-        _categoryEffectivenessMap[category] ?: CategoryEffectiveness(emptyList(), emptyList())
+        _categoryEffectivenessMap[category] ?: CategoryEffectiveness(emptyMap(), emptyMap())
 
     fun reset() {
         _entityDataMap.clear()
