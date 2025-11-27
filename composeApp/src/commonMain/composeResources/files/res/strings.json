@@ -9,6 +9,11 @@
   "desc.effect.overflowed": "Memory overflow reduces DEF.",
   "desc.effect.refactoring": "Refactoring the class, restores HP after each turn.",
   "desc.skill.forEach": "Iterates a single entity multiple times, deals small damage.",
+  "desc.skill.gc": "Lightly heals a single allies and remove all their debuff effects.",
   "desc.skill.getProperty": "Gets the property of a single entity, deals small damage and recovers yourself a percentage of the damage dealt.",
-  "desc.skill.notify": "Notifies a single entity, deals small damage."
+  "desc.skill.hashCode": "Calculate the hashCode() of the arena. Deals random damage.",
+  "desc.skill.next": "Seeks the next element. Greatly increases SPD until the next action.",
+  "desc.skill.notify": "Notifies a single entity, deals small damage.",
+  "desc.skill.remove": "Remove the element. Reduces the DEF of target for few turns.",
+  "desc.skill.wait": "Wait for a turn, greatly increase ATK on the next action."
 }
