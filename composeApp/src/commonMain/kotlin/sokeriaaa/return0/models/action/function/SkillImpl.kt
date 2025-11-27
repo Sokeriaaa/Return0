@@ -22,6 +22,7 @@ import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 import sokeriaaa.return0.shared.data.models.component.extras.Extra
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 import kotlin.math.roundToInt
 
 fun Entity.generateFunctionFor(functionData: FunctionData): Skill? {
@@ -39,6 +40,7 @@ fun Entity.generateFunctionFor(functionData: FunctionData): Skill? {
         name = functionData.name,
         user = this,
         tier = skillTier,
+        category = functionData.category,
         functionTarget = functionData.target,
         basePower = functionData.basePower + functionData.powerBonus * (skillTier - 1),
         baseSPCost = functionData.baseSPCost + functionData.spCostBonus * (skillTier - 1),
@@ -52,6 +54,7 @@ internal class SkillImpl(
     override val name: String,
     override val user: Entity,
     override val tier: Int,
+    override val category: Category,
     override val functionTarget: FunctionTarget,
     override val basePower: Int,
     override val baseSPCost: Int,

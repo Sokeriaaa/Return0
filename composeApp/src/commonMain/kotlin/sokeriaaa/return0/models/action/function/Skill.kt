@@ -19,6 +19,7 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 /**
  * Function.
@@ -26,6 +27,11 @@ import sokeriaaa.return0.shared.data.models.component.result.ActionResult
  * Aliased for "Skill" to avoid the conflict with "Function" class in kotlin.
  */
 interface Skill : Action {
+    /**
+     * Function Category
+     */
+    val category: Category
+
     /**
      * Function target.
      */
