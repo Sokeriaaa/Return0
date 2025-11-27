@@ -126,7 +126,8 @@ fun CombatScreen(
                     logList = viewModel.logList,
                     entities = viewModel.entities,
                     verticalArrangement = Arrangement.Bottom,
-                    userScrollEnabled = false
+                    // User can scroll the combat log after the combat is finished.
+                    userScrollEnabled = viewModel.combatStatus != null
                 )
                 // The auto-combat button.
                 FloatingActionButton(
