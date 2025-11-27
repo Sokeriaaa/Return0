@@ -21,6 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
 import sokeriaaa.return0.models.combat.ArenaLogV4
@@ -32,6 +34,12 @@ import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
 
 class CombatViewModel : BaseViewModel(), Arena.Callback {
+
+    /**
+     * Combat Repo.
+     */
+    private val _combatRepo: CombatRepo by inject()
+
     /**
      * The combat status.
      * `null` - Combating
@@ -104,6 +112,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 entitySelecting = null
                 // Create arena.
                 arena = Arena(
+                    combatRepo = _combatRepo,
                     arenaConfig = intent.config,
                     callback = this,
                 )

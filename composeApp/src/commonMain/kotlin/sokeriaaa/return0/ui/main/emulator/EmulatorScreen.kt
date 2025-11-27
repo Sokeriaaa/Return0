@@ -147,6 +147,7 @@ fun EmulatorScreen(
                     0 -> EmulatorPage(
                         isParty = true,
                         entityStateList = viewModel.parties,
+                        availableEntities = viewModel.availableEntities,
                         onIntent = viewModel::onIntent,
                         mainNavHostController = mainNavHostController,
                         windowAdaptiveInfo = windowAdaptiveInfo,
@@ -155,6 +156,7 @@ fun EmulatorScreen(
                     1 -> EmulatorPage(
                         isParty = false,
                         entityStateList = viewModel.enemies,
+                        availableEntities = viewModel.availableEntities,
                         onIntent = viewModel::onIntent,
                         mainNavHostController = mainNavHostController,
                         windowAdaptiveInfo = windowAdaptiveInfo,

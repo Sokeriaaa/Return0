@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.ArchiveRepo
+import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
@@ -45,6 +46,7 @@ object KoinModules {
         }
         // Repo
         single { ArchiveRepo() }
+        single { CombatRepo(get()) }
     }
 
 }

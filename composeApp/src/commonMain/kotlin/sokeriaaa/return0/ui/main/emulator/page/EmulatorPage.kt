@@ -64,6 +64,7 @@ import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.shared.data.api.combat.entityData
 import sokeriaaa.return0.shared.data.api.combat.level
 import sokeriaaa.return0.shared.data.models.combat.EntityState
+import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.ui.common.widgets.AppFilledIconButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
@@ -74,6 +75,7 @@ import sokeriaaa.return0.ui.common.widgets.AppTextButton
 fun EmulatorPage(
     isParty: Boolean,
     entityStateList: List<EntityState>,
+    availableEntities: List<EntityData>,
     onIntent: (BaseIntent) -> Unit,
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
@@ -121,6 +123,7 @@ fun EmulatorPage(
     if (openPickerDialog) {
         EmulatorEntityPickerDialog(
             isParty = isParty,
+            availableEntities = availableEntities,
             currentEntity = currentEntity,
             onConfirmed = { entity ->
                 if (currentEntity == null) {

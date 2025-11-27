@@ -46,11 +46,7 @@ import sokeriaaa.return0.shared.data.api.combat.level
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
-import sokeriaaa.return0.shared.data.models.entity.EnemyData
-import sokeriaaa.return0.shared.data.models.entity.EnemyRewardTable
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import sokeriaaa.return0.shared.data.models.entity.PartyData
-import sokeriaaa.return0.temp.TempData
 import sokeriaaa.return0.ui.common.widgets.AppDropdownSelector
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import kotlin.math.roundToInt
@@ -62,6 +58,7 @@ import kotlin.math.roundToInt
 @Composable
 fun EmulatorEntityPickerDialog(
     isParty: Boolean,
+    availableEntities: List<EntityData>,
     currentEntity: EntityState?,
     onConfirmed: (entityState: EntityState) -> Unit,
     onDismiss: () -> Unit,
@@ -75,13 +72,11 @@ fun EmulatorEntityPickerDialog(
     // Warning
     var warning: StringResource? by remember { mutableStateOf(null) }
     // TODO Temp list
-    val availableEntities = arrayOf(
+    val options = arrayOf(
         null,
-        TempData.objectEntity,
-        TempData.iteratorEntity,
-        TempData.systemEntity,
+        *availableEntities.toTypedArray(),
     )
-    val availableEntityNameList = availableEntities
+    val availableEntityNameList = options
         .map { it?.name ?: stringResource(Res.string.general_please_select) }
         .toTypedArray()
     AlertDialog(
@@ -107,9 +102,9 @@ fun EmulatorEntityPickerDialog(
                     AppDropdownSelector(
                         title = stringResource(Res.string.emulator_picker_entity),
                         menuOptions = availableEntityNameList,
-                        initSelectedOption = availableEntities.indexOf(selectedEntityData),
+                        initSelectedOption = options.indexOf(selectedEntityData),
                         onItemSelected = { index ->
-                            selectedEntityData = availableEntities[index]
+                            selectedEntityData = options[index]
                         },
                     )
                 }
@@ -157,19 +152,12 @@ fun EmulatorEntityPickerDialog(
                         onConfirmed(
                             if (isParty) {
                                 PartyState(
-                                    partyData = PartyData(
-                                        entityData = entityData,
-                                        growth = TempData.growth,
-                                    ),
+                                    entityData = entityData,
                                     level = level,
                                 )
                             } else {
                                 EnemyState(
-                                    enemyData = EnemyData(
-                                        entityData = entityData,
-                                        growth = TempData.growth,
-                                        rewardTable = EnemyRewardTable(token = 0, exp = 0)
-                                    ),
+                                    entityData = entityData,
                                     level = level,
                                 )
                             }

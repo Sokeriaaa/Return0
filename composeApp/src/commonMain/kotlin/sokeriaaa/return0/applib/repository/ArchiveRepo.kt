@@ -16,26 +16,77 @@ package sokeriaaa.return0.applib.repository
 
 import sokeriaaa.return0.models.action.effect.CommonEffects
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
-import sokeriaaa.return0.shared.data.models.entity.EnemyData
-import sokeriaaa.return0.shared.data.models.entity.PartyData
-import sokeriaaa.return0.temp.TempData
+import sokeriaaa.return0.shared.data.models.entity.EnemyRewardTable
+import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
+import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
 
 /**
  * Stores archives data in memory.
  */
 class ArchiveRepo internal constructor() {
-    private val _partyDataMap: MutableMap<String, PartyData> = HashMap()
-    private val _enemyDataMap: MutableMap<String, EnemyData> = HashMap()
+    private val _entityDataMap: MutableMap<String, EntityData> = HashMap()
     private val _effectDataMap: MutableMap<String, EffectData> = HashMap()
+    private val _entityGrowthMap: MutableMap<Category, EntityGrowth> = HashMap()
+    private val _entityRewardMap: MutableMap<String, EnemyRewardTable> = HashMap()
+    private val _categoryEffectivenessMap: MutableMap<Category, CategoryEffectiveness> = HashMap()
 
     init {
         // Register common data.
         _effectDataMap[CommonEffects.defense.name] = CommonEffects.defense
-        // Temp
-        _effectDataMap[TempData.optimizedEffect.name] = TempData.optimizedEffect
     }
 
-    fun getPartyData(name: String): PartyData? = _partyDataMap[name]
-    fun getEnemyData(name: String): EnemyData? = _enemyDataMap[name]
+    fun registerEntity(entityData: EntityData) {
+        _entityDataMap[entityData.name] = entityData
+    }
+
+    fun registerEntities(entityDataList: List<EntityData>) {
+        entityDataList.forEach(::registerEntity)
+    }
+
+    fun registerEntities(entityDataMap: Map<String, EntityData>) {
+        _entityDataMap.putAll(entityDataMap)
+    }
+
+    fun registerEffect(effectData: EffectData) {
+        _effectDataMap[effectData.name] = effectData
+    }
+
+    fun registerEffects(effectDataList: List<EffectData>) {
+        effectDataList.forEach(::registerEffect)
+    }
+
+    fun registerEffects(effectDataMap: Map<String, EffectData>) {
+        _effectDataMap.putAll(effectDataMap)
+    }
+
+    fun registerEntityGrowths(entityGrowthMap: Map<Category, EntityGrowth>) {
+        _entityGrowthMap.putAll(entityGrowthMap)
+    }
+
+    fun registerCategoryEffectiveness(map: Map<Category, CategoryEffectiveness>) {
+        _categoryEffectivenessMap.putAll(map)
+    }
+
+    fun registerEntityRewardTable(map: Map<String, EnemyRewardTable>) {
+        _entityRewardMap.putAll(map)
+    }
+
+    fun getEntityData(name: String): EntityData? = _entityDataMap[name]
     fun getEffectData(name: String): EffectData? = _effectDataMap[name]
+
+    fun getEntityGrowthByCategory(category: Category): EntityGrowth = _entityGrowthMap[category]
+        ?: error("EntityGrowth of the category $category is not registered.")
+
+    fun getCategoryEffectiveness(category: Category): CategoryEffectiveness =
+        _categoryEffectivenessMap[category] ?: CategoryEffectiveness(emptyList(), emptyList())
+
+    fun reset() {
+        _entityDataMap.clear()
+        _effectDataMap.clear()
+        _entityGrowthMap.clear()
+        _entityRewardMap.clear()
+        _categoryEffectivenessMap.clear()
+    }
 }

@@ -20,9 +20,9 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
-import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.math.min
@@ -34,6 +34,7 @@ import kotlin.random.Random
  * TODO Refactor this class and split the delay logic.
  */
 class Arena(
+    private val combatRepo: CombatRepo,
     private val arenaConfig: ArenaConfig,
     private val callback: Callback,
 ) {
@@ -66,7 +67,12 @@ class Arena(
         // Create entities.
         parties = Team(
             entities = arenaConfig.parties.mapIndexed { index, state ->
-                state.partyData.generate(index, state.level).apply {
+                combatRepo.generateEntity(
+                    entityData = state.entityData,
+                    index = index,
+                    level = state.level,
+                    isParty = true,
+                ).apply {
                     // For parties, apply current HP/SP.
                     hp = state.currentHP ?: maxhp
                     sp = state.currentSP ?: maxsp
@@ -76,7 +82,12 @@ class Arena(
         val partiesSize = parties.entities.size
         enemies = Team(
             entities = arenaConfig.enemies.mapIndexed { index, state ->
-                state.enemyData.generate(partiesSize + index, state.level).apply {
+                combatRepo.generateEntity(
+                    entityData = state.entityData,
+                    index = partiesSize + index,
+                    level = state.level,
+                    isParty = false,
+                ).apply {
                     // For enemies, apply full HP/SP.
                     hp = maxhp
                     sp = maxsp

@@ -25,49 +25,30 @@ import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
-import sokeriaaa.return0.shared.data.models.entity.EnemyData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import sokeriaaa.return0.shared.data.models.entity.PartyData
+import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 
-fun PartyData.generate(
+fun EntityData.generate(
     index: Int,
     level: Int,
+    growth: EntityGrowth,
+    isParty: Boolean,
 ): Entity = EntityImpl(
     index = index,
-    isParty = true,
-    name = this.entityData.name,
+    isParty = isParty,
+    name = this.name,
     level = level,
-    category = this.entityData.category,
-    category2 = this.entityData.category2,
-    baseATK = (this.entityData.baseATK * (1 + this.growth.atkGrowth * level)).toInt(),
-    baseDEF = (this.entityData.baseDEF * (1 + this.growth.defGrowth * level)).toInt(),
-    baseSPD = (this.entityData.baseSPD * (1 + this.growth.spdGrowth * level)).toInt(),
-    baseHP = (this.entityData.baseHP * (1 + this.growth.hpGrowth * level)).toInt(),
-    baseSP = (this.entityData.baseSP * (1 + this.growth.spGrowth * level)).toInt(),
-    baseAP = this.entityData.baseAP,
-    functions = this.entityData.functions,
-    attackModifier = this.entityData.attackModifier,
-)
-
-fun EnemyData.generate(
-    index: Int,
-    level: Int,
-): Entity = EntityImpl(
-    index = index,
-    isParty = false,
-    name = this.entityData.name,
-    level = level,
-    category = this.entityData.category,
-    category2 = this.entityData.category2,
-    baseATK = (this.entityData.baseATK * (1 + this.growth.atkGrowth * level)).toInt(),
-    baseDEF = (this.entityData.baseDEF * (1 + this.growth.defGrowth * level)).toInt(),
-    baseSPD = (this.entityData.baseSPD * (1 + this.growth.spdGrowth * level)).toInt(),
-    baseHP = (this.entityData.baseHP * (1 + this.growth.hpGrowth * level)).toInt(),
-    baseSP = (this.entityData.baseSP * (1 + this.growth.spGrowth * level)).toInt(),
-    baseAP = this.entityData.baseAP,
-    functions = this.entityData.functions,
-    attackModifier = this.entityData.attackModifier,
+    category = this.category,
+    category2 = this.category2,
+    baseATK = (this.baseATK * (1 + growth.atkGrowth * level)).toInt(),
+    baseDEF = (this.baseDEF * (1 + growth.defGrowth * level)).toInt(),
+    baseSPD = (this.baseSPD * (1 + growth.spdGrowth * level)).toInt(),
+    baseHP = (this.baseHP * (1 + growth.hpGrowth * level)).toInt(),
+    baseSP = (this.baseSP * (1 + growth.spGrowth * level)).toInt(),
+    baseAP = this.baseAP,
+    functions = this.functions,
+    attackModifier = this.attackModifier,
 )
 
 internal class EntityImpl(

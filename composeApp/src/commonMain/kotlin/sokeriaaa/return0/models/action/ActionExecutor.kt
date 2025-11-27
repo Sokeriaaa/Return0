@@ -31,8 +31,7 @@ import kotlin.math.roundToInt
 fun ActionExtraContext.singleExecute() {
     // This function must be executed from [Skill].
     require(fromAction is Skill) {
-        "Only functions (skills) can use singleExecute(), but current action is: " +
-                fromAction::class.qualifiedName
+        "Only functions (skills) can use singleExecute(), but current action is: $fromAction"
     }
     // Calculate power.
     val power = fromAction.attackModifier
