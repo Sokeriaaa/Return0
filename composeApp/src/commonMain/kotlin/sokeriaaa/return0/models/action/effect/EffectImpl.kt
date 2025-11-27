@@ -52,6 +52,13 @@ internal class EffectImpl(
     override var turnsLeft: Int,
     override val extra: Extra?
 ) : Effect {
+
+    /**
+     * When the user is identical with target, the effect and turn reduction is skipped
+     *  on the first turn.
+     */
+    private var _delayedStart = true
+
     override val values: MutableMap<String, Float> = HashMap()
     override var timesUsed: Int = 0
         private set
@@ -59,6 +66,12 @@ internal class EffectImpl(
         private set
 
     override fun applyOn(target: Entity): List<ActionResult> {
+        // Skip the first execution after user attached this effect to itself.
+        if (_delayedStart && user == target) {
+            _delayedStart = false
+            return emptyList()
+        }
+
         val context = createExtraContextFor(target)
         extra?.executedIn(context)
         timesUsed++

@@ -70,7 +70,7 @@ object CommonFunctions {
             CombatExtra.AttachEffect(
                 name = CommonEffects.Keys.DEFENSE,
                 tier = Value(1),
-                turns = Value(2)
+                turns = Value(1)
             ),
             CombatExtra.SPChange(
                 spChange = EntityValue.MAXSP * 0.03125F,
