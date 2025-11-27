@@ -100,6 +100,18 @@ fun ActionExtraContext.singleExecute() {
         val isCritical = isCritical(criticalRate)
         // TODO Damage rates may be applied here.
         var damage = damageRaw
+        // Category effectiveness
+        val categoryEffectiveness = archiveRepo.getCategoryEffectiveness(fromAction.category)
+        var categoryRate = 1F
+        // Primary category
+        categoryEffectiveness.attack[target.category]?.let { rateType1 ->
+            categoryRate += rateType1 * 0.1F
+        }
+        // Secondary category
+        categoryEffectiveness.attack[target.category2]?.let { rateType2 ->
+            categoryRate += rateType2 * 0.1F
+        }
+        damage *= categoryRate
         if (isCritical) {
             // Critical multiplier.
             val criticalDMG = user.critDMG + (fromAction.attackModifier
