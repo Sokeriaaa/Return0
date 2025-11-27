@@ -280,6 +280,7 @@ fun ActionExtraContext.removeEffect(effect: Effect) {
         ActionResult.RemoveEffect(
             fromIndex = user.index,
             toIndex = target.index,
+            originalIndex = effect.user.index,
             effectName = effect.name,
         )
     )

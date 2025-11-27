@@ -286,7 +286,7 @@ private fun LogContext.ComposeActionResult(
                     resource = Res.string.combat_log_result_remove_effect,
                     /* effect = */ result.effectName,
                     /* target = */ this[result.toIndex].name,
-                    /* from = */ this[result.fromIndex].name,
+                    /* original = */ this[result.originalIndex].name,
                 )
             )
         }
