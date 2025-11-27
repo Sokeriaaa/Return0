@@ -89,10 +89,12 @@ fun Extra.executedIn(context: ActionExtraContext) {
             }
         }
 
-        CombatExtra.RemoveAllEffect -> {
-            context.target.effects.forEach {
-                context.removeEffect(it)
-            }
+        is CombatExtra.RemoveAllEffect -> {
+            context.target.effects
+                .asSequence()
+                .filter { if (it.isDebuff) debuff else buff }
+                .forEach(context::removeEffect)
+
         }
         // end - CombatExtra
     }

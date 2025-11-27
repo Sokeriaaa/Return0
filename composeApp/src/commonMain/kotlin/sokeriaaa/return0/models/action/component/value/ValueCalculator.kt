@@ -105,6 +105,9 @@ fun Value.calculatedIn(context: ActionContext): Float {
         EntityValue.HP -> context.target.hp.toFloat()
         EntityValue.SP -> context.target.sp.toFloat()
         EntityValue.AP -> context.target.ap
+        EntityValue.HPRate -> context.target.hp.toFloat() / context.target.maxhp
+        EntityValue.SPRate -> context.target.sp.toFloat() / context.target.maxsp
+        EntityValue.APRate -> context.target.ap / context.target.maxap
         EntityValue.MAXHP -> context.target.maxhp.toFloat()
         EntityValue.MAXSP -> context.target.maxsp.toFloat()
         EntityValue.MAXAP -> context.target.maxap.toFloat()
