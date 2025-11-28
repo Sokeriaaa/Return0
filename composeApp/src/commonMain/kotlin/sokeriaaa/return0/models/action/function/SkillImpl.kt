@@ -29,7 +29,7 @@ fun Entity.generateFunctionFor(functionData: FunctionData): Skill? {
     val skillTier: Int = if (functionData.growth.isNullOrEmpty()) {
         1
     } else {
-        val index = functionData.growth.indexOfFirst { this.level >= it }
+        val index = functionData.growth.indexOfLast { this.level >= it }
         if (index == -1) {
             return null
         } else {
