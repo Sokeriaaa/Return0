@@ -140,10 +140,14 @@ class Arena(
         //  sorted by speed descending.
         //  If multiple entities whose AP is full, execute one by one by speed descending.
         entities.asSequence()
-            .filter { !it.isFailed() && it.ap >= it.maxap }
+            .filter { it.ap >= it.maxap }
             .sortedByDescending { it.spd }
             // 3. Execute actions.
             .forEach { entity ->
+                // Skip the failed entities which defeated before they take actions.
+                if (entity.isFailed()) {
+                    return@forEach
+                }
                 // 3.1.1 Check frozen effect.
                 val frozenEffect = entity.effects.firstOrNull { it.isFreeze }
                 if (frozenEffect != null) {
@@ -321,8 +325,12 @@ class Arena(
      */
     private suspend fun handleFailedEntities(user: Entity, vararg entity: Entity): Boolean {
         entity.asSequence()
-            .filter { it.isFailed() }
+            .filter { it.isFailed() && !it.isFailedFlag }
             .forEach {
+                // Handle failed flag.
+                it.isFailedFlag = true
+                // Empty current action bar.
+                it.ap = 0F
                 // Push entity defeated log.
                 pushLog(
                     ArenaLogV4.Entities.Defeated(

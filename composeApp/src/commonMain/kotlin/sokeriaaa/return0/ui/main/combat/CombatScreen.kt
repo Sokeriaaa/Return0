@@ -285,7 +285,7 @@ private fun EntityItem(
         },
     ) {
         val apProgress = entity.ap / entity.maxap
-        val isFailed = entity.isFailed()
+        val isFailed = entity.isFailedFlag
         val animatedAlpha = if (isFailed) {
             0.4F
         } else {

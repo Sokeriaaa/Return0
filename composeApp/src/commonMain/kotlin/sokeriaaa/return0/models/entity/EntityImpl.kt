@@ -67,6 +67,7 @@ internal class EntityImpl(
     functions: List<FunctionData>,
     attackModifier: EntityData.GeneralAttackModifier?
 ) : Entity {
+    override var isFailedFlag: Boolean = false
     override var atk: Int = baseATK
         private set
     override var def: Int = baseDEF

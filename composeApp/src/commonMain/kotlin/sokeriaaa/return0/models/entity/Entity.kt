@@ -34,6 +34,11 @@ interface Entity {
     val isParty: Boolean
 
     /**
+     * Failed flag.
+     */
+    var isFailedFlag: Boolean
+
+    /**
      * The name of entity.
      */
     val name: String
