@@ -194,16 +194,16 @@ fun ActionExtraContext.instantSPChange(spChange: Int) {
  *
  * @param apChange AP change.
  */
-fun ActionExtraContext.instantAPChange(apChange: Int) {
-    if (apChange != 0) {
+fun ActionExtraContext.instantAPChange(apChange: Float) {
+    if (apChange != 0F) {
         val result = ActionResult.ApChange(
             fromIndex = user.index,
             toIndex = target.index,
-            finalChange = apChange,
-            changeCoerced = apChange,
+            finalChange = apChange.toInt(),
+            changeCoerced = apChange.toInt(),
         )
         saveResult(result)
-        target.changeSP(apChange)
+        target.changeAP(apChange)
     }
 }
 

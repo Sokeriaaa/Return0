@@ -67,7 +67,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         }
 
         is CombatExtra.APChange -> {
-            context.instantAPChange(apChange.calculatedIn(context).toInt())
+            context.instantAPChange(apChange.calculatedIn(context))
         }
 
         is CombatExtra.AttachEffect -> {
