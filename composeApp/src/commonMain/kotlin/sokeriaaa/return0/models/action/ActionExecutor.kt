@@ -24,11 +24,12 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.math.roundToInt
+import kotlin.random.Random
 
 /**
  * Execute a single time for the function on this context.
  */
-fun ActionExtraContext.singleExecute() {
+fun ActionExtraContext.singleExecute(random: Random = Random) {
     // This function must be executed from [Skill].
     require(fromAction is Skill) {
         "Only functions (skills) can use singleExecute(), but current action is: $fromAction"
@@ -72,7 +73,7 @@ fun ActionExtraContext.singleExecute() {
             ?.targetRateOffset
             ?.calculatedIn(this) ?: 0F)
         // Missed
-        if (!fromAction.bullseye && isMissed(targetRate, target.hideRate)) {
+        if (!fromAction.bullseye && isMissed(targetRate, target.hideRate, random = random)) {
             missed()
             return
         }
@@ -97,7 +98,7 @@ fun ActionExtraContext.singleExecute() {
         val criticalRate = user.critRate + (fromAction.attackModifier
             ?.criticalRateOffset
             ?.calculatedIn(this) ?: 0F)
-        val isCritical = isCritical(criticalRate)
+        val isCritical = isCritical(criticalRate, random = random)
         // TODO Damage rates may be applied here.
         var damage = damageRaw
         // Category effectiveness
@@ -370,13 +371,15 @@ private fun baseHealCalc(
  * Whether this attack will be critical.
  */
 private fun isCritical(
-    criticalRate: Float
-): Boolean = chance(success = criticalRate)
+    criticalRate: Float,
+    random: Random = Random,
+): Boolean = chance(success = criticalRate, random = random)
 
 /**
  * Whether this attack will be missed.
  */
 private fun isMissed(
     targetRate: Float,
-    hideRate: Float
-): Boolean = chance(success = 1F - targetRate + hideRate)
+    hideRate: Float,
+    random: Random = Random,
+): Boolean = chance(success = 1F - targetRate + hideRate, random = random)
