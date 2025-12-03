@@ -20,8 +20,8 @@ import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.models.combat.CombatCalculator
 import sokeriaaa.return0.models.entity.Entity
-import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -52,7 +52,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         // Healing
         // Generate action result and save.
         // Calculate raw heal.
-        val healRaw = baseHealCalc(powerAbs = -power, atk = userATK).toInt()
+        val healRaw = CombatCalculator.baseHeal(powerAbs = -power, atk = userATK).toInt()
         // TODO Healing rates may be applied here.
         val finalHeal = healRaw
         val result = ActionResult.Heal(
@@ -73,7 +73,10 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
             ?.targetRateOffset
             ?.calculatedIn(this) ?: 0F)
         // Missed
-        if (!fromAction.bullseye && isMissed(targetRate, target.hideRate, random = random)) {
+        if (
+            !fromAction.bullseye &&
+            CombatCalculator.isMissed(targetRate, target.hideRate, random = random)
+        ) {
             missed()
             return
         }
@@ -89,7 +92,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
             ?: target.def.toFloat()
         // Generate action result and save.
         // Calculate raw damage.
-        val damageRaw = baseDamageCalc(
+        val damageRaw = CombatCalculator.baseDamage(
             power = power,
             atk = user.atk.toFloat(),
             def = target.def.toFloat(),
@@ -98,7 +101,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         val criticalRate = user.critRate + (fromAction.attackModifier
             ?.criticalRateOffset
             ?.calculatedIn(this) ?: 0F)
-        val isCritical = isCritical(criticalRate, random = random)
+        val isCritical = CombatCalculator.isCritical(criticalRate, random = random)
         // TODO Damage rates may be applied here.
         var damage = damageRaw
         // Category effectiveness
@@ -334,52 +337,3 @@ private fun Entity.changeAP(offset: Float) {
     ap += offset
 }
 
-/**
- * Calculate the damage based on [power], [atk] and [def].
- *  Uses ratio with diminishing returns.
- *
- * This is the base damage calculated **with** current ATK of user and current DEF of target,
- *  but **without** any other multipliers such as critical damage, category rate, etc.
- *
- * No matter how low the ATK is and how high the DEF is, it will damage at least 1.
- *
- * @param power Power of action.
- * @param atk Current ATK of user.
- * @param def Current DEF of target.
- */
-private fun baseDamageCalc(
-    power: Int,
-    atk: Float,
-    def: Float,
-): Float = (power * atk.coerceAtLeast(1F) * 5 / (100 + def.coerceAtLeast(1F)))
-    .coerceAtLeast(1F)
-
-/**
- * Calculate the healing based on [powerAbs] and [atk].
- *
- * Now matter how low the ATK is, it will heal at least 1.
- *
- * @param powerAbs Absolute value of the power.
- * @param atk Current ATK of user.
- */
-private fun baseHealCalc(
-    powerAbs: Int,
-    atk: Float,
-): Float = (powerAbs * atk.coerceAtLeast(1F) / 100).coerceAtLeast(1F)
-
-/**
- * Whether this attack will be critical.
- */
-private fun isCritical(
-    criticalRate: Float,
-    random: Random = Random,
-): Boolean = chance(success = criticalRate, random = random)
-
-/**
- * Whether this attack will be missed.
- */
-private fun isMissed(
-    targetRate: Float,
-    hideRate: Float,
-    random: Random = Random,
-): Boolean = chance(success = 1F - targetRate + hideRate, random = random)
