@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
@@ -32,6 +33,9 @@ import sokeriaaa.return0.models.combat.selectableCount
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
+import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
+import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 class CombatViewModel : BaseViewModel(), Arena.Callback {
 
@@ -85,6 +89,8 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
      */
     val logList: List<ArenaLogV4> = _logList
 
+    private val _animatorManager: EntityAnimatorManager by inject()
+
     /**
      * Arena
      */
@@ -108,6 +114,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 _entities.clear()
                 _parties.clear()
                 _enemies.clear()
+                _animatorManager.reset()
                 combatStatus = null
                 entitySelecting = null
                 // Create arena.
@@ -211,20 +218,34 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
 
     override fun onReceivedLog(log: ArenaLogV4) {
         _logList.add(0, log)
-//        if (log is ArenaLogV4.Actions.Results) {
-//            // Animate
-//            when (val result = log.actionResult) {
-//                is ActionResult.Damage -> {
-//                    triggerAnimation(result.toIndex, EntityAnimator.Shake)
-//                }
-//
-//                is ActionResult.Heal -> {
-//                    triggerAnimation(result.toIndex, EntityAnimator.Glow(Color.White))
-//                }
-//
-//                else -> {}
-//            }
-//        }
+        if (log is ArenaLogV4.Actions.Results) {
+            // Animate
+            when (val result = log.actionResult) {
+                is ActionResult.Damage -> {
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.Shake,
+                    )
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.Damage(result.finalDamage, result.isCritical),
+                    )
+                }
+
+                is ActionResult.Heal -> {
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.Glow(Color.Green),
+                    )
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.Heal(result.finalHeal),
+                    )
+                }
+
+                else -> {}
+            }
+        }
     }
 
     override fun onWin() {

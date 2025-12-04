@@ -15,7 +15,9 @@
 package sokeriaaa.return0.ui.main.combat
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,15 +45,22 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -66,6 +75,8 @@ import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
+import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
+import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 /**
  * The combat screen, for where the user to combat with bugs.
@@ -276,8 +287,65 @@ private fun EntityItem(
     entity: Entity,
     isWaitingAction: Boolean,
 ) {
+    val animatorManager: EntityAnimatorManager = koinInject()
+    var glowColor by remember { mutableStateOf<Color?>(null) }
+    val glowAlpha = remember { Animatable(0f) }
+    var shakeTrigger by remember { mutableStateOf(false) }
+    val shakeOffset = remember { Animatable(0f) }
+    // Collect animations.
+    LaunchedEffect(Unit) {
+        animatorManager.entityAnimators
+            .map { it[entity.index] }
+            .collect { animators ->
+                animators?.forEach {
+                    when (it) {
+                        EntityAnimator.Shake -> {
+                            shakeTrigger = true
+                            delay(500)
+                            animatorManager.clearAnimator(entity.index, it)
+                            shakeTrigger = false
+                        }
+
+                        is EntityAnimator.Glow -> {
+                            glowColor = it.color
+                            delay(500)
+                            animatorManager.clearAnimator(entity.index, it)
+                            glowColor = null
+                        }
+
+                        is EntityAnimator.Damage -> {
+                            // TODO
+                        }
+
+                        is EntityAnimator.Heal -> {
+                            // TODO
+                        }
+                    }
+                }
+            }
+    }
+    // Animate shake.
+    LaunchedEffect(shakeTrigger) {
+        if (shakeTrigger) {
+            repeat(3) {
+                shakeOffset.animateTo(4f, tween(30))
+                shakeOffset.animateTo(-4f, tween(30))
+            }
+            shakeOffset.animateTo(0f)
+        }
+    }
+    // Animate glow.
+    LaunchedEffect(glowColor) {
+        if (glowColor != null) {
+            glowAlpha.snapTo(0.1f)
+            glowAlpha.animateTo(0f, tween(300))
+        }
+    }
+
     OutlinedCard(
-        modifier = modifier,
+        modifier = modifier
+            // Animate: Shake
+            .graphicsLayer { translationX = shakeOffset.value },
         border = if (isWaitingAction) {
             BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary)
         } else {
@@ -302,6 +370,16 @@ private fun EntityItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .drawBehind {
+                    // Animate: Glow
+                    glowColor?.let {
+                        if (glowAlpha.value > 0f) {
+                            drawRect(
+                                color = it,
+                                alpha = glowAlpha.value,
+                            )
+                        }
+                    }
+                    // Action bar
                     if (!isFailed) {
                         val w = size.width * apProgress
                         val h = size.height

@@ -25,6 +25,7 @@ import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
+import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 object KoinModules {
 
@@ -44,6 +45,8 @@ object KoinModules {
                 override val viewModelStore = ViewModelStore()
             }
         }
+        // Entity animator manager
+        single { EntityAnimatorManager() }
         // Repo
         single { ArchiveRepo() }
         single { CombatRepo(get()) }

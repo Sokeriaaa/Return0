@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.ui.main.combat
+package sokeriaaa.return0.ui.main.combat.animation
 
 import androidx.compose.ui.graphics.Color
 
@@ -23,5 +23,5 @@ sealed class EntityAnimator {
     data object Shake : EntityAnimator()
     data class Glow(val color: Color) : EntityAnimator()
     data class Damage(val damage: Int, val isCritical: Boolean) : EntityAnimator()
-    data class Heal(val heal: Int)
+    data class Heal(val heal: Int) : EntityAnimator()
 }
