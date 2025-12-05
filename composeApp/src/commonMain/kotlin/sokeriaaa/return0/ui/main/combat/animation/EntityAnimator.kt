@@ -15,6 +15,7 @@
 package sokeriaaa.return0.ui.main.combat.animation
 
 import androidx.compose.ui.graphics.Color
+import kotlin.random.Random
 
 /**
  * An animator for the entities during the combat.
@@ -22,6 +23,13 @@ import androidx.compose.ui.graphics.Color
 sealed class EntityAnimator {
     data object Shake : EntityAnimator()
     data class Glow(val color: Color) : EntityAnimator()
-    data class Damage(val damage: Int, val isCritical: Boolean) : EntityAnimator()
-    data class Heal(val heal: Int) : EntityAnimator()
+
+    data class FloatingText(
+        val id: Long = Random.nextLong(),
+        val text: String,
+        val color: Color,
+        val isCritical: Boolean = false,
+        val xOffset: Float = Random.nextFloat() * 100F - 50F,
+        val yOffset: Float = Random.nextFloat() * -20F - 40F,
+    ) : EntityAnimator()
 }

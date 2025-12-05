@@ -224,22 +224,49 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 is ActionResult.Damage -> {
                     _animatorManager.triggerAnimation(
                         index = result.toIndex,
-                        animator = EntityAnimator.Shake,
+                        animator = EntityAnimator.FloatingText(
+                            text = "${result.finalDamage}",
+                            color = Color.Red,
+                            isCritical = result.isCritical,
+                        ),
                     )
                     _animatorManager.triggerAnimation(
                         index = result.toIndex,
-                        animator = EntityAnimator.Damage(result.finalDamage, result.isCritical),
+                        animator = EntityAnimator.Shake,
                     )
                 }
 
                 is ActionResult.Heal -> {
                     _animatorManager.triggerAnimation(
                         index = result.toIndex,
-                        animator = EntityAnimator.Glow(Color.Green),
+                        animator = EntityAnimator.FloatingText(
+                            text = "+${result.finalHeal}",
+                            color = Color.Green,
+                        ),
                     )
                     _animatorManager.triggerAnimation(
                         index = result.toIndex,
-                        animator = EntityAnimator.Heal(result.finalHeal),
+                        animator = EntityAnimator.Glow(Color.Green),
+                    )
+                }
+
+                is ActionResult.Missed -> {
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.FloatingText(
+                            text = "miss",
+                            color = Color.Black,
+                        ),
+                    )
+                }
+
+                is ActionResult.NoEffect -> {
+                    _animatorManager.triggerAnimation(
+                        index = result.toIndex,
+                        animator = EntityAnimator.FloatingText(
+                            text = "null",
+                            color = Color.Black,
+                        ),
                     )
                 }
 

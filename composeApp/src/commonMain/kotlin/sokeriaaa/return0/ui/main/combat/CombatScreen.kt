@@ -45,7 +45,9 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,6 +58,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -292,6 +296,7 @@ private fun EntityItem(
     val glowAlpha = remember { Animatable(0f) }
     var shakeTrigger by remember { mutableStateOf(false) }
     val shakeOffset = remember { Animatable(0f) }
+    val floatingTexts = remember { mutableStateSetOf<EntityAnimator.FloatingText>() }
     // Collect animations.
     LaunchedEffect(Unit) {
         animatorManager.entityAnimators
@@ -313,12 +318,8 @@ private fun EntityItem(
                             glowColor = null
                         }
 
-                        is EntityAnimator.Damage -> {
-                            // TODO
-                        }
-
-                        is EntityAnimator.Heal -> {
-                            // TODO
+                        is EntityAnimator.FloatingText -> {
+                            floatingTexts += it
                         }
                     }
                 }
@@ -341,90 +342,126 @@ private fun EntityItem(
             glowAlpha.animateTo(0f, tween(300))
         }
     }
-
-    OutlinedCard(
-        modifier = modifier
-            // Animate: Shake
-            .graphicsLayer { translationX = shakeOffset.value },
-        border = if (isWaitingAction) {
-            BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary)
-        } else {
-            CardDefaults.outlinedCardBorder()
-        },
+    Box(
+        modifier = modifier,
     ) {
-        val apProgress = entity.ap / entity.maxap
-        val isFailed = entity.isFailedFlag
-        val animatedAlpha = if (isFailed) {
-            0.4F
-        } else {
-            1F
-        }
-        val color = MaterialTheme.colorScheme.primary.copy(
-            alpha = if (isWaitingAction) {
-                0.24F
-            } else {
-                0.08f
-            }
-        )
-        Column(
+        // Entity card
+        OutlinedCard(
             modifier = Modifier
-                .fillMaxWidth()
-                .drawBehind {
-                    // Animate: Glow
-                    glowColor?.let {
-                        if (glowAlpha.value > 0f) {
+                // Animate: Shake
+                .graphicsLayer { translationX = shakeOffset.value },
+            border = if (isWaitingAction) {
+                BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary)
+            } else {
+                CardDefaults.outlinedCardBorder()
+            },
+        ) {
+            val apProgress = entity.ap / entity.maxap
+            val isFailed = entity.isFailedFlag
+            val animatedAlpha = if (isFailed) {
+                0.4F
+            } else {
+                1F
+            }
+            val color = MaterialTheme.colorScheme.primary.copy(
+                alpha = if (isWaitingAction) {
+                    0.24F
+                } else {
+                    0.08f
+                }
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .drawBehind {
+                        // Animate: Glow
+                        glowColor?.let {
+                            if (glowAlpha.value > 0f) {
+                                drawRect(
+                                    color = it,
+                                    alpha = glowAlpha.value,
+                                )
+                            }
+                        }
+                        // Action bar
+                        if (!isFailed) {
+                            val w = size.width * apProgress
+                            val h = size.height
+                            // Draw AP progress on the background
                             drawRect(
-                                color = it,
-                                alpha = glowAlpha.value,
+                                color = color,
+                                topLeft = Offset(0f, 0f),
+                                size = Size(w, h)
                             )
                         }
                     }
-                    // Action bar
-                    if (!isFailed) {
-                        val w = size.width * apProgress
-                        val h = size.height
-                        // Draw AP progress on the background
-                        drawRect(
-                            color = color,
-                            topLeft = Offset(0f, 0f),
-                            size = Size(w, h)
-                        )
-                    }
-                }
-                .padding(all = 8.dp)
-                .alpha(animatedAlpha),
-        ) {
-            val animatedHP by animateIntAsState(
-                targetValue = entity.hp,
-                label = "EntityItemHP",
-            )
-            val animatedSP by animateIntAsState(
-                targetValue = entity.sp,
-                label = "EntityItemHP",
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
+                    .padding(all = 8.dp)
+                    .alpha(animatedAlpha),
             ) {
-                Text(
-                    modifier = Modifier.weight(1F),
-                    text = entity.name
+                val animatedHP by animateIntAsState(
+                    targetValue = entity.hp,
+                    label = "EntityItemHP",
                 )
-                Text(
-                    text = "Lv.${entity.level}",
+                val animatedSP by animateIntAsState(
+                    targetValue = entity.sp,
+                    label = "EntityItemHP",
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        modifier = Modifier.weight(1F),
+                        text = entity.name
+                    )
+                    Text(
+                        text = "Lv.${entity.level}",
+                    )
+                }
+                EntityHPBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "HP",
+                    current = animatedHP,
+                    max = entity.maxhp,
+                )
+                EntityHPBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "SP",
+                    current = animatedSP,
+                    max = entity.maxsp,
                 )
             }
-            EntityHPBar(
-                modifier = Modifier.fillMaxWidth(),
-                label = "HP",
-                current = animatedHP,
-                max = entity.maxhp,
-            )
-            EntityHPBar(
-                modifier = Modifier.fillMaxWidth(),
-                label = "SP",
-                current = animatedSP,
-                max = entity.maxsp,
-            )
+        }
+        // Floating texts (Damage/Heal)
+        floatingTexts.forEach { text ->
+            key(text.id) {
+                val anim = remember { Animatable(0F) }
+                LaunchedEffect(text.id) {
+                    anim.animateTo(
+                        targetValue = 1f,
+                        animationSpec = tween(1000)
+                    )
+                    floatingTexts.remove(text)
+                    animatorManager.clearAnimator(entity.index, text)
+                }
+                // Individual parabolic animation
+                // Define a simple parabolic path
+                val x = text.xOffset * anim.value
+                val y = text.yOffset * (1 - (anim.value - 0.5f) * (anim.value - 0.5f))
+                // Draw the floating text
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .graphicsLayer {
+                            translationX = x
+                            translationY = y
+                            alpha = 1f - anim.value
+                        },
+                    text = text.text,
+                    color = text.color,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
         }
     }
 }
