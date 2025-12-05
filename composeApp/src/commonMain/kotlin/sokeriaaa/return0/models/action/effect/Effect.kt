@@ -20,6 +20,7 @@ import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 
 interface Effect : Action, Comparable<Effect> {
+    val abbr: String
     val isDebuff: Boolean
     val isStackable: Boolean
     val isRemovable: Boolean

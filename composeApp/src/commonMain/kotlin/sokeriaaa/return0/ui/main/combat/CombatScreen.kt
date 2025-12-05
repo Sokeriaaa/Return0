@@ -19,6 +19,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -61,7 +63,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Job
@@ -75,8 +80,10 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.combat
 import return0.composeapp.generated.resources.combat_defeat
 import return0.composeapp.generated.resources.combat_victory
+import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_outline_autopause_24
 import return0.composeapp.generated.resources.ic_outline_autoplay_24
+import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
@@ -418,14 +425,41 @@ private fun EntityItem(
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        modifier = Modifier.weight(1F),
-                        text = entity.name
+                        modifier = Modifier
+                            .weight(1F)
+                            .padding(end = 4.dp)
+                            .widthIn(min = 100.dp),
+                        text = entity.name,
+                        maxLines = 1,
+                        textAlign = TextAlign.Start,
+                        overflow = TextOverflow.Ellipsis,
                     )
-                    Text(
-                        text = "Lv.${entity.level}",
-                    )
+                    if (entity.effects.isEmpty()) {
+                        Text(
+                            text = stringResource(
+                                resource = Res.string.general_level_w_value,
+                                /* level = */ entity.level,
+                            ),
+                            textAlign = TextAlign.End,
+                        )
+                    } else {
+                        // Display all effects.
+                        Row(
+                            modifier = Modifier
+                                .basicMarquee(iterations = Int.MAX_VALUE),
+                            horizontalArrangement = Arrangement.End,
+                        ) {
+                            entity.effects.forEach {
+                                EffectBadge(
+                                    modifier = Modifier.padding(horizontal = 1.dp),
+                                    effect = it,
+                                )
+                            }
+                        }
+                    }
                 }
                 EntityHPBar(
                     modifier = Modifier.fillMaxWidth(),
@@ -473,5 +507,31 @@ private fun EntityItem(
                 )
             }
         }
+    }
+}
+
+/**
+ * Display the effect badge in the entity card.
+ */
+@Composable
+private fun EffectBadge(
+    modifier: Modifier = Modifier,
+    effect: Effect,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "[${effect.abbr}]",
+            fontSize = 9.sp,
+            lineHeight = 9.sp,
+        )
+        Text(
+            text = "L${effect.tier}/${effect.turnsLeft}T",
+            fontSize = 7.sp,
+            lineHeight = 7.sp,
+        )
     }
 }

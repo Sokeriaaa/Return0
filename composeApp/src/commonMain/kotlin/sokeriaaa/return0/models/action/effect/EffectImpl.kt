@@ -14,6 +14,9 @@
  */
 package sokeriaaa.return0.models.action.effect
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import sokeriaaa.return0.models.action.component.extra.createExtraContextFor
 import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.removeEffect
@@ -29,6 +32,7 @@ fun Entity.generateEffectFor(
     turns: Int,
 ): Effect = EffectImpl(
     name = effectData.name,
+    abbr = effectData.abbr,
     user = this,
     tier = tier,
     isDebuff = effectData.isDebuff,
@@ -42,6 +46,7 @@ fun Entity.generateEffectFor(
 
 internal class EffectImpl(
     override val name: String,
+    override val abbr: String,
     override val user: Entity,
     override val tier: Int,
     override val isDebuff: Boolean,
@@ -49,7 +54,7 @@ internal class EffectImpl(
     override val isRemovable: Boolean,
     override val isFreeze: Boolean,
     override val modifiers: List<EffectModifier>,
-    override var turnsLeft: Int,
+    turnsLeft: Int,
     override val extra: Extra?
 ) : Effect {
 
@@ -58,6 +63,7 @@ internal class EffectImpl(
      *  on the first turn.
      */
     private var _delayedStart = true
+    override var turnsLeft: Int by mutableIntStateOf(turnsLeft)
 
     override val values: MutableMap<String, Float> = HashMap()
     override var timesUsed: Int = 0
