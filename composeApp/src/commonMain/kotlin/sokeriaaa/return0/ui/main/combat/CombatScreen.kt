@@ -49,6 +49,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,8 +64,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -292,10 +295,15 @@ private fun EntityItem(
     isWaitingAction: Boolean,
 ) {
     val animatorManager: EntityAnimatorManager = koinInject()
+    val scope = rememberCoroutineScope()
+
+    var glowJob by remember { mutableStateOf<Job?>(null) }
     var glowColor by remember { mutableStateOf<Color?>(null) }
     val glowAlpha = remember { Animatable(0f) }
-    var shakeTrigger by remember { mutableStateOf(false) }
+
+    var shakeJob by remember { mutableStateOf<Job?>(null) }
     val shakeOffset = remember { Animatable(0f) }
+
     val floatingTexts = remember { mutableStateSetOf<EntityAnimator.FloatingText>() }
     // Collect animations.
     LaunchedEffect(Unit) {
@@ -305,17 +313,36 @@ private fun EntityItem(
                 animators?.forEach {
                     when (it) {
                         EntityAnimator.Shake -> {
-                            shakeTrigger = true
-                            delay(500)
-                            animatorManager.clearAnimator(entity.index, it)
-                            shakeTrigger = false
+                            shakeJob?.cancel()
+                            shakeJob = scope.launch {
+                                // Animate shake.
+                                repeat(3) {
+                                    shakeOffset.animateTo(4f, tween(30))
+                                    shakeOffset.animateTo(-4f, tween(30))
+                                }
+                                shakeOffset.animateTo(0f)
+                            }
+                            scope.launch {
+                                // Clear after finished.
+                                delay(500)
+                                animatorManager.clearAnimator(entity.index, it)
+                            }
                         }
 
                         is EntityAnimator.Glow -> {
-                            glowColor = it.color
-                            delay(500)
-                            animatorManager.clearAnimator(entity.index, it)
-                            glowColor = null
+                            glowJob?.cancel()
+                            glowJob = scope.launch {
+                                // Animate glow.
+                                glowColor = it.color
+                                glowAlpha.snapTo(0.1f)
+                                glowAlpha.animateTo(0f, tween(300))
+                            }
+                            scope.launch {
+                                // Clear after finished.
+                                delay(500)
+                                animatorManager.clearAnimator(entity.index, it)
+                                glowColor = null
+                            }
                         }
 
                         is EntityAnimator.FloatingText -> {
@@ -324,23 +351,6 @@ private fun EntityItem(
                     }
                 }
             }
-    }
-    // Animate shake.
-    LaunchedEffect(shakeTrigger) {
-        if (shakeTrigger) {
-            repeat(3) {
-                shakeOffset.animateTo(4f, tween(30))
-                shakeOffset.animateTo(-4f, tween(30))
-            }
-            shakeOffset.animateTo(0f)
-        }
-    }
-    // Animate glow.
-    LaunchedEffect(glowColor) {
-        if (glowColor != null) {
-            glowAlpha.snapTo(0.1f)
-            glowAlpha.animateTo(0f, tween(300))
-        }
     }
     Box(
         modifier = modifier,
@@ -446,7 +456,7 @@ private fun EntityItem(
                 // Individual parabolic animation
                 // Define a simple parabolic path
                 val x = text.xOffset * anim.value
-                val y = text.yOffset * (1 - (anim.value - 0.5f) * (anim.value - 0.5f))
+                val y = text.yOffset * (1 - (anim.value - 0.5f) * (anim.value - 0.5f)) + 15F
                 // Draw the floating text
                 Text(
                     modifier = Modifier

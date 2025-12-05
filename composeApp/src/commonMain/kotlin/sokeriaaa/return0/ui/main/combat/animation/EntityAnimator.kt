@@ -29,7 +29,7 @@ sealed class EntityAnimator {
         val text: String,
         val color: Color,
         val isCritical: Boolean = false,
-        val xOffset: Float = Random.nextFloat() * 100F - 50F,
-        val yOffset: Float = Random.nextFloat() * -20F - 40F,
+        val xOffset: Float = Random.nextFloat() * 80F - 40F,
+        val yOffset: Float = Random.nextFloat() * -40F - 40F,
     ) : EntityAnimator()
 }
