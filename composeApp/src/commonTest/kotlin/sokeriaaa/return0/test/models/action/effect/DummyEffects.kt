@@ -22,6 +22,7 @@ object DummyEffects {
 
     fun generateEffectData(
         name: String = "Dummy",
+        abbr: String = "DMY",
         isDebuff: Boolean = false,
         isStackable: Boolean = false,
         isRemovable: Boolean = true,
@@ -30,6 +31,7 @@ object DummyEffects {
         extra: Extra? = null,
     ): EffectData = EffectData(
         name = name,
+        abbr = abbr,
         isDebuff = isDebuff,
         isStackable = isStackable,
         isRemovable = isRemovable,

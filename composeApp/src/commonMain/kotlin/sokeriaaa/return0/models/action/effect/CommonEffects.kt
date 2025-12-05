@@ -29,6 +29,7 @@ object CommonEffects {
      */
     val defense = EffectData(
         name = Keys.DEFENSE,
+        abbr = "DEF",
         isDebuff = false,
         isRemovable = false,
         modifiers = listOf(
