@@ -1,5 +1,5 @@
 {
-  "desc.effect.asynced": "Concurrent execution increases SPD.",
+  "desc.effect.async": "Concurrent execution increases SPD.",
   "desc.effect.bug_infested": "Bug infested, drains HP after each action.",
   "desc.effect.cached": "Stores repeated data, boosting DEF.",
   "desc.effect.deadlocked": "Deadlocked, can not take actions.",
@@ -12,7 +12,7 @@
   "desc.skill.gc": "Lightly heals a single allies and remove all their debuff effects.",
   "desc.skill.getProperty": "Gets the property of a single entity, deals small damage and recovers yourself a percentage of the damage dealt.",
   "desc.skill.hashCode": "Calculate the hashCode() of the arena. Deals random damage.",
-  "desc.skill.next": "Seeks the next element. Greatly increases SPD until the next action.",
+  "desc.skill.next": "Seeks the next element. Bullseye; Greatly increases SPD until the next action.",
   "desc.skill.notify": "Notifies a single entity, deals small damage.",
   "desc.skill.remove": "Remove the element. Reduces the DEF of target for few turns.",
   "desc.skill.wait": "Wait for a turn, greatly increase ATK on the next action."
