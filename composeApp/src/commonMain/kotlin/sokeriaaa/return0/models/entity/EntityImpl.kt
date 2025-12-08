@@ -23,6 +23,7 @@ import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.CommonFunctions
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.action.function.generateFunctionFor
+import sokeriaaa.return0.models.entity.shield.Shield
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
@@ -108,6 +109,9 @@ internal class EntityImpl(
     override val effects: List<Effect> get() = _effects
     private val _effects: MutableList<Effect> = ArrayList()
 
+    override val shields: Map<String, Shield> get() = _shields
+    private val _shields: MutableMap<String, Shield> = HashMap()
+
     init {
         updateAPRecovery()
     }
@@ -132,6 +136,17 @@ internal class EntityImpl(
         if (effect.modifiers.isNotEmpty()) {
             recalculateStats(removed = effect)
         }
+    }
+
+    override fun attachShield(key: String, value: Int, turns: Int?) {
+        val currentShield = shields[key]
+        if (currentShield != null && currentShield.value < value) {
+            _shields[key] = Shield(value = value, turnsLeft = turns)
+        }
+    }
+
+    override fun removeShield(key: String) {
+        _shields.remove(key)
     }
 
     private fun updateAPRecovery() {

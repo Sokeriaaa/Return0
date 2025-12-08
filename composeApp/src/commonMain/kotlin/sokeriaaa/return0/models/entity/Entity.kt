@@ -16,6 +16,7 @@ package sokeriaaa.return0.models.entity
 
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.models.entity.shield.Shield
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 /**
@@ -194,6 +195,13 @@ interface Entity {
     val effects: List<Effect>
 
     /**
+     * Shields of current entity. Can nullify damage with in the shield value.
+     *
+     * A shield has the higher value and the same name will replace the older one.
+     */
+    val shields: Map<String, Shield>
+
+    /**
      * Tick current entity.
      */
     fun tick()
@@ -214,5 +222,15 @@ interface Entity {
      * An effect is removed from this entity.
      */
     fun removeEffect(effect: Effect)
+
+    /**
+     * Attach a new shield to this entity with a specified key.
+     */
+    fun attachShield(key: String, value: Int, turns: Int? = null)
+
+    /**
+     * Remove the shield of the specified key.
+     */
+    fun removeShield(key: String)
 
 }
