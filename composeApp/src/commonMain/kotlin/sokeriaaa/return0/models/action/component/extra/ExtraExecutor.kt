@@ -23,6 +23,7 @@ import sokeriaaa.return0.models.action.forUser
 import sokeriaaa.return0.models.action.instantAPChange
 import sokeriaaa.return0.models.action.instantHPChange
 import sokeriaaa.return0.models.action.instantSPChange
+import sokeriaaa.return0.models.action.noEffect
 import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.removeShield
 import sokeriaaa.return0.models.action.swappedEntities
@@ -117,6 +118,10 @@ fun Extra.executedIn(context: ActionExtraContext) {
             context.target.shields.keys.toList().forEach {
                 context.removeShield(it)
             }
+        }
+
+        CombatExtra.NoEffect -> {
+            context.noEffect()
         }
         // end - CombatExtra
     }
