@@ -168,7 +168,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
  * @param hpChange HP change.
  * @param ignoresShield This HP change will ignore the shields when applying.
  */
-fun ActionExtraContext.instantHPChange(hpChange: Int, ignoresShield: Boolean) {
+fun ActionExtraContext.instantHPChange(hpChange: Int, ignoresShield: Boolean = false) {
     if (hpChange > 0) {
         // Heal
         val result = ActionResult.Heal(
