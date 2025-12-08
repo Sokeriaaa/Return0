@@ -37,6 +37,7 @@ import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
+import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
@@ -48,8 +49,8 @@ import kotlin.test.Test
 class CommonValueExecutorTest {
 
     private fun createTestingContext(
-        user: Entity = DummyEntities.generateEntity(index = 0, name = "foo"),
-        target: Entity = DummyEntities.generateEntity(index = 1, name = "bar"),
+        user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseATK = 123),
+        target: Entity = DummyEntities.generateEntity(index = 1, name = "bar", baseATK = 456),
         action: (user: Entity) -> Action = {
             it.generateFunctionFor(DummyFunction.generateFunctionData())!!
         },
@@ -217,5 +218,23 @@ class CommonValueExecutorTest {
         context.fromAction.values["test"] = 42F
         val loadValue = CommonValue.LoadValue("test")
         assertFloatEquals(42F, loadValue.calculatedIn(context))
+    }
+
+    @Test
+    fun `Common_ForUser calculates correctly`() {
+        val context = createTestingContext()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CommonValue.ForUser(EntityValue.BaseATK).calculatedIn(context)
+        )
+    }
+
+    @Test
+    fun `Common_Swapped calculates correctly`() {
+        val context = createTestingContext()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CommonValue.Swapped(EntityValue.BaseATK).calculatedIn(context)
+        )
     }
 }

@@ -17,7 +17,9 @@ package sokeriaaa.return0.models.action.component.value
 import sokeriaaa.return0.models.action.ActionContext
 import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.effect.Effect
+import sokeriaaa.return0.models.action.forUser
 import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.models.action.swappedEntities
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
@@ -74,6 +76,9 @@ fun Value.calculatedIn(context: ActionContext): Float {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0F
         }
+
+        is CommonValue.ForUser -> context.forUser { ctx -> value.calculatedIn(ctx) }
+        is CommonValue.Swapped -> context.swappedEntities { ctx -> value.calculatedIn(ctx) }
 
         is CommonValue.LoadValue -> context.fromAction.values[key]
             ?: defaultValue?.calculatedIn(context) ?: 0F
