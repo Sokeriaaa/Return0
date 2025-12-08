@@ -128,13 +128,14 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         // Calculate Shields
         var damageToTake = finalDamage
         if (fromAction.attackModifier?.ignoresShields?.calculatedIn(this) != true) {
+            // Use the shields that have the shorter remaining time first.
             for (shield in target.shields.values.sortedBy { it.turnsLeft ?: Int.MAX_VALUE }) {
                 if (damageToTake >= shield.value) {
                     damageToTake -= shield.value
                     shield.value = 0
                 } else {
-                    damageToTake = 0
                     shield.value -= damageToTake
+                    damageToTake = 0
                     break
                 }
             }
@@ -152,7 +153,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         )
         saveResult(result)
         // Execute
-        target.changeHP(-finalDamage)
+        target.changeHP(-damageToTake)
         // Execute extras with the damage result.
         withDamageResult(result) {
             fromAction.extra?.executedIn(this)
@@ -184,13 +185,14 @@ fun ActionExtraContext.instantHPChange(hpChange: Int, ignoresShield: Boolean = f
         // Calculate Shields
         var damageToTake = finalDamage
         if (!ignoresShield) {
+            // Use the shields that have the shorter remaining time first.
             for (shield in target.shields.values.sortedBy { it.turnsLeft ?: Int.MAX_VALUE }) {
                 if (damageToTake >= shield.value) {
                     damageToTake -= shield.value
                     shield.value = 0
                 } else {
-                    damageToTake = 0
                     shield.value -= damageToTake
+                    damageToTake = 0
                     break
                 }
             }
@@ -208,7 +210,7 @@ fun ActionExtraContext.instantHPChange(hpChange: Int, ignoresShield: Boolean = f
             isCritical = false,
         )
         saveResult(result)
-        target.changeHP(hpChange)
+        target.changeHP(-damageToTake)
     }
 }
 
