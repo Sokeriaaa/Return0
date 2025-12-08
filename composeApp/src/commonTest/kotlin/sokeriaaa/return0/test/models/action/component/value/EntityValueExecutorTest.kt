@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.test.models.action.component.value
 
+import sokeriaaa.return0.models.action.attachShield
 import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.effect.generateEffectFor
@@ -244,5 +245,16 @@ class EntityValueExecutorTest {
         assertFloatEquals(1F, EntityValue.TurnsLeftOf("foo").calculatedIn(context))
         assertFloatEquals(2F, EntityValue.TurnsLeftOf("bar").calculatedIn(context))
         assertFloatEquals(3F, EntityValue.TurnsLeftOfAllEffects.calculatedIn(context))
+    }
+
+    @Test
+    fun `Entity_ShieldValue calculates correctly`() {
+        val context = createTestingContextWithRandomTarget()
+        context.attachShield("foo", 111)
+        context.attachShield("bar", 222)
+        assertFloatEquals(111F, EntityValue.ShieldValueOf("foo").calculatedIn(context))
+        assertFloatEquals(222F, EntityValue.ShieldValueOf("bar").calculatedIn(context))
+        assertFloatEquals(333F, EntityValue.SumOfShieldValue.calculatedIn(context))
+
     }
 }

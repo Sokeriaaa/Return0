@@ -107,6 +107,22 @@ class EntityConditionExecutorTest {
     }
 
     @Test
+    fun `Entity_Shields calculated correctly`() {
+        val context = createTestingContext()
+
+        // No shields
+        assertFalse(EntityCondition.Shields.Has("shield").calculatedIn(context))
+        assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
+        assertFalse(EntityCondition.Shields.HasAny.calculatedIn(context))
+
+        // Shield attached
+        context.target.attachShield("shield", 123)
+        assertTrue(EntityCondition.Shields.Has("shield").calculatedIn(context))
+        assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
+        assertTrue(EntityCondition.Shields.HasAny.calculatedIn(context))
+    }
+
+    @Test
     fun `Entity_Status_HP calculated correctly`() {
         val context = createTestingContext()
         context.target.hp = 42

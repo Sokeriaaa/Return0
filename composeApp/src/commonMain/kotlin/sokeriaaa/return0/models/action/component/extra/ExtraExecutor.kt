@@ -114,7 +114,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         }
 
         CombatExtra.RemoveAllShields -> {
-            context.target.shields.keys.forEach {
+            context.target.shields.keys.toList().forEach {
                 context.removeShield(it)
             }
         }

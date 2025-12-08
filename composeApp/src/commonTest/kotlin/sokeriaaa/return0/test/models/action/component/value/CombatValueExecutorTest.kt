@@ -35,17 +35,13 @@ class CombatValueExecutorTest {
         val user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseHP = 99999)
         val target: Entity = DummyEntities.generateEntity(index = 1, name = "bar", baseHP = 99999)
 
-        // Generate mock HP and Damage
-        val hp = Random.nextInt(10, 500)
-        val damage = Random.nextInt(20, 1000)
-        target.hp = (hp - damage).coerceAtLeast(0)
-
+        // Generate random damage result.
         val damageResult = ActionResult.Damage(
             fromIndex = user.index,
             toIndex = target.index,
-            finalDamage = damage,
-            shieldedDamage = 0,
-            damageCoerced = damage.coerceAtMost(hp),
+            finalDamage = Random.nextInt(20, 1000),
+            shieldedDamage = Random.nextInt(20, 1000),
+            damageCoerced = Random.nextInt(20, 1000),
             effectiveness = 0,
             isCritical = false,
         )
@@ -68,6 +64,10 @@ class CombatValueExecutorTest {
         assertFloatEquals(
             expected = context.attackDamageResult?.damageCoerced?.toFloat() ?: 0F,
             actual = CombatValue.DamageCoerced.calculatedIn(context),
+        )
+        assertFloatEquals(
+            expected = context.attackDamageResult?.shieldedDamage?.toFloat() ?: 0F,
+            actual = CombatValue.ShieldedDamage.calculatedIn(context),
         )
     }
 }

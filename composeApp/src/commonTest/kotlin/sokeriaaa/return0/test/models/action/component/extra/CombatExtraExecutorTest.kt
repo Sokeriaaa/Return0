@@ -23,6 +23,7 @@ import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.value.Value
+import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
@@ -32,6 +33,7 @@ import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class CombatExtraExecutorTest : KoinComponent {
 
@@ -76,6 +78,25 @@ class CombatExtraExecutorTest : KoinComponent {
         assertEquals(0, context.target.hp)
         CombatExtra.HPChange(Value(Int.MAX_VALUE)).executedIn(context)
         assertEquals(context.target.maxhp, context.target.hp)
+    }
+
+    @Test
+    fun `Combat_HPChange integrates with shields correctly`() {
+        val context = createTestingContext()
+        context.target.hp = 1000
+        // Shield 150
+        context.target.attachShield("shield", 150)
+        // Damage 100
+        CombatExtra.HPChange(Value(-100)).executedIn(context)
+        assertEquals(1000, context.target.hp)
+        assertEquals(50, context.target.shields["shield"]?.value)
+        // Damage 100 that ignores shields
+        CombatExtra.HPChange(
+            hpChange = Value(-100),
+            ignoresShield = CommonCondition.True,
+        ).executedIn(context)
+        assertEquals(900, context.target.hp)
+        assertEquals(50, context.target.shields["shield"]?.value)
     }
 
     @Test
@@ -193,5 +214,30 @@ class CombatExtraExecutorTest : KoinComponent {
             // Clean up repo.
             archiveRepo.reset()
         }
+    }
+
+    @Test
+    fun `Combat_Shields executes correctly`() {
+        val context = createTestingContext()
+
+        // Attach shields
+        CombatExtra.AttachShield(key = "foo", value = Value(111)).executedIn(context)
+        CombatExtra.AttachShield(key = "bar", value = Value(222)).executedIn(context)
+        CombatExtra.AttachShield(key = "baz", value = Value(333)).executedIn(context)
+        assertEquals(111, context.target.shields["foo"]?.value)
+        assertEquals(222, context.target.shields["bar"]?.value)
+        assertEquals(333, context.target.shields["baz"]?.value)
+
+        // Remove one shield
+        CombatExtra.RemoveShield("bar").executedIn(context)
+        assertEquals(111, context.target.shields["foo"]?.value)
+        assertFalse(context.target.shields.containsKey("bar"))
+        assertEquals(333, context.target.shields["baz"]?.value)
+
+        // Remove all shields
+        CombatExtra.RemoveAllShields.executedIn(context)
+        assertFalse(context.target.shields.containsKey("foo"))
+        assertFalse(context.target.shields.containsKey("bar"))
+        assertFalse(context.target.shields.containsKey("baz"))
     }
 }
