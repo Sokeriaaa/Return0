@@ -61,7 +61,10 @@ fun Extra.executedIn(context: ActionExtraContext) {
         // end - CommonExtra
         // start - CombatExtra
         is CombatExtra.HPChange -> {
-            context.instantHPChange(hpChange.calculatedIn(context).toInt(), ignoresShield)
+            context.instantHPChange(
+                hpChange = hpChange.calculatedIn(context).toInt(),
+                ignoresShield = ignoresShield?.calculatedIn(context) == true,
+            )
         }
 
         is CombatExtra.SPChange -> {
