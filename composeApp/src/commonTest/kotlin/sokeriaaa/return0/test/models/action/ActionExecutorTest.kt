@@ -25,6 +25,8 @@ import sokeriaaa.return0.models.action.instantSPChange
 import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.singleExecute
 import sokeriaaa.return0.models.combat.CombatCalculator
+import sokeriaaa.return0.shared.data.models.action.function.FunctionData
+import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
@@ -106,6 +108,145 @@ class ActionExecutorTest {
     }
 
     @Test
+    fun `shields nullified full attacking damage correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = 100,
+                baseHP = 99999,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = 50,
+                baseHP = 99999,
+            )
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = 20,
+                powerBonus = 0,
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            // Calculate expected damage
+            val exceptedDamage = CombatCalculator.baseDamage(
+                power = 20,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ).toInt()
+            // Init HP
+            entity2.hp = exceptedDamage + 50
+            // Attach shield
+            entity2.attachShield("dummy", exceptedDamage + 50)
+            // Execute
+            // No missed, non-critical
+            val random = FakeRandom(1, 1)
+            damaging.createExtraContextFor(entity2).singleExecute(random)
+
+            // Assert...
+            assertEquals(exceptedDamage + 50, entity2.hp)
+            assertEquals(50, entity2.shields["dummy"]?.value)
+        }
+    }
+
+    @Test
+    fun `shields nullified part of attacking damage correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = 100,
+                baseHP = 99999,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = 50,
+                baseHP = 99999,
+            )
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = 20,
+                powerBonus = 0,
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            // Calculate expected damage
+            val exceptedDamage = CombatCalculator.baseDamage(
+                power = 20,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ).toInt()
+            // Init HP
+            entity2.hp = exceptedDamage + 50
+            // Attach shield that can shield only 1 damage.
+            entity2.attachShield("dummy", 1)
+            // Execute
+            // No missed, non-critical
+            val random = FakeRandom(1, 1)
+            damaging.createExtraContextFor(entity2).singleExecute(random)
+
+            // Assert...
+            assertEquals(51, entity2.hp)
+            assertFalse(entity2.shields.containsKey("dummy"))
+        }
+    }
+
+    @Test
+    fun `shields is ignored by functions correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = 100,
+                baseHP = 99999,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = 50,
+                baseHP = 99999,
+            )
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = 20,
+                powerBonus = 0,
+                attackModifier = FunctionData.AttackModifier(
+                    // This function will ignore the shields and directly damage the entity.
+                    ignoresShields = CommonCondition.True,
+                )
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            // Calculate expected damage
+            val exceptedDamage = CombatCalculator.baseDamage(
+                power = 20,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ).toInt()
+            // Init HP
+            entity2.hp = exceptedDamage + 50
+            // Attach shield
+            entity2.attachShield("dummy", 999999)
+            // Execute
+            // No missed, non-critical
+            val random = FakeRandom(1, 1)
+            damaging.createExtraContextFor(entity2).singleExecute(random)
+
+            // Assert...
+            assertEquals(50, entity2.hp)
+            assertEquals(999999, entity2.shields["dummy"]?.value)
+        }
+    }
+
+    @Test
     fun `heal calculated correctly`() {
         TestKoinModules.withModules {
             repeat(10) {
@@ -160,6 +301,70 @@ class ActionExecutorTest {
                 skill.createExtraContextFor(entity2).instantHPChange(hpChange)
                 assertEquals((500 + hpChange).coerceIn(0, entity2.maxhp), entity2.hp)
             }
+        }
+    }
+
+    @Test
+    fun `instant HP change fully blocked by shields correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            entity1.hp = 500
+            entity2.hp = 500
+            entity2.attachShield("dummy", 300)
+            val hpChange = -100
+            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+            assertEquals(500, entity2.hp)
+            assertEquals(200, entity2.shields["dummy"]?.value)
+        }
+    }
+
+    @Test
+    fun `instant HP change partially blocked by shields correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            entity1.hp = 500
+            entity2.hp = 500
+            entity2.attachShield("dummy", 300)
+            val hpChange = -400
+            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+            assertEquals(400, entity2.hp)
+            assertFalse(entity2.shields.containsKey("dummy"))
+        }
+    }
+
+    @Test
+    fun `instant HP change ignores shields correctly`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            entity1.hp = 500
+            entity2.hp = 500
+            entity2.attachShield("dummy", 999999)
+            val hpChange = -300
+            skill.createExtraContextFor(entity2).instantHPChange(hpChange, ignoresShield = true)
+            assertEquals(200, entity2.hp)
+            assertEquals(999999, entity2.shields["dummy"]?.value)
+        }
+    }
+
+    @Test
+    fun `instant healing is not affected by shields`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            entity1.hp = 500
+            entity2.hp = 500
+            entity2.attachShield("dummy", 999999)
+            val hpChange = 300
+            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+            assertEquals(800, entity2.hp)
+            assertEquals(999999, entity2.shields["dummy"]?.value)
         }
     }
 
