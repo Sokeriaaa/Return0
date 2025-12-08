@@ -1,6 +1,6 @@
 {
   "desc.effect.async": "Concurrent execution increases SPD.",
-  "desc.effect.bug_infested": "Bug infested, drains HP after each action.",
+  "desc.effect.bug_infested": "Bug infested, drains HP after each action. Ignores shields.",
   "desc.effect.cached": "Stores repeated data, boosting DEF.",
   "desc.effect.deadlocked": "Deadlocked, can not take actions.",
   "desc.effect.io_failure": "IO Failures reduces SPD.",
@@ -8,6 +8,7 @@
   "desc.effect.optimize": "Code optimization increases ATK.",
   "desc.effect.overflowed": "Memory overflow reduces DEF.",
   "desc.effect.refactoring": "Refactoring the class, restores HP after each turn.",
+  "desc.skill.arraycopy": "Perform an array copy. Lightly consumes your HP, then creates a shield lasts for 3 turns based on your MAXHP for a teammate. Has no effect when your HP is insufficient for consuming.",
   "desc.skill.forEach": "Iterates a single entity multiple times, deals small damage.",
   "desc.skill.gc": "Lightly heals a single allies and remove all their debuff effects.",
   "desc.skill.getProperty": "Gets the property of a single entity, deals small damage and recovers yourself a percentage of the damage dealt.",
