@@ -254,4 +254,29 @@ class EntityTest {
             actual = higherTierStatus[9],
         )
     }
+
+    @Test
+    fun `shield attached and removed`() {
+        val dummyEntity = DummyEntities.generateEntity()
+        // Attach
+        dummyEntity.attachShield("dummy", 5000)
+        assertEquals(5000, dummyEntity.shields["dummy"]?.value)
+        // Remove
+        dummyEntity.removeShield("dummy")
+        assertFalse(dummyEntity.shields.containsKey("dummy"))
+    }
+
+    @Test
+    fun `invalid shields cleaned up correctly`() {
+        val dummyEntity = DummyEntities.generateEntity()
+        dummyEntity.attachShield("foo", 5000)
+        dummyEntity.attachShield("bar", 0, turns = 999)
+        dummyEntity.attachShield("baz", 8888, turns = 0)
+        assertTrue(dummyEntity.shields.containsKey("foo"))
+        // Clean up
+        dummyEntity.cleanUpShields()
+        assertTrue(dummyEntity.shields.containsKey("foo"))
+        assertFalse(dummyEntity.shields.containsKey("bar"))
+        assertFalse(dummyEntity.shields.containsKey("baz"))
+    }
 }
