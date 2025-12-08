@@ -419,6 +419,10 @@ private fun EntityItem(
                     targetValue = entity.hp,
                     label = "EntityItemHP",
                 )
+                val animatedShield by animateIntAsState(
+                    targetValue = entity.shieldValue,
+                    label = "EntityItemShield",
+                )
                 val animatedSP by animateIntAsState(
                     targetValue = entity.sp,
                     label = "EntityItemHP",
@@ -465,6 +469,7 @@ private fun EntityItem(
                     modifier = Modifier.fillMaxWidth(),
                     label = "HP",
                     current = animatedHP,
+                    secondary = animatedShield,
                     max = entity.maxhp,
                 )
                 EntityHPBar(

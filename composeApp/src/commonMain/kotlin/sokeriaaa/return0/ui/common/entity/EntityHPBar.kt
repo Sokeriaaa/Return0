@@ -16,6 +16,7 @@ package sokeriaaa.return0.ui.common.entity
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
@@ -23,14 +24,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 
 /**
  * HP bar display for entities. Can also be used in SP, AP, etc.
  *
  * @param label The label of current bar. Displays on the start.
  * @param current Current value.
+ * @param secondary A secondary value. For example, the shield.
  * @param max Maximum value.
  * @param valueStyle the displaying style of value.
  */
@@ -39,6 +43,7 @@ fun EntityHPBar(
     modifier: Modifier = Modifier,
     label: String,
     current: Int,
+    secondary: Int? = null,
     max: Int,
     valueStyle: EntityHPBar.ValueStyle = EntityHPBar.ValueStyle.CURRENT,
     color: Color = ProgressIndicatorDefaults.linearColor,
@@ -47,6 +52,7 @@ fun EntityHPBar(
     // Avoid divide by 0.
     val progress = (current * 1F / max.coerceAtLeast(1))
     Box(modifier = modifier) {
+        // Primary
         LinearProgressIndicator(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,6 +60,19 @@ fun EntityHPBar(
             progress = { progress },
             color = color,
         )
+        // Secondary
+        secondary?.let { secondary ->
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 3.dp)
+                    .alpha(0.5F),
+                progress = { secondary * 1F / max.coerceAtLeast(1) },
+                color = color,
+                trackColor = Color.Transparent,
+            )
+        }
         // Label
         Text(
             modifier = Modifier.align(Alignment.CenterStart),

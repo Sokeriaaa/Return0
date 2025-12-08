@@ -92,6 +92,7 @@ internal class EntityImpl(
         private set
     override var hideRate: Float = AppConstants.BASE_HIDE_RATE
         private set
+    override var shieldValue: Int by mutableIntStateOf(0)
 
     private var _apRecovery: Float = 0F
 
@@ -143,10 +144,12 @@ internal class EntityImpl(
         if (currentShield == null || currentShield.value >= value) {
             _shields[key] = Shield(value = value, turnsLeft = turns)
         }
+        updateShieldValue()
     }
 
     override fun removeShield(key: String) {
         _shields.remove(key)
+        updateShieldValue()
     }
 
     override fun cleanUpShields() {
@@ -157,6 +160,11 @@ internal class EntityImpl(
             .forEach {
                 _shields.remove(it)
             }
+        updateShieldValue()
+    }
+
+    private fun updateShieldValue() {
+        shieldValue = shields.values.sumOf { it.value }
     }
 
     private fun updateAPRecovery() {

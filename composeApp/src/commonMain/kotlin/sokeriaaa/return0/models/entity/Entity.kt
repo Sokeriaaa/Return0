@@ -170,6 +170,11 @@ interface Entity {
     val hideRate: Float
 
     /**
+     * The sum value of shields.
+     */
+    val shieldValue: Int
+
+    /**
      * The common attack action.
      */
     val attackAction: Skill
