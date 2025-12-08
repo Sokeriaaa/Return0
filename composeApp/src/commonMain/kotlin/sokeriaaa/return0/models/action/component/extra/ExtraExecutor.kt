@@ -15,6 +15,7 @@
 package sokeriaaa.return0.models.action.component.extra
 
 import sokeriaaa.return0.models.action.attachEffect
+import sokeriaaa.return0.models.action.attachShield
 import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.effect.generateEffectFor
@@ -23,6 +24,7 @@ import sokeriaaa.return0.models.action.instantAPChange
 import sokeriaaa.return0.models.action.instantHPChange
 import sokeriaaa.return0.models.action.instantSPChange
 import sokeriaaa.return0.models.action.removeEffect
+import sokeriaaa.return0.models.action.removeShield
 import sokeriaaa.return0.models.action.swappedEntities
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
@@ -59,7 +61,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         // end - CommonExtra
         // start - CombatExtra
         is CombatExtra.HPChange -> {
-            context.instantHPChange(hpChange.calculatedIn(context).toInt())
+            context.instantHPChange(hpChange.calculatedIn(context).toInt(), ignoresShield)
         }
 
         is CombatExtra.SPChange -> {
@@ -94,6 +96,24 @@ fun Extra.executedIn(context: ActionExtraContext) {
                 .filter { if (it.isDebuff) debuff else buff }
                 .forEach(context::removeEffect)
 
+        }
+
+        is CombatExtra.AttachShield -> {
+            context.attachShield(
+                key = key,
+                value = value.calculatedIn(context).toInt(),
+                turns = turns?.calculatedIn(context)?.toInt(),
+            )
+        }
+
+        is CombatExtra.RemoveShield -> {
+            context.removeShield(key)
+        }
+
+        CombatExtra.RemoveAllShields -> {
+            context.target.shields.keys.forEach {
+                context.removeShield(it)
+            }
         }
         // end - CombatExtra
     }

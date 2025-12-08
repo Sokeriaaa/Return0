@@ -80,6 +80,14 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
             context.target.effects.any()
         }
 
+        is EntityCondition.Shields.Has -> {
+            context.target.shields.containsKey(key)
+        }
+
+        is EntityCondition.Shields.HasAny -> {
+            context.target.shields.isNotEmpty()
+        }
+
         is EntityCondition.Status.HPLessThan -> {
             val rateValue = rate.calculatedIn(context)
             if (isIncludeEquals) {

@@ -97,6 +97,7 @@ fun Value.calculatedIn(context: ActionContext): Float {
         // start - CombatValue
         CombatValue.Damage -> context.attackDamageResult?.finalDamage?.toFloat() ?: 0F
         CombatValue.DamageCoerced -> context.attackDamageResult?.damageCoerced?.toFloat() ?: 0F
+        CombatValue.ShieldedDamage -> context.attackDamageResult?.shieldedDamage?.toFloat() ?: 0F
         // end - CombatValue
         // start - EntityValue
         EntityValue.ATK -> context.target.atk.toFloat()
@@ -129,6 +130,9 @@ fun Value.calculatedIn(context: ActionContext): Float {
         EntityValue.TurnsLeftOfAllEffects -> context.target.effects
             .sumOf { it.turnsLeft }
             .toFloat()
+
+        is EntityValue.ShieldValueOf -> context.target.shields[key]?.value?.toFloat() ?: 0F
+        EntityValue.SumOfShieldValue -> context.target.shields.values.sumOf { it.value }.toFloat()
         // end - EntityValue
     }
 }

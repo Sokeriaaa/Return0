@@ -15,6 +15,7 @@
 package sokeriaaa.return0.models.action
 
 import androidx.compose.ui.util.fastCoerceIn
+import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.component.value.calculatedIn
@@ -124,10 +125,27 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
             damage *= 1 + criticalDMG
         }
         val finalDamage = damage.toInt()
+        // Calculate Shields
+        var damageToTake = finalDamage
+        if (fromAction.attackModifier?.ignoresShields?.calculatedIn(this) != true) {
+            for (shield in target.shields.values.sortedBy { it.turnsLeft ?: Int.MAX_VALUE }) {
+                if (damageToTake >= shield.value) {
+                    damageToTake -= shield.value
+                    shield.value = 0
+                } else {
+                    damageToTake = 0
+                    shield.value -= damageToTake
+                    break
+                }
+            }
+            // Clear invalid shields
+            target.cleanUpShields()
+        }
         val result = ActionResult.Damage(
             fromIndex = user.index,
             toIndex = target.index,
             finalDamage = finalDamage,
+            shieldedDamage = finalDamage - damageToTake,
             damageCoerced = finalDamage.coerceAtMost(target.hp),
             effectiveness = 0, // TODO Category rate implement.
             isCritical = isCritical,
@@ -148,8 +166,9 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
  * Can be used in both functions and effects.
  *
  * @param hpChange HP change.
+ * @param ignoresShield This HP change will ignore the shields when applying.
  */
-fun ActionExtraContext.instantHPChange(hpChange: Int) {
+fun ActionExtraContext.instantHPChange(hpChange: Int, ignoresShield: Boolean) {
     if (hpChange > 0) {
         // Heal
         val result = ActionResult.Heal(
@@ -161,12 +180,30 @@ fun ActionExtraContext.instantHPChange(hpChange: Int) {
         saveResult(result)
         target.changeHP(hpChange)
     } else if (hpChange < 0) {
+        val finalDamage = -hpChange
+        // Calculate Shields
+        var damageToTake = finalDamage
+        if (!ignoresShield) {
+            for (shield in target.shields.values.sortedBy { it.turnsLeft ?: Int.MAX_VALUE }) {
+                if (damageToTake >= shield.value) {
+                    damageToTake -= shield.value
+                    shield.value = 0
+                } else {
+                    damageToTake = 0
+                    shield.value -= damageToTake
+                    break
+                }
+            }
+            // Clear invalid shields
+            target.cleanUpShields()
+        }
         // Damage
         val result = ActionResult.Damage(
             fromIndex = user.index,
             toIndex = target.index,
-            finalDamage = -hpChange,
-            damageCoerced = (-hpChange).coerceAtMost(target.hp),
+            finalDamage = finalDamage,
+            shieldedDamage = finalDamage - damageToTake,
+            damageCoerced = finalDamage.coerceAtMost(target.hp),
             effectiveness = 0,
             isCritical = false,
         )
@@ -290,6 +327,34 @@ fun ActionExtraContext.removeEffect(effect: Effect) {
     )
     // Execute
     target.removeEffect(effect)
+}
+
+fun ActionExtraContext.attachShield(key: String, value: Int, turns: Int? = null) {
+    // Save result
+    saveResult(
+        ActionResult.AttachShield(
+            fromIndex = user.index,
+            toIndex = target.index,
+            key = key,
+            value = value,
+            turns = turns,
+        )
+    )
+    // Execute
+    target.attachShield(key, value, turns)
+}
+
+fun ActionExtraContext.removeShield(key: String) {
+    // Save result
+    saveResult(
+        ActionResult.RemoveShield(
+            fromIndex = user.index,
+            toIndex = target.index,
+            key = key,
+        )
+    )
+    // Execute
+    target.removeShield(key)
 }
 
 /**

@@ -219,6 +219,13 @@ class Arena(
                         return true
                     }
                 }
+                // 3.7 Tick shields.
+                entity.shields.values.forEach {
+                    if (it.turnsLeft != null) {
+                        it.turnsLeft = it.turnsLeft!! - 1
+                    }
+                }
+                entity.cleanUpShields()
             }
         return false
     }

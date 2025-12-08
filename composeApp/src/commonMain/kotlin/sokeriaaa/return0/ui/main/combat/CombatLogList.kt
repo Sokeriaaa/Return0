@@ -291,6 +291,9 @@ private fun LogContext.ComposeActionResult(
             )
         }
 
+        is ActionResult.AttachShield -> {}
+        is ActionResult.RemoveShield -> {}
+
         is ActionResult.Missed -> {
             GameLog(
                 stringResource(

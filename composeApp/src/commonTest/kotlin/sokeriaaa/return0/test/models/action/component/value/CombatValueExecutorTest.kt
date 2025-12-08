@@ -44,6 +44,7 @@ class CombatValueExecutorTest {
             fromIndex = user.index,
             toIndex = target.index,
             finalDamage = damage,
+            shieldedDamage = 0,
             damageCoerced = damage.coerceAtMost(hp),
             effectiveness = 0,
             isCritical = false,

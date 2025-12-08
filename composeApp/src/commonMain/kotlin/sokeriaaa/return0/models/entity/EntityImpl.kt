@@ -149,6 +149,16 @@ internal class EntityImpl(
         _shields.remove(key)
     }
 
+    override fun cleanUpShields() {
+        _shields.asSequence()
+            .filter { it.value.value <= 0 || (it.value.turnsLeft ?: Int.MAX_VALUE) <= 0 }
+            .map { it.key }
+            .toList()
+            .forEach {
+                _shields.remove(it)
+            }
+    }
+
     private fun updateAPRecovery() {
         _apRecovery = (1F + 10F * spd / (1000F + spd)) / 3F
     }

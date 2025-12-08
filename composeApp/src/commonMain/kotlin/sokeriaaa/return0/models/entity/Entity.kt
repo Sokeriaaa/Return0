@@ -233,4 +233,9 @@ interface Entity {
      */
     fun removeShield(key: String)
 
+    /**
+     * Clean up invalid shields whose value or turns left is 0.
+     */
+    fun cleanUpShields()
+
 }
