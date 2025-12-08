@@ -140,7 +140,7 @@ internal class EntityImpl(
 
     override fun attachShield(key: String, value: Int, turns: Int?) {
         val currentShield = shields[key]
-        if (currentShield != null && currentShield.value < value) {
+        if (currentShield == null || currentShield.value >= value) {
             _shields[key] = Shield(value = value, turnsLeft = turns)
         }
     }
