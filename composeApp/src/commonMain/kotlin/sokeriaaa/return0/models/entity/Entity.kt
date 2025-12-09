@@ -18,6 +18,7 @@ import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.shield.Shield
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
 /**
  * Super class of all entities.
@@ -48,6 +49,11 @@ interface Entity {
      * The level of entity.
      */
     val level: Int
+
+    /**
+     * The entity path.
+     */
+    val path: EntityPath
 
     /**
      * Primary category of entity.

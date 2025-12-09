@@ -21,6 +21,7 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityData.GeneralAttackModifier
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
 /**
  * Dummy entities for testing.
@@ -32,6 +33,7 @@ object DummyEntities {
      */
     fun generateEntityData(
         name: String = "Dummy",
+        path: EntityPath = EntityPath.UNSPECIFIED,
         category: Category = Category.CLASS,
         category2: Category? = null,
         baseATK: Int = 50,
@@ -44,6 +46,7 @@ object DummyEntities {
         attackModifier: GeneralAttackModifier? = null
     ): EntityData = EntityData(
         name = name,
+        path = path,
         category = category,
         category2 = category2,
         baseATK = baseATK,

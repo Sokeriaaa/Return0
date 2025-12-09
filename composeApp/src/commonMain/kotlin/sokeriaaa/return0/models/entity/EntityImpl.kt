@@ -29,6 +29,7 @@ import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
 fun EntityData.generate(
     index: Int,
@@ -40,6 +41,7 @@ fun EntityData.generate(
     isParty = isParty,
     name = this.name,
     level = level,
+    path = path,
     category = this.category,
     category2 = this.category2,
     baseATK = (this.baseATK * (1 + growth.atkGrowth * level)).toInt(),
@@ -57,6 +59,7 @@ internal class EntityImpl(
     override val isParty: Boolean,
     override val name: String,
     override val level: Int,
+    override val path: EntityPath,
     override val category: Category,
     override val category2: Category?,
     override val baseATK: Int,
