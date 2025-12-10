@@ -31,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import sokeriaaa.return0.ui.main.MainScreen
 import sokeriaaa.return0.ui.main.combat.CombatScreen
+import sokeriaaa.return0.ui.main.emulator.EmulatorPresetScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
 import sokeriaaa.return0.ui.main.profile.ProfileScreen
 
@@ -65,6 +66,12 @@ fun AppNavHost(
         }
         myComposable(Scene.Emulator) {
             EmulatorScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.EmulatorPreset) {
+            EmulatorPresetScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
@@ -109,4 +116,5 @@ sealed class Scene(val route: String) {
     data object Combat : Scene(route = "r0_combat")
     data object Profile : Scene(route = "r0_profile")
     data object Emulator : Scene(route = "r0_emulator")
+    data object EmulatorPreset : Scene(route = "r0_emulator_preset")
 }

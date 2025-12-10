@@ -5,6 +5,8 @@
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
 
+    <string name="more_operations">更多操作…</string>
+
     <string name="general_level">等级</string>
     <string name="general_level_w_value">%1$s级</string>
     <string name="general_please_select">请选择…</string>
@@ -16,11 +18,21 @@
     <string name="emulator_enemy_w_count">敌方 (%1$s)</string>
     <string name="emulator_combat">开始战斗</string>
 
+    <string name="emulator_action_presets">预设组</string>
+    <string name="emulator_action_save_presets">保存预设</string>
+
     <string name="emulator_picker_add">添加对象</string>
     <string name="emulator_picker_edit">修改对象</string>
     <string name="emulator_picker_remove">删除对象</string>
     <string name="emulator_picker_remove_warn">删除%1$s吗？</string>
     <string name="emulator_picker_entity">对象</string>
+
+    <string name="emulator_preset">模拟器预设组</string>
+    <string name="emulator_preset_use">使用</string>
+    <string name="emulator_preset_rename">重命名</string>
+    <string name="emulator_preset_delete">删除</string>
+    <string name="emulator_preset_delete_warn">是否确认删除%1$s？此操作无法恢复。</string>
+    <string name="emulator_preset_save_success">已保存预设组。</string>
 
     <string name="emulator_warning_entity_not_enough">请为我方和敌方各选择至少一个对象。</string>
     <string name="emulator_picker_warning_select_entity">请选择对象。</string>

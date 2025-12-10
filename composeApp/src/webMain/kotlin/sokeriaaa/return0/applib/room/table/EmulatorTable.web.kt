@@ -14,12 +14,12 @@
  */
 package sokeriaaa.return0.applib.room.table
 
-actual data class EmulatorEntryTable(
-    actual var id: Int? = null,
+actual data class EmulatorEntryTable actual constructor(
+    actual var id: Int?,
     actual var presetID: Int,
     actual var isParty: Boolean,
     actual var entityName: String,
-    actual var level: Int = 1,
-    actual var pluginID: Long? = null,
-    actual var bossMultiplier: Int = 1,
+    actual var level: Int,
+    actual var pluginID: Long?,
+    actual var bossMultiplier: Int,
 )

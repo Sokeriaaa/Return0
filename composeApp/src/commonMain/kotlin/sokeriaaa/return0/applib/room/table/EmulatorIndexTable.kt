@@ -17,7 +17,11 @@ package sokeriaaa.return0.applib.room.table
 /**
  * The index of emulator table, contains some meta.
  */
-expect class EmulatorIndexTable {
+expect class EmulatorIndexTable(
+    presetID: Int? = null,
+    name: String,
+    createdTime: Long,
+) {
 
     /**
      * Preset ID.

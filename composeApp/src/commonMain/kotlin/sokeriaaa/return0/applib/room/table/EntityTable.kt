@@ -17,7 +17,16 @@ package sokeriaaa.return0.applib.room.table
 /**
  * The entity table for the player.
  */
-expect class EntityTable {
+expect class EntityTable(
+    saveID: Int = -1,
+    entityName: String = "",
+    level: Int = 1,
+    exp: Int = 0,
+    currentHP: Int = 0,
+    currentSP: Int = 0,
+    partyIndex: Int = -1,
+    pluginID: Long? = null,
+) {
 
     /**
      * The save ID. -1 presents the temporary save the user is current playing.

@@ -23,23 +23,23 @@ import androidx.room.Index
     primaryKeys = ["save_id", "entity_name"],
     indices = [Index("party_index"), Index("plugin_id")]
 )
-actual data class EntityTable(
+actual data class EntityTable actual constructor(
     @ColumnInfo(name = "save_id")
-    actual var saveID: Int = -1,
+    actual var saveID: Int,
     @ColumnInfo(name = "entity_name")
-    actual var entityName: String = "",
+    actual var entityName: String,
     @ColumnInfo(name = "level")
-    actual var level: Int = 1,
+    actual var level: Int,
     @ColumnInfo(name = "exp")
-    actual var exp: Int = 0,
+    actual var exp: Int,
     @ColumnInfo(name = "current_hp")
-    actual var currentHP: Int = 0,
+    actual var currentHP: Int,
     @ColumnInfo(name = "current_sp")
-    actual var currentSP: Int = 0,
+    actual var currentSP: Int,
     @ColumnInfo(name = "party_index")
-    actual var partyIndex: Int = -1,
+    actual var partyIndex: Int,
     @ColumnInfo(name = "plugin_id")
-    actual var pluginID: Long? = null,
+    actual var pluginID: Long?,
 ) {
     companion object {
         const val TABLE_NAME = "return0_entities"

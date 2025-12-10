@@ -23,9 +23,9 @@ import androidx.room.PrimaryKey
     tableName = EmulatorEntryTable.TABLE_NAME,
     indices = [Index("preset_id")]
 )
-actual data class EmulatorEntryTable(
+actual data class EmulatorEntryTable actual constructor(
     @PrimaryKey(autoGenerate = true)
-    actual var id: Int? = null,
+    actual var id: Int?,
     @ColumnInfo(name = "preset_id")
     actual var presetID: Int,
     @ColumnInfo(name = "is_party")
@@ -33,11 +33,11 @@ actual data class EmulatorEntryTable(
     @ColumnInfo(name = "entity_name")
     actual var entityName: String,
     @ColumnInfo(name = "level")
-    actual var level: Int = 1,
+    actual var level: Int,
     @ColumnInfo(name = "plugin_id")
-    actual var pluginID: Long? = null,
+    actual var pluginID: Long?,
     @ColumnInfo(name = "boss_multiplier")
-    actual var bossMultiplier: Int = 1,
+    actual var bossMultiplier: Int,
 ) {
     companion object {
         const val TABLE_NAME = "return0_emulator_entries"

@@ -20,7 +20,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.applib.repository.ArchiveRepo
+import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
+import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
+import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
+import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.shared.common.helpers.JsonHelper
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
@@ -30,6 +35,8 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * The emulator that allows to start custom combats for testing/debugging.
@@ -46,6 +53,9 @@ class EmulatorViewModel : BaseViewModel() {
 
     private val _enemies: MutableList<EnemyState> = mutableStateListOf()
     val enemies: List<EnemyState> = _enemies
+
+    private val _emulatorIndexDao: EmulatorIndexDao by inject()
+    private val _emulatorEntryDao: EmulatorEntryDao by inject()
 
     init {
         // Temp code: Load jsons from resources.
@@ -78,6 +88,7 @@ class EmulatorViewModel : BaseViewModel() {
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
@@ -104,6 +115,54 @@ class EmulatorViewModel : BaseViewModel() {
                 when (intent.entityState) {
                     is PartyState -> _parties.remove(intent.entityState)
                     is EnemyState -> _enemies.remove(intent.entityState)
+                }
+            }
+
+            is EmulatorIntent.SavePreset -> {
+                val createdTime = Clock.System.now().toEpochMilliseconds()
+                // Create index.
+                viewModelScope.launch {
+                    onIntent(CommonIntent.ShowLoading)
+                    val presetID = _emulatorIndexDao.insert(
+                        EmulatorIndexTable(
+                            // Use created time as default name.
+                            name = createdTime.toString(),
+                            createdTime = createdTime,
+                        )
+                    ).toInt()
+                    // Save entries
+                    val list = ArrayList<EmulatorEntryTable>()
+                    parties.forEach {
+                        list.add(
+                            EmulatorEntryTable(
+                                presetID = presetID,
+                                isParty = true,
+                                entityName = it.entityData.name,
+                                level = it.level,
+                                // Preserved future use: Plugin
+                                pluginID = null,
+                                // Preserved future use: Boss multiplier
+                                bossMultiplier = 1,
+                            )
+                        )
+                    }
+                    enemies.forEach {
+                        list.add(
+                            EmulatorEntryTable(
+                                presetID = presetID,
+                                isParty = false,
+                                entityName = it.entityData.name,
+                                level = it.level,
+                                // Preserved future use: Plugin
+                                pluginID = null,
+                                // Preserved future use: Boss multiplier
+                                bossMultiplier = 1,
+                            )
+                        )
+                    }
+                    // Insert to database
+                    _emulatorEntryDao.insertList(list)
+                    onIntent(CommonIntent.HideLoading)
                 }
             }
 

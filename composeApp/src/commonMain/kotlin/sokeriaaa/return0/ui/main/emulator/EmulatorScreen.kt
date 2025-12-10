@@ -14,12 +14,14 @@
  */
 package sokeriaaa.return0.ui.main.emulator
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -30,7 +32,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,17 +49,26 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.emulator
+import return0.composeapp.generated.resources.emulator_action_presets
+import return0.composeapp.generated.resources.emulator_action_save_presets
 import return0.composeapp.generated.resources.emulator_combat
 import return0.composeapp.generated.resources.emulator_enemy_w_count
 import return0.composeapp.generated.resources.emulator_party_w_count
 import return0.composeapp.generated.resources.emulator_warning_entity_not_enough
 import return0.composeapp.generated.resources.ic_baseline_start_24
+import return0.composeapp.generated.resources.ic_outline_lists_24
+import return0.composeapp.generated.resources.ic_outline_more_horiz_24
+import return0.composeapp.generated.resources.ic_outline_save_24
+import return0.composeapp.generated.resources.more_operations
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.widgets.AppDropdownMenuItem
+import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.main.emulator.page.EmulatorPage
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
@@ -91,7 +106,13 @@ fun EmulatorScreen(
                     Text(
                         text = stringResource(Res.string.emulator)
                     )
-                }
+                },
+                actions = {
+                    EmulatorActions(
+                        viewModel = viewModel,
+                        mainNavHostController = mainNavHostController,
+                    )
+                },
             )
         }
     ) { paddingValues ->
@@ -202,6 +223,59 @@ fun EmulatorScreen(
                     text = stringResource(Res.string.emulator_combat),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun EmulatorActions(
+    viewModel: EmulatorViewModel,
+    mainNavHostController: NavHostController,
+) {
+    var isMenuExpanded by remember { mutableStateOf(false) }
+    Box {
+        AppIconButton(
+            iconRes = Res.drawable.ic_outline_more_horiz_24,
+            contentDescription = stringResource(
+                resource = Res.string.more_operations,
+            ),
+            onClick = {
+                isMenuExpanded = true
+            }
+        )
+        DropdownMenu(
+            expanded = isMenuExpanded,
+            onDismissRequest = {
+                isMenuExpanded = false
+            }
+        ) {
+            val warningMessage = stringResource(Res.string.emulator_warning_entity_not_enough)
+
+            // Presets
+            AppDropdownMenuItem(
+                text = stringResource(
+                    Res.string.emulator_action_presets,
+                ),
+                iconRes = Res.drawable.ic_outline_lists_24,
+                onClick = {
+                    isMenuExpanded = false
+                }
+            )
+            // Save preset
+            AppDropdownMenuItem(
+                text = stringResource(
+                    Res.string.emulator_action_save_presets,
+                ),
+                iconRes = Res.drawable.ic_outline_save_24,
+                onClick = {
+                    isMenuExpanded = false
+                    if (viewModel.parties.isEmpty() || viewModel.enemies.isEmpty()) {
+                        viewModel.onIntent(CommonIntent.ShowSnackBar(warningMessage))
+                    } else {
+                        viewModel.onIntent(EmulatorIntent.SavePreset)
+                    }
+                }
+            )
         }
     }
 }

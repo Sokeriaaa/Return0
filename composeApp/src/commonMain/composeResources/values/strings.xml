@@ -5,6 +5,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
+    <string name="more_operations">More…</string>
+
     <string name="general_level">Level</string>
     <string name="general_level_w_value">Lv.%1$s</string>
     <string name="general_please_select">Please select…</string>
@@ -16,11 +18,21 @@
     <string name="emulator_enemy_w_count">Enemy (%1$s)</string>
     <string name="emulator_combat">COMBAT</string>
 
+    <string name="emulator_action_presets">Presets</string>
+    <string name="emulator_action_save_presets">Save preset</string>
+
     <string name="emulator_picker_add">Add entity</string>
     <string name="emulator_picker_edit">Edit entity</string>
     <string name="emulator_picker_remove">Remove entity</string>
     <string name="emulator_picker_remove_warn">Remove %1$s?</string>
     <string name="emulator_picker_entity">Entity</string>
+
+    <string name="emulator_preset">Entity Preset</string>
+    <string name="emulator_preset_use">USE</string>
+    <string name="emulator_preset_rename">RENAME</string>
+    <string name="emulator_preset_delete">DELETE</string>
+    <string name="emulator_preset_delete_warn">Delete %1$s? This operation can not be undone.</string>
+    <string name="emulator_preset_save_success">Preset saved.</string>
 
     <string name="emulator_warning_entity_not_enough">Please select at least one party and one enemy.</string>
     <string name="emulator_picker_warning_select_entity">Please select the entity.</string>

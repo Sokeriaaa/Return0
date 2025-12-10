@@ -17,7 +17,15 @@ package sokeriaaa.return0.applib.room.table
 /**
  * The emulator table, mainly for storing presets.
  */
-expect class EmulatorEntryTable {
+expect class EmulatorEntryTable(
+    id: Int? = null,
+    presetID: Int,
+    isParty: Boolean,
+    entityName: String,
+    level: Int = 1,
+    pluginID: Long? = null,
+    bossMultiplier: Int = 1,
+) {
 
     /**
      * Auto-generated ID.

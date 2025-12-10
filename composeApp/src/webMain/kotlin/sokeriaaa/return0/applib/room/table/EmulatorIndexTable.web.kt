@@ -14,11 +14,8 @@
  */
 package sokeriaaa.return0.applib.room.table
 
-import kotlin.time.ExperimentalTime
-
-@OptIn(ExperimentalTime::class)
-actual data class EmulatorIndexTable(
-    actual var presetID: Int? = null,
+actual data class EmulatorIndexTable actual constructor(
+    actual var presetID: Int?,
     actual var name: String,
     actual var createdTime: Long,
 )

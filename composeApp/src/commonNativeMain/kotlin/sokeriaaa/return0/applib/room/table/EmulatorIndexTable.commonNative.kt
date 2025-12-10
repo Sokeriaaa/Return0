@@ -17,16 +17,14 @@ package sokeriaaa.return0.applib.room.table
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlin.time.ExperimentalTime
 
 @Entity(
     tableName = EmulatorIndexTable.TABLE_NAME,
 )
-@OptIn(ExperimentalTime::class)
-actual data class EmulatorIndexTable(
+actual data class EmulatorIndexTable actual constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "preset_id")
-    actual var presetID: Int? = null,
+    actual var presetID: Int?,
     @ColumnInfo(name = "name")
     actual var name: String,
     @ColumnInfo(name = "created_time")

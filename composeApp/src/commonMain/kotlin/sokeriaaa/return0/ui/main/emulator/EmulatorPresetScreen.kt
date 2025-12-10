@@ -12,15 +12,23 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room.table
+package sokeriaaa.return0.ui.main.emulator
 
-actual data class EntityTable actual constructor(
-    actual var saveID: Int,
-    actual var entityName: String,
-    actual var level: Int,
-    actual var exp: Int,
-    actual var currentHP: Int,
-    actual var currentSP: Int,
-    actual var partyIndex: Int,
-    actual var pluginID: Long?,
-)
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import org.koin.compose.koinInject
+import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
+
+@Composable
+fun EmulatorPresetScreen(
+    viewModel: EmulatorViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    ),
+    mainNavHostController: NavHostController,
+    windowAdaptiveInfo: WindowAdaptiveInfo,
+) {
+
+}

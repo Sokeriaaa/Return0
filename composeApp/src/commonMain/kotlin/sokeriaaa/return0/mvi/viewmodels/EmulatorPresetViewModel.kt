@@ -12,15 +12,14 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room.table
+package sokeriaaa.return0.mvi.viewmodels
 
-actual data class EntityTable actual constructor(
-    actual var saveID: Int,
-    actual var entityName: String,
-    actual var level: Int,
-    actual var exp: Int,
-    actual var currentHP: Int,
-    actual var currentSP: Int,
-    actual var partyIndex: Int,
-    actual var pluginID: Long?,
-)
+import org.koin.core.component.inject
+import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
+import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
+
+class EmulatorPresetViewModel : BaseViewModel() {
+
+    private val _emulatorIndexDao: EmulatorIndexDao by inject()
+    private val _emulatorEntryDao: EmulatorEntryDao by inject()
+}
