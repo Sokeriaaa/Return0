@@ -259,6 +259,7 @@ private fun EmulatorActions(
                 iconRes = Res.drawable.ic_outline_lists_24,
                 onClick = {
                     isMenuExpanded = false
+                    mainNavHostController.navigateSingleTop(Scene.EmulatorPreset.route)
                 }
             )
             // Save preset

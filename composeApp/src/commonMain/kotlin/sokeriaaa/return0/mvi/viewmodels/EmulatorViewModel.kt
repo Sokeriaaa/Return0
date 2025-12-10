@@ -166,6 +166,14 @@ class EmulatorViewModel : BaseViewModel() {
                 }
             }
 
+            is EmulatorIntent.LoadPreset -> {
+                // Replace current selection with the preset selected.
+                _parties.clear()
+                _parties.addAll(intent.parties)
+                _enemies.clear()
+                _enemies.addAll(intent.enemies)
+            }
+
             else -> {}
         }
     }

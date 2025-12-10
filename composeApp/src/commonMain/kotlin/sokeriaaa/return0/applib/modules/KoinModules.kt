@@ -24,6 +24,7 @@ import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
+import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
@@ -41,6 +42,7 @@ object KoinModules {
                 initializer { CombatViewModel() }
                 initializer { ProfileViewModel() }
                 initializer { EmulatorViewModel() }
+                initializer { EmulatorPresetViewModel() }
             }
         }
         // ViewModelStoreOwner

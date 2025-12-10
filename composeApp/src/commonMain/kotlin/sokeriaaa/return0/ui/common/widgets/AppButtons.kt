@@ -36,6 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.back
 
 /**
  * Simplified for default buttons to avoid nesting.
@@ -174,3 +177,28 @@ fun AppFilledIconButton(
         )
     }
 }
+
+/**
+ * Common back button for the TopBar, etc.
+ *
+ * @see AppIconButton
+ * @see IconButton
+ */
+@Composable
+fun AppBackIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) = AppIconButton(
+    modifier = modifier,
+    iconRes = backIconRes,
+    onClick = onClick,
+    contentDescription = stringResource(Res.string.back),
+    enabled = enabled,
+    colors = colors,
+    interactionSource = interactionSource,
+)
+
+internal expect val backIconRes: DrawableResource

@@ -14,13 +14,18 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.EntityState
+import sokeriaaa.return0.shared.data.models.combat.PartyState
 
 sealed class EmulatorIntent : BaseIntent {
     data class AddEntity(val entityState: EntityState) : EmulatorIntent()
     data class AlterEntity(val before: EntityState, val after: EntityState) : EmulatorIntent()
     data class RemoveEntity(val entityState: EntityState) : EmulatorIntent()
     data object SavePreset : EmulatorIntent()
-    data class LoadPreset(val presetID: Int) : EmulatorIntent()
+    data class LoadPreset(
+        val parties: List<PartyState>,
+        val enemies: List<EnemyState>,
+    ) : EmulatorIntent()
     data object StartCombat : EmulatorIntent()
 }

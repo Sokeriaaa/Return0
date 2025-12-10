@@ -4,6 +4,7 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
 
     <string name="more_operations">More…</string>
 
@@ -27,10 +28,10 @@
     <string name="emulator_picker_remove_warn">Remove %1$s?</string>
     <string name="emulator_picker_entity">Entity</string>
 
-    <string name="emulator_preset">Entity Preset</string>
-    <string name="emulator_preset_use">USE</string>
-    <string name="emulator_preset_rename">RENAME</string>
-    <string name="emulator_preset_delete">DELETE</string>
+    <string name="emulator_preset">Emulator Preset</string>
+    <string name="emulator_preset_use">Use</string>
+    <string name="emulator_preset_rename">Rename</string>
+    <string name="emulator_preset_delete">Delete</string>
     <string name="emulator_preset_delete_warn">Delete %1$s? This operation can not be undone.</string>
     <string name="emulator_preset_save_success">Preset saved.</string>
 
