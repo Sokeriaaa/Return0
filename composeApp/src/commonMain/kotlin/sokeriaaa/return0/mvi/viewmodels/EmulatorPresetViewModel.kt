@@ -57,6 +57,12 @@ class EmulatorPresetViewModel : BaseViewModel() {
         private set
 
     /**
+     * Whether it's renaming the current index.
+     */
+    var isRenaming by mutableStateOf(false)
+        private set
+
+    /**
      * Refresh
      */
     fun refreshPresetIndices() {
@@ -99,24 +105,34 @@ class EmulatorPresetViewModel : BaseViewModel() {
             EmulatorPresetIntent.DismissPresetDialog -> {
                 selectedPresetIndex = null
                 selectedEntries = null
+                isRenaming = false
             }
 
-            is EmulatorPresetIntent.RenamePreset -> {
+            EmulatorPresetIntent.RequestRename -> {
+                isRenaming = true
+            }
+
+            EmulatorPresetIntent.DismissRename -> {
+                isRenaming = false
+            }
+
+            is EmulatorPresetIntent.ExecuteRename -> {
                 viewModelScope.launch {
                     selectedPresetIndex?.presetID?.let {
                         _emulatorIndexDao.rename(it, intent.name)
-                        selectedPresetIndex = null
-                        selectedEntries = null
+                        isRenaming = false
+                        refreshPresetIndices()
                     }
                 }
             }
 
-            EmulatorPresetIntent.DeletePreset -> {
+            is EmulatorPresetIntent.DeletePreset -> {
                 viewModelScope.launch {
-                    selectedPresetIndex?.presetID?.let {
+                    intent.presetIndex.presetID?.let {
                         _emulatorIndexDao.delete(it)
                         selectedPresetIndex = null
                         selectedEntries = null
+                        refreshPresetIndices()
                     }
                 }
             }

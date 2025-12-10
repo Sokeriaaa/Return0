@@ -57,7 +57,7 @@ import return0.composeapp.generated.resources.combat_choose_action_function
 import return0.composeapp.generated.resources.combat_choose_action_item
 import return0.composeapp.generated.resources.combat_choose_action_relax
 import return0.composeapp.generated.resources.combat_choose_action_target_selected_count
-import return0.composeapp.generated.resources.ic_baseline_check_24
+import return0.composeapp.generated.resources.ic_outline_check_24
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
@@ -358,7 +358,7 @@ private fun TargetItem(
         leadingIcon = if (selected) {
             {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_baseline_check_24),
+                    painter = painterResource(Res.drawable.ic_outline_check_24),
                     contentDescription = "Selected icon",
                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                 )

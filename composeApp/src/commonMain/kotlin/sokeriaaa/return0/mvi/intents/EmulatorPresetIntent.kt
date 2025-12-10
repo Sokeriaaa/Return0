@@ -19,6 +19,8 @@ import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 sealed class EmulatorPresetIntent : BaseIntent {
     data class OpenPresetDialog(val presetIndex: EmulatorIndexTable) : EmulatorPresetIntent()
     data object DismissPresetDialog : EmulatorPresetIntent()
-    data class RenamePreset(val name: String) : EmulatorPresetIntent()
-    data object DeletePreset : EmulatorPresetIntent()
+    data object RequestRename : EmulatorPresetIntent()
+    data object DismissRename : EmulatorPresetIntent()
+    data class ExecuteRename(val name: String) : EmulatorPresetIntent()
+    data class DeletePreset(val presetIndex: EmulatorIndexTable) : EmulatorPresetIntent()
 }

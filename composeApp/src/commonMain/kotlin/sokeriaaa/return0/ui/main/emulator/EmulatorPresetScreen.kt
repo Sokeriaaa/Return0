@@ -16,6 +16,7 @@ package sokeriaaa.return0.ui.main.emulator
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,25 +25,37 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.cancel
 import return0.composeapp.generated.resources.emulator_enemy
 import return0.composeapp.generated.resources.emulator_party
 import return0.composeapp.generated.resources.emulator_preset
 import return0.composeapp.generated.resources.emulator_preset_rename
 import return0.composeapp.generated.resources.emulator_preset_use
 import return0.composeapp.generated.resources.general_level_w_value
+import return0.composeapp.generated.resources.ic_outline_check_24
+import return0.composeapp.generated.resources.ic_outline_close_24
+import return0.composeapp.generated.resources.ic_outline_edit_square_24
+import return0.composeapp.generated.resources.ok
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
@@ -51,6 +64,7 @@ import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,6 +88,7 @@ fun EmulatorPresetScreen(
     viewModel.selectedPresetIndex?.let {
         EmulatorPresetDialog(
             indexItem = it,
+            isRenaming = viewModel.isRenaming,
             entries = viewModel.selectedEntries,
             onIntent = viewModel::onIntent,
             onSelected = {
@@ -149,6 +164,7 @@ private fun EmulatorPresetItem(
 @Composable
 private fun EmulatorPresetDialog(
     indexItem: EmulatorIndexTable,
+    isRenaming: Boolean,
     entries: List<EmulatorEntryTable>?,
     onIntent: (EmulatorPresetIntent) -> Unit,
     onSelected: () -> Unit,
@@ -159,7 +175,53 @@ private fun EmulatorPresetDialog(
             onIntent(EmulatorPresetIntent.DismissPresetDialog)
         },
         title = {
-            Text(text = indexItem.name)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                var name: String by remember { mutableStateOf(indexItem.name) }
+                LaunchedEffect(isRenaming) {
+                    name = indexItem.name
+                }
+                if (isRenaming) {
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1F),
+                        value = name,
+                        onValueChange = { name = it },
+                        maxLines = 1,
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                    )
+                    AppIconButton(
+                        iconRes = Res.drawable.ic_outline_check_24,
+                        contentDescription = stringResource(Res.string.ok),
+                        onClick = {
+                            indexItem.name = name
+                            onIntent(EmulatorPresetIntent.ExecuteRename(name))
+                        }
+                    )
+                    AppIconButton(
+                        iconRes = Res.drawable.ic_outline_close_24,
+                        contentDescription = stringResource(Res.string.cancel),
+                        onClick = {
+                            onIntent(EmulatorPresetIntent.DismissRename)
+                        }
+                    )
+                } else {
+                    Text(
+                        modifier = Modifier.weight(1F),
+                        text = indexItem.name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    AppIconButton(
+                        iconRes = Res.drawable.ic_outline_edit_square_24,
+                        contentDescription = stringResource(Res.string.emulator_preset_rename),
+                        onClick = {
+                            onIntent(EmulatorPresetIntent.RequestRename)
+                        }
+                    )
+                }
+            }
         },
         text = {
             Column(
@@ -207,10 +269,9 @@ private fun EmulatorPresetDialog(
         dismissButton = {
             AppTextButton(
                 modifier = Modifier.padding(8.dp),
-                text = stringResource(Res.string.emulator_preset_rename),
+                text = stringResource(Res.string.cancel),
                 enabled = entries != null,
-                onClick = {
-                },
+                onClick = { onIntent(EmulatorPresetIntent.DismissPresetDialog) },
             )
         },
         confirmButton = {
