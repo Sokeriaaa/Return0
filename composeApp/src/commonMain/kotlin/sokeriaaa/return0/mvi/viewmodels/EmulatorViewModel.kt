@@ -17,8 +17,10 @@ package sokeriaaa.return0.mvi.viewmodels
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.emulator_preset_save_success
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
@@ -163,6 +165,11 @@ class EmulatorViewModel : BaseViewModel() {
                     // Insert to database
                     _emulatorEntryDao.insertList(list)
                     onIntent(CommonIntent.HideLoading)
+                    onIntent(
+                        CommonIntent.ShowSnackBar(
+                            getString(Res.string.emulator_preset_save_success),
+                        ),
+                    )
                 }
             }
 
