@@ -1,0 +1,41 @@
+-- Copyright (C) 2025 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_emulator_entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    preset_id INTEGER NOT NULL,
+    is_party INTEGER NOT NULL,
+    entity_name TEXT NOT NULL,
+    level INTEGER NOT NULL DEFAULT 1,
+    plugin_id INTEGER,
+    boss_multiplier INTEGER NOT NULL DEFAULT 1
+);
+
+insert:
+INSERT INTO return0_emulator_entries (
+    preset_id,
+    is_party,
+    entity_name,
+    level,
+    plugin_id,
+    boss_multiplier
+)
+VALUES (?, ?, ?, ?, ?, ?);
+
+queryList:
+SELECT *
+FROM return0_emulator_entries
+WHERE preset_id = ?;
+
+deletePreset:
+DELETE FROM return0_emulator_entries
+WHERE preset_id = ?;

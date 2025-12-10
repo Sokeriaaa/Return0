@@ -18,9 +18,11 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.CombatRepo
+import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
@@ -30,6 +32,8 @@ import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 object KoinModules {
 
     val modules = module {
+        // Include platform modules
+        includes(platformModules)
         // ViewModelFactory
         single {
             viewModelFactory {
@@ -50,6 +54,12 @@ object KoinModules {
         // Repo
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
+        // Database: Dao
+        single { get<AppDatabase>().getEmulatorEntryDao() }
+        single { get<AppDatabase>().getEmulatorIndexDao() }
+        single { get<AppDatabase>().getEntityDao() }
     }
 
 }
+
+expect val platformModules: Module

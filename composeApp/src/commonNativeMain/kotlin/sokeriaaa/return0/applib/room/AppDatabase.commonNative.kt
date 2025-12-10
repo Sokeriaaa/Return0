@@ -1,0 +1,63 @@
+/**
+ * Copyright (C) 2025 Sokeriaaa
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+package sokeriaaa.return0.applib.room
+
+import androidx.room.ConstructedBy
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
+import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
+import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
+import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
+import sokeriaaa.return0.applib.room.table.EntityTable
+
+@Database(
+    version = 1,
+    entities = [
+        EmulatorEntryTable::class,
+        EmulatorIndexTable::class,
+        EntityTable::class,
+    ]
+)
+@ConstructedBy(AppDatabaseConstructor::class)
+actual abstract class AppDatabase : RoomDatabase() {
+    actual abstract fun getEmulatorEntryDao(): EmulatorEntryDao
+    actual abstract fun getEmulatorIndexDao(): EmulatorIndexDao
+    actual abstract fun getEntityDao(): EntityDao
+
+    companion object {
+        const val DB_NAME = "return0_database"
+
+        fun createDatabase(builder: Builder<AppDatabase>): AppDatabase {
+            return builder
+                .addMigrations(
+                    // TODO Future migrations insert here.
+                )
+                .setDriver(BundledSQLiteDriver())
+                .setQueryCoroutineContext(Dispatchers.IO)
+                .build()
+        }
+    }
+}
+
+@Suppress("KotlinNoActualForExpect")
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
+    override fun initialize(): AppDatabase
+}

@@ -1,0 +1,88 @@
+-- Copyright (C) 2025 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_entities (
+    save_id INTEGER NOT NULL,
+    entity_name TEXT NOT NULL,
+    level INTEGER NOT NULL DEFAULT 1,
+    exp INTEGER NOT NULL DEFAULT 0,
+    current_hp INTEGER NOT NULL DEFAULT 0,
+    current_sp INTEGER NOT NULL DEFAULT 0,
+    party_index INTEGER NOT NULL DEFAULT -1,
+    plugin_id INTEGER, -- nullable
+    PRIMARY KEY (save_id, entity_name)
+);
+
+CREATE INDEX return0_entities_party_index
+    ON return0_entities(party_index);
+
+CREATE INDEX return0_entities_plugin_id
+    ON return0_entities(plugin_id);
+
+obtainNewEntity:
+INSERT INTO return0_entities(
+    save_id,
+    entity_name,
+    current_hp,
+    current_sp,
+    party_index
+)
+VALUES (?, ?, ?, ?, ?);
+
+getEntity:
+SELECT *
+FROM return0_entities
+WHERE save_id = ?
+  AND entity_name = ?
+LIMIT 1;
+
+getEntityByIndex:
+SELECT *
+FROM return0_entities
+WHERE save_id = ?
+  AND party_index = ?
+LIMIT 1;
+
+updateHP:
+UPDATE return0_entities
+SET current_hp = ?
+WHERE save_id = ?
+  AND entity_name = ?;
+
+updateSP:
+UPDATE return0_entities
+SET current_sp = ?
+WHERE save_id = ?
+  AND entity_name = ?;
+
+updatePlugin:
+UPDATE return0_entities
+SET plugin_id = ?
+WHERE save_id = ?
+  AND entity_name = ?;
+
+insertEntity:
+INSERT INTO return0_entities(
+    save_id,
+    entity_name,
+    level,
+    exp,
+    current_hp,
+    current_sp,
+    party_index,
+    plugin_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteSave:
+DELETE FROM return0_entities
+WHERE save_id = ?;
