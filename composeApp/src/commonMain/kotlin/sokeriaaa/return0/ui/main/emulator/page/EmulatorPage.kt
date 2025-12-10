@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,20 +43,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
-import return0.composeapp.generated.resources.cancel
 import return0.composeapp.generated.resources.emulator_picker_add
 import return0.composeapp.generated.resources.emulator_picker_remove
 import return0.composeapp.generated.resources.emulator_picker_remove_warn
 import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_baseline_add_24
 import return0.composeapp.generated.resources.ic_baseline_delete_24
-import return0.composeapp.generated.resources.ok
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
@@ -65,8 +61,8 @@ import sokeriaaa.return0.shared.data.api.combat.entityData
 import sokeriaaa.return0.shared.data.api.combat.level
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppFilledIconButton
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
 /**
  * The pages of EmulatorScreen.
@@ -143,39 +139,18 @@ fun EmulatorPage(
     }
     // Remove entity dialog
     entityToRemove?.let {
-        AlertDialog(
-            modifier = Modifier.padding(
-                vertical = 64.dp,
+        AppAlertDialog(
+            modifier = Modifier.padding(vertical = 64.dp),
+            text = stringResource(
+                resource = Res.string.emulator_picker_remove_warn,
+                /* entityName = */ it.entityData.name,
             ),
-            onDismissRequest = {
+            onDismiss = {
                 entityToRemove = null
             },
-            text = {
-                Text(
-                    text = stringResource(
-                        resource = Res.string.emulator_picker_remove_warn,
-                        /* entityName = */ it.entityData.name,
-                    ),
-                    modifier = Modifier.padding(top = 8.dp),
-                    fontSize = 16.sp,
-                )
-            },
-            confirmButton = {
-                AppTextButton(
-                    text = stringResource(Res.string.ok),
-                    onClick = {
-                        onIntent(EmulatorIntent.RemoveEntity(it))
-                        entityToRemove = null
-                    },
-                )
-            },
-            dismissButton = {
-                AppTextButton(
-                    text = stringResource(Res.string.cancel),
-                    onClick = {
-                        entityToRemove = null
-                    },
-                )
+            onConfirmed = {
+                onIntent(EmulatorIntent.RemoveEntity(it))
+                entityToRemove = null
             },
         )
     }

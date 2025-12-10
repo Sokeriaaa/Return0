@@ -49,7 +49,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
@@ -79,6 +78,7 @@ import sokeriaaa.return0.mvi.intents.EmulatorPresetIntent
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
@@ -160,46 +160,19 @@ fun EmulatorPresetScreen(
     }
     // Delete index dialog
     indexToDelete?.let {
-        AlertDialog(
-            modifier = Modifier.padding(
-                vertical = 64.dp,
+        AppAlertDialog(
+            modifier = Modifier.padding(vertical = 64.dp),
+            title = stringResource(Res.string.emulator_preset_delete),
+            text = stringResource(
+                resource = Res.string.emulator_preset_delete_warn,
+                /* indexName = */ it.name,
             ),
-            onDismissRequest = {
+            onDismiss = {
                 indexToDelete = null
             },
-            title = {
-                Text(
-                    text = stringResource(
-                        resource = Res.string.emulator_preset_delete,
-                    ),
-                )
-            },
-            text = {
-                Text(
-                    text = stringResource(
-                        resource = Res.string.emulator_preset_delete_warn,
-                        /* indexName = */ it.name,
-                    ),
-                    modifier = Modifier.padding(top = 8.dp),
-                    fontSize = 16.sp,
-                )
-            },
-            confirmButton = {
-                AppTextButton(
-                    text = stringResource(Res.string.ok),
-                    onClick = {
-                        viewModel.onIntent(EmulatorPresetIntent.DeletePreset(it))
-                        indexToDelete = null
-                    },
-                )
-            },
-            dismissButton = {
-                AppTextButton(
-                    text = stringResource(Res.string.cancel),
-                    onClick = {
-                        indexToDelete = null
-                    },
-                )
+            onConfirmed = {
+                viewModel.onIntent(EmulatorPresetIntent.DeletePreset(it))
+                indexToDelete = null
             },
         )
     }
