@@ -42,8 +42,7 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = mainNavHostController,
-//        startDestination = Scene.Main.route,
-        startDestination = Scene.Emulator.route,
+        startDestination = Scene.Main.route,
         route = "r0_app_root",
     ) {
         myComposable(Scene.Main) {

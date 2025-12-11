@@ -12,6 +12,10 @@
     <string name="general_level_w_value">%1$s级</string>
     <string name="general_please_select">请选择…</string>
 
+    <string name="new_game">新游戏</string>
+    <string name="load_game">读取存档</string>
+    <string name="settings">设置</string>
+
     <string name="emulator">模拟器</string>
     <string name="emulator_party">我方</string>
     <string name="emulator_enemy">敌方</string>

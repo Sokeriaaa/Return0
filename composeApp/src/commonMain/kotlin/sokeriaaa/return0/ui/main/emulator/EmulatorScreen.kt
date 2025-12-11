@@ -67,6 +67,7 @@ import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppDropdownMenuItem
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.main.emulator.page.EmulatorPage
@@ -105,6 +106,13 @@ fun EmulatorScreen(
                 title = {
                     Text(
                         text = stringResource(Res.string.emulator)
+                    )
+                },
+                navigationIcon = {
+                    AppBackIconButton(
+                        onClick = {
+                            mainNavHostController.navigateUp()
+                        }
                     )
                 },
                 actions = {

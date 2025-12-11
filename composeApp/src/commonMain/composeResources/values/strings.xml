@@ -12,6 +12,10 @@
     <string name="general_level_w_value">Lv.%1$s</string>
     <string name="general_please_select">Please select…</string>
 
+    <string name="new_game">New Game</string>
+    <string name="load_game">Load Game</string>
+    <string name="settings">Settings</string>
+
     <string name="emulator">Emulator</string>
     <string name="emulator_party">Party</string>
     <string name="emulator_enemy">Enemy</string>
