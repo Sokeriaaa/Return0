@@ -26,6 +26,7 @@ import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
+import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
@@ -39,6 +40,7 @@ object KoinModules {
         single {
             viewModelFactory {
                 initializer { MainViewModel() }
+                initializer { GameViewModel() }
                 initializer { CombatViewModel() }
                 initializer { ProfileViewModel() }
                 initializer { EmulatorViewModel() }

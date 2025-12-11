@@ -74,7 +74,9 @@ fun MainScreen(
             }
             MainButtons(
                 modifier = Modifier.fillMaxWidth(),
-                onNewGameClicked = {},
+                onNewGameClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Game.route)
+                },
                 onLoadGameClicked = {},
                 onEmulatorClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Emulator.route)
