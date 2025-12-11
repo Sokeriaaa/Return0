@@ -211,6 +211,7 @@ fun EmulatorScreen(
                         combatViewModel.onIntent(
                             intent = CombatIntent.Prepare(
                                 config = ArenaConfig(
+                                    mode = ArenaConfig.Mode.EMULATOR,
                                     parties = viewModel.parties,
                                     enemies = viewModel.enemies,
                                 )
