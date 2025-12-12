@@ -21,6 +21,7 @@ import sokeriaaa.return0.models.action.effect.generateEffectFor
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.value.Value
+import sokeriaaa.return0.shared.data.models.component.common.Comparator
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.entity.category.Category
@@ -200,6 +201,81 @@ class EntityConditionExecutorTest {
                 isIncludeEquals = true,
             ).calculatedIn(context)
         )
+
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+
+
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.HPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
     }
 
     @Test
@@ -278,6 +354,81 @@ class EntityConditionExecutorTest {
             EntityCondition.Status.SPMoreThan(
                 rate = Value(rate + 0.1F),
                 isIncludeEquals = true,
+            ).calculatedIn(context)
+        )
+
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LT,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.LTEQ,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+
+
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertTrue(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate - 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GT,
+                rate = Value(rate + 0.1F),
+            ).calculatedIn(context)
+        )
+        assertFalse(
+            EntityCondition.Status.SPRate(
+                comparator = Comparator.GTEQ,
+                rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
     }

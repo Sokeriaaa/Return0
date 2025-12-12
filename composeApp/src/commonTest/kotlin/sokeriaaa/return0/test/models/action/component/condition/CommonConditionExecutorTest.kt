@@ -20,10 +20,12 @@ import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.condition.and
+import sokeriaaa.return0.shared.data.api.component.condition.eq
 import sokeriaaa.return0.shared.data.api.component.condition.gt
 import sokeriaaa.return0.shared.data.api.component.condition.gtEq
 import sokeriaaa.return0.shared.data.api.component.condition.lt
 import sokeriaaa.return0.shared.data.api.component.condition.ltEq
+import sokeriaaa.return0.shared.data.api.component.condition.neq
 import sokeriaaa.return0.shared.data.api.component.condition.not
 import sokeriaaa.return0.shared.data.api.component.condition.or
 import sokeriaaa.return0.shared.data.api.component.value.Value
@@ -173,6 +175,20 @@ class CommonConditionExecutorTest {
         assertFalse((Value(42) ltEq 40F).calculatedIn(context))
         assertTrue((Value(42) ltEq 42F).calculatedIn(context))
         assertTrue((Value(42) ltEq 44F).calculatedIn(context))
+
+        assertTrue((Value(42) eq Value(42)).calculatedIn(context))
+        assertFalse((Value(42) eq Value(40)).calculatedIn(context))
+        assertTrue((Value(42) eq 42).calculatedIn(context))
+        assertFalse((Value(42) eq 40).calculatedIn(context))
+        assertTrue((Value(42) eq 42F).calculatedIn(context))
+        assertFalse((Value(42) eq 40F).calculatedIn(context))
+
+        assertFalse((Value(42) neq Value(42)).calculatedIn(context))
+        assertTrue((Value(42) neq Value(40)).calculatedIn(context))
+        assertFalse((Value(42) neq 42).calculatedIn(context))
+        assertTrue((Value(42) neq 40).calculatedIn(context))
+        assertFalse((Value(42) neq 42F).calculatedIn(context))
+        assertTrue((Value(42) neq 40F).calculatedIn(context))
     }
 
     // TODO Test Common_Chance

@@ -51,6 +51,10 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
             value1.calculatedIn(context) > value2.calculatedIn(context)
         }
 
+        is CommonCondition.CompareValues -> {
+            comparator.compare(value1.calculatedIn(context), value2.calculatedIn(context))
+        }
+
         is CommonCondition.Chance -> chance(
             success = success.calculatedIn(context),
             base = base.calculatedIn(context),
@@ -122,6 +126,20 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
             } else {
                 context.target.sp > context.target.maxsp * rateValue
             }
+        }
+
+        is EntityCondition.Status.HPRate -> {
+            comparator.compare(
+                value1 = context.target.hp.toFloat(),
+                value2 = context.target.maxhp * rate.calculatedIn(context),
+            )
+        }
+
+        is EntityCondition.Status.SPRate -> {
+            comparator.compare(
+                value1 = context.target.sp.toFloat(),
+                value2 = context.target.maxsp * rate.calculatedIn(context),
+            )
         }
         // end - EntityCondition
     }
