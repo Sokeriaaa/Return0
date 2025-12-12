@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="meta_intern">Intern</string>
+    <string name="meta_junior">Junior</string>
+    <string name="meta_mid_level">Mid-level</string>
+    <string name="meta_senior">Senior</string>
+    <string name="meta_lead">Lead</string>
+    <string name="meta_staff">Staff</string>
+    <string name="meta_principal">Principal</string>
+    <string name="meta_thread_binder">Thread Binder</string>
+    <string name="meta_grand_compiler">Grand Compiler</string>
+    <string name="meta_the_source">The Source</string>
+
+    <string name="meta_intern_info">New process spawned, learning to compile purpose from scattered inputs.</string>
+    <string name="meta_junior_info">Executes simple routines, growing stable in basic logic flows.</string>
+    <string name="meta_mid_level_info">Handles complex threads, optimizing code paths with confidence.</string>
+    <string name="meta_senior_info">Architects systems, bending frameworks to their structured will.</string>
+    <string name="meta_lead_info">Commands multi-module builds, synchronizing chaos into elegant outputs.</string>
+    <string name="meta_staff_info">Shapes entire ecosystems, rewriting conventions through pure mastery.</string>
+    <string name="meta_principal_info">Orchestrates architectures, influencing global patterns across domains.</string>
+    <string name="meta_thread_binder_info">Weaves parallel realities, binding threads into unified execution.</string>
+    <string name="meta_grand_compiler_info">Resolves all code, transforming infinite instructions into truth.</string>
+    <string name="meta_the_source_info">Origin of logic, from which every algorithm awakens.</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="meta_intern">实习生</string>
+    <string name="meta_junior">初级码匠</string>
+    <string name="meta_mid_level">中阶行者</string>
+    <string name="meta_senior">高级工程师</string>
+    <string name="meta_lead">项目领航员</string>
+    <string name="meta_staff">核心巨匠</string>
+    <string name="meta_principal">首席架构师</string>
+    <string name="meta_thread_binder">线程编织者</string>
+    <string name="meta_grand_compiler">宏构编译师</string>
+    <string name="meta_the_source">万物源流</string>
+
+    <string name="meta_intern_info">新生进程启程，自纷繁输入中学习编译使命。</string>
+    <string name="meta_junior_info">执行简易例程，于基础逻辑流中稳步成长。</string>
+    <string name="meta_mid_level_info">驾驭复杂线程，以从容之姿优化代码轨迹。</string>
+    <string name="meta_senior_info">架构系统万物，令框架屈从于其秩序意志。</string>
+    <string name="meta_lead_info">统御多模块构建，将混沌协奏为优雅输出。</string>
+    <string name="meta_staff_info">重塑全域生态，以纯粹精研重写世间法则。</string>
+    <string name="meta_principal_info">谱写架构交响，其意志跨越疆域牵引万象。</string>
+    <string name="meta_thread_binder_info">编织并行现实，将万千线程缚为同一执行。</string>
+    <string name="meta_grand_compiler_info">解析一切代码，将无穷指令淬炼为真理。</string>
+    <string name="meta_the_source_info">逻辑之本源，万般算法自此苏醒。</string>
+</resources>
