@@ -18,7 +18,7 @@ import sokeriaaa.return0.applib.room.sq.SQSaveMetaQueries
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.shared.data.models.title.Title
 
-class SameMetaDaoImpl(
+class SaveMetaDaoImpl(
     private val queries: SQSaveMetaQueries,
 ) : SaveMetaDao {
     override suspend fun queryAll(): List<SaveMetaTable> {

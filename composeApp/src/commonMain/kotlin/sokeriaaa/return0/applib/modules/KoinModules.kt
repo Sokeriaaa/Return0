@@ -59,9 +59,16 @@ object KoinModules {
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
         // Database: Dao
+        single { get<AppDatabase>().getCurrencyDao() }
         single { get<AppDatabase>().getEmulatorEntryDao() }
         single { get<AppDatabase>().getEmulatorIndexDao() }
         single { get<AppDatabase>().getEntityDao() }
+        single { get<AppDatabase>().getInventoryDao() }
+        single { get<AppDatabase>().getQuestDao() }
+        single { get<AppDatabase>().getSavedSwitchDao() }
+        single { get<AppDatabase>().getSavedVariableDao() }
+        single { get<AppDatabase>().getSaveMetaDao() }
+        single { get<AppDatabase>().getStatisticsDao() }
     }
 
 }

@@ -17,9 +17,9 @@ package sokeriaaa.return0.applib.room.dao
 import sokeriaaa.return0.applib.room.table.InventoryTable
 
 actual interface InventoryDao {
-    actual fun query(saveID: Int, key: String): InventoryTable?
-    actual fun queryAll(saveID: Int): List<InventoryTable>
-    actual fun insertOrUpdate(table: InventoryTable)
-    actual fun insertList(list: List<InventoryTable>)
-    actual fun delete(saveID: Int)
+    actual suspend fun query(saveID: Int, key: String): InventoryTable?
+    actual suspend fun queryAll(saveID: Int): List<InventoryTable>
+    actual suspend fun insertOrUpdate(table: InventoryTable)
+    actual suspend fun insertList(list: List<InventoryTable>)
+    actual suspend fun delete(saveID: Int)
 }

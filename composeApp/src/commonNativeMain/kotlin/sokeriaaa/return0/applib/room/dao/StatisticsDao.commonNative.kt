@@ -14,11 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.StatisticsTable
 
+@Dao
 actual interface StatisticsDao {
+    @Query(
+        "SELECT * FROM `${StatisticsTable.TABLE_NAME}`"
+    )
     actual suspend fun queryAll(): List<StatisticsTable>
+
+    @Query(
+        "SELECT * FROM `${StatisticsTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     actual suspend fun query(saveID: Int): StatisticsTable?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     actual suspend fun insertOrUpdate(table: StatisticsTable)
+
+    @Query(
+        "DELETE FROM `${StatisticsTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     actual suspend fun delete(saveID: Int)
 }

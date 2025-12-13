@@ -1,0 +1,45 @@
+-- Copyright (C) 2025 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_statistics (
+    save_id INTEGER NOT NULL PRIMARY KEY,
+    tokens_earned INTEGER NOT NULL,
+    cryptos_earned INTEGER NOT NULL,
+    total_damage INTEGER NOT NULL,
+    total_heal INTEGER NOT NULL,
+    enemies_defeated INTEGER NOT NULL,
+    lines_moved INTEGER NOT NULL
+);
+
+queryAll:
+SELECT *
+FROM return0_statistics;
+
+queryBySaveId:
+SELECT *
+FROM return0_statistics
+WHERE save_id = ?;
+
+insertOrUpdate:
+INSERT OR REPLACE INTO return0_statistics (
+    save_id,
+    tokens_earned,
+    cryptos_earned,
+    total_damage,
+    total_heal,
+    enemies_defeated,
+    lines_moved
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+deleteBySaveId:
+DELETE FROM return0_statistics
+WHERE save_id = ?;

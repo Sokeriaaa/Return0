@@ -14,16 +14,28 @@
  */
 package sokeriaaa.return0.applib.room
 
+import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.dao.InventoryDao
+import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
+import sokeriaaa.return0.applib.room.dao.SavedVariableDao
+import sokeriaaa.return0.applib.room.dao.StatisticsDao
 
 actual abstract class AppDatabase {
+    actual abstract fun getCurrencyDao(): CurrencyDao
     actual abstract fun getEmulatorEntryDao(): EmulatorEntryDao
     actual abstract fun getEmulatorIndexDao(): EmulatorIndexDao
     actual abstract fun getEntityDao(): EntityDao
+    actual abstract fun getInventoryDao(): InventoryDao
+    actual abstract fun getQuestDao(): QuestDao
+    actual abstract fun getSavedSwitchDao(): SavedSwitchDao
+    actual abstract fun getSavedVariableDao(): SavedVariableDao
     actual abstract fun getSaveMetaDao(): SaveMetaDao
+    actual abstract fun getStatisticsDao(): StatisticsDao
 
     companion object {
         fun createDatabase(): AppDatabase {

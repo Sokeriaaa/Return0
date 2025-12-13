@@ -20,25 +20,25 @@ expect interface InventoryDao {
     /**
      * Query the data with specified save ID and item key.
      */
-    fun query(saveID: Int, key: String): InventoryTable?
+    suspend fun query(saveID: Int, key: String): InventoryTable?
 
     /**
      * Query all the inventory data with specified save ID.
      */
-    fun queryAll(saveID: Int): List<InventoryTable>
+    suspend fun queryAll(saveID: Int): List<InventoryTable>
 
     /**
      * Insert or update.
      */
-    fun insertOrUpdate(table: InventoryTable)
+    suspend fun insertOrUpdate(table: InventoryTable)
 
     /**
      * Insert a list of inventory data.
      */
-    fun insertList(list: List<InventoryTable>)
+    suspend fun insertList(list: List<InventoryTable>)
 
     /**
      * Delete the inventory data for specified save ID.
      */
-    fun delete(saveID: Int)
+    suspend fun delete(saveID: Int)
 }

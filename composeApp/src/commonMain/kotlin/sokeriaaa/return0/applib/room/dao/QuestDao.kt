@@ -20,25 +20,25 @@ expect interface QuestDao {
     /**
      * Query the quest with specified save ID and quest key.
      */
-    fun query(saveID: Int, key: String): QuestTable
+    suspend fun query(saveID: Int, key: String): QuestTable?
 
     /**
      * Query all the quests with specified save ID.
      */
-    fun queryAll(saveID: Int): List<QuestTable>
+    suspend fun queryAll(saveID: Int): List<QuestTable>
 
     /**
      * Insert or update.
      */
-    fun insertOrUpdate(table: QuestTable)
+    suspend fun insertOrUpdate(table: QuestTable)
 
     /**
      * Insert a list of quests.
      */
-    fun insertList(list: List<QuestTable>)
+    suspend fun insertList(list: List<QuestTable>)
 
     /**
      * Delete the quests for specified save ID.
      */
-    fun delete(saveID: Int)
+    suspend fun delete(saveID: Int)
 }

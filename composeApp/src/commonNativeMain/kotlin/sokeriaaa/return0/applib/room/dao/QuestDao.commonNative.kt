@@ -14,12 +14,32 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.QuestTable
 
+@Dao
 actual interface QuestDao {
-    actual fun query(saveID: Int, key: String): QuestTable
-    actual fun queryAll(saveID: Int): List<QuestTable>
-    actual fun insertOrUpdate(table: QuestTable)
-    actual fun insertList(list: List<QuestTable>)
-    actual fun delete(saveID: Int)
+    @Query(
+        "SELECT * FROM `${QuestTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `quest_key`=:key"
+    )
+    actual suspend fun query(saveID: Int, key: String): QuestTable?
+
+    @Query(
+        "SELECT * FROM `${QuestTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun queryAll(saveID: Int): List<QuestTable>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertOrUpdate(table: QuestTable)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertList(list: List<QuestTable>)
+
+    @Query(
+        "DELETE FROM `${QuestTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun delete(saveID: Int)
 }

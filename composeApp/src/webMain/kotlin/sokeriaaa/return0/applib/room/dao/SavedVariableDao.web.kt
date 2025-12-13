@@ -17,9 +17,9 @@ package sokeriaaa.return0.applib.room.dao
 import sokeriaaa.return0.applib.room.table.SavedVariableTable
 
 actual interface SavedVariableDao {
-    actual fun query(saveID: Int, key: String): SavedVariableTable
-    actual fun queryAll(saveID: Int): List<SavedVariableTable>
-    actual fun insertOrUpdate(table: SavedVariableTable)
-    actual fun insertList(list: List<SavedVariableTable>)
-    actual fun delete(saveID: Int)
+    actual suspend fun query(saveID: Int, key: String): SavedVariableTable?
+    actual suspend fun queryAll(saveID: Int): List<SavedVariableTable>
+    actual suspend fun insertOrUpdate(table: SavedVariableTable)
+    actual suspend fun insertList(list: List<SavedVariableTable>)
+    actual suspend fun delete(saveID: Int)
 }

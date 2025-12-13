@@ -20,25 +20,25 @@ expect interface SavedVariableDao {
     /**
      * Query the saved variable with specified save ID and key.
      */
-    fun query(saveID: Int, key: String): SavedVariableTable
+    suspend fun query(saveID: Int, key: String): SavedVariableTable?
 
     /**
      * Query all the saved variables with specified save ID.
      */
-    fun queryAll(saveID: Int): List<SavedVariableTable>
+    suspend fun queryAll(saveID: Int): List<SavedVariableTable>
 
     /**
      * Insert or update.
      */
-    fun insertOrUpdate(table: SavedVariableTable)
+    suspend fun insertOrUpdate(table: SavedVariableTable)
 
     /**
      * Insert a list of saved variables.
      */
-    fun insertList(list: List<SavedVariableTable>)
+    suspend fun insertList(list: List<SavedVariableTable>)
 
     /**
      * Delete the saved variables for specified save ID.
      */
-    fun delete(saveID: Int)
+    suspend fun delete(saveID: Int)
 }

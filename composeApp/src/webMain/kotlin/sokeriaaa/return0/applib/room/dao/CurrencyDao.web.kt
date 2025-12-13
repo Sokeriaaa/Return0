@@ -18,9 +18,9 @@ import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
 actual interface CurrencyDao {
-    actual fun query(saveID: Int, currency: CurrencyType): CurrencyTable?
-    actual fun queryAll(saveID: Int): List<CurrencyTable>
-    actual fun insertOrUpdate(table: CurrencyTable)
-    actual fun insertList(list: List<CurrencyTable>)
-    actual fun delete(saveID: Int)
+    actual suspend fun query(saveID: Int, currency: CurrencyType): CurrencyTable?
+    actual suspend fun queryAll(saveID: Int): List<CurrencyTable>
+    actual suspend fun insertOrUpdate(table: CurrencyTable)
+    actual suspend fun insertList(list: List<CurrencyTable>)
+    actual suspend fun delete(saveID: Int)
 }

@@ -14,12 +14,32 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.SavedVariableTable
 
+@Dao
 actual interface SavedVariableDao {
-    actual fun query(saveID: Int, key: String): SavedVariableTable
-    actual fun queryAll(saveID: Int): List<SavedVariableTable>
-    actual fun insertOrUpdate(table: SavedVariableTable)
-    actual fun insertList(list: List<SavedVariableTable>)
-    actual fun delete(saveID: Int)
+    @Query(
+        "SELECT * FROM `${SavedVariableTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `saved_key`=:key"
+    )
+    actual suspend fun query(saveID: Int, key: String): SavedVariableTable?
+
+    @Query(
+        "SELECT * FROM `${SavedVariableTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun queryAll(saveID: Int): List<SavedVariableTable>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertOrUpdate(table: SavedVariableTable)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertList(list: List<SavedVariableTable>)
+
+    @Query(
+        "DELETE FROM `${SavedVariableTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun delete(saveID: Int)
 }

@@ -17,9 +17,9 @@ package sokeriaaa.return0.applib.room.dao
 import sokeriaaa.return0.applib.room.table.QuestTable
 
 actual interface QuestDao {
-    actual fun query(saveID: Int, key: String): QuestTable
-    actual fun queryAll(saveID: Int): List<QuestTable>
-    actual fun insertOrUpdate(table: QuestTable)
-    actual fun insertList(list: List<QuestTable>)
-    actual fun delete(saveID: Int)
+    actual suspend fun query(saveID: Int, key: String): QuestTable?
+    actual suspend fun queryAll(saveID: Int): List<QuestTable>
+    actual suspend fun insertOrUpdate(table: QuestTable)
+    actual suspend fun insertList(list: List<QuestTable>)
+    actual suspend fun delete(saveID: Int)
 }

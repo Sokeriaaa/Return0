@@ -21,25 +21,25 @@ expect interface CurrencyDao {
     /**
      * Query the currency value with specified save ID and currency type.
      */
-    fun query(saveID: Int, currency: CurrencyType): CurrencyTable?
+    suspend fun query(saveID: Int, currency: CurrencyType): CurrencyTable?
 
     /**
      * Query all the currency value with specified save ID.
      */
-    fun queryAll(saveID: Int): List<CurrencyTable>
+    suspend fun queryAll(saveID: Int): List<CurrencyTable>
 
     /**
      * Insert or update.
      */
-    fun insertOrUpdate(table: CurrencyTable)
+    suspend fun insertOrUpdate(table: CurrencyTable)
 
     /**
      * Insert a list of currency data.
      */
-    fun insertList(list: List<CurrencyTable>)
+    suspend fun insertList(list: List<CurrencyTable>)
 
     /**
      * Delete the currency data for specified save ID.
      */
-    fun delete(saveID: Int)
+    suspend fun delete(saveID: Int)
 }

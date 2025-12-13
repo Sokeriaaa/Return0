@@ -17,9 +17,9 @@ package sokeriaaa.return0.applib.room.dao
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
 
 actual interface SavedSwitchDao {
-    actual fun query(saveID: Int, key: String): SavedSwitchTable
-    actual fun queryAll(saveID: Int): List<SavedSwitchTable>
-    actual fun insertOrUpdate(table: SavedSwitchTable)
-    actual fun insertList(list: List<SavedSwitchTable>)
-    actual fun delete(saveID: Int)
+    actual suspend fun query(saveID: Int, key: String): SavedSwitchTable?
+    actual suspend fun queryAll(saveID: Int): List<SavedSwitchTable>
+    actual suspend fun insertOrUpdate(table: SavedSwitchTable)
+    actual suspend fun insertList(list: List<SavedSwitchTable>)
+    actual suspend fun delete(saveID: Int)
 }

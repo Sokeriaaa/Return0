@@ -1,0 +1,42 @@
+-- Copyright (C) 2025 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_quests (
+    save_id INTEGER NOT NULL,
+    quest_key TEXT NOT NULL,
+    expired_at INTEGER,
+    completed INTEGER NOT NULL,
+
+    PRIMARY KEY (save_id, quest_key)
+);
+
+query:
+SELECT *
+FROM return0_quests
+WHERE save_id = ? AND quest_key = ?;
+
+queryAll:
+SELECT *
+FROM return0_quests
+WHERE save_id = ?;
+
+insertOrUpdate:
+INSERT OR REPLACE INTO return0_quests (
+    save_id,
+    quest_key,
+    expired_at,
+    completed
+) VALUES (?, ?, ?,?);
+
+deleteBySave:
+DELETE FROM return0_quests
+WHERE save_id = ?;

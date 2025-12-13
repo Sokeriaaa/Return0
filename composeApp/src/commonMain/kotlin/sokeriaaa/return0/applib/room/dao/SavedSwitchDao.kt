@@ -20,25 +20,25 @@ expect interface SavedSwitchDao {
     /**
      * Query the saved switch with specified save ID and key.
      */
-    fun query(saveID: Int, key: String): SavedSwitchTable
+    suspend fun query(saveID: Int, key: String): SavedSwitchTable?
 
     /**
      * Query all the saved switches with specified save ID.
      */
-    fun queryAll(saveID: Int): List<SavedSwitchTable>
+    suspend fun queryAll(saveID: Int): List<SavedSwitchTable>
 
     /**
      * Insert or update.
      */
-    fun insertOrUpdate(table: SavedSwitchTable)
+    suspend fun insertOrUpdate(table: SavedSwitchTable)
 
     /**
      * Insert a list of saved switches.
      */
-    fun insertList(list: List<SavedSwitchTable>)
+    suspend fun insertList(list: List<SavedSwitchTable>)
 
     /**
      * Delete the saved switches for specified save ID.
      */
-    fun delete(saveID: Int)
+    suspend fun delete(saveID: Int)
 }

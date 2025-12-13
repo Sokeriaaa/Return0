@@ -14,12 +14,32 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
 
+@Dao
 actual interface SavedSwitchDao {
-    actual fun query(saveID: Int, key: String): SavedSwitchTable
-    actual fun queryAll(saveID: Int): List<SavedSwitchTable>
-    actual fun insertOrUpdate(table: SavedSwitchTable)
-    actual fun insertList(list: List<SavedSwitchTable>)
-    actual fun delete(saveID: Int)
+    @Query(
+        "SELECT * FROM `${SavedSwitchTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `saved_key`=:key"
+    )
+    actual suspend fun query(saveID: Int, key: String): SavedSwitchTable?
+
+    @Query(
+        "SELECT * FROM `${SavedSwitchTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun queryAll(saveID: Int): List<SavedSwitchTable>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertOrUpdate(table: SavedSwitchTable)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    actual suspend fun insertList(list: List<SavedSwitchTable>)
+
+    @Query(
+        "DELETE FROM `${SavedSwitchTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun delete(saveID: Int)
 }
