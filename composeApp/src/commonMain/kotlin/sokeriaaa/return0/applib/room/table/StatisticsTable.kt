@@ -1,3 +1,5 @@
+package sokeriaaa.return0.applib.room.table
+
 /**
  * Copyright (C) 2025 Sokeriaaa
  *
@@ -12,16 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+/**
+ * Statistics table.
+ */
+expect class StatisticsTable(
+    saveID: Int,
+    tokensEarned: Long = 0,
+    cryptosEarned: Long = 0,
+    totalDamage: Long = 0,
+    totalHeal: Long = 0,
+    enemiesDefeated: Long = 0,
+    linesMoved: Long = 0,
+) {
+    /**
+     * The save ID. -1 presents the temporary save the user is current playing.
+     */
+    var saveID: Int
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
-
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
+    var tokensEarned: Long
+    var cryptosEarned: Long
+    var totalDamage: Long
+    var totalHeal: Long
+    var enemiesDefeated: Long
+    var linesMoved: Long
 }

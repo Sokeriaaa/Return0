@@ -24,16 +24,31 @@ import kotlinx.coroutines.IO
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.applib.room.table.EntityTable
+import sokeriaaa.return0.applib.room.table.InventoryTable
+import sokeriaaa.return0.applib.room.table.QuestTable
+import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.applib.room.table.SavedSwitchTable
+import sokeriaaa.return0.applib.room.table.SavedVariableTable
+import sokeriaaa.return0.applib.room.table.StatisticsTable
 
 @Database(
     version = 1,
     entities = [
+        CurrencyTable::class,
         EmulatorEntryTable::class,
         EmulatorIndexTable::class,
         EntityTable::class,
+        InventoryTable::class,
+        QuestTable::class,
+        SaveMetaTable::class,
+        SavedSwitchTable::class,
+        SavedVariableTable::class,
+        StatisticsTable::class,
     ]
 )
 @ConstructedBy(AppDatabaseConstructor::class)
@@ -41,6 +56,7 @@ actual abstract class AppDatabase : RoomDatabase() {
     actual abstract fun getEmulatorEntryDao(): EmulatorEntryDao
     actual abstract fun getEmulatorIndexDao(): EmulatorIndexDao
     actual abstract fun getEntityDao(): EntityDao
+    actual abstract fun getSaveMetaDao(): SaveMetaDao
 
     companion object {
         const val DB_NAME = "return0_database"

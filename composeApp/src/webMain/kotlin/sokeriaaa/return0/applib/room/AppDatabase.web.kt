@@ -17,11 +17,13 @@ package sokeriaaa.return0.applib.room
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 
 actual abstract class AppDatabase {
     actual abstract fun getEmulatorEntryDao(): EmulatorEntryDao
     actual abstract fun getEmulatorIndexDao(): EmulatorIndexDao
     actual abstract fun getEntityDao(): EntityDao
+    actual abstract fun getSaveMetaDao(): SaveMetaDao
 
     companion object {
         fun createDatabase(): AppDatabase {

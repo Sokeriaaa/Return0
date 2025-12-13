@@ -12,16 +12,29 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import sokeriaaa.return0.applib.room.table.SaveMetaTable
 
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
+expect interface SaveMetaDao {
+
+    /**
+     * Query all the saves in current device.
+     */
+    suspend fun queryAll(): List<SaveMetaTable>
+
+    /**
+     * Query the save with the specified ID.
+     */
+    suspend fun query(saveID: Int): SaveMetaTable?
+
+    /**
+     * Insert or update the save.
+     */
+    suspend fun insertOrUpdate(table: SaveMetaTable)
+
+    /**
+     * Delete the save with specified ID.
+     */
+    suspend fun delete(saveID: Int)
 }

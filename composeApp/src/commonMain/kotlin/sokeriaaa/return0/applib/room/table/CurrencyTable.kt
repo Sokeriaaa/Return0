@@ -12,16 +12,30 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.applib.room.table
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
+/**
+ * Currency table.
+ */
+expect class CurrencyTable(
+    saveID: Int,
+    currency: CurrencyType,
+    amount: Int = 0,
+) {
+    /**
+     * The save ID. -1 presents the temporary save the user is current playing.
+     */
+    var saveID: Int
+
+    /**
+     * Currency type.
+     */
+    var currency: CurrencyType
+
+    /**
+     * Currency amount.
+     */
+    var amount: Int
 }

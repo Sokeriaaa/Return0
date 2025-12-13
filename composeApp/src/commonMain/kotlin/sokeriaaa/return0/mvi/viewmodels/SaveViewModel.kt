@@ -12,16 +12,6 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.mvi.viewmodels
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
-
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
-}
+class SaveViewModel : BaseViewModel()

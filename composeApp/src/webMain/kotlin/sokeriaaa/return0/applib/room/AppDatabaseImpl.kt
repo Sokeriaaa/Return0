@@ -21,6 +21,8 @@ import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDaoImpl
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EntityDaoImpl
+import sokeriaaa.return0.applib.room.dao.SameMetaDaoImpl
+import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 
 class AppDatabaseImpl : AppDatabase() {
 
@@ -40,9 +42,14 @@ class AppDatabaseImpl : AppDatabase() {
         EntityDaoImpl(_sqDatabase.sQEntityQueries)
     }
 
+    private val _saveMetaDao by lazy {
+        SameMetaDaoImpl(_sqDatabase.sQSaveMetaQueries)
+    }
+
     override fun getEmulatorEntryDao(): EmulatorEntryDao = _emulatorEntryDao
     override fun getEmulatorIndexDao(): EmulatorIndexDao = _emulatorIndexDao
     override fun getEntityDao(): EntityDao = _entityDao
+    override fun getSaveMetaDao(): SaveMetaDao = _saveMetaDao
 }
 
 internal expect val driver: SqlDriver

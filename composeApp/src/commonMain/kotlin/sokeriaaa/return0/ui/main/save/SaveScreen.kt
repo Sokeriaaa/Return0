@@ -12,16 +12,23 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.ui.main.save
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import org.koin.compose.koinInject
+import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
+@Composable
+fun SaveScreen(
+    viewModel: SaveViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    ),
+    mainNavHostController: NavHostController,
+    windowAdaptiveInfo: WindowAdaptiveInfo,
+) {
+
 }

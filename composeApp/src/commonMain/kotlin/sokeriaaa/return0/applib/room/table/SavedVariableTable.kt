@@ -12,16 +12,28 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.applib.room.table
 
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.dao.EntityDao
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+/**
+ * Saved variables by events.
+ */
+expect class SavedVariableTable(
+    saveID: Int,
+    key: String,
+    value: Int = 0,
+) {
+    /**
+     * The save ID. -1 presents the temporary save the user is current playing.
+     */
+    var saveID: Int
 
-expect abstract class AppDatabase {
-    abstract fun getEmulatorEntryDao(): EmulatorEntryDao
-    abstract fun getEmulatorIndexDao(): EmulatorIndexDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getSaveMetaDao(): SaveMetaDao
+    /**
+     * Variable key.
+     */
+    var key: String
+
+    /**
+     * Variable value.
+     */
+    var value: Int
 }

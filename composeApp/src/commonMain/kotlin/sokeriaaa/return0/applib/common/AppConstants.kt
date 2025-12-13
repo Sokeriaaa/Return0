@@ -15,6 +15,8 @@
 package sokeriaaa.return0.applib.common
 
 object AppConstants {
+    const val MAXIMUM_SAVES = 5
+
     const val BASE_CRITICAL_RATE: Float = 0.05F
     const val BASE_CRITICAL_DMG: Float = 0.5F
     const val BASE_TARGET_RATE: Float = 0.98F

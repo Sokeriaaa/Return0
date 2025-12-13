@@ -1,0 +1,44 @@
+-- Copyright (C) 2025 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_save_metas (
+    save_id INTEGER NOT NULL PRIMARY KEY,
+    created_timed INTEGER NOT NULL,
+    saved_timed INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    line_number INTEGER NOT NULL
+);
+
+queryAll:
+SELECT *
+FROM return0_save_metas;
+
+queryById:
+SELECT *
+FROM return0_save_metas
+WHERE save_id = ?;
+
+insertOrReplace:
+INSERT OR REPLACE INTO return0_save_metas(
+    save_id,
+    created_timed,
+    saved_timed,
+    title,
+    file_name,
+    line_number
+)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM return0_save_metas
+WHERE save_id = ?;

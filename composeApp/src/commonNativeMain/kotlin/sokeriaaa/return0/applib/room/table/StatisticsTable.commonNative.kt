@@ -17,27 +17,28 @@ package sokeriaaa.return0.applib.room.table
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import sokeriaaa.return0.shared.data.models.title.Title
 
 @Entity(
-    tableName = SaveMetaTable.TABLE_NAME,
+    tableName = StatisticsTable.TABLE_NAME,
 )
-actual data class SaveMetaTable actual constructor(
+actual class StatisticsTable actual constructor(
     @PrimaryKey
     @ColumnInfo(name = "save_id")
     actual var saveID: Int,
-    @ColumnInfo(name = "created_timed")
-    actual var createdTime: Long,
-    @ColumnInfo(name = "saved_timed")
-    actual var savedTime: Long,
-    @ColumnInfo(name = "title")
-    actual var title: Title,
-    @ColumnInfo(name = "file_name")
-    actual var fileName: String,
-    @ColumnInfo(name = "line_number")
-    actual var lineNumber: Int,
+    @ColumnInfo(name = "tokens_earned")
+    actual var tokensEarned: Long,
+    @ColumnInfo(name = "cryptos_earned")
+    actual var cryptosEarned: Long,
+    @ColumnInfo(name = "total_damage")
+    actual var totalDamage: Long,
+    @ColumnInfo(name = "total_heal")
+    actual var totalHeal: Long,
+    @ColumnInfo(name = "enemies_defeated")
+    actual var enemiesDefeated: Long,
+    @ColumnInfo(name = "lines_moved")
+    actual var linesMoved: Long
 ) {
     companion object {
-        const val TABLE_NAME = "return0_save_metas"
+        const val TABLE_NAME = "return0_statistics"
     }
 }
