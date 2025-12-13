@@ -18,10 +18,14 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.applib.room.getDatabaseBuilder
+import sokeriaaa.return0.applib.room.helper.RoomTransaction
+import sokeriaaa.return0.applib.room.helper.TransactionManager
 
 actual val platformModules: Module = module {
     // Room builder
     single { getDatabaseBuilder(get()) }
     // Database
     single { AppDatabase.createDatabase(get()) }
+    // Database: Transaction
+    single<TransactionManager> { RoomTransaction(database = get()) }
 }

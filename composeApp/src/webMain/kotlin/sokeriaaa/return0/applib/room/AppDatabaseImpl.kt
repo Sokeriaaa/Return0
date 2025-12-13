@@ -36,50 +36,46 @@ import sokeriaaa.return0.applib.room.dao.SavedVariableDaoImpl
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDaoImpl
 
-class AppDatabaseImpl : AppDatabase() {
-
-    private val _sqDatabase: SQDatabase by lazy {
-        SQDatabase(driver = driver)
-    }
+class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
 
     private val _currencyDao by lazy {
-        CurrencyDaoImpl(_sqDatabase.sQCurrencyQueries)
+        CurrencyDaoImpl(sqDatabase.sQCurrencyQueries)
     }
 
     private val _emulatorEntryDao by lazy {
-        EmulatorEntryDaoImpl(_sqDatabase.sQEmulatorEntryQueries)
+        EmulatorEntryDaoImpl(sqDatabase.sQEmulatorEntryQueries)
     }
 
     private val _emulatorIndexDao by lazy {
-        EmulatorIndexDaoImpl(_sqDatabase.sQEmulatorIndexQueries)
+        EmulatorIndexDaoImpl(sqDatabase.sQEmulatorIndexQueries)
     }
 
     private val _entityDao by lazy {
-        EntityDaoImpl(_sqDatabase.sQEntityQueries)
+        EntityDaoImpl(sqDatabase.sQEntityQueries)
     }
 
     private val _inventoryDao by lazy {
-        InventoryDaoImpl(_sqDatabase.sQInventoryQueries)
+        InventoryDaoImpl(sqDatabase.sQInventoryQueries)
     }
 
     private val _questDao by lazy {
-        QuestDaoImpl(_sqDatabase.sQQuestQueries)
+        QuestDaoImpl(sqDatabase.sQQuestQueries)
     }
 
     private val _savedSwitchDao by lazy {
-        SavedSwitchDaoImpl(_sqDatabase.sQSavedSwitchesQueries)
+        SavedSwitchDaoImpl(sqDatabase.sQSavedSwitchesQueries)
     }
 
     private val _savedVariableDao by lazy {
-        SavedVariableDaoImpl(_sqDatabase.sQSavedVariablesQueries)
+        SavedVariableDaoImpl(sqDatabase.sQSavedVariablesQueries)
     }
 
     private val _saveMetaDao by lazy {
-        SaveMetaDaoImpl(_sqDatabase.sQSaveMetaQueries)
+        SaveMetaDaoImpl(sqDatabase.sQSaveMetaQueries)
     }
 
     private val _statisticsDao by lazy {
-        StatisticsDaoImpl(_sqDatabase.sQStatisticsQueries)
+        StatisticsDaoImpl(sqDatabase.sQStatisticsQueries)
     }
 
     override fun getCurrencyDao(): CurrencyDao = _currencyDao

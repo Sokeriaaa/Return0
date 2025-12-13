@@ -12,20 +12,20 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.modules
+package sokeriaaa.return0.applib.room.helper
 
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import androidx.room.Transactor
+import androidx.room.useWriterConnection
 import sokeriaaa.return0.applib.room.AppDatabase
-import sokeriaaa.return0.applib.room.SQDatabase
-import sokeriaaa.return0.applib.room.driver
-import sokeriaaa.return0.applib.room.helper.SqlDelightTransaction
-import sokeriaaa.return0.applib.room.helper.TransactionManager
 
-actual val platformModules: Module = module {
-    // Database
-    single { SQDatabase(driver = driver) }
-    single { AppDatabase.createDatabase(sqDatabase = get()) }
-    // Database: Transaction
-    single<TransactionManager> { SqlDelightTransaction(sqDatabase = get()) }
+class RoomTransaction(
+    private val database: AppDatabase
+) : TransactionManager {
+    override suspend fun <T> withTransaction(block: suspend () -> T): T {
+        return database.useWriterConnection {
+            it.withTransaction(Transactor.SQLiteTransactionType.IMMEDIATE) {
+                block()
+            }
+        }
+    }
 }

@@ -38,8 +38,8 @@ actual abstract class AppDatabase {
     actual abstract fun getStatisticsDao(): StatisticsDao
 
     companion object {
-        fun createDatabase(): AppDatabase {
-            return AppDatabaseImpl()
+        fun createDatabase(sqDatabase: SQDatabase): AppDatabase {
+            return AppDatabaseImpl(sqDatabase)
         }
     }
 }

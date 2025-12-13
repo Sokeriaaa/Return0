@@ -12,20 +12,11 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.modules
+package sokeriaaa.return0.applib.room.helper
 
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import sokeriaaa.return0.applib.room.AppDatabase
-import sokeriaaa.return0.applib.room.getDatabaseBuilder
-import sokeriaaa.return0.applib.room.helper.RoomTransaction
-import sokeriaaa.return0.applib.room.helper.TransactionManager
-
-actual val platformModules: Module = module {
-    // Room builder
-    single { getDatabaseBuilder() }
-    // Database
-    single { AppDatabase.createDatabase(get()) }
-    // Database: Transaction
-    single<TransactionManager> { RoomTransaction(database = get()) }
+/**
+ * Multiplatform transaction manager.
+ */
+interface TransactionManager {
+    suspend fun <T> withTransaction(block: suspend () -> T): T
 }
