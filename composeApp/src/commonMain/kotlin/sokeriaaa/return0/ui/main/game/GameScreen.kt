@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.ui.main.game
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +25,13 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
@@ -38,6 +45,7 @@ import return0.composeapp.generated.resources.game_menu_quit
 import return0.composeapp.generated.resources.game_menu_save
 import return0.composeapp.generated.resources.game_menu_settings
 import return0.composeapp.generated.resources.game_menu_teams
+import return0.composeapp.generated.resources.game_quit_warn
 import return0.composeapp.generated.resources.ic_outline_code_24
 import return0.composeapp.generated.resources.ic_outline_groups_24
 import return0.composeapp.generated.resources.ic_outline_inventory_2_24
@@ -49,9 +57,11 @@ import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppNavigateDrawerItem
 import sokeriaaa.return0.ui.nav.Scene
+import sokeriaaa.return0.ui.nav.navigatePopUpTo
 import sokeriaaa.return0.ui.nav.navigateSingleTop
 
 /**
@@ -69,6 +79,21 @@ fun GameScreen(
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    // Quit dialog
+    var isShowingQuitDialog by remember { mutableStateOf(false) }
+    if (isShowingQuitDialog) {
+        AppAlertDialog(
+            modifier = Modifier.padding(vertical = 64.dp),
+            title = stringResource(Res.string.game_menu_quit),
+            text = stringResource(Res.string.game_quit_warn),
+            onDismiss = { isShowingQuitDialog = false },
+            onConfirmed = {
+                isShowingQuitDialog = false
+                mainNavHostController.navigatePopUpTo(Scene.Main.route)
+            }
+        )
+    }
 
     // Combat event
     val combatViewModel: CombatViewModel = viewModel()
@@ -89,7 +114,9 @@ fun GameScreen(
                 onTeamsClicked = {},
                 onInventoryClicked = {},
                 onSettingsClicked = {},
-                onQuitClicked = {},
+                onQuitClicked = {
+                    isShowingQuitDialog = true
+                },
             )
         },
     ) {

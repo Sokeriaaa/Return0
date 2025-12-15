@@ -146,6 +146,17 @@ fun NavController.navigateSingleTop(route: String) {
     }
 }
 
+fun NavController.navigatePopUpTo(route: String) {
+    navigate(
+        route = route
+    ) {
+        launchSingleTop = true
+        currentDestination?.route?.let {
+            popUpTo(it) { inclusive = true }
+        }
+    }
+}
+
 sealed class Scene(val route: String) {
     data object Main : Scene(route = "r0_main")
     data object Game : Scene(route = "r0_game")
