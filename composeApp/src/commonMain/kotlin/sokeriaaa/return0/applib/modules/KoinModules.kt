@@ -30,6 +30,7 @@ import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
+import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 object KoinModules {
@@ -44,6 +45,11 @@ object KoinModules {
                 initializer { GameViewModel() }
                 initializer { CombatViewModel() }
                 initializer { ProfileViewModel() }
+                initializer {
+                    SaveViewModel(
+                        isSaving = this[SaveViewModel.isSavingKey]!!,
+                    )
+                }
                 initializer { EmulatorViewModel() }
                 initializer { EmulatorPresetViewModel() }
             }

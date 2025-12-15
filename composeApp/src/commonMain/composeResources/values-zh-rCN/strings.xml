@@ -11,10 +11,19 @@
     <string name="general_level">等级</string>
     <string name="general_level_w_value">%1$s级</string>
     <string name="general_please_select">请选择…</string>
+    <string name="general_location">%1$s，第%2$s行</string>
 
     <string name="new_game">新游戏</string>
     <string name="load_game">读取存档</string>
     <string name="settings">设置</string>
+
+    <string name="saves">存档</string>
+    <string name="saves_num">存档 #%1$s</string>
+    <string name="saves_idle">空闲</string>
+    <string name="saves_select">选择存档位置</string>
+    <string name="saves_load_warn">读取此存档？</string>
+    <string name="saves_overwrite_warn_title">覆盖此存档？</string>
+    <string name="saves_overwrite_warn_text">被覆盖的存档将会丢失，且无法恢复。</string>
 
     <string name="emulator">模拟器</string>
     <string name="emulator_party">我方</string>

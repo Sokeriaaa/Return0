@@ -11,10 +11,19 @@
     <string name="general_level">Level</string>
     <string name="general_level_w_value">Lv.%1$s</string>
     <string name="general_please_select">Please select…</string>
+    <string name="general_location">%1$s, Row %2$s</string>
 
     <string name="new_game">New Game</string>
     <string name="load_game">Load Game</string>
     <string name="settings">Settings</string>
+
+    <string name="saves">Saves</string>
+    <string name="saves_num">Save #%1$s</string>
+    <string name="saves_idle">Idle</string>
+    <string name="saves_select">Select a slot to save</string>
+    <string name="saves_load_warn">Load this save?</string>
+    <string name="saves_overwrite_warn_title">Overwrite this save?</string>
+    <string name="saves_overwrite_warn_text">The overwritten save will be lost and cannot be undone.</string>
 
     <string name="emulator">Emulator</string>
     <string name="emulator_party">Party</string>

@@ -82,7 +82,9 @@ fun GameScreen(
         drawerState = drawerState,
         drawerContent = {
             GameDrawerContent(
-                onSaveClicked = {},
+                onSaveClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Save.route + "/true")
+                },
                 onEntitiesClicked = {},
                 onTeamsClicked = {},
                 onInventoryClicked = {},

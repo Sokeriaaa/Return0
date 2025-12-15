@@ -77,7 +77,9 @@ fun MainScreen(
                 onNewGameClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Game.route)
                 },
-                onLoadGameClicked = {},
+                onLoadGameClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Save.route + "/false")
+                },
                 onEmulatorClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Emulator.route)
                 },

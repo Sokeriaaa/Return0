@@ -27,14 +27,18 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.savedstate.read
 import sokeriaaa.return0.ui.main.MainScreen
 import sokeriaaa.return0.ui.main.combat.CombatScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorPresetScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
 import sokeriaaa.return0.ui.main.game.GameScreen
 import sokeriaaa.return0.ui.main.profile.ProfileScreen
+import sokeriaaa.return0.ui.main.save.SaveScreen
 
 @Composable
 fun AppNavHost(
@@ -70,6 +74,22 @@ fun AppNavHost(
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
+        myComposable(
+            scene = Scene.Save,
+            arguments = listOf(
+                myNavArgument(
+                    name = "isSave",
+                    type = NavType.BoolType,
+                ),
+            ),
+        ) {
+            val argument = it.arguments!!
+            SaveScreen(
+                isSaving = argument.read { getBoolean("isSave") },
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
         myComposable(Scene.Emulator) {
             EmulatorScreen(
                 mainNavHostController = mainNavHostController,
@@ -97,6 +117,15 @@ private fun NavGraphBuilder.myComposable(
     content = content,
 )
 
+private inline fun <reified T> myNavArgument(
+    name: String,
+    type: NavType<T>
+): NamedNavArgument = navArgument(
+    name = name,
+) {
+    this.type = type
+}
+
 private fun EnterTransition() =
     slideInHorizontally(
         animationSpec = tween(durationMillis = 400),
@@ -122,6 +151,7 @@ sealed class Scene(val route: String) {
     data object Game : Scene(route = "r0_game")
     data object Combat : Scene(route = "r0_combat")
     data object Profile : Scene(route = "r0_profile")
+    data object Save : Scene(route = "r0_save")
     data object Emulator : Scene(route = "r0_emulator")
     data object EmulatorPreset : Scene(route = "r0_emulator_preset")
 }
