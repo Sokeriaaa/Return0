@@ -20,6 +20,14 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 class EntityDaoImpl(
     private val queries: SQEntityQueries,
 ) : EntityDao {
+
+    override suspend fun queryAll(saveID: Int): List<EntityTable> {
+        return queries.queryAll(
+            save_id = saveID.toLong(),
+            mapper = ::convertToTable,
+        ).executeAsList()
+    }
+
     override suspend fun obtainedNewEntity(
         saveID: Int,
         entityName: String,

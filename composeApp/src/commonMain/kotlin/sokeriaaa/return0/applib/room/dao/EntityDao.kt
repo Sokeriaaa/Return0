@@ -19,6 +19,13 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 expect interface EntityDao {
 
     /**
+     * Query all entities form specified save ID.
+     */
+    suspend fun queryAll(
+        saveID: Int = -1,
+    ): List<EntityTable>
+
+    /**
      * Invokes when the player obtained a new entity.
      */
     suspend fun obtainedNewEntity(

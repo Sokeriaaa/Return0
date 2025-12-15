@@ -22,6 +22,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.CombatRepo
+import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -58,6 +59,21 @@ object KoinModules {
         // Repo
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
+        single {
+            GameStateRepo(
+                archiveRepo = get(),
+                transactionManager = get(),
+                currencyDao = get(),
+                entityDao = get(),
+                inventoryDao = get(),
+                questDao = get(),
+                savedSwitchDao = get(),
+                savedVariableDao = get(),
+                saveMetaDao = get(),
+                statisticsDao = get(),
+                teamDao = get(),
+            )
+        }
         // Database: Dao
         single { get<AppDatabase>().getCurrencyDao() }
         single { get<AppDatabase>().getEmulatorEntryDao() }
@@ -69,6 +85,7 @@ object KoinModules {
         single { get<AppDatabase>().getSavedVariableDao() }
         single { get<AppDatabase>().getSaveMetaDao() }
         single { get<AppDatabase>().getStatisticsDao() }
+        single { get<AppDatabase>().getTeamDao() }
     }
 
 }

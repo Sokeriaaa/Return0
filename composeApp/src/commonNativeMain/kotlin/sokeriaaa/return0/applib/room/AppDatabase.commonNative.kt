@@ -31,6 +31,7 @@ import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
+import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
@@ -41,6 +42,7 @@ import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
 import sokeriaaa.return0.applib.room.table.SavedVariableTable
 import sokeriaaa.return0.applib.room.table.StatisticsTable
+import sokeriaaa.return0.applib.room.table.TeamTable
 
 @Database(
     version = 1,
@@ -55,6 +57,7 @@ import sokeriaaa.return0.applib.room.table.StatisticsTable
         SavedSwitchTable::class,
         SavedVariableTable::class,
         StatisticsTable::class,
+        TeamTable::class,
     ]
 )
 @ConstructedBy(AppDatabaseConstructor::class)
@@ -69,6 +72,7 @@ actual abstract class AppDatabase : RoomDatabase() {
     actual abstract fun getSavedVariableDao(): SavedVariableDao
     actual abstract fun getSaveMetaDao(): SaveMetaDao
     actual abstract fun getStatisticsDao(): StatisticsDao
+    actual abstract fun getTeamDao(): TeamDao
 
     companion object {
         const val DB_NAME = "return0_database"

@@ -16,11 +16,17 @@ package sokeriaaa.return0.applib.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.EntityTable
 
 @Dao
 actual interface EntityDao {
+    @Query(
+        "SELECT * FROM `${EntityTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    actual suspend fun queryAll(saveID: Int): List<EntityTable>
+
     @Query(
         "INSERT INTO `${EntityTable.TABLE_NAME}` " +
                 "(`save_id`, `entity_name`,`current_hp`,`current_sp`,`party_index`) " +
@@ -73,10 +79,10 @@ actual interface EntityDao {
     )
     actual suspend fun updatePlugin(saveID: Int, entityName: String, pluginID: Long?)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     actual suspend fun insert(entityTable: EntityTable)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     actual suspend fun insertList(list: List<EntityTable>)
 
     @Query(

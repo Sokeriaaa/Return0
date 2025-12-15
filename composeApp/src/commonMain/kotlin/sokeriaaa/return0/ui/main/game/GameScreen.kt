@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -44,11 +45,18 @@ import return0.composeapp.generated.resources.ic_outline_logout_24
 import return0.composeapp.generated.resources.ic_outline_menu_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.ic_outline_settings_24
+import sokeriaaa.return0.mvi.intents.CombatIntent
+import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppNavigateDrawerItem
+import sokeriaaa.return0.ui.nav.Scene
+import sokeriaaa.return0.ui.nav.navigateSingleTop
 
+/**
+ * The main gaming field.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(
@@ -61,6 +69,15 @@ fun GameScreen(
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    // Combat event
+    val combatViewModel: CombatViewModel = viewModel()
+    LaunchedEffect(Unit) {
+        viewModel.combatEvents.collect {
+            combatViewModel.onIntent(CombatIntent.Prepare(it.config))
+            mainNavHostController.navigateSingleTop(Scene.Combat.route)
+        }
+    }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {

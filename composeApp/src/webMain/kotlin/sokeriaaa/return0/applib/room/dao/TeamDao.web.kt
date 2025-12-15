@@ -12,25 +12,16 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.mvi.viewmodels
+package sokeriaaa.return0.applib.room.dao
 
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import org.koin.core.component.inject
-import sokeriaaa.return0.applib.repository.GameStateRepo
-import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.return0.applib.room.table.TeamTable
 
-class GameViewModel : BaseViewModel() {
-
-    /**
-     * Game state repo.
-     */
-    private val _gameStateRepo: GameStateRepo by inject()
-
-    private val _combatEvents = MutableSharedFlow<Event.Combat>()
-
-    /**
-     * Combat events.
-     */
-    val combatEvents = _combatEvents.asSharedFlow()
+actual interface TeamDao {
+    actual suspend fun query(saveID: Int, teamID: Int): TeamTable?
+    actual suspend fun queryAll(saveID: Int): List<TeamTable>
+    actual suspend fun insertOrUpdate(table: TeamTable)
+    actual suspend fun insertList(list: List<TeamTable>)
+    actual suspend fun delete(saveID: Int)
+    actual suspend fun activateTeam(saveID: Int, teamID: Int)
+    actual suspend fun getActivatedTeam(saveID: Int): TeamTable?
 }

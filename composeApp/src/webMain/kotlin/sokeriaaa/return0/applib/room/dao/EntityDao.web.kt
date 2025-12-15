@@ -17,6 +17,7 @@ package sokeriaaa.return0.applib.room.dao
 import sokeriaaa.return0.applib.room.table.EntityTable
 
 actual interface EntityDao {
+    actual suspend fun queryAll(saveID: Int): List<EntityTable>
     actual suspend fun obtainedNewEntity(
         saveID: Int,
         entityName: String,

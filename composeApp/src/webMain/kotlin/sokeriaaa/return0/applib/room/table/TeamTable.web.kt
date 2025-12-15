@@ -12,25 +12,15 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.mvi.viewmodels
+package sokeriaaa.return0.applib.room.table
 
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import org.koin.core.component.inject
-import sokeriaaa.return0.applib.repository.GameStateRepo
-import sokeriaaa.return0.shared.data.models.story.event.Event
-
-class GameViewModel : BaseViewModel() {
-
-    /**
-     * Game state repo.
-     */
-    private val _gameStateRepo: GameStateRepo by inject()
-
-    private val _combatEvents = MutableSharedFlow<Event.Combat>()
-
-    /**
-     * Combat events.
-     */
-    val combatEvents = _combatEvents.asSharedFlow()
-}
+actual class TeamTable actual constructor(
+    actual var saveID: Int,
+    actual var teamID: Int,
+    actual var name: String?,
+    actual var isActivated: Boolean,
+    actual var slot1: String?,
+    actual var slot2: String?,
+    actual var slot3: String?,
+    actual var slot4: String?
+)

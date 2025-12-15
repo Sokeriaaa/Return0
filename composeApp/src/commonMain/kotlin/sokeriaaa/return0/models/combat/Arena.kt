@@ -379,14 +379,23 @@ class Arena(
         fun onReceivedLog(log: ArenaLogV4)
 
         /**
+         * Invokes when the combat is end.
+         *
+         * @param result true for winning, false for losing.
+         */
+        fun onCombatEnd(result: Boolean) {}
+
+        /**
          * Invokes when the user won the combat.
          */
-        fun onWin()
+        @Deprecated("Use onCombatEnd() instead.")
+        fun onWin() = onCombatEnd(true)
 
         /**
          * Invokes when the user lost the combat.
          */
-        fun onLose()
+        @Deprecated("Use onCombatEnd() instead.")
+        fun onLose() = onCombatEnd(false)
     }
 
     /**

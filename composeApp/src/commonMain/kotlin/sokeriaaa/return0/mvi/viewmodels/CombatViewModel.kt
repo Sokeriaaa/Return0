@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.CombatRepo
+import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
 import sokeriaaa.return0.models.combat.ArenaLogV4
@@ -33,6 +34,7 @@ import sokeriaaa.return0.models.combat.selectableCount
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
+import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
@@ -43,6 +45,11 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
      * Combat Repo.
      */
     private val _combatRepo: CombatRepo by inject()
+
+    /**
+     * Game state Repo.
+     */
+    private val _gameStateRepo: GameStateRepo by inject()
 
     /**
      * The combat status.
@@ -96,6 +103,8 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
      */
     private var arena: Arena? = null
 
+    private var arenaConfig: ArenaConfig? = null
+
     private val _entities: MutableList<Entity> = mutableStateListOf()
     val entities: List<Entity> = _entities
 
@@ -123,6 +132,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                     arenaConfig = intent.config,
                     callback = this,
                 )
+                arenaConfig = intent.config
                 _entities.addAll(arena!!.entities)
                 _parties.addAll(arena!!.parties.entities)
                 _enemies.addAll(arena!!.enemies.entities)
@@ -275,11 +285,13 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
         }
     }
 
-    override fun onWin() {
-        combatStatus = true
-    }
-
-    override fun onLose() {
-        combatStatus = false
+    override fun onCombatEnd(result: Boolean) {
+        viewModelScope.launch {
+            // Save state if it's not emulator.
+            if (arenaConfig?.mode?.equals(ArenaConfig.Mode.EMULATOR) == false) {
+                _gameStateRepo.saveEntityState(parties = parties)
+            }
+            combatStatus = result
+        }
     }
 }

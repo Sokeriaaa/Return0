@@ -24,6 +24,7 @@ import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
+import sokeriaaa.return0.applib.room.dao.TeamDao
 
 expect abstract class AppDatabase {
     abstract fun getCurrencyDao(): CurrencyDao
@@ -36,4 +37,5 @@ expect abstract class AppDatabase {
     abstract fun getSavedVariableDao(): SavedVariableDao
     abstract fun getSaveMetaDao(): SaveMetaDao
     abstract fun getStatisticsDao(): StatisticsDao
+    abstract fun getTeamDao(): TeamDao
 }

@@ -28,6 +28,11 @@ CREATE INDEX return0_entities_party_index
 CREATE INDEX return0_entities_plugin_id
     ON return0_entities(plugin_id);
 
+queryAll:
+SELECT *
+FROM return0_entities
+WHERE save_id = ?;
+
 obtainNewEntity:
 INSERT INTO return0_entities(
     save_id,

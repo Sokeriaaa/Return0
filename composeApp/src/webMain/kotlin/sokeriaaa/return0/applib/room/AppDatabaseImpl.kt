@@ -35,6 +35,8 @@ import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDaoImpl
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDaoImpl
+import sokeriaaa.return0.applib.room.dao.TeamDao
+import sokeriaaa.return0.applib.room.dao.TeamDaoImpl
 
 class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
 
@@ -78,6 +80,10 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
         StatisticsDaoImpl(sqDatabase.sQStatisticsQueries)
     }
 
+    private val _teamDao by lazy {
+        TeamDaoImpl(sqDatabase.sQTeamQueries)
+    }
+
     override fun getCurrencyDao(): CurrencyDao = _currencyDao
     override fun getEmulatorEntryDao(): EmulatorEntryDao = _emulatorEntryDao
     override fun getEmulatorIndexDao(): EmulatorIndexDao = _emulatorIndexDao
@@ -88,6 +94,7 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
     override fun getSavedVariableDao(): SavedVariableDao = _savedVariableDao
     override fun getSaveMetaDao(): SaveMetaDao = _saveMetaDao
     override fun getStatisticsDao(): StatisticsDao = _statisticsDao
+    override fun getTeamDao(): TeamDao = _teamDao
 }
 
 internal expect val driver: SqlDriver
