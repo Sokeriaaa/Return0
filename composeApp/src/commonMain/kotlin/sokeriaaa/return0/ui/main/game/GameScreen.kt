@@ -96,7 +96,10 @@ fun GameScreen(
     }
 
     // Combat event
-    val combatViewModel: CombatViewModel = viewModel()
+    val combatViewModel: CombatViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    )
     LaunchedEffect(Unit) {
         viewModel.combatEvents.collect {
             combatViewModel.onIntent(CombatIntent.Prepare(it.config))
