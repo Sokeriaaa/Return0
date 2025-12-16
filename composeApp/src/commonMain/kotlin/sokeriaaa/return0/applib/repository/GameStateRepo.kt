@@ -14,6 +14,10 @@
  */
 package sokeriaaa.return0.applib.repository
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
@@ -26,11 +30,14 @@ import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.CurrencyTable
+import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.StatisticsTable
+import sokeriaaa.return0.applib.room.table.TeamTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
+import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.title.Title
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -53,6 +60,50 @@ class GameStateRepo(
 ) {
     private val _currencies: MutableMap<CurrencyType, Int> = HashMap()
     val currencies: Map<CurrencyType, Int> = _currencies
+
+    /**
+     * Current map.
+     */
+    var map: MapData by mutableStateOf(
+        // TODO Testing
+        MapData(
+            name = AppConstants.ENTRANCE_MAP,
+            lines = 100,
+            buggyRange = listOf(20 to 80),
+            buggyEntries = listOf(
+                MapData.BuggyEntry(
+                    listOf("Object"),
+                )
+            ),
+            difficulty = 1,
+            events = emptyList()
+        )
+    )
+        private set
+
+    /**
+     * Current line number.
+     */
+    var lineNumber: Int by mutableIntStateOf(1)
+        private set
+
+    /**
+     * Update user position.
+     */
+    fun updatePosition(
+        fileName: String,
+        lineNumber: Int,
+    ) {
+        // TODO Update map
+        this.lineNumber = lineNumber
+    }
+
+    /**
+     * Update line number.
+     */
+    fun updateLineNumber(lineNumber: Int) {
+        this.lineNumber = lineNumber
+    }
 
     /**
      * Generate a new save for specified save ID and **replace the old one**.
@@ -91,13 +142,39 @@ class GameStateRepo(
                     linesMoved = 0,
                 )
             )
+            // TODO Temp code for adding entities for testing.
+            // TODO Will be removed later.
+            entityDao.insert(
+                EntityTable(
+                    saveID = saveID,
+                    entityName = "Object",
+                )
+            )
+            teamDao.insertOrUpdate(
+                TeamTable(
+                    saveID = saveID,
+                    teamID = 1,
+                    name = "testing",
+                    isActivated = true,
+                    slot1 = "Object",
+                    slot2 = null,
+                    slot3 = null,
+                    slot4 = null,
+                )
+            )
         }
+        load()
     }
 
     /**
      * Load game state from database to this repo.
      */
     suspend fun load(saveID: Int = -1) {
+        // Position
+        saveMetaDao.query(saveID = saveID)?.let {
+            // TODO change map
+            lineNumber = it.lineNumber
+        }
         // Currency
         CurrencyType.entries.forEach { currency ->
             _currencies[currency] = currencyDao.query(saveID, currency)?.amount ?: 0

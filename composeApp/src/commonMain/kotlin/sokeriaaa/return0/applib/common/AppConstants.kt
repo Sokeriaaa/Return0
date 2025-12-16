@@ -19,6 +19,7 @@ object AppConstants {
     const val MAXIMUM_TEAMS = 5
 
     const val ENTRANCE_MAP = "entrance"
+    const val COMBAT_RATE_BASE = 1 shl 16
 
     const val BASE_CRITICAL_RATE: Float = 0.05F
     const val BASE_CRITICAL_DMG: Float = 0.5F

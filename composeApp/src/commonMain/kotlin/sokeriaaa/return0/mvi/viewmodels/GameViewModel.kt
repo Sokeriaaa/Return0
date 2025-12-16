@@ -14,13 +14,26 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
+import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import kotlin.random.Random
 
 class GameViewModel : BaseViewModel() {
+    /**
+     * Archive repo.
+     */
+    private val _archiveRepo: ArchiveRepo by inject()
 
     /**
      * Game state repo.
@@ -33,4 +46,89 @@ class GameViewModel : BaseViewModel() {
      * Combat events.
      */
     val combatEvents = _combatEvents.asSharedFlow()
+
+    /**
+     * File name.
+     */
+    val fileName: String get() = _gameStateRepo.map.name
+
+    /**
+     * Line number.
+     */
+    val lineNumber: Int get() = _gameStateRepo.lineNumber
+
+    /**
+     * Lines passed since last combat. It affects the chance to encounter a new combat
+     * in the buggy range. Set to 0 after a combat is finished or the player leaves the range.
+     */
+    private var _linesSinceLastCombat = 0
+
+    /**
+     * Moving job.
+     */
+    private var _movingJob: Job? = null
+
+    fun requestMoveTo(
+        targetLine: Int
+    ) {
+        // Cancel the previous
+        _movingJob?.cancel()
+        val start = _gameStateRepo.lineNumber
+        if (start == targetLine) {
+            return
+        }
+        _movingJob = viewModelScope.launch {
+            val direction = if (targetLine > start) 1 else -1
+            var current = start
+            while (current != targetLine) {
+                // Move for every 200ms.
+                delay(200)
+                current += direction
+                _gameStateRepo.updateLineNumber(current)
+                if (
+                    _gameStateRepo.map.buggyRange.any {
+                        it.first <= current && current <= it.second
+                    }
+                ) {
+                    // Is in buggy range
+                    _linesSinceLastCombat++
+                    if (checkEncounter()) {
+                        _linesSinceLastCombat = 0
+                        // Start combat
+                        _combatEvents.emit(
+                            Event.Combat(
+                                config = ArenaConfig(
+                                    mode = ArenaConfig.Mode.COMMON,
+                                    parties = _gameStateRepo.loadTeam(useCurrentData = false),
+                                    enemies = _gameStateRepo.map.buggyEntries.random()
+                                        .enemies.map {
+                                            EnemyState(
+                                                entityData = _archiveRepo.getEntityData(it)!!,
+                                                level = 1
+                                            )
+                                        }
+                                )
+                            )
+                        )
+                        interruptMoving()
+                    }
+                } else {
+                    // Outside in buggy range
+                    _linesSinceLastCombat = 0
+                }
+            }
+        }
+    }
+
+    /**
+     * The player is about to encounter the enemies
+     */
+    private fun checkEncounter(): Boolean {
+        return Random.nextInt(AppConstants.COMBAT_RATE_BASE ushr _linesSinceLastCombat) == 0
+    }
+
+    private fun interruptMoving() {
+        _movingJob?.cancel()
+        _movingJob = null
+    }
 }

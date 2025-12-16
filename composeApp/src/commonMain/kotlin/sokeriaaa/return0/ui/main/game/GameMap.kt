@@ -73,9 +73,12 @@ fun GameMap(
                 MapRow(
                     modifier = Modifier.fillMaxWidth(),
                     lineNumber = it + 1,
-                    currentLine = 51,
+                    currentLine = viewModel.lineNumber,
                     text = "    println(\"Hello World!\")",
                     isEvent = it == 50,
+                    onMoveClicked = {
+                        viewModel.requestMoveTo(it + 1)
+                    }
                 )
             }
         }
@@ -145,7 +148,11 @@ private fun MapRow(
                 .width(48.dp)
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .padding(end = 12.dp),
-            text = lineNumber?.toString() ?: "",
+            text = if (lineNumber == currentLine) {
+                "⬤"
+            } else {
+                lineNumber?.toString() ?: ""
+            },
             textAlign = TextAlign.End,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.bodySmall,
