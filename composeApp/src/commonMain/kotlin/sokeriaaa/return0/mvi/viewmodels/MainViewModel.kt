@@ -14,10 +14,27 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
-import sokeriaaa.return0.mvi.intents.BaseIntent
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.mvi.intents.CommonIntent
 
 class MainViewModel : BaseViewModel() {
-    override fun onIntent(intent: BaseIntent) {
-        TODO("Not yet implemented")
+
+    /**
+     * Game state repo.
+     */
+    private val _gameStateRepo: GameStateRepo by inject()
+
+    fun startNewGame(
+        onLoadFinished: () -> Unit
+    ) {
+        viewModelScope.launch {
+            onIntent(CommonIntent.ShowLoading)
+            _gameStateRepo.newGame()
+            onIntent(CommonIntent.HideLoading)
+            onLoadFinished()
+        }
     }
 }

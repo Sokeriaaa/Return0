@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.applib.repository
 
+import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
@@ -25,9 +26,14 @@ import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.CurrencyTable
+import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.applib.room.table.StatisticsTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
+import sokeriaaa.return0.shared.data.models.title.Title
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class GameStateRepo(
     // Archive repo
@@ -47,6 +53,46 @@ class GameStateRepo(
 ) {
     private val _currencies: MutableMap<CurrencyType, Int> = HashMap()
     val currencies: Map<CurrencyType, Int> = _currencies
+
+    /**
+     * Generate a new save for specified save ID and **replace the old one**.
+     */
+    @OptIn(ExperimentalTime::class)
+    suspend fun newGame(saveID: Int = -1) {
+        transactionManager.withTransaction {
+            val time = Clock.System.now().toEpochMilliseconds()
+            // Remove the old one.
+            currencyDao.delete(saveID = saveID)
+            entityDao.deleteSave(saveID = saveID)
+            inventoryDao.delete(saveID = saveID)
+            questDao.delete(saveID = saveID)
+            savedSwitchDao.delete(saveID = saveID)
+            savedVariableDao.delete(saveID = saveID)
+            teamDao.delete(saveID = saveID)
+            // Insert/Replace
+            saveMetaDao.insertOrUpdate(
+                SaveMetaTable(
+                    saveID = saveID,
+                    createdTime = time,
+                    savedTime = time,
+                    title = Title.INTERN,
+                    fileName = AppConstants.ENTRANCE_MAP,
+                    lineNumber = 1,
+                )
+            )
+            statisticsDao.insertOrUpdate(
+                StatisticsTable(
+                    saveID = saveID,
+                    tokensEarned = 0,
+                    cryptosEarned = 0,
+                    totalDamage = 0,
+                    totalHeal = 0,
+                    enemiesDefeated = 0,
+                    linesMoved = 0,
+                )
+            )
+        }
+    }
 
     /**
      * Load game state from database to this repo.
@@ -123,10 +169,12 @@ class GameStateRepo(
      * Migrate one save to another slot. Typically form -1 to N, or from N to -1.
      * The destination slot will be cleared.
      */
+    @OptIn(ExperimentalTime::class)
     suspend fun migrateSave(fromID: Int, toID: Int) {
         if (fromID == toID) {
             return
         }
+        val time = Clock.System.now().toEpochMilliseconds()
         transactionManager.withTransaction {
             // Currency
             val currencyFrom = currencyDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
@@ -157,7 +205,10 @@ class GameStateRepo(
             // Save meta
             saveMetaDao.query(saveID = fromID)
                 ?.apply { saveID = toID }
-                ?.let { saveMetaDao.insertOrUpdate(table = it) }
+                ?.let {
+                    it.savedTime = time
+                    saveMetaDao.insertOrUpdate(table = it)
+                }
             // Statistics
             statisticsDao.query(saveID = fromID)
                 ?.apply { saveID = toID }

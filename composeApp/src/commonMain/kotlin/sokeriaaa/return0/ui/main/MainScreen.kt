@@ -75,7 +75,11 @@ fun MainScreen(
             MainButtons(
                 modifier = Modifier.fillMaxWidth(),
                 onNewGameClicked = {
-                    mainNavHostController.navigateSingleTop(Scene.Game.route)
+                    viewModel.startNewGame(
+                        onLoadFinished = {
+                            mainNavHostController.navigateSingleTop(Scene.Game.route)
+                        },
+                    )
                 },
                 onLoadGameClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Save.route + "/false")
