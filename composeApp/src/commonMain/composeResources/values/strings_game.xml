@@ -9,4 +9,7 @@
     <string name="game_menu_quit">Quit Game</string>
 
     <string name="game_quit_warn">Unsaved game progress may get lost.</string>
+
+    <string name="map_action_move">Move to here</string>
+    <string name="map_action_interact">Interact</string>
 </resources>

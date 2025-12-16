@@ -139,8 +139,11 @@ fun GameScreen(
                     }
                 )
             }
-        ) {
-
+        ) { paddingValues ->
+            GameMap(
+                modifier = Modifier.padding(paddingValues = paddingValues),
+                viewModel = viewModel,
+            )
         }
     }
 }
