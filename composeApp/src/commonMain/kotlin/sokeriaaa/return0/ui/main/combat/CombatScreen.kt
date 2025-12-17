@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.ui.main.combat
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateIntAsState
@@ -79,16 +80,20 @@ import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.combat
 import return0.composeapp.generated.resources.combat_defeat
+import return0.composeapp.generated.resources.combat_leave
 import return0.composeapp.generated.resources.combat_victory
 import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_outline_autopause_24
 import return0.composeapp.generated.resources.ic_outline_autoplay_24
+import return0.composeapp.generated.resources.ic_outline_logout_24
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.BlockBackPressed
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
+import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
@@ -109,6 +114,9 @@ fun CombatScreen(
         // Start combat.
         viewModel.onIntent(CombatIntent.StartCombat)
     }
+    // Block back pressed on the combat screen.
+    // Player can leave this screen only when the combat is finished.
+    BlockBackPressed()
     AppScaffold(
         viewModel = viewModel,
         topBar = {
@@ -173,6 +181,21 @@ fun CombatScreen(
                             contentDescription = "Auto-combat",
                         )
                     }
+                }
+            }
+            // Leave combat
+            AnimatedVisibility(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                visible = viewModel.combatStatus != null
+            ) {
+                Box {
+                    AppFilledTonalButton(
+                        modifier = Modifier.align(Alignment.Center),
+                        iconRes = Res.drawable.ic_outline_logout_24,
+                        text = stringResource(Res.string.combat_leave),
+                        onClick = { mainNavHostController.navigateUp() }
+                    )
                 }
             }
             CombatActionPanel(

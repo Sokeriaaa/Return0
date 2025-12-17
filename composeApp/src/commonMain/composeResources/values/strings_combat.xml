@@ -3,6 +3,7 @@
     <string name="combat">Combat</string>
     <string name="combat_victory">VICTORY</string>
     <string name="combat_defeat">DEFEAT</string>
+    <string name="combat_leave">Leave</string>
 
     <string name="combat_choose_action">Select an action for %1$s.</string>
     <plurals name="combat_choose_target">

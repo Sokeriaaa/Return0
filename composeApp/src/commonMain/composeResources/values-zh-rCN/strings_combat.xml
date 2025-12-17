@@ -3,6 +3,7 @@
     <string name="combat">战斗</string>
     <string name="combat_victory">胜利</string>
     <string name="combat_defeat">失败</string>
+    <string name="combat_leave">离开</string>
 
     <string name="combat_choose_action">选择%1$s的行动。</string>
     <plurals name="combat_choose_target">
