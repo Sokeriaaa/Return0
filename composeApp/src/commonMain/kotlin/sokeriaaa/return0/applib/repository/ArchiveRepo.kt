@@ -82,6 +82,13 @@ class ArchiveRepo internal constructor() {
     fun getCategoryEffectiveness(category: Category): CategoryEffectiveness =
         _categoryEffectivenessMap[category] ?: CategoryEffectiveness(emptyMap(), emptyMap())
 
+    /**
+     * Returns all available entity data.
+     */
+    fun availableEntities(): List<EntityData> {
+        return _entityDataMap.values.toList()
+    }
+
     fun reset() {
         _entityDataMap.clear()
         _effectDataMap.clear()

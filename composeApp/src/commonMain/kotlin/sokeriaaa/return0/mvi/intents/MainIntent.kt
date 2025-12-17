@@ -14,4 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-sealed class MainIntent : BaseIntent
+sealed class MainIntent : BaseIntent {
+    data object LoadArchives : MainIntent()
+    data class StartNewGame(val onLoadFinished: () -> Unit) : MainIntent()
+}

@@ -29,14 +29,9 @@ import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
-import sokeriaaa.return0.shared.common.helpers.JsonHelper
-import sokeriaaa.return0.shared.data.models.action.effect.EffectData
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
-import sokeriaaa.return0.shared.data.models.entity.category.Category
-import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -47,8 +42,7 @@ class EmulatorViewModel : BaseViewModel() {
 
     private val _archiveRepo: ArchiveRepo by inject()
 
-    private val _availableEntities: MutableList<EntityData> = mutableStateListOf()
-    val availableEntities: List<EntityData> = _availableEntities
+    val availableEntities: List<EntityData> = _archiveRepo.availableEntities()
 
     private val _parties: MutableList<PartyState> = mutableStateListOf()
     val parties: List<PartyState> = _parties
@@ -58,37 +52,6 @@ class EmulatorViewModel : BaseViewModel() {
 
     private val _emulatorIndexDao: EmulatorIndexDao by inject()
     private val _emulatorEntryDao: EmulatorEntryDao by inject()
-
-    init {
-        // Temp code: Load jsons from resources.
-        viewModelScope.launch {
-            // Entities
-            JsonHelper.decodeFromString<List<EntityData>>(
-                string = Res.readBytes("files/data/entity.json").decodeToString(),
-            ).let {
-                _archiveRepo.registerEntities(it)
-                _availableEntities.addAll(it)
-            }
-            // Effects
-            JsonHelper.decodeFromString<List<EffectData>>(
-                string = Res.readBytes("files/data/effect.json").decodeToString(),
-            ).let {
-                _archiveRepo.registerEffects(it)
-            }
-            // Category: Entity growth
-            JsonHelper.decodeFromString<Map<Category, EntityGrowth>>(
-                string = Res.readBytes("files/data/category_entity_growth.json").decodeToString()
-            ).let {
-                _archiveRepo.registerEntityGrowths(it)
-            }
-            // Category: Effectiveness
-            JsonHelper.decodeFromString<Map<Category, CategoryEffectiveness>>(
-                string = Res.readBytes("files/data/category_effectiveness.json").decodeToString()
-            ).let {
-                _archiveRepo.registerCategoryEffectiveness(it)
-            }
-        }
-    }
 
     @OptIn(ExperimentalTime::class)
     override fun onIntent(intent: BaseIntent) {
