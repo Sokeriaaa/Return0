@@ -23,6 +23,8 @@ import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDaoImpl
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EntityDaoImpl
+import sokeriaaa.return0.applib.room.dao.EventRelocationDao
+import sokeriaaa.return0.applib.room.dao.EventRelocationDaoImpl
 import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.InventoryDaoImpl
 import sokeriaaa.return0.applib.room.dao.QuestDao
@@ -54,6 +56,10 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
 
     private val _entityDao by lazy {
         EntityDaoImpl(sqDatabase.sQEntityQueries)
+    }
+
+    private val _eventRelocationDao by lazy {
+        EventRelocationDaoImpl(sqDatabase.sQEventRelocationQueries)
     }
 
     private val _inventoryDao by lazy {
@@ -88,6 +94,7 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
     override fun getEmulatorEntryDao(): EmulatorEntryDao = _emulatorEntryDao
     override fun getEmulatorIndexDao(): EmulatorIndexDao = _emulatorIndexDao
     override fun getEntityDao(): EntityDao = _entityDao
+    override fun getEventRelocationDao(): EventRelocationDao = _eventRelocationDao
     override fun getInventoryDao(): InventoryDao = _inventoryDao
     override fun getQuestDao(): QuestDao = _questDao
     override fun getSavedSwitchDao(): SavedSwitchDao = _savedSwitchDao

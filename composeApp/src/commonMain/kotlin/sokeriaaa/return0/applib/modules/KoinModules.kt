@@ -72,6 +72,7 @@ object KoinModules {
                 transactionManager = get(),
                 currencyDao = get(),
                 entityDao = get(),
+                eventRelocationDao = get(),
                 inventoryDao = get(),
                 questDao = get(),
                 savedSwitchDao = get(),
@@ -87,6 +88,7 @@ object KoinModules {
         single { get<AppDatabase>().getEmulatorEntryDao() }
         single { get<AppDatabase>().getEmulatorIndexDao() }
         single { get<AppDatabase>().getEntityDao() }
+        single { get<AppDatabase>().getEventRelocationDao() }
         single { get<AppDatabase>().getInventoryDao() }
         single { get<AppDatabase>().getQuestDao() }
         single { get<AppDatabase>().getSavedSwitchDao() }

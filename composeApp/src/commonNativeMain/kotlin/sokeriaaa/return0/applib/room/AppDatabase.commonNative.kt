@@ -25,6 +25,7 @@ import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.dao.EventRelocationDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
@@ -36,6 +37,7 @@ import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.applib.room.table.EntityTable
+import sokeriaaa.return0.applib.room.table.EventRelocationTable
 import sokeriaaa.return0.applib.room.table.InventoryTable
 import sokeriaaa.return0.applib.room.table.QuestTable
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
@@ -51,6 +53,7 @@ import sokeriaaa.return0.applib.room.table.TeamTable
         EmulatorEntryTable::class,
         EmulatorIndexTable::class,
         EntityTable::class,
+        EventRelocationTable::class,
         InventoryTable::class,
         QuestTable::class,
         SaveMetaTable::class,
@@ -66,6 +69,7 @@ actual abstract class AppDatabase : RoomDatabase() {
     actual abstract fun getEmulatorEntryDao(): EmulatorEntryDao
     actual abstract fun getEmulatorIndexDao(): EmulatorIndexDao
     actual abstract fun getEntityDao(): EntityDao
+    actual abstract fun getEventRelocationDao(): EventRelocationDao
     actual abstract fun getInventoryDao(): InventoryDao
     actual abstract fun getQuestDao(): QuestDao
     actual abstract fun getSavedSwitchDao(): SavedSwitchDao

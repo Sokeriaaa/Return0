@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.dao.EventRelocationDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
@@ -50,6 +51,7 @@ class GameStateRepo(
     // Database dao
     private val currencyDao: CurrencyDao,
     private val entityDao: EntityDao,
+    private val eventRelocationDao: EventRelocationDao,
     private val inventoryDao: InventoryDao,
     private val questDao: QuestDao,
     private val savedSwitchDao: SavedSwitchDao,
@@ -115,6 +117,7 @@ class GameStateRepo(
             // Remove the old one.
             currencyDao.delete(saveID = saveID)
             entityDao.deleteSave(saveID = saveID)
+            eventRelocationDao.deleteSave(saveID = saveID)
             inventoryDao.delete(saveID = saveID)
             questDao.delete(saveID = saveID)
             savedSwitchDao.delete(saveID = saveID)
@@ -261,6 +264,11 @@ class GameStateRepo(
             val entityFrom = entityDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
             entityDao.deleteSave(saveID = toID)
             entityDao.insertList(list = entityFrom)
+            // Event relocations
+            val eventRelocationFrom =
+                eventRelocationDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
+            eventRelocationDao.deleteSave(saveID = toID)
+            eventRelocationDao.insertOrUpdateList(list = eventRelocationFrom)
             // Inventory
             val inventoryFrom = inventoryDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
             inventoryDao.delete(saveID = toID)
