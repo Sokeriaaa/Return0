@@ -23,6 +23,7 @@ import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.applib.repository.ResourceRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -80,6 +81,7 @@ object KoinModules {
                 teamDao = get(),
             )
         }
+        single { ResourceRepo() }
         // Database: Dao
         single { get<AppDatabase>().getCurrencyDao() }
         single { get<AppDatabase>().getEmulatorEntryDao() }

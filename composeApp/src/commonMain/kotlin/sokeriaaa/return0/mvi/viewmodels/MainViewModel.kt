@@ -25,6 +25,7 @@ import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.applib.repository.ResourceRepo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
@@ -46,6 +47,11 @@ class MainViewModel : BaseViewModel() {
      * Game state repo.
      */
     private val _gameStateRepo: GameStateRepo by inject()
+
+    /**
+     * Resource repo.
+     */
+    private val _resourceRepo: ResourceRepo by inject()
 
     // Data loading
     var loadingProgress by mutableIntStateOf(0)
@@ -117,6 +123,9 @@ class MainViewModel : BaseViewModel() {
                 _archiveRepo.registerCategoryEffectiveness(it)
             }
             updateProgress(4)
+            // TODO System language.
+            _resourceRepo.load("en-us")
+            updateProgress(5)
             delay(1000)
             isLoadingFinished = true
         } catch (e: Exception) {
@@ -135,6 +144,6 @@ class MainViewModel : BaseViewModel() {
     }
 
     companion object {
-        private const val TOTAL_PROGRESS = 4
+        private const val TOTAL_PROGRESS = 5
     }
 }
