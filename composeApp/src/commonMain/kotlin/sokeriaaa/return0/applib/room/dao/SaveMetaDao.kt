@@ -34,6 +34,11 @@ expect interface SaveMetaDao {
     suspend fun insertOrUpdate(table: SaveMetaTable)
 
     /**
+     * Update player's position.
+     */
+    suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
+
+    /**
      * Delete the save with specified ID.
      */
     suspend fun delete(saveID: Int)

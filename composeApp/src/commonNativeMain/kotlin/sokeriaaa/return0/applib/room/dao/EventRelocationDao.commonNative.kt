@@ -27,6 +27,18 @@ actual interface EventRelocationDao {
     )
     actual suspend fun queryAll(saveID: Int): List<EventRelocationTable>
 
+    @Query(
+        "SELECT * FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID " +
+                "AND `event_key`=:eventKey AND `file_name`=:fileName LIMIT 1"
+    )
+    actual suspend fun query(saveID: Int, eventKey: String, fileName: String): EventRelocationTable?
+
+    @Query(
+        "SELECT * FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID " +
+                "AND `file_name`=:fileName"
+    )
+    actual suspend fun queryAllByFileName(saveID: Int, fileName: String): List<EventRelocationTable>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     actual suspend fun insertOrUpdate(table: EventRelocationTable)
 

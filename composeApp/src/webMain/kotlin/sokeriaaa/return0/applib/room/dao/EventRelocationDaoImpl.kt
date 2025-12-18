@@ -28,6 +28,30 @@ class EventRelocationDaoImpl(
         ).executeAsList()
     }
 
+    override suspend fun query(
+        saveID: Int,
+        eventKey: String,
+        fileName: String
+    ): EventRelocationTable? {
+        return queries.queryByKeyAndFileName(
+            save_id = saveID.toLong(),
+            event_key = eventKey,
+            file_name = fileName,
+            mapper = ::convertToTable,
+        ).executeAsOneOrNull()
+    }
+
+    override suspend fun queryAllByFileName(
+        saveID: Int,
+        fileName: String
+    ): List<EventRelocationTable> {
+        return queries.queryAllByFileName(
+            save_id = saveID.toLong(),
+            file_name = fileName,
+            mapper = ::convertToTable,
+        ).executeAsList()
+    }
+
     override suspend fun insertOrUpdate(table: EventRelocationTable) {
         queries.insertOrUpdate(
             save_id = table.saveID.toLong(),

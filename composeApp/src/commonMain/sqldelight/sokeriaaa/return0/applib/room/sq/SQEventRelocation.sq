@@ -27,6 +27,20 @@ SELECT *
 FROM return0_event_relocations
 WHERE save_id = ?;
 
+queryByKeyAndFileName:
+SELECT *
+FROM return0_event_relocations
+WHERE save_id = ?
+AND event_key = ?
+AND file_name = ?
+LIMIT 1;
+
+queryAllByFileName:
+SELECT *
+FROM return0_event_relocations
+WHERE save_id = ?
+AND file_name = ?;
+
 insertOrUpdate:
 INSERT OR REPLACE INTO return0_event_relocations (
     save_id,

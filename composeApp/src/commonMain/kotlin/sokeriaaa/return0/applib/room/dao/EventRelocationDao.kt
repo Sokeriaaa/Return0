@@ -26,6 +26,23 @@ expect interface EventRelocationDao {
     ): List<EventRelocationTable>
 
     /**
+     * Query the event with specified key and from specified map in the specified save.
+     */
+    suspend fun query(
+        saveID: Int = -1,
+        eventKey: String,
+        fileName: String,
+    ): EventRelocationTable?
+
+    /**
+     * Query all events from specified map in the specified save.
+     */
+    suspend fun queryAllByFileName(
+        saveID: Int = -1,
+        fileName: String,
+    ): List<EventRelocationTable>
+
+    /**
      * Insert an EventRelocationTable directly.
      */
     suspend fun insertOrUpdate(

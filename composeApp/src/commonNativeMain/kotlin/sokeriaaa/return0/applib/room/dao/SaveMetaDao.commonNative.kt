@@ -36,6 +36,12 @@ actual interface SaveMetaDao {
     actual suspend fun insertOrUpdate(table: SaveMetaTable)
 
     @Query(
+        "UPDATE `${SaveMetaTable.TABLE_NAME}` SET `file_name`=:fileName AND " +
+                "`line_number`=:lineNumber WHERE `save_id`=:saveID"
+    )
+    actual suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
+
+    @Query(
         "DELETE FROM `${SaveMetaTable.TABLE_NAME}` WHERE `save_id`=:saveID"
     )
     actual suspend fun delete(saveID: Int)

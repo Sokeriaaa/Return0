@@ -40,6 +40,18 @@ class SaveMetaDaoImpl(
         )
     }
 
+    override suspend fun updatePosition(
+        saveID: Int,
+        fileName: String,
+        lineNumber: Int
+    ) {
+        queries.updatePosition(
+            save_id = saveID.toLong(),
+            file_name = fileName,
+            line_number = lineNumber.toLong(),
+        )
+    }
+
     override suspend fun delete(saveID: Int) {
         queries.deleteById(saveID.toLong())
     }

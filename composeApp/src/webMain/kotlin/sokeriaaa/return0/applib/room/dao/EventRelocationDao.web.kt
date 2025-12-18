@@ -18,6 +18,8 @@ import sokeriaaa.return0.applib.room.table.EventRelocationTable
 
 actual interface EventRelocationDao {
     actual suspend fun queryAll(saveID: Int): List<EventRelocationTable>
+    actual suspend fun query(saveID: Int, eventKey: String, fileName: String): EventRelocationTable?
+    actual suspend fun queryAllByFileName(saveID: Int, fileName: String): List<EventRelocationTable>
     actual suspend fun insertOrUpdate(table: EventRelocationTable)
     actual suspend fun insertOrUpdateList(list: List<EventRelocationTable>)
     actual suspend fun deleteSave(saveID: Int)

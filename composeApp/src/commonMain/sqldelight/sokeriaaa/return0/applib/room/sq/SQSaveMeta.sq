@@ -39,6 +39,12 @@ INSERT OR REPLACE INTO return0_save_metas(
 )
 VALUES (?, ?, ?, ?, ?, ?);
 
+updatePosition:
+UPDATE return0_save_metas
+SET file_name = ?,
+line_number= ?
+WHERE save_id= ?;
+
 deleteById:
 DELETE FROM return0_save_metas
 WHERE save_id = ?;

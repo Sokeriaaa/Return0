@@ -20,5 +20,6 @@ actual interface SaveMetaDao {
     actual suspend fun queryAll(): List<SaveMetaTable>
     actual suspend fun query(saveID: Int): SaveMetaTable?
     actual suspend fun insertOrUpdate(table: SaveMetaTable)
+    actual suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
     actual suspend fun delete(saveID: Int)
 }
