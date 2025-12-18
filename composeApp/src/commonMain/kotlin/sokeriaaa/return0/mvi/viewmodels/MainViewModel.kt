@@ -26,6 +26,7 @@ import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.applib.repository.ResourceRepo
+import sokeriaaa.return0.applib.repository.SaveRepo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
@@ -38,20 +39,11 @@ import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectivenes
 
 class MainViewModel : BaseViewModel() {
 
-    /**
-     * Archive repo.
-     */
+    // Repo
     private val _archiveRepo: ArchiveRepo by inject()
-
-    /**
-     * Game state repo.
-     */
     private val _gameStateRepo: GameStateRepo by inject()
-
-    /**
-     * Resource repo.
-     */
     private val _resourceRepo: ResourceRepo by inject()
+    private val _saveRepo: SaveRepo by inject()
 
     // Data loading
     var loadingProgress by mutableIntStateOf(0)
@@ -79,7 +71,8 @@ class MainViewModel : BaseViewModel() {
             is MainIntent.StartNewGame -> {
                 viewModelScope.launch {
                     onIntent(CommonIntent.ShowLoading)
-                    _gameStateRepo.newGame()
+                    _saveRepo.newGame()
+                    _gameStateRepo.load()
                     onIntent(CommonIntent.HideLoading)
                     intent.onLoadFinished()
                 }

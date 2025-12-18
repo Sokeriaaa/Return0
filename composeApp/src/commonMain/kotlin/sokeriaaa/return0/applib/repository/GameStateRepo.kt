@@ -31,19 +31,12 @@ import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.CurrencyTable
-import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
-import sokeriaaa.return0.applib.room.table.SaveMetaTable
-import sokeriaaa.return0.applib.room.table.StatisticsTable
-import sokeriaaa.return0.applib.room.table.TeamTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
-import sokeriaaa.return0.shared.data.models.title.Title
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class GameStateRepo(
     // Repo
@@ -166,6 +159,21 @@ class GameStateRepo(
     }
 
     /**
+     * Load game state from database to this repo.
+     */
+    suspend fun load(saveID: Int = -1) {
+        // Position
+        saveMetaDao.query(saveID = saveID)?.let {
+            // TODO change map
+            lineNumber = it.lineNumber
+        }
+        // Currency
+        CurrencyType.entries.forEach { currency ->
+            _currencies[currency] = currencyDao.query(saveID, currency)?.amount ?: 0
+        }
+    }
+
+    /**
      * Flush the temp data to the database.
      */
     suspend fun flush(
@@ -201,83 +209,6 @@ class GameStateRepo(
                 )
             }
             _eventRelocateBuffer.clear()
-        }
-    }
-
-    /**
-     * Generate a new save for specified save ID and **replace the old one**.
-     */
-    @OptIn(ExperimentalTime::class)
-    suspend fun newGame(saveID: Int = -1) {
-        transactionManager.withTransaction {
-            val time = Clock.System.now().toEpochMilliseconds()
-            // Remove the old one.
-            currencyDao.delete(saveID = saveID)
-            entityDao.deleteSave(saveID = saveID)
-            eventRelocationDao.deleteSave(saveID = saveID)
-            inventoryDao.delete(saveID = saveID)
-            questDao.delete(saveID = saveID)
-            savedSwitchDao.delete(saveID = saveID)
-            savedVariableDao.delete(saveID = saveID)
-            teamDao.delete(saveID = saveID)
-            // Insert/Replace
-            saveMetaDao.insertOrUpdate(
-                SaveMetaTable(
-                    saveID = saveID,
-                    createdTime = time,
-                    savedTime = time,
-                    title = Title.INTERN,
-                    fileName = AppConstants.ENTRANCE_MAP,
-                    lineNumber = 1,
-                )
-            )
-            statisticsDao.insertOrUpdate(
-                StatisticsTable(
-                    saveID = saveID,
-                    tokensEarned = 0,
-                    cryptosEarned = 0,
-                    totalDamage = 0,
-                    totalHeal = 0,
-                    enemiesDefeated = 0,
-                    linesMoved = 0,
-                )
-            )
-            // TODO Temp code for adding entities for testing.
-            // TODO Will be removed later.
-            entityDao.insert(
-                EntityTable(
-                    saveID = saveID,
-                    entityName = "Object",
-                )
-            )
-            teamDao.insertOrUpdate(
-                TeamTable(
-                    saveID = saveID,
-                    teamID = 1,
-                    name = "testing",
-                    isActivated = true,
-                    slot1 = "Object",
-                    slot2 = null,
-                    slot3 = null,
-                    slot4 = null,
-                )
-            )
-        }
-        load()
-    }
-
-    /**
-     * Load game state from database to this repo.
-     */
-    suspend fun load(saveID: Int = -1) {
-        // Position
-        saveMetaDao.query(saveID = saveID)?.let {
-            // TODO change map
-            lineNumber = it.lineNumber
-        }
-        // Currency
-        CurrencyType.entries.forEach { currency ->
-            _currencies[currency] = currencyDao.query(saveID, currency)?.amount ?: 0
         }
     }
 
@@ -321,66 +252,5 @@ class GameStateRepo(
             currentHP = if (useCurrentData) entityTable.currentHP else null,
             currentSP = if (useCurrentData) entityTable.currentSP else null,
         )
-    }
-
-    /**
-     * Migrate one save to another slot. Typically form -1 to N, or from N to -1.
-     * The destination slot will be cleared.
-     */
-    @OptIn(ExperimentalTime::class)
-    suspend fun migrateSave(fromID: Int, toID: Int) {
-        if (fromID == toID) {
-            return
-        }
-        val time = Clock.System.now().toEpochMilliseconds()
-        transactionManager.withTransaction {
-            // Currency
-            val currencyFrom = currencyDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            currencyDao.delete(saveID = toID)
-            currencyDao.insertList(list = currencyFrom)
-            // Entity
-            val entityFrom = entityDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            entityDao.deleteSave(saveID = toID)
-            entityDao.insertList(list = entityFrom)
-            // Event relocations
-            val eventRelocationFrom =
-                eventRelocationDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            eventRelocationDao.deleteSave(saveID = toID)
-            eventRelocationDao.insertOrUpdateList(list = eventRelocationFrom)
-            // Inventory
-            val inventoryFrom = inventoryDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            inventoryDao.delete(saveID = toID)
-            inventoryDao.insertList(list = inventoryFrom)
-            // Quest
-            val questFrom = questDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            questDao.delete(saveID = toID)
-            questDao.insertList(list = questFrom)
-            // Saved switch
-            val savedSwitchFrom =
-                savedSwitchDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            savedSwitchDao.delete(saveID = toID)
-            savedSwitchDao.insertList(list = savedSwitchFrom)
-            // Saved variable
-            val savedVariableFrom =
-                savedVariableDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            savedVariableDao.delete(saveID = toID)
-            savedVariableDao.insertList(list = savedVariableFrom)
-            // Save meta
-            saveMetaDao.query(saveID = fromID)
-                ?.apply { saveID = toID }
-                ?.let {
-                    it.savedTime = time
-                    saveMetaDao.insertOrUpdate(table = it)
-                }
-            // Statistics
-            statisticsDao.query(saveID = fromID)
-                ?.apply { saveID = toID }
-                ?.let { statisticsDao.insertOrUpdate(table = it) }
-            // Team
-            val teamFrom =
-                teamDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
-            teamDao.delete(saveID = toID)
-            teamDao.insertList(list = teamFrom)
-        }
     }
 }

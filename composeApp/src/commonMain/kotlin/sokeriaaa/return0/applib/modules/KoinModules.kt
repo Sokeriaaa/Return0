@@ -25,6 +25,7 @@ import sokeriaaa.return0.applib.repository.CombatRepo
 import sokeriaaa.return0.applib.repository.GameMapRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.applib.repository.ResourceRepo
+import sokeriaaa.return0.applib.repository.SaveRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -86,6 +87,21 @@ object KoinModules {
             )
         }
         single { ResourceRepo() }
+        single {
+            SaveRepo(
+                transactionManager = get(),
+                currencyDao = get(),
+                entityDao = get(),
+                eventRelocationDao = get(),
+                inventoryDao = get(),
+                questDao = get(),
+                savedSwitchDao = get(),
+                savedVariableDao = get(),
+                saveMetaDao = get(),
+                statisticsDao = get(),
+                teamDao = get(),
+            )
+        }
         // Database: Dao
         single { get<AppDatabase>().getCurrencyDao() }
         single { get<AppDatabase>().getEmulatorEntryDao() }
