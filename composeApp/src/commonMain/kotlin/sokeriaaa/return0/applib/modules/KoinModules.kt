@@ -22,6 +22,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.ArchiveRepo
 import sokeriaaa.return0.applib.repository.CombatRepo
+import sokeriaaa.return0.applib.repository.GameMapRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.applib.repository.ResourceRepo
 import sokeriaaa.return0.applib.room.AppDatabase
@@ -66,9 +67,11 @@ object KoinModules {
         // Repo
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
+        single { GameMapRepo() }
         single {
             GameStateRepo(
                 archiveRepo = get(),
+                gameMapRepo = get(),
                 transactionManager = get(),
                 currencyDao = get(),
                 entityDao = get(),

@@ -32,6 +32,7 @@ import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.applib.room.table.EntityTable
+import sokeriaaa.return0.applib.room.table.EventRelocationTable
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.StatisticsTable
 import sokeriaaa.return0.applib.room.table.TeamTable
@@ -39,13 +40,15 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.map.MapData
+import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import sokeriaaa.return0.shared.data.models.title.Title
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 class GameStateRepo(
-    // Archive repo
+    // Repo
     private val archiveRepo: ArchiveRepo,
+    private val gameMapRepo: GameMapRepo,
     // Transaction manager.
     private val transactionManager: TransactionManager,
     // Database dao
@@ -62,6 +65,8 @@ class GameStateRepo(
 ) {
     private val _currencies: MutableMap<CurrencyType, Int> = HashMap()
     val currencies: Map<CurrencyType, Int> = _currencies
+
+    private val _eventRelocateBuffer: MutableMap<String, Pair<String, Int>> = HashMap()
 
     /**
      * Current map.
@@ -89,22 +94,114 @@ class GameStateRepo(
     var lineNumber: Int by mutableIntStateOf(1)
         private set
 
-    /**
-     * Update user position.
-     */
-    fun updatePosition(
-        fileName: String,
-        lineNumber: Int,
-    ) {
-        // TODO Update map
-        this.lineNumber = lineNumber
-    }
 
     /**
      * Update line number.
      */
     fun updateLineNumber(lineNumber: Int) {
         this.lineNumber = lineNumber
+    }
+
+    /**
+     * Update user position.
+     */
+    suspend fun updatePosition(
+        fileName: String = map.name,
+        lineNumber: Int,
+    ) {
+        if (fileName != map.name) {
+            this.map = gameMapRepo.loadMap(fileName)
+        }
+        this.lineNumber = lineNumber
+    }
+
+    /**
+     * Teleport an event to specified location.
+     */
+    fun teleportEvent(
+        eventKey: String,
+        fileName: String = map.name,
+        lineNumber: Int,
+    ) {
+        _eventRelocateBuffer[eventKey] = fileName to lineNumber
+    }
+
+    fun changeCurrency(
+        currency: CurrencyType,
+        change: Int,
+    ) {
+        _currencies[currency] = (_currencies[currency] ?: 0) + change
+    }
+
+    /**
+     * Load events in a map.
+     */
+    suspend fun loadEvents(
+        saveID: Int = -1,
+        mapData: MapData = this.map,
+    ): List<MapEvent> {
+        val events = ArrayList<MapEvent>()
+        // Check events in current map
+        mapData.events.forEach {
+            if (_eventRelocateBuffer.containsKey(it.key)) {
+                // Load new location.
+                val location = _eventRelocateBuffer[it.key]!!
+                events.add(it.copy(lineNumber = location.second))
+            } else if (it.key == null) {
+                // Events with no key is guaranteed to exist here.
+                events.add(it)
+            } else {
+                // Check database
+                val relocation = eventRelocationDao.query(saveID, it.key, map.name)
+                if (relocation == null) {
+                    // Not relocated
+                    events.add(it)
+                } else {
+                    // Load new location.
+                    events.add(it.copy(lineNumber = relocation.lineNumber))
+                }
+            }
+        }
+        return events
+    }
+
+    /**
+     * Flush the temp data to the database.
+     */
+    suspend fun flush(
+        saveID: Int = -1,
+    ) {
+        transactionManager.withTransaction {
+            // Currency
+            currencyDao.delete(saveID)
+            currencies.forEach { entry ->
+                currencyDao.insertOrUpdate(
+                    table = CurrencyTable(
+                        saveID = saveID,
+                        currency = entry.key,
+                        amount = entry.value,
+                    ),
+                )
+            }
+            // Position
+            saveMetaDao.updatePosition(
+                saveID = saveID,
+                fileName = map.name,
+                lineNumber = lineNumber,
+            )
+            // Events
+            _eventRelocateBuffer.forEach { entry ->
+                eventRelocationDao.insertOrUpdate(
+                    EventRelocationTable(
+                        saveID = saveID,
+                        eventKey = entry.key,
+                        fileName = entry.value.first,
+                        lineNumber = entry.value.second,
+                    )
+                )
+            }
+            _eventRelocateBuffer.clear()
+        }
     }
 
     /**
@@ -224,25 +321,6 @@ class GameStateRepo(
             currentHP = if (useCurrentData) entityTable.currentHP else null,
             currentSP = if (useCurrentData) entityTable.currentSP else null,
         )
-    }
-
-    /**
-     * Save the currency state to database.
-     */
-    suspend fun saveCurrency(saveID: Int = -1) {
-        transactionManager.withTransaction {
-            // Currency
-            currencyDao.delete(saveID)
-            currencies.forEach { entry ->
-                currencyDao.insertOrUpdate(
-                    table = CurrencyTable(
-                        saveID = saveID,
-                        currency = entry.key,
-                        amount = entry.value,
-                    ),
-                )
-            }
-        }
     }
 
     /**
