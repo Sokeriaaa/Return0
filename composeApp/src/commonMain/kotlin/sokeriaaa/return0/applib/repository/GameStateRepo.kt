@@ -39,9 +39,10 @@ import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 
 class GameStateRepo(
-    // Repo
-    private val archiveRepo: ArchiveRepo,
-    private val gameMapRepo: GameMapRepo,
+    // Sub-repos
+    val archive: ArchiveRepo,
+    val gameMap: GameMapRepo,
+    val savedValues: SavedValuesRepo,
     // Transaction manager.
     private val transactionManager: TransactionManager,
     // Database dao
@@ -103,7 +104,7 @@ class GameStateRepo(
         lineNumber: Int,
     ) {
         if (fileName != map.name) {
-            this.map = gameMapRepo.loadMap(fileName)
+            this.map = gameMap.loadMap(fileName)
         }
         this.lineNumber = lineNumber
     }
@@ -161,31 +162,32 @@ class GameStateRepo(
     /**
      * Load game state from database to this repo.
      */
-    suspend fun load(saveID: Int = -1) {
+    suspend fun load() {
+        savedValues.load()
         // Position
-        saveMetaDao.query(saveID = saveID)?.let {
+        saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.let {
             // TODO change map
             lineNumber = it.lineNumber
         }
         // Currency
         CurrencyType.entries.forEach { currency ->
-            _currencies[currency] = currencyDao.query(saveID, currency)?.amount ?: 0
+            _currencies[currency] =
+                currencyDao.query(AppConstants.CURRENT_SAVE_ID, currency)?.amount ?: 0
         }
     }
 
     /**
      * Flush the temp data to the database.
      */
-    suspend fun flush(
-        saveID: Int = -1,
-    ) {
+    suspend fun flush() {
+        savedValues.flush()
         transactionManager.withTransaction {
             // Currency
-            currencyDao.delete(saveID)
+            currencyDao.delete(AppConstants.CURRENT_SAVE_ID)
             currencies.forEach { entry ->
                 currencyDao.insertOrUpdate(
                     table = CurrencyTable(
-                        saveID = saveID,
+                        saveID = AppConstants.CURRENT_SAVE_ID,
                         currency = entry.key,
                         amount = entry.value,
                     ),
@@ -193,7 +195,7 @@ class GameStateRepo(
             }
             // Position
             saveMetaDao.updatePosition(
-                saveID = saveID,
+                saveID = AppConstants.CURRENT_SAVE_ID,
                 fileName = map.name,
                 lineNumber = lineNumber,
             )
@@ -201,7 +203,7 @@ class GameStateRepo(
             _eventRelocateBuffer.forEach { entry ->
                 eventRelocationDao.insertOrUpdate(
                     EventRelocationTable(
-                        saveID = saveID,
+                        saveID = AppConstants.CURRENT_SAVE_ID,
                         eventKey = entry.key,
                         fileName = entry.value.first,
                         lineNumber = entry.value.second,
@@ -244,7 +246,7 @@ class GameStateRepo(
         entityName: String,
         useCurrentData: Boolean,
     ): PartyState? {
-        val entityData = archiveRepo.getEntityData(entityName) ?: return null
+        val entityData = archive.getEntityData(entityName) ?: return null
         val entityTable = entityDao.getEntity(saveID, entityName) ?: return null
         return PartyState(
             entityData = entityData,

@@ -26,6 +26,7 @@ import sokeriaaa.return0.applib.repository.GameMapRepo
 import sokeriaaa.return0.applib.repository.GameStateRepo
 import sokeriaaa.return0.applib.repository.ResourceRepo
 import sokeriaaa.return0.applib.repository.SaveRepo
+import sokeriaaa.return0.applib.repository.SavedValuesRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -71,8 +72,9 @@ object KoinModules {
         single { GameMapRepo() }
         single {
             GameStateRepo(
-                archiveRepo = get(),
-                gameMapRepo = get(),
+                archive = get(),
+                gameMap = get(),
+                savedValues = get(),
                 transactionManager = get(),
                 currencyDao = get(),
                 entityDao = get(),
@@ -87,6 +89,13 @@ object KoinModules {
             )
         }
         single { ResourceRepo() }
+        single {
+            SavedValuesRepo(
+                transactionManager = get(),
+                savedSwitchDao = get(),
+                savedVariableDao = get(),
+            )
+        }
         single {
             SaveRepo(
                 transactionManager = get(),

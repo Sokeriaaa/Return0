@@ -17,6 +17,7 @@ package sokeriaaa.return0.applib.common
 object AppConstants {
     const val MAXIMUM_SAVES = 5
     const val MAXIMUM_TEAMS = 5
+    const val CURRENT_SAVE_ID = -1
 
     const val ENTRANCE_MAP = "entrance"
     const val COMBAT_RATE_BASE = 1 shl 16
