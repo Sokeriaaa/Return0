@@ -21,7 +21,7 @@ import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.emulator_preset_save_success
-import sokeriaaa.return0.applib.repository.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable

@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.ArchiveRepo
-import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event

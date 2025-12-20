@@ -16,7 +16,7 @@ package sokeriaaa.return0.test.models.action.component.extra
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.return0.applib.repository.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.extra.executedIn

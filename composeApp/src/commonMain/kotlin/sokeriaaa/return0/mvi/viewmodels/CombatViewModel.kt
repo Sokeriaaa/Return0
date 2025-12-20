@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
-import sokeriaaa.return0.applib.repository.CombatRepo
-import sokeriaaa.return0.applib.repository.GameStateRepo
+import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.applib.repository.game.combat.CombatRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
 import sokeriaaa.return0.models.combat.ArenaLogV4

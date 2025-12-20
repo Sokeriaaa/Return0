@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.repository
+package sokeriaaa.return0.applib.repository.data
 
 import sokeriaaa.return0.models.action.effect.CommonEffects
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData

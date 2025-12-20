@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.models.story.event
 
-import sokeriaaa.return0.applib.repository.GameStateRepo
-import sokeriaaa.return0.applib.repository.ResourceRepo
+import sokeriaaa.return0.applib.repository.data.ResourceRepo
+import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import kotlin.random.Random
 
 /**

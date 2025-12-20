@@ -1,3 +1,10 @@
+package sokeriaaa.return0.applib.repository.game.combat
+
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.models.entity.Entity
+import sokeriaaa.return0.models.entity.generate
+import sokeriaaa.return0.shared.data.models.entity.EntityData
+
 /**
  * Copyright (C) 2025 Sokeriaaa
  *
@@ -12,12 +19,6 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.repository
-
-import sokeriaaa.return0.models.entity.Entity
-import sokeriaaa.return0.models.entity.generate
-import sokeriaaa.return0.shared.data.models.entity.EntityData
-
 /**
  * The Repo for calculations and instance generations in the combat.
  */

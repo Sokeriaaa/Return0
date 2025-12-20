@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.repository
+package sokeriaaa.return0.applib.repository.game
 
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.CurrencyDao

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.repository
+package sokeriaaa.return0.applib.repository.game
 
 import org.jetbrains.compose.resources.MissingResourceException
 import return0.composeapp.generated.resources.Res
