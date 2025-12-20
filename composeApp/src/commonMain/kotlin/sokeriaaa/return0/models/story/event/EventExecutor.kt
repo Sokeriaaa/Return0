@@ -110,10 +110,7 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.CurrencyChange -> {
-            context.gameState.changeCurrency(
-                currency = currency,
-                change = change.calculatedIn(context),
-            )
+            context.gameState.currency[currency] += change.calculatedIn(context)
         }
 
         is Event.ClaimQuest -> {

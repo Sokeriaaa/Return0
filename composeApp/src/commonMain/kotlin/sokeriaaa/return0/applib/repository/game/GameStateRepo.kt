@@ -31,17 +31,16 @@ import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
-import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.PartyState
-import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 
 class GameStateRepo(
     // Sub-repos
     val archive: ArchiveRepo,
+    val currency: CurrencyRepo,
     val gameMap: GameMapRepo,
     val savedValues: SavedValuesRepo,
     // Transaction manager.
@@ -57,9 +56,7 @@ class GameStateRepo(
     private val saveMetaDao: SaveMetaDao,
     private val statisticsDao: StatisticsDao,
     private val teamDao: TeamDao,
-) {
-    private val _currencies: MutableMap<CurrencyType, Int> = HashMap()
-    val currencies: Map<CurrencyType, Int> = _currencies
+) : BaseGameRepo {
 
     private val _eventRelocateBuffer: MutableMap<String, Pair<String, Int>> = HashMap()
 
@@ -121,13 +118,6 @@ class GameStateRepo(
         _eventRelocateBuffer[eventKey] = fileName to lineNumber
     }
 
-    fun changeCurrency(
-        currency: CurrencyType,
-        change: Int,
-    ) {
-        _currencies[currency] = (_currencies[currency] ?: 0) + change
-    }
-
     /**
      * Load events in a map.
      */
@@ -163,37 +153,21 @@ class GameStateRepo(
     /**
      * Load game state from database to this repo.
      */
-    suspend fun load() {
+    override suspend fun load() {
         savedValues.load()
         // Position
         saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.let {
             // TODO change map
             lineNumber = it.lineNumber
         }
-        // Currency
-        CurrencyType.entries.forEach { currency ->
-            _currencies[currency] =
-                currencyDao.query(AppConstants.CURRENT_SAVE_ID, currency)?.amount ?: 0
-        }
     }
 
     /**
      * Flush the temp data to the database.
      */
-    suspend fun flush() {
-        savedValues.flush()
+    override suspend fun flush() {
         transactionManager.withTransaction {
-            // Currency
-            currencyDao.delete(AppConstants.CURRENT_SAVE_ID)
-            currencies.forEach { entry ->
-                currencyDao.insertOrUpdate(
-                    table = CurrencyTable(
-                        saveID = AppConstants.CURRENT_SAVE_ID,
-                        currency = entry.key,
-                        amount = entry.value,
-                    ),
-                )
-            }
+            savedValues.flush()
             // Position
             saveMetaDao.updatePosition(
                 saveID = AppConstants.CURRENT_SAVE_ID,

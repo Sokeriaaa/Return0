@@ -17,7 +17,6 @@ package sokeriaaa.return0.applib.repository.game
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
-import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
 import sokeriaaa.return0.applib.room.table.SavedVariableTable
 
@@ -25,10 +24,9 @@ import sokeriaaa.return0.applib.room.table.SavedVariableTable
  * Manages saved variables and switches.
  */
 class SavedValuesRepo(
-    private val transactionManager: TransactionManager,
     private val savedSwitchDao: SavedSwitchDao,
     private val savedVariableDao: SavedVariableDao,
-) {
+) : BaseGameRepo {
 
     private val _switchBuffer: MutableMap<String, Boolean> = HashMap()
     private val _variableBuffer: MutableMap<String, Int> = HashMap()
@@ -60,7 +58,7 @@ class SavedValuesRepo(
     /**
      * When a save is loaded.
      */
-    fun load() {
+    override suspend fun load() {
         // Clear the buffer.
         _switchBuffer.clear()
         _variableBuffer.clear()
@@ -69,26 +67,24 @@ class SavedValuesRepo(
     /**
      * Flush the buffers to database.
      */
-    suspend fun flush() {
-        transactionManager.withTransaction {
-            _switchBuffer.forEach {
-                savedSwitchDao.insertOrUpdate(
-                    SavedSwitchTable(
-                        saveID = AppConstants.CURRENT_SAVE_ID,
-                        key = it.key,
-                        value = it.value,
-                    )
+    override suspend fun flush() {
+        _switchBuffer.forEach {
+            savedSwitchDao.insertOrUpdate(
+                SavedSwitchTable(
+                    saveID = AppConstants.CURRENT_SAVE_ID,
+                    key = it.key,
+                    value = it.value,
                 )
-            }
-            _variableBuffer.forEach {
-                savedVariableDao.insertOrUpdate(
-                    SavedVariableTable(
-                        saveID = AppConstants.CURRENT_SAVE_ID,
-                        key = it.key,
-                        value = it.value,
-                    )
+            )
+        }
+        _variableBuffer.forEach {
+            savedVariableDao.insertOrUpdate(
+                SavedVariableTable(
+                    saveID = AppConstants.CURRENT_SAVE_ID,
+                    key = it.key,
+                    value = it.value,
                 )
-            }
+            )
         }
     }
 }

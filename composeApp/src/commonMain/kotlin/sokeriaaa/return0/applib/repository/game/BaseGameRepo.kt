@@ -12,17 +12,9 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.story.event.value
+package sokeriaaa.return0.applib.repository.game
 
-import sokeriaaa.return0.models.story.event.EventContext
-import sokeriaaa.return0.shared.data.models.story.event.value.EventValue
-
-suspend fun EventValue.calculatedIn(context: EventContext): Int {
-    return when (this) {
-        is EventValue.Constant -> value
-        is EventValue.RandomInt -> context.random.nextInt(start, endInclusive + 1)
-        is EventValue.SavedVariable -> TODO()
-        is EventValue.Currency -> context.gameState.currency[type]
-        is EventValue.Inventory -> TODO()
-    }
+interface BaseGameRepo {
+    suspend fun load()
+    suspend fun flush()
 }
