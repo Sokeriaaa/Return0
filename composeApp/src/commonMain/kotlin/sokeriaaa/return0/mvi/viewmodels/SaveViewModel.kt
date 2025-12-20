@@ -22,7 +22,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
-import sokeriaaa.return0.applib.repository.game.SaveRepo
+import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.mvi.intents.CommonIntent

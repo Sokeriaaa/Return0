@@ -17,8 +17,8 @@ package sokeriaaa.return0.test.applib.modules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
-import sokeriaaa.return0.applib.repository.game.combat.CombatRepo
 
 object TestKoinModules {
     val modules = module {

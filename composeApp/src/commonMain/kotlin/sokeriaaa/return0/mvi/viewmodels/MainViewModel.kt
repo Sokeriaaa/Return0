@@ -26,7 +26,7 @@ import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
-import sokeriaaa.return0.applib.repository.game.SaveRepo
+import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.MainIntent

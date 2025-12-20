@@ -12,9 +12,10 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.repository.game
+package sokeriaaa.return0.applib.repository.game.saved
 
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable

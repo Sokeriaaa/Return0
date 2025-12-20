@@ -20,14 +20,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
-import sokeriaaa.return0.applib.repository.game.CurrencyRepo
-import sokeriaaa.return0.applib.repository.game.GameMapRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
-import sokeriaaa.return0.applib.repository.game.SaveRepo
-import sokeriaaa.return0.applib.repository.game.SavedValuesRepo
-import sokeriaaa.return0.applib.repository.game.combat.CombatRepo
+import sokeriaaa.return0.applib.repository.game.currency.CurrencyRepo
+import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
+import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
+import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -71,12 +71,12 @@ object KoinModules {
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
         single { CurrencyRepo(get()) }
-        single { GameMapRepo() }
+        single { GameMapRepo(get(), get()) }
         single {
             GameStateRepo(
                 archive = get(),
                 currency = get(),
-                gameMap = get(),
+                map = get(),
                 savedValues = get(),
                 transactionManager = get(),
                 currencyDao = get(),

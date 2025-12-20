@@ -50,12 +50,12 @@ class GameViewModel : BaseViewModel() {
     /**
      * File name.
      */
-    val fileName: String get() = _gameStateRepo.map.name
+    val fileName: String get() = _gameStateRepo.map.current.name
 
     /**
      * Line number.
      */
-    val lineNumber: Int get() = _gameStateRepo.lineNumber
+    val lineNumber: Int get() = _gameStateRepo.map.lineNumber
 
     /**
      * Lines passed since last combat. It affects the chance to encounter a new combat
@@ -73,7 +73,7 @@ class GameViewModel : BaseViewModel() {
     ) {
         // Cancel the previous
         _movingJob?.cancel()
-        val start = _gameStateRepo.lineNumber
+        val start = _gameStateRepo.map.lineNumber
         if (start == targetLine) {
             return
         }
@@ -84,9 +84,9 @@ class GameViewModel : BaseViewModel() {
                 // Move for every 200ms.
                 delay(200)
                 current += direction
-                _gameStateRepo.updateLineNumber(current)
+                _gameStateRepo.map.updateLineNumber(current)
                 if (
-                    _gameStateRepo.map.buggyRange.any {
+                    _gameStateRepo.map.current.buggyRange.any {
                         it.first <= current && current <= it.second
                     }
                 ) {
@@ -100,7 +100,7 @@ class GameViewModel : BaseViewModel() {
                                 config = ArenaConfig(
                                     mode = ArenaConfig.Mode.COMMON,
                                     parties = _gameStateRepo.loadTeam(useCurrentData = false),
-                                    enemies = _gameStateRepo.map.buggyEntries.random()
+                                    enemies = _gameStateRepo.map.current.buggyEntries.random()
                                         .enemies.map {
                                             EnemyState(
                                                 entityData = _archiveRepo.getEntityData(it)!!,

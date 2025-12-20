@@ -84,7 +84,7 @@ suspend fun Event.executedIn(context: EventContext) {
 
         is Event.TeleportUserTo -> {
             val line = lineNumber.calculatedIn(context)
-            context.gameState.updatePosition(
+            context.gameState.map.updatePosition(
                 fileName = map,
                 lineNumber = line,
             )
@@ -98,7 +98,7 @@ suspend fun Event.executedIn(context: EventContext) {
 
         is Event.TeleportThisEventTo -> {
             context.key?.let {
-                context.gameState.teleportEvent(
+                context.gameState.map.teleportEvent(
                     eventKey = it,
                     lineNumber = lineNumber.calculatedIn(context),
                 )

@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.game.combat.CombatRepo
+import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig

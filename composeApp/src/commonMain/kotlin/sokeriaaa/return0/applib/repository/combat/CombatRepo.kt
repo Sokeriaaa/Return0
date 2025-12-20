@@ -1,4 +1,4 @@
-package sokeriaaa.return0.applib.repository.game.combat
+package sokeriaaa.return0.applib.repository.combat
 
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.models.entity.Entity
