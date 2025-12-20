@@ -128,8 +128,7 @@ fun GameScreen(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-                        // TODO
-                        Text(text = "TODO: file name here")
+                        Text(text = viewModel.fileName)
                     },
                     navigationIcon = {
                         AppIconButton(
