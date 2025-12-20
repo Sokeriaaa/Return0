@@ -69,6 +69,7 @@ class SaveViewModel(
     ) {
         viewModelScope.launch {
             onIntent(CommonIntent.ShowLoading)
+            _gameStateRepo.flush()
             _saveRepo.migrateSave(-1, saveID)
             onIntent(CommonIntent.HideLoading)
             onFinished()
