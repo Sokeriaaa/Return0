@@ -122,11 +122,11 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.SaveSwitch -> {
-            // TODO
+            context.gameState.savedValues.setSwitch(key, switch.calculatedIn(context))
         }
 
         is Event.SaveVariable -> {
-            // TODO
+            context.gameState.savedValues.setVariable(key, variable.calculatedIn(context))
         }
 
         Event.RecoverAll -> {

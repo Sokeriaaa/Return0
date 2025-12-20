@@ -29,6 +29,6 @@ suspend fun EventCondition.calculatedIn(context: EventContext): Boolean {
 
         is EventCondition.PlayerTitle -> TODO()
         is EventCondition.QuestCompleted -> TODO()
-        is EventCondition.SavedSwitch -> TODO()
+        is EventCondition.SavedSwitch -> context.gameState.savedValues.getSwitch(key)
     }
 }
