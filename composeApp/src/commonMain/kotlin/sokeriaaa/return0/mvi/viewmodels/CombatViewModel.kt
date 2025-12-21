@@ -289,7 +289,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
         viewModelScope.launch {
             // Save state if it's not emulator.
             if (arenaConfig?.mode?.equals(ArenaConfig.Mode.EMULATOR) == false) {
-                _gameStateRepo.saveEntityState(parties = parties)
+                _gameStateRepo.entity.saveEntityState(parties = parties)
             }
             combatStatus = result
         }

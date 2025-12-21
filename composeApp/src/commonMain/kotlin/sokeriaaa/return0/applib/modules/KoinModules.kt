@@ -25,7 +25,11 @@ import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.game.currency.CurrencyRepo
+import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
+import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
+import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
+import sokeriaaa.return0.applib.repository.game.quest.GameQuestRepo
 import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.room.AppDatabase
@@ -71,26 +75,23 @@ object KoinModules {
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
         single { CurrencyRepo(get()) }
+        single { GameEntityRepo(get(), get()) }
+        single { GameInventoryRepo(get()) }
         single { GameMapRepo(get(), get()) }
+        single { GameQuestRepo(get()) }
         single {
             GameStateRepo(
-                archive = get(),
                 currency = get(),
+                entity = get(),
+                inventory = get(),
                 map = get(),
+                quest = get(),
                 savedValues = get(),
+                team = get(),
                 transactionManager = get(),
-                currencyDao = get(),
-                entityDao = get(),
-                eventRelocationDao = get(),
-                inventoryDao = get(),
-                questDao = get(),
-                savedSwitchDao = get(),
-                savedVariableDao = get(),
-                saveMetaDao = get(),
-                statisticsDao = get(),
-                teamDao = get(),
             )
         }
+        single { GameTeamRepo(get(), get(), get()) }
         single { ResourceRepo() }
         single {
             SavedValuesRepo(

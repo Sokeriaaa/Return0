@@ -144,7 +144,7 @@ class GameMapRepo(
 
     override suspend fun load() {
         saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.let {
-            loadMap(it.fileName)
+//            loadMap(it.fileName)
             lineNumber = it.lineNumber
         }
     }

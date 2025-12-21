@@ -99,7 +99,7 @@ class GameViewModel : BaseViewModel() {
                             Event.Combat(
                                 config = ArenaConfig(
                                     mode = ArenaConfig.Mode.COMMON,
-                                    parties = _gameStateRepo.loadTeam(useCurrentData = false),
+                                    parties = _gameStateRepo.team.loadTeam(useCurrentData = false),
                                     enemies = _gameStateRepo.map.current.buggyEntries.random()
                                         .enemies.map {
                                             EnemyState(
