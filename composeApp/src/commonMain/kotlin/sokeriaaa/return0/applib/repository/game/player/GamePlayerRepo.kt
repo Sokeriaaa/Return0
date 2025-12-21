@@ -12,15 +12,19 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room.dao
+package sokeriaaa.return0.applib.repository.game.player
 
-import sokeriaaa.return0.applib.room.table.QuestTable
+import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.applib.room.dao.SaveMetaDao
+import sokeriaaa.return0.shared.data.models.title.Title
 
-actual interface QuestDao {
-    actual suspend fun query(saveID: Int, key: String): QuestTable?
-    actual suspend fun queryAll(saveID: Int): List<QuestTable>
-    actual suspend fun queryActivated(saveID: Int, time: Long): List<QuestTable>
-    actual suspend fun insertOrUpdate(table: QuestTable)
-    actual suspend fun insertList(list: List<QuestTable>)
-    actual suspend fun delete(saveID: Int)
+/**
+ * Stores player meta.
+ */
+class GamePlayerRepo(
+    private val saveMetaDao: SaveMetaDao,
+) {
+    suspend fun getPlaterTitle(): Title {
+        return saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.title ?: Title.INTERN
+    }
 }

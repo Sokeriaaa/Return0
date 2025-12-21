@@ -27,8 +27,12 @@ suspend fun EventCondition.calculatedIn(context: EventContext): Boolean {
             value2.calculatedIn(context),
         )
 
-        is EventCondition.PlayerTitle -> TODO()
-        is EventCondition.QuestCompleted -> TODO()
+        is EventCondition.PlayerTitle -> comparator.compare(
+            context.gameState.player.getPlaterTitle().ordinal,
+            title.ordinal,
+        )
+
+        is EventCondition.QuestCompleted -> context.gameState.quest.isCompleted(key)
         is EventCondition.SavedSwitch -> context.gameState.savedValues.getSwitch(key)
     }
 }

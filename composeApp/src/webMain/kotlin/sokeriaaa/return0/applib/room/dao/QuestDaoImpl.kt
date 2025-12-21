@@ -38,6 +38,17 @@ class QuestDaoImpl(
         ).executeAsList()
     }
 
+    override suspend fun queryActivated(
+        saveID: Int,
+        time: Long
+    ): List<QuestTable> {
+        return queries.queryActivated(
+            save_id = saveID.toLong(),
+            expired_at = time,
+            mapper = ::convertToTable,
+        ).executeAsList()
+    }
+
     override suspend fun insertOrUpdate(table: QuestTable) {
         queries.insertOrUpdate(
             save_id = table.saveID.toLong(),

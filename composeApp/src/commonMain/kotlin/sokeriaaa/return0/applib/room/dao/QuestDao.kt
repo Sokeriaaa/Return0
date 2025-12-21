@@ -15,6 +15,8 @@
 package sokeriaaa.return0.applib.room.dao
 
 import sokeriaaa.return0.applib.room.table.QuestTable
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 expect interface QuestDao {
     /**
@@ -26,6 +28,15 @@ expect interface QuestDao {
      * Query all the quests with specified save ID.
      */
     suspend fun queryAll(saveID: Int): List<QuestTable>
+
+    /**
+     * Query all the activated quests with specified save ID.
+     */
+    @OptIn(ExperimentalTime::class)
+    suspend fun queryActivated(
+        saveID: Int,
+        time: Long = Clock.System.now().toEpochMilliseconds(),
+    ): List<QuestTable>
 
     /**
      * Insert or update.

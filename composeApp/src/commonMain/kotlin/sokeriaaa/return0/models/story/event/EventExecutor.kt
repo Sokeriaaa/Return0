@@ -106,7 +106,7 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.InventoryChange -> {
-            // TODO
+            context.gameState.inventory[inventoryKey] = change.calculatedIn(context)
         }
 
         is Event.CurrencyChange -> {
@@ -114,11 +114,11 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.ClaimQuest -> {
-            // TODO
+            context.gameState.quest.acceptedQuest(key)
         }
 
         is Event.CompleteQuest -> {
-            // TODO
+            context.gameState.quest.completedQuest(key)
         }
 
         is Event.SaveSwitch -> {
@@ -130,15 +130,16 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         Event.RecoverAll -> {
-            // TODO
+            context.gameState.team.recoverAll()
         }
 
         Event.RequestSave -> {
-            // TODO
+            context.emitEffect(EventEffect.RequestSave)
         }
 
         Event.Failed -> {
-            // TODO
+            // TODO Teleport the player to last teleport point,
+            //  with all entities slightly recovered.
         }
     }
 }

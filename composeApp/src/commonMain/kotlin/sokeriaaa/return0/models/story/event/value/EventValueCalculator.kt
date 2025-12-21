@@ -23,6 +23,6 @@ suspend fun EventValue.calculatedIn(context: EventContext): Int {
         is EventValue.RandomInt -> context.random.nextInt(start, endInclusive + 1)
         is EventValue.SavedVariable -> context.gameState.savedValues.getVariable(key)
         is EventValue.Currency -> context.gameState.currency[type]
-        is EventValue.Inventory -> TODO()
+        is EventValue.Inventory -> context.gameState.inventory[key]
     }
 }

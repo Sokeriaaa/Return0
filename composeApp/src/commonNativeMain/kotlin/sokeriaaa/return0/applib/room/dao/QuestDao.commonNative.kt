@@ -32,6 +32,12 @@ actual interface QuestDao {
     )
     actual suspend fun queryAll(saveID: Int): List<QuestTable>
 
+    @Query(
+        "SELECT * FROM `${QuestTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `completed`=0 " +
+                "AND (`expired_at` IS NULL OR `expired_at`>:time)"
+    )
+    actual suspend fun queryActivated(saveID: Int, time: Long): List<QuestTable>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     actual suspend fun insertOrUpdate(table: QuestTable)
 

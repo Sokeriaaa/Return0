@@ -29,6 +29,13 @@ SELECT *
 FROM return0_quests
 WHERE save_id = ?;
 
+queryActivated:
+SELECT *
+FROM return0_quests
+WHERE save_id = ?
+AND `completed`=0
+AND (`expired_at` IS NULL OR `expired_at`>?);
+
 insertOrUpdate:
 INSERT OR REPLACE INTO return0_quests (
     save_id,

@@ -20,7 +20,7 @@ import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
-class CurrencyRepo(
+class GameCurrencyRepo(
     private val currencyDao: CurrencyDao,
 ) : BaseGameRepo {
 

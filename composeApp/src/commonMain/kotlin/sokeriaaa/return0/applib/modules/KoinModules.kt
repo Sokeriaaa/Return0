@@ -24,11 +24,12 @@ import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
-import sokeriaaa.return0.applib.repository.game.currency.CurrencyRepo
+import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
+import sokeriaaa.return0.applib.repository.game.player.GamePlayerRepo
 import sokeriaaa.return0.applib.repository.game.quest.GameQuestRepo
 import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
@@ -74,10 +75,11 @@ object KoinModules {
         // Repo
         single { ArchiveRepo() }
         single { CombatRepo(get()) }
-        single { CurrencyRepo(get()) }
+        single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get()) }
         single { GameInventoryRepo(get()) }
         single { GameMapRepo(get(), get()) }
+        single { GamePlayerRepo(get()) }
         single { GameQuestRepo(get()) }
         single {
             GameStateRepo(
@@ -85,6 +87,7 @@ object KoinModules {
                 entity = get(),
                 inventory = get(),
                 map = get(),
+                player = get(),
                 quest = get(),
                 savedValues = get(),
                 team = get(),

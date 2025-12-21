@@ -65,6 +65,14 @@ class GameTeamRepo(
     }
 
     /**
+     * Recover the HP and SP of all the team.
+     */
+    suspend fun recoverAll() {
+        teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return
+        // TODO
+    }
+
+    /**
      * Generate the party state with the given entity name.
      */
     private suspend fun generatePartyStateWithKey(

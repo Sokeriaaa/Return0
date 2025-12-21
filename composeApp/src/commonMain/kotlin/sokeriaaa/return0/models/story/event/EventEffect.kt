@@ -65,6 +65,11 @@ sealed interface EventEffect {
     data class TeleportPlayer(val map: String, val line: Int) : EventEffect
 
     /**
+     * Display a dialog to remind the player to save current progress.
+     */
+    data object RequestSave : EventEffect
+
+    /**
      * Refresh the events of current map.
      */
     data object RefreshEvents : EventEffect

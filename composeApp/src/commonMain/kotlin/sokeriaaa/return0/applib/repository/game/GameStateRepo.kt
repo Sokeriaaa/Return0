@@ -15,21 +15,23 @@
 package sokeriaaa.return0.applib.repository.game
 
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
-import sokeriaaa.return0.applib.repository.game.currency.CurrencyRepo
+import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
+import sokeriaaa.return0.applib.repository.game.player.GamePlayerRepo
 import sokeriaaa.return0.applib.repository.game.quest.GameQuestRepo
 import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 
 class GameStateRepo(
     // Sub-repos
-    val currency: CurrencyRepo,
+    val currency: GameCurrencyRepo,
     val entity: GameEntityRepo,
     val inventory: GameInventoryRepo,
     val map: GameMapRepo,
+    val player: GamePlayerRepo,
     val quest: GameQuestRepo,
     val savedValues: SavedValuesRepo,
     val team: GameTeamRepo,
@@ -42,7 +44,9 @@ class GameStateRepo(
      */
     override suspend fun load() {
         currency.load()
+        inventory.load()
         map.load()
+        quest.load()
         savedValues.load()
     }
 
@@ -52,7 +56,9 @@ class GameStateRepo(
     override suspend fun flush() {
         transactionManager.withTransaction {
             currency.flush()
+            inventory.flush()
             map.flush()
+            quest.flush()
             savedValues.flush()
         }
     }
