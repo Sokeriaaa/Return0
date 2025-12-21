@@ -19,8 +19,8 @@ actual data class EntityTable actual constructor(
     actual var entityName: String,
     actual var level: Int,
     actual var exp: Int,
-    actual var currentHP: Int,
-    actual var currentSP: Int,
+    actual var currentHP: Int?,
+    actual var currentSP: Int?,
     actual var partyIndex: Int,
     actual var pluginID: Long?,
 )

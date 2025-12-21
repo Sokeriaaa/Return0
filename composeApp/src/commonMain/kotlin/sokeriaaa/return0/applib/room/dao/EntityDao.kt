@@ -58,7 +58,7 @@ expect interface EntityDao {
     suspend fun updateHP(
         saveID: Int = -1,
         entityName: String,
-        hp: Int,
+        hp: Int?,
     )
 
     /**
@@ -67,7 +67,7 @@ expect interface EntityDao {
     suspend fun updateSP(
         saveID: Int = -1,
         entityName: String,
-        sp: Int,
+        sp: Int?,
     )
 
     /**

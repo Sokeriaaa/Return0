@@ -68,8 +68,17 @@ class GameTeamRepo(
      * Recover the HP and SP of all the team.
      */
     suspend fun recoverAll() {
-        teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return
-        // TODO
+        val currentTeam = teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return
+        sequenceOf(
+            currentTeam.slot1,
+            currentTeam.slot2,
+            currentTeam.slot3,
+            currentTeam.slot4,
+        ).filterNotNull()
+            .forEach {
+                entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName = it, hp = null)
+                entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName = it, sp = null)
+            }
     }
 
     /**

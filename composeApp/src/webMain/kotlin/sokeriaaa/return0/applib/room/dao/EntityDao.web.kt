@@ -36,8 +36,8 @@ actual interface EntityDao {
         partyIndex: Int
     ): EntityTable?
 
-    actual suspend fun updateHP(saveID: Int, entityName: String, hp: Int)
-    actual suspend fun updateSP(saveID: Int, entityName: String, sp: Int)
+    actual suspend fun updateHP(saveID: Int, entityName: String, hp: Int?)
+    actual suspend fun updateSP(saveID: Int, entityName: String, sp: Int?)
     actual suspend fun updatePlugin(saveID: Int, entityName: String, pluginID: Long?)
     actual suspend fun insert(entityTable: EntityTable)
     actual suspend fun insertList(list: List<EntityTable>)

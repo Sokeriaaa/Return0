@@ -22,8 +22,8 @@ expect class EntityTable(
     entityName: String = "",
     level: Int = 1,
     exp: Int = 0,
-    currentHP: Int = 0,
-    currentSP: Int = 0,
+    currentHP: Int? = null,
+    currentSP: Int? = null,
     partyIndex: Int = -1,
     pluginID: Long? = null,
 ) {
@@ -49,14 +49,14 @@ expect class EntityTable(
     var exp: Int
 
     /**
-     * Current HP.
+     * Current HP. `null` means fill HP.
      */
-    var currentHP: Int
+    var currentHP: Int?
 
     /**
-     * Current SP.
+     * Current SP. `null` means fill SP.
      */
-    var currentSP: Int
+    var currentSP: Int?
 
     /**
      * The index in the party, between 0 and 3. -1 means not in party.

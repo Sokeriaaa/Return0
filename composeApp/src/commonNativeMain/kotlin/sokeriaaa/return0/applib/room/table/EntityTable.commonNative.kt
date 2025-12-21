@@ -33,9 +33,9 @@ actual data class EntityTable actual constructor(
     @ColumnInfo(name = "exp")
     actual var exp: Int,
     @ColumnInfo(name = "current_hp")
-    actual var currentHP: Int,
+    actual var currentHP: Int?,
     @ColumnInfo(name = "current_sp")
-    actual var currentSP: Int,
+    actual var currentSP: Int?,
     @ColumnInfo(name = "party_index")
     actual var partyIndex: Int,
     @ColumnInfo(name = "plugin_id")

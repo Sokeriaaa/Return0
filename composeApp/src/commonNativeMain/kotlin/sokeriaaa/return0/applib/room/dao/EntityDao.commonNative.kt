@@ -63,14 +63,14 @@ actual interface EntityDao {
                 "`current_hp`=:hp WHERE " +
                 "`save_id`=:saveID AND `entity_name`=:entityName"
     )
-    actual suspend fun updateHP(saveID: Int, entityName: String, hp: Int)
+    actual suspend fun updateHP(saveID: Int, entityName: String, hp: Int?)
 
     @Query(
         "UPDATE `${EntityTable.TABLE_NAME}` SET " +
                 "`current_sp`=:sp WHERE " +
                 "`save_id`=:saveID AND `entity_name`=:entityName"
     )
-    actual suspend fun updateSP(saveID: Int, entityName: String, sp: Int)
+    actual suspend fun updateSP(saveID: Int, entityName: String, sp: Int?)
 
     @Query(
         "UPDATE `${EntityTable.TABLE_NAME}` SET " +

@@ -66,19 +66,19 @@ class EntityDaoImpl(
         ).executeAsOneOrNull()
     }
 
-    override suspend fun updateHP(saveID: Int, entityName: String, hp: Int) {
+    override suspend fun updateHP(saveID: Int, entityName: String, hp: Int?) {
         queries.updateHP(
             save_id = saveID.toLong(),
             entity_name = entityName,
-            current_hp = hp.toLong(),
+            current_hp = hp?.toLong(),
         )
     }
 
-    override suspend fun updateSP(saveID: Int, entityName: String, sp: Int) {
+    override suspend fun updateSP(saveID: Int, entityName: String, sp: Int?) {
         queries.updateSP(
             save_id = saveID.toLong(),
             entity_name = entityName,
-            current_sp = sp.toLong(),
+            current_sp = sp?.toLong(),
         )
     }
 
@@ -100,8 +100,8 @@ class EntityDaoImpl(
             entity_name = entityTable.entityName,
             level = entityTable.level.toLong(),
             exp = entityTable.exp.toLong(),
-            current_hp = entityTable.currentHP.toLong(),
-            current_sp = entityTable.currentHP.toLong(),
+            current_hp = entityTable.currentHP?.toLong(),
+            current_sp = entityTable.currentHP?.toLong(),
             party_index = entityTable.partyIndex.toLong(),
             plugin_id = entityTable.pluginID,
         )
@@ -121,8 +121,8 @@ class EntityDaoImpl(
         entity_name: String,
         level: Long,
         exp: Long,
-        current_hp: Long,
-        current_sp: Long,
+        current_hp: Long?,
+        current_sp: Long?,
         party_index: Long,
         plugin_id: Long?,
     ): EntityTable = EntityTable(
@@ -130,8 +130,8 @@ class EntityDaoImpl(
         entityName = entity_name,
         level = level.toInt(),
         exp = exp.toInt(),
-        currentHP = current_hp.toInt(),
-        currentSP = current_sp.toInt(),
+        currentHP = current_hp?.toInt(),
+        currentSP = current_sp?.toInt(),
         partyIndex = party_index.toInt(),
         pluginID = plugin_id,
     )
