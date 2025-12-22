@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -24,6 +25,8 @@ import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.models.story.map.MapGenerator
+import sokeriaaa.return0.models.story.map.MapRow
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
@@ -58,6 +61,10 @@ class GameViewModel : BaseViewModel() {
      */
     val lineNumber: Int get() = _gameStateRepo.map.lineNumber
 
+    // Map rows.
+    private val _mapRows: MutableList<MapRow> = mutableStateListOf()
+    val mapRows: List<MapRow> = _mapRows
+
     /**
      * Lines passed since last combat. It affects the chance to encounter a new combat
      * in the buggy range. Set to 0 after a combat is finished or the player leaves the range.
@@ -68,6 +75,18 @@ class GameViewModel : BaseViewModel() {
      * Moving job.
      */
     private var _movingJob: Job? = null
+
+    init {
+        reloadMap()
+    }
+
+    /**
+     * Reload the map rows for current map.
+     */
+    fun reloadMap() {
+        _mapRows.clear()
+        _mapRows.addAll(MapGenerator.generateCode(current))
+    }
 
     fun requestMoveTo(
         targetLine: Int
@@ -132,4 +151,5 @@ class GameViewModel : BaseViewModel() {
         _movingJob?.cancel()
         _movingJob = null
     }
+
 }

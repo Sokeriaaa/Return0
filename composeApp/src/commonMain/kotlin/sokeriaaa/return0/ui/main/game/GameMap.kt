@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -65,22 +66,26 @@ fun GameMap(
         item {
             MapRow(
                 modifier = Modifier.fillMaxWidth(),
-                text = "fun main() {",
+                text = "fun ${viewModel.current.name}() {",
             )
         }
-        repeat(viewModel.current.lines) {
-            item {
-                MapRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    lineNumber = it + 1,
-                    currentLine = viewModel.lineNumber,
-                    text = "    println(\"Hello World!\")",
-                    isEvent = it == 50,
-                    onMoveClicked = {
-                        viewModel.requestMoveTo(it + 1)
-                    }
-                )
-            }
+        itemsIndexed(items = viewModel.mapRows) { index, item ->
+            val eventDisplays = item.events.filter { it.display != null }
+            MapRow(
+                modifier = Modifier.fillMaxWidth(),
+                lineNumber = index + 1,
+                currentLine = viewModel.lineNumber,
+                text = "    ".repeat(item.depth + 1) + if (eventDisplays.isEmpty()) {
+                    item.text
+                } else {
+                    eventDisplays.joinToString(";") { it.display!! }
+                },
+                // TODO implement events here.
+                isEvent = false,
+                onMoveClicked = {
+                    viewModel.requestMoveTo(index + 1)
+                }
+            )
         }
         item {
             MapRow(
