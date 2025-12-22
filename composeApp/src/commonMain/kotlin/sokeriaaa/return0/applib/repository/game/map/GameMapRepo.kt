@@ -45,16 +45,11 @@ class GameMapRepo(
      * Current map.
      */
     var current: MapData by mutableStateOf(
-        // TODO Testing
         MapData(
-            name = AppConstants.ENTRANCE_MAP,
-            lines = 100,
-            buggyRange = listOf(20 to 80),
-            buggyEntries = listOf(
-                MapData.BuggyEntry(
-                    listOf("Object"),
-                )
-            ),
+            name = "",
+            lines = 0,
+            buggyRange = listOf(),
+            buggyEntries = listOf(),
             difficulty = 1,
             events = emptyList()
         )
@@ -144,7 +139,7 @@ class GameMapRepo(
 
     override suspend fun load() {
         saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.let {
-//            loadMap(it.fileName)
+            loadMap(it.fileName)
             lineNumber = it.lineNumber
         }
     }

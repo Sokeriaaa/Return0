@@ -68,7 +68,7 @@ fun GameMap(
                 text = "fun main() {",
             )
         }
-        repeat(100) {
+        repeat(viewModel.current.lines) {
             item {
                 MapRow(
                     modifier = Modifier.fillMaxWidth(),

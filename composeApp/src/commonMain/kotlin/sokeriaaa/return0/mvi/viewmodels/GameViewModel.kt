@@ -27,6 +27,7 @@ import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.return0.shared.data.models.story.map.MapData
 import kotlin.random.Random
 
 class GameViewModel : BaseViewModel() {
@@ -50,7 +51,7 @@ class GameViewModel : BaseViewModel() {
     /**
      * File name.
      */
-    val fileName: String get() = _gameStateRepo.map.current.name
+    val current: MapData get() = _gameStateRepo.map.current
 
     /**
      * Line number.
