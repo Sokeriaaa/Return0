@@ -44,11 +44,13 @@ import return0.composeapp.generated.resources.ic_outline_left_click_24
 import return0.composeapp.generated.resources.ic_outline_move_down_24
 import return0.composeapp.generated.resources.ic_outline_move_up_24
 import return0.composeapp.generated.resources.map_action_interact
+import return0.composeapp.generated.resources.map_action_interact_w_index
 import return0.composeapp.generated.resources.map_action_move
 import return0.composeapp.generated.resources.no_operation
+import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
+import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import sokeriaaa.return0.ui.common.widgets.AppDropdownMenuItem
-
 
 @Composable
 fun GameMap(
@@ -80,10 +82,12 @@ fun GameMap(
                 } else {
                     eventDisplays.joinToString(";") { it.display!! }
                 },
-                // TODO implement events here.
-                isEvent = false,
+                events = item.events,
                 onMoveClicked = {
-                    viewModel.requestMoveTo(index + 1)
+                    viewModel.onIntent(GameIntent.RequestMoveTo(index + 1))
+                },
+                onInteractClicked = {
+                    viewModel.onIntent(GameIntent.ExecuteEvent(it))
                 }
             )
         }
@@ -107,7 +111,7 @@ fun GameMap(
  * @param lineNumber Current line number. Set to `null` to hide.
  * @param currentLine The current line number of player.
  * @param text display text.
- * @param isEvent There's an event at current row. Player can interact with it.
+ * @param events [MapEvent] in this row.
  */
 @Composable
 private fun MapRow(
@@ -115,19 +119,19 @@ private fun MapRow(
     lineNumber: Int? = null,
     currentLine: Int = -1,
     text: String,
-    isEvent: Boolean = false,
+    events: List<MapEvent> = emptyList(),
     onMoveClicked: () -> Unit = {},
-    onInteractClicked: () -> Unit = {},
+    onInteractClicked: (MapEvent) -> Unit = {},
 ) {
     // Show DropDownMenu
     var isMenuExpanded by remember { mutableStateOf(false) }
     // Calculate map row action.
-    val mapRowAction = remember(key1 = lineNumber, key2 = currentLine, key3 = isEvent) {
+    val mapRowAction = remember(key1 = lineNumber, key2 = currentLine, key3 = events) {
         when {
             lineNumber == null -> MapRowAction.NONE
             lineNumber > currentLine -> MapRowAction.MOVE_DOWN
             lineNumber < currentLine -> MapRowAction.MOVE_UP
-            isEvent -> MapRowAction.INTERACT
+            events.isNotEmpty() -> MapRowAction.INTERACT
             else -> MapRowAction.NONE
         }
     }
@@ -137,7 +141,7 @@ private fun MapRow(
     } else {
         MaterialTheme.colorScheme.surface
     }
-    val rowTextColor = if (isEvent) {
+    val rowTextColor = if (events.isNotEmpty()) {
         MaterialTheme.colorScheme.primary
     } else {
         MaterialTheme.colorScheme.onSurface
@@ -209,14 +213,30 @@ private fun MapRow(
                         },
                     )
 
-                    MapRowAction.INTERACT -> AppDropdownMenuItem(
-                        iconRes = Res.drawable.ic_outline_left_click_24,
-                        text = stringResource(Res.string.map_action_interact),
-                        onClick = {
-                            isMenuExpanded = false
-                            onInteractClicked()
-                        },
-                    )
+                    MapRowAction.INTERACT -> if (events.size == 1) {
+                        AppDropdownMenuItem(
+                            iconRes = Res.drawable.ic_outline_left_click_24,
+                            text = stringResource(Res.string.map_action_interact),
+                            onClick = {
+                                isMenuExpanded = false
+                                onInteractClicked(events.first())
+                            },
+                        )
+                    } else {
+                        events.forEachIndexed { index, event ->
+                            AppDropdownMenuItem(
+                                iconRes = Res.drawable.ic_outline_left_click_24,
+                                text = stringResource(
+                                    resource = Res.string.map_action_interact_w_index,
+                                    /* index = */ index,
+                                ),
+                                onClick = {
+                                    isMenuExpanded = false
+                                    onInteractClicked(event)
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }

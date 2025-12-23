@@ -14,7 +14,33 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.return0.shared.data.models.story.map.MapEvent
+
 sealed class GameIntent : BaseIntent {
     data class LoadGame(val saveID: Int) : GameIntent()
     data object QuitGame : GameIntent()
+
+    /**
+     * Send a request for moving the player to specified line animatedly.
+     *
+     * @param line The target line number.
+     * @param isEncounterDisabled When `true`, player will not encounter enemies on the way.
+     */
+    data class RequestMoveTo(
+        val line: Int,
+        val isByEvent: Boolean = false,
+        val isEncounterDisabled: Boolean = false,
+    ) : GameIntent()
+
+    data class TeleportTo(
+        val fileName: String,
+        val line: Int,
+    ) : GameIntent()
+
+    data object RefreshMap : GameIntent()
+
+    data class ExecuteEvent(val mapEvent: MapEvent) : GameIntent()
+    data object EventContinue : GameIntent()
+    data class EventChoice(val index: Int) : GameIntent()
+    data class EventCombatResult(val result: Boolean) : GameIntent()
 }

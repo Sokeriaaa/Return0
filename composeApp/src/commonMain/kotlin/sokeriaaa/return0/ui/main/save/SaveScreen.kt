@@ -52,7 +52,10 @@ import return0.composeapp.generated.resources.saves_overwrite_warn_title
 import return0.composeapp.generated.resources.saves_select
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.mvi.intents.GameIntent
+import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
+import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
@@ -76,6 +79,16 @@ fun SaveScreen(
     var loadWarn: SaveMetaTable? by remember { mutableStateOf(null) }
     var saveWarn: SaveMetaTable? by remember { mutableStateOf(null) }
 
+    val gameViewModel: GameViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    )
+
+    val onBack: () -> Unit = {
+        gameViewModel.onIntent(GameIntent.EventContinue)
+        mainNavHostController.navigateUp()
+    }
+
     fun readFrom(saveID: Int) {
         viewModel.readFrom(
             saveID = saveID,
@@ -91,6 +104,7 @@ fun SaveScreen(
         viewModel.saveTo(
             saveID = saveID,
             onFinished = {
+                gameViewModel.onIntent(GameIntent.EventContinue)
                 mainNavHostController.navigateUp()
                 mainNavHostController.navigateSingleTop(Scene.Game.route)
                 saveWarn = null
@@ -119,6 +133,7 @@ fun SaveScreen(
     LaunchedEffect(Unit) {
         viewModel.refresh()
     }
+    AppBackHandler(onBack = onBack)
     AppScaffold(
         viewModel = viewModel,
         topBar = {
@@ -136,9 +151,7 @@ fun SaveScreen(
                 },
                 navigationIcon = {
                     AppBackIconButton(
-                        onClick = {
-                            mainNavHostController.navigateUp()
-                        }
+                        onClick = onBack,
                     )
                 },
             )

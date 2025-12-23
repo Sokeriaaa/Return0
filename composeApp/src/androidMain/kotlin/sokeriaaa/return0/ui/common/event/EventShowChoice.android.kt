@@ -17,18 +17,13 @@ package sokeriaaa.return0.ui.common.event
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import sokeriaaa.return0.models.story.event.EventEffect
-import sokeriaaa.return0.shared.data.models.story.event.Event
 
 @Preview
 @Composable
 private fun PreviewChoices() {
     EventShowChoice(
         effect = EventEffect.ShowChoice(
-            choices = listOf(
-                "One" to Event.Empty,
-                "Two" to Event.Empty,
-                "Three" to Event.Empty,
-            ),
+            choices = listOf("One", "Two", "Three"),
         ),
         onSelected = {}
     )

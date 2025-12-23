@@ -32,11 +32,14 @@ import return0.composeapp.generated.resources.ic_baseline_arrow_drop_down_24
 import return0.composeapp.generated.resources.player_name
 import sokeriaaa.return0.models.story.event.EventEffect
 
+/**
+ * Show the dialogues.
+ */
 @Composable
 fun EventShowText(
     modifier: Modifier = Modifier,
     effect: EventEffect.ShowText,
-    onClick: () -> Unit
+    onContinue: () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -60,7 +63,7 @@ fun EventShowText(
         }
         OutlinedCard(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
+            onClick = onContinue,
         ) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
@@ -96,3 +99,8 @@ private fun EventShowTextNameCard(
         )
     }
 }
+
+data class EventShowTextState(
+    val visible: Boolean = false,
+    val effect: EventEffect.ShowText? = null,
+)

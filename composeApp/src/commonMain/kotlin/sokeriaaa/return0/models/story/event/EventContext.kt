@@ -26,5 +26,13 @@ class EventContext(
     val resources: ResourceRepo,
     val key: String?,
     val random: Random = Random,
-    val emitEffect: suspend (EventEffect) -> Unit,
-)
+    val callback: Callback,
+) {
+    interface Callback {
+        suspend fun waitForUserContinue()
+        suspend fun waitForChoice(): Int
+        suspend fun waitForMoveFinished()
+        suspend fun waitForCombatResult(): Boolean
+        suspend fun onEffect(effect: EventEffect)
+    }
+}

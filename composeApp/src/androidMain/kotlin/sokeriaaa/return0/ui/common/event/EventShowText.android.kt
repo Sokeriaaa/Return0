@@ -26,7 +26,7 @@ private fun PreviewNPCShowText() {
             type = EventEffect.ShowText.Type.NPC("Debugger 42"),
             text = "Hello world!"
         ),
-        onClick = {},
+        onContinue = {},
     )
 }
 
@@ -38,7 +38,7 @@ private fun PreviewNPCShowTextLong() {
             type = EventEffect.ShowText.Type.NPC("Debugger 42"),
             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam interdum purus eu lectus aliquam, at tristique elit consectetur. In finibus eu ipsum in tincidunt. Quisque vitae lacus nunc. Etiam sed cursus ante. Nunc sed mi vitae velit viverra imperdiet. Praesent auctor id nisi vitae placerat. Proin auctor lobortis lacus, porta facilisis leo vehicula et. Phasellus lacus felis, malesuada ut vulputate at, mattis nec nibh. Donec euismod lacinia ipsum, sit amet molestie orci finibus a. Maecenas ac ullamcorper quam, sit amet porttitor dolor. Nullam ornare urna lorem, et ultricies arcu vestibulum vel. Sed eget magna ex."
         ),
-        onClick = {},
+        onContinue = {},
     )
 }
 
@@ -50,7 +50,7 @@ private fun PreviewUserShowText() {
             type = EventEffect.ShowText.Type.User,
             text = "Hi there!"
         ),
-        onClick = {},
+        onContinue = {},
     )
 }
 
@@ -62,6 +62,6 @@ private fun PreviewNarratorShowText() {
             type = EventEffect.ShowText.Type.Narrator,
             text = "Something suspicious happened nearby."
         ),
-        onClick = {},
+        onContinue = {},
     )
 }

@@ -15,7 +15,6 @@
 package sokeriaaa.return0.models.story.event
 
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.return0.shared.data.models.story.event.Event
 
 /**
  * Event effects emitted to the GameScreen.
@@ -38,7 +37,7 @@ sealed interface EventEffect {
     /**
      * Show choice panel.
      */
-    data class ShowChoice(val choices: List<Pair<String, Event>>) : EventEffect
+    data class ShowChoice(val choices: List<String>) : EventEffect
 
     /**
      * Display a snack bar.
@@ -50,8 +49,6 @@ sealed interface EventEffect {
      */
     data class StartCombat(
         val config: ArenaConfig,
-        val success: Event,
-        val failure: Event,
     ) : EventEffect
 
     /**
@@ -62,7 +59,7 @@ sealed interface EventEffect {
     /**
      * Teleport the player to a specified location.
      */
-    data class TeleportPlayer(val map: String, val line: Int) : EventEffect
+    data class TeleportPlayer(val fileName: String, val line: Int) : EventEffect
 
     /**
      * Display a dialog to remind the player to save current progress.

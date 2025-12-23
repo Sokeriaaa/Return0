@@ -14,8 +14,12 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,32 +28,28 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.models.story.event.EventContext
+import sokeriaaa.return0.models.story.event.EventEffect
+import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.models.story.map.MapGenerator
 import sokeriaaa.return0.models.story.map.MapRow
+import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
+import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import kotlin.random.Random
 
-class GameViewModel : BaseViewModel() {
-    /**
-     * Archive repo.
-     */
+class GameViewModel : BaseViewModel(), EventContext.Callback {
+
+    // Repo
     private val _archiveRepo: ArchiveRepo by inject()
-
-    /**
-     * Game state repo.
-     */
     private val _gameStateRepo: GameStateRepo by inject()
-
-    private val _combatEvents = MutableSharedFlow<Event.Combat>()
-
-    /**
-     * Combat events.
-     */
-    val combatEvents = _combatEvents.asSharedFlow()
+    private val _resourceRepo: ResourceRepo by inject()
 
     /**
      * File name.
@@ -66,6 +66,18 @@ class GameViewModel : BaseViewModel() {
     val mapRows: List<MapRow> = _mapRows
 
     /**
+     * The player is currently moving by an event.
+     */
+    var isMovingByEvent by mutableStateOf(false)
+        private set
+
+    /**
+     * The player is currently switching to another file.
+     */
+    var isSwitchingFile by mutableStateOf(false)
+        private set
+
+    /**
      * Lines passed since last combat. It affects the chance to encounter a new combat
      * in the buggy range. Set to 0 after a combat is finished or the player leaves the range.
      */
@@ -76,20 +88,77 @@ class GameViewModel : BaseViewModel() {
      */
     private var _movingJob: Job? = null
 
+    // Event deferred.
+    private var _continueDeferred: CompletableDeferred<Unit>? = null
+    private var _choiceDeferred: CompletableDeferred<Int>? = null
+    private var _moveDeferred: CompletableDeferred<Unit>? = null
+    private var _combatDeferred: CompletableDeferred<Boolean>? = null
+
+    // Current event effects
+    private val _effects = MutableSharedFlow<EventEffect>(
+        replay = 0,
+        extraBufferCapacity = 16,
+    )
+    val effects = _effects.asSharedFlow()
+
     init {
-        reloadMap()
+        viewModelScope.launch {
+            reloadMap()
+        }
+    }
+
+    override fun onIntent(intent: BaseIntent) {
+        super.onIntent(intent)
+        when (intent) {
+            is GameIntent.RequestMoveTo -> requestMoveTo(
+                targetLine = intent.line,
+                isByEvent = intent.isByEvent,
+                isEncounterDisabled = intent.isEncounterDisabled,
+            )
+
+            is GameIntent.TeleportTo -> teleportTo(
+                targetFileName = intent.fileName,
+                targetLine = intent.line,
+            )
+
+            GameIntent.RefreshMap -> viewModelScope.launch {
+                reloadMap()
+            }
+
+            is GameIntent.ExecuteEvent -> viewModelScope.launch {
+                executeEvent(intent.mapEvent)
+            }
+
+            GameIntent.EventContinue -> onUserContinue()
+            is GameIntent.EventChoice -> onChoiceSelected(intent.index)
+            is GameIntent.EventCombatResult -> onCombatFinished(intent.result)
+            else -> {}
+        }
     }
 
     /**
      * Reload the map rows for current map.
      */
-    fun reloadMap() {
+    private suspend fun reloadMap() {
         _mapRows.clear()
         _mapRows.addAll(MapGenerator.generateCode(current))
+        // Handle events.
+        _gameStateRepo.map.loadEvents().forEach {
+            if (it.lineNumber == null) {
+                // TODO Handle events that doesn't have a line number.
+            } else {
+                _mapRows[it.lineNumber].events.add(it)
+            }
+        }
     }
 
-    fun requestMoveTo(
-        targetLine: Int
+    /**
+     * Send a request for moving the player to specified line animatedly.
+     */
+    private fun requestMoveTo(
+        targetLine: Int,
+        isByEvent: Boolean = false,
+        isEncounterDisabled: Boolean = false,
     ) {
         // Cancel the previous
         _movingJob?.cancel()
@@ -101,44 +170,70 @@ class GameViewModel : BaseViewModel() {
             val direction = if (targetLine > start) 1 else -1
             var current = start
             while (current != targetLine) {
+                if (isByEvent) {
+                    isMovingByEvent = true
+                }
                 // Move for every 200ms.
                 delay(200)
                 current += direction
                 _gameStateRepo.map.updateLineNumber(current)
-                if (
-                    _gameStateRepo.map.current.buggyRange.any {
-                        it.first <= current && current <= it.second
-                    }
-                ) {
-                    // Is in buggy range
-                    _linesSinceLastCombat++
-                    if (checkEncounter()) {
+                if (!isEncounterDisabled) {
+                    // Check buggy area.
+                    if (
+                        _gameStateRepo.map.current.buggyRange.any {
+                            it.first <= current && current <= it.second
+                        }
+                    ) {
+                        // Is in buggy range
+                        _linesSinceLastCombat++
+                        if (checkEncounter()) {
+                            _linesSinceLastCombat = 0
+                            // Interrupt
+                            isMovingByEvent = false
+                            onMoveFinished()
+                            // Start combat
+                            encounteredCombat()
+                            interruptMoving()
+                        }
+                    } else {
+                        // Outside in buggy range
                         _linesSinceLastCombat = 0
-                        // Start combat
-                        _combatEvents.emit(
-                            Event.Combat(
-                                config = ArenaConfig(
-                                    mode = ArenaConfig.Mode.COMMON,
-                                    parties = _gameStateRepo.team.loadTeam(useCurrentData = false),
-                                    enemies = _gameStateRepo.map.current.buggyEntries.random()
-                                        .enemies.map {
-                                            EnemyState(
-                                                entityData = _archiveRepo.getEntityData(it)!!,
-                                                level = 1
-                                            )
-                                        }
-                                )
-                            )
-                        )
-                        interruptMoving()
                     }
-                } else {
-                    // Outside in buggy range
-                    _linesSinceLastCombat = 0
                 }
+            }
+            onMoveFinished()
+            isMovingByEvent = false
+        }
+    }
+
+    /**
+     * Teleport the player to another position.
+     */
+    private fun teleportTo(
+        targetFileName: String,
+        targetLine: Int,
+    ) {
+        viewModelScope.launch {
+            val switchedFile = targetFileName != _gameStateRepo.map.current.name
+            if (switchedFile) {
+                isSwitchingFile = true
+                _gameStateRepo.map.updatePosition(targetFileName, targetLine)
+                reloadMap()
+                isSwitchingFile = false
+            } else {
+                _gameStateRepo.map.updatePosition(targetFileName, targetLine)
             }
         }
     }
+
+    private fun getEventContext(
+        key: String?,
+    ): EventContext = EventContext(
+        gameState = _gameStateRepo,
+        resources = _resourceRepo,
+        key = key,
+        callback = this,
+    )
 
     /**
      * The player is about to encounter the enemies
@@ -147,9 +242,76 @@ class GameViewModel : BaseViewModel() {
         return Random.nextInt(AppConstants.COMBAT_RATE_BASE ushr _linesSinceLastCombat) == 0
     }
 
+    private suspend fun executeEvent(mapEvent: MapEvent) {
+        mapEvent.event.executedIn(getEventContext(mapEvent.key))
+        // After execution finished, finish this event.
+        _effects.emit(EventEffect.EventFinished)
+    }
+
+    private suspend fun encounteredCombat() {
+        Event.Combat(
+            config = ArenaConfig(
+                mode = ArenaConfig.Mode.COMMON,
+                parties = _gameStateRepo.team.loadTeam(useCurrentData = false),
+                enemies = _gameStateRepo.map.current.buggyEntries.random()
+                    .enemies.map {
+                        EnemyState(
+                            entityData = _archiveRepo.getEntityData(it)!!,
+                            // TODO
+                            level = 1
+                        )
+                    }
+            )
+        ).executedIn(getEventContext(key = null))
+    }
+
     private fun interruptMoving() {
         _movingJob?.cancel()
         _movingJob = null
+    }
+
+    override suspend fun waitForUserContinue() {
+        val deferred = CompletableDeferred<Unit>()
+        _continueDeferred = deferred
+        deferred.await()
+    }
+
+    override suspend fun waitForChoice(): Int {
+        val deferred = CompletableDeferred<Int>()
+        _choiceDeferred = deferred
+        return deferred.await()
+    }
+
+    override suspend fun waitForMoveFinished() {
+        val deferred = CompletableDeferred<Unit>()
+        _moveDeferred = deferred
+        deferred.await()
+    }
+
+    override suspend fun waitForCombatResult(): Boolean {
+        val deferred = CompletableDeferred<Boolean>()
+        _combatDeferred = deferred
+        return deferred.await()
+    }
+
+    override suspend fun onEffect(effect: EventEffect) {
+        _effects.emit(effect)
+    }
+
+    private fun onUserContinue() {
+        _continueDeferred?.complete(Unit)
+    }
+
+    private fun onChoiceSelected(index: Int) {
+        _choiceDeferred?.complete(index)
+    }
+
+    private fun onCombatFinished(result: Boolean) {
+        _combatDeferred?.complete(result)
+    }
+
+    private fun onMoveFinished() {
+        _moveDeferred?.complete(Unit)
     }
 
 }

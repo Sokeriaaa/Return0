@@ -8,8 +8,11 @@
     <string name="game_menu_settings">设置</string>
     <string name="game_menu_quit">退出游戏</string>
 
+    <string name="game_save_title">存档提醒</string>
+    <string name="game_save_text">现在去保存当前的游戏进度吗？</string>
     <string name="game_quit_warn">未保存的游戏进度可能会丢失。</string>
 
     <string name="map_action_move">移动到这里</string>
     <string name="map_action_interact">交互</string>
+    <string name="map_action_interact_w_index">交互 %1$s</string>
 </resources>

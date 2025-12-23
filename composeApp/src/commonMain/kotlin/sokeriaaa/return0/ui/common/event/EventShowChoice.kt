@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.ui.common.widgets.AppButton
 
+/**
+ * Show the choices.
+ */
 @Composable
 fun EventShowChoice(
     modifier: Modifier = Modifier,
@@ -36,9 +39,14 @@ fun EventShowChoice(
         effect.choices.forEachIndexed { index, choice ->
             AppButton(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = choice.first,
+                text = choice,
                 onClick = { onSelected(index) }
             )
         }
     }
 }
+
+data class EventShowChoiceState(
+    val visible: Boolean = false,
+    val effect: EventEffect.ShowChoice? = null,
+)

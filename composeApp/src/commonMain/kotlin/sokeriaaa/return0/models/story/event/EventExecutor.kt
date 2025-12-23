@@ -34,25 +34,27 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.Text.Narrator -> {
-            context.emitEffect(
+            context.callback.onEffect(
                 EventEffect.ShowText(
                     type = EventEffect.ShowText.Type.Narrator,
                     text = context.resources.getString(messageRes)
                 )
             )
+            context.callback.waitForUserContinue()
         }
 
         is Event.Text.User -> {
-            context.emitEffect(
+            context.callback.onEffect(
                 EventEffect.ShowText(
                     type = EventEffect.ShowText.Type.User,
                     text = context.resources.getString(messageRes)
                 )
             )
+            context.callback.waitForUserContinue()
         }
 
         is Event.Text.NPC -> {
-            context.emitEffect(
+            context.callback.onEffect(
                 EventEffect.ShowText(
                     type = EventEffect.ShowText.Type.NPC(
                         name = context.resources.getString(nameRes)
@@ -60,26 +62,29 @@ suspend fun Event.executedIn(context: EventContext) {
                     text = context.resources.getString(messageRes)
                 )
             )
+            context.callback.waitForUserContinue()
         }
 
         is Event.Choice -> {
-            context.emitEffect(
+            context.callback.onEffect(
                 EventEffect.ShowChoice(
                     choices = items.map {
-                        context.resources.getString(it.first) to it.second
+                        context.resources.getString(it.first)
                     }
                 )
             )
+            items[context.callback.waitForChoice()].second.executedIn(context)
         }
 
         is Event.Combat -> {
-            context.emitEffect(
-                EventEffect.StartCombat(
-                    config = config,
-                    success = success,
-                    failure = failure,
-                )
+            context.callback.onEffect(
+                EventEffect.StartCombat(config = config)
             )
+            if (context.callback.waitForCombatResult()) {
+                success.executedIn(context)
+            } else {
+                failure.executedIn(context)
+            }
         }
 
         is Event.TeleportUserTo -> {
@@ -88,9 +93,9 @@ suspend fun Event.executedIn(context: EventContext) {
                 fileName = map,
                 lineNumber = line,
             )
-            context.emitEffect(
+            context.callback.onEffect(
                 EventEffect.TeleportPlayer(
-                    map = map,
+                    fileName = map,
                     line = line,
                 )
             )
@@ -134,7 +139,8 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         Event.RequestSave -> {
-            context.emitEffect(EventEffect.RequestSave)
+            context.callback.onEffect(EventEffect.RequestSave)
+            context.callback.waitForUserContinue()
         }
 
         Event.Failed -> {

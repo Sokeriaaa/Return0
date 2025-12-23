@@ -30,7 +30,7 @@ class ResourceRepo {
     /**
      * Get string value.
      */
-    fun getString(key: String, default: String = ""): String = _stringResMap[key] ?: default
+    fun getString(key: String, default: String = key): String = _stringResMap[key] ?: default
 
     /**
      * Load the string resources of specified language.
