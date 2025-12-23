@@ -16,13 +16,19 @@ package sokeriaaa.return0.ui.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.pointerInput
 
 /**
@@ -35,15 +41,27 @@ fun ModalOverlay(
     dim: Boolean = enabled,
     content: @Composable BoxScope.() -> Unit
 ) {
+    val focusRequester = remember { FocusRequester() }
     val animatedAlpha by animateFloatAsState(
         targetValue = if (dim) 0.2F else 0F,
         label = "animatedAlpha",
     )
+    // Force focus when shown
+    LaunchedEffect(enabled) {
+        if (enabled) {
+            focusRequester.requestFocus()
+        } else {
+            focusRequester.freeFocus()
+        }
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
             // Blocks ALL clicks behind it
             .modalInputBlocker(enabled = enabled)
+            // Focus requester
+            .focusRequester(focusRequester)
+            .focusable()
             // Visual dim
             .background(MaterialTheme.colorScheme.scrim.copy(alpha = animatedAlpha)),
         content = content
@@ -61,7 +79,7 @@ fun Modifier.modalInputBlocker(enabled: Boolean): Modifier =
                     awaitPointerEvent()
                 }
             }
-        }
+        }.onPreviewKeyEvent { true }
     } else {
         this
     }
