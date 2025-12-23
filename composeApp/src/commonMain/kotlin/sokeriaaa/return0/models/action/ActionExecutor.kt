@@ -282,7 +282,7 @@ fun ActionExtraContext.attachEffect(effect: Effect) {
             // Execute
             target.attachEffect(effect)
         } else {
-            if (effect > currentEffect) {
+            if (effect >= currentEffect) {
                 // Copy action values.
                 currentEffect.values.forEach { entry ->
                     effect.values[entry.key] = (effect.values[entry.key] ?: 0F) + entry.value
