@@ -19,6 +19,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
@@ -39,6 +40,51 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.back
+
+/**
+ * Simplified for default buttons to avoid nesting.
+ *
+ * @see Button
+ */
+@Composable
+fun AppButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    iconRes: DrawableResource? = null,
+    contentDescription: String? = null,
+    text: String,
+    shape: Shape = ButtonDefaults.shape,
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource? = null,
+) {
+    Button(
+        modifier = modifier,
+        onClick = onClick,
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+    ) {
+        iconRes?.let {
+            Icon(
+                painter = painterResource(it),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(
+                modifier = Modifier.size(ButtonDefaults.IconSpacing),
+            )
+        }
+        Text(text)
+    }
+}
 
 /**
  * Simplified for default buttons to avoid nesting.

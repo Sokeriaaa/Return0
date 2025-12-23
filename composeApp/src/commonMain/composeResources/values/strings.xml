@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">return 0;</string>
+    <string name="player_name">Ada Null</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
