@@ -87,6 +87,15 @@ suspend fun Event.executedIn(context: EventContext) {
             }
         }
 
+        is Event.MoveUserTo -> {
+            val line = lineNumber.calculatedIn(context)
+            context.callback.onEffect(
+                EventEffect.MovePlayer(
+                    line = line,
+                )
+            )
+        }
+
         is Event.TeleportUserTo -> {
             val line = lineNumber.calculatedIn(context)
             context.gameState.map.updatePosition(
