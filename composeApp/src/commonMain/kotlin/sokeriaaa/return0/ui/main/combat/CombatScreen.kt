@@ -262,7 +262,7 @@ private fun PartyPanel(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(840)) {
+        if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
             // Flat to a single row when the screen is wide enough.
             Row(
                 modifier = Modifier.fillMaxWidth(),
