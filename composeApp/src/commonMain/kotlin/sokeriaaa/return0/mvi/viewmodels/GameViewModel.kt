@@ -17,6 +17,7 @@ package sokeriaaa.return0.mvi.viewmodels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CompletableDeferred
@@ -32,6 +33,7 @@ import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.story.event.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
+import sokeriaaa.return0.models.story.event.condition.calculatedIn
 import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.models.story.map.MapGenerator
 import sokeriaaa.return0.models.story.map.MapRow
@@ -63,6 +65,12 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     // Map rows.
     private val _mapRows: MutableList<MapRow> = mutableStateListOf()
     val mapRows: List<MapRow> = _mapRows
+
+    // No location events which don't have the line number.
+    private val _noLocationEvents: MutableList<MapEvent> = mutableStateListOf()
+
+    // The line numbers with an event triggered by overlapping.
+    private val _overlapRows: MutableSet<Int> = mutableStateSetOf()
 
     /**
      * The player is currently moving by an event.
@@ -124,6 +132,11 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                 reloadMap()
             }
 
+            GameIntent.RefreshEvent -> viewModelScope.launch {
+                clearAllEvents()
+                loadAllEvents()
+            }
+
             is GameIntent.ExecuteEvent -> viewModelScope.launch {
                 executeEvent(intent.mapEvent)
             }
@@ -140,15 +153,54 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
      */
     private suspend fun reloadMap() {
         _mapRows.clear()
+        clearAllEvents()
         _mapRows.addAll(MapGenerator.generateCode(current))
-        // Handle events.
+        loadAllEvents()
+    }
+
+    /**
+     * Clear all the events in this map.
+     */
+    private fun clearAllEvents() {
+        _mapRows.forEach { it.events.clear() }
+        _overlapRows.clear()
+        _noLocationEvents.clear()
+    }
+
+    /**
+     * Load all events in this map.
+     */
+    private suspend fun loadAllEvents() {
         _gameStateRepo.map.loadEvents().forEach {
-            if (it.lineNumber == null) {
-                // TODO Handle events that doesn't have a line number.
-            } else {
-                _mapRows[it.lineNumber - 1].events.add(it)
+            val context = getEventContext(it.key)
+            if (it.enabled.calculatedIn(context)) {
+                // If the event is enabled
+                if (it.lineNumber == null) {
+                    // Handle events that doesn't have a line number.
+                    if (
+                        it.trigger != MapEvent.Trigger.OVERLAPPED &&
+                        it.trigger != MapEvent.Trigger.INTERACTED
+                    ) {
+                        _noLocationEvents.add(it)
+                    }
+                } else {
+                    // Add the event
+                    if (it.trigger != MapEvent.Trigger.ENTERED) {
+                        _mapRows[it.lineNumber - 1].events.add(it)
+                        if (it.trigger == MapEvent.Trigger.OVERLAPPED) {
+                            _overlapRows.add(it.lineNumber)
+                        }
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * Trigger the events without line number in this map (when the user entered the map).
+     */
+    private suspend fun triggerNoLocationEvents() {
+        executeEvent(*_noLocationEvents.toTypedArray())
     }
 
     /**
@@ -176,6 +228,11 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                 delay(200)
                 current += direction
                 _gameStateRepo.map.updateLineNumber(current)
+                if (!isByEvent && current in _overlapRows) {
+                    // Trigger overlapped event when the player is not moving bu an event.
+                    executeEvent(*_mapRows[current - 1].events.toTypedArray())
+                    interruptMoving()
+                }
                 if (!isEncounterDisabled) {
                     // Check buggy area.
                     if (
@@ -219,6 +276,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                 _gameStateRepo.map.updatePosition(targetFileName, targetLine)
                 reloadMap()
                 isSwitchingFile = false
+                triggerNoLocationEvents()
             } else {
                 _gameStateRepo.map.updatePosition(targetFileName, targetLine)
             }
@@ -242,8 +300,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         return Random.nextInt(AppConstants.COMBAT_RATE_BASE ushr _linesSinceLastCombat) == 0
     }
 
-    private suspend fun executeEvent(mapEvent: MapEvent) {
-        mapEvent.event.executedIn(getEventContext(mapEvent.key))
+    private suspend fun executeEvent(vararg mapEvents: MapEvent) {
+        mapEvents.forEach {
+            it.event.executedIn(getEventContext(it.key))
+        }
         // After execution finished, finish this event.
         _effects.emit(EventEffect.EventFinished)
     }

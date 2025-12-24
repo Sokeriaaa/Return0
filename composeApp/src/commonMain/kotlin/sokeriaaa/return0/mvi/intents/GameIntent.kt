@@ -38,6 +38,7 @@ sealed class GameIntent : BaseIntent {
     ) : GameIntent()
 
     data object RefreshMap : GameIntent()
+    data object RefreshEvent : GameIntent()
 
     data class ExecuteEvent(val mapEvent: MapEvent) : GameIntent()
     data object EventContinue : GameIntent()
