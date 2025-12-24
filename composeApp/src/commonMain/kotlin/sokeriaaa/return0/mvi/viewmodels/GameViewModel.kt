@@ -146,7 +146,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
             if (it.lineNumber == null) {
                 // TODO Handle events that doesn't have a line number.
             } else {
-                _mapRows[it.lineNumber].events.add(it)
+                _mapRows[it.lineNumber - 1].events.add(it)
             }
         }
     }
