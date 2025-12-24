@@ -14,9 +14,14 @@
  */
 package sokeriaaa.return0.models.story.event
 
+import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.story.event.condition.calculatedIn
 import sokeriaaa.return0.models.story.event.value.calculatedIn
+import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
+import sokeriaaa.return0.shared.data.models.combat.EnemyState
+import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.return0.shared.data.models.story.event.value.EventValue
 
 suspend fun Event.executedIn(context: EventContext) {
     when (this) {
@@ -77,8 +82,25 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.Combat -> {
+            // Convert the Config to ArenaConfig.
+            val temporaryEntities = mutableSetOf<String>()
+
+            val partyLevels = resolvePartyLevels(
+                context = context,
+                config = config,
+                temporaryEntities = temporaryEntities
+            )
+
+            val arenaConfig = ArenaConfig(
+                mode = ArenaConfig.Mode.COMMON,
+                saveStatus = config.statusOverride == null,
+                parties = buildParties(context, partyLevels, config.statusOverride),
+                enemies = buildEnemies(context, config.enemies),
+                temporaryEntities = temporaryEntities
+            )
+
             context.callback.onEffect(
-                EventEffect.StartCombat(config = config)
+                EventEffect.StartCombat(config = arenaConfig)
             )
             if (context.callback.waitForCombatResult()) {
                 success.executedIn(context)
@@ -156,5 +178,108 @@ suspend fun Event.executedIn(context: EventContext) {
             // TODO Teleport the player to last teleport point,
             //  with all entities slightly recovered.
         }
+    }
+}
+
+private suspend fun resolvePartyLevels(
+    context: EventContext,
+    config: Event.Combat.Config,
+    temporaryEntities: MutableSet<String>
+): Map<String, Int> {
+
+    if (config.useOnlyAdditional) {
+        return config.additionalParties.associate {
+            it.first to it.second.calculatedIn(context)
+        }
+    }
+
+    val result = context.gameState.team
+        .loadTeamLevelPairs()
+        .toMutableList()
+
+    val additional = config.additionalParties.associate {
+        it.first to it.second.calculatedIn(context)
+    }
+
+    additional.forEach { (id, level) ->
+        val existingIndex = result.indexOfFirst { it.first == id }
+
+        when {
+            // Replace weaker existing member
+            existingIndex >= 0 && result[existingIndex].second < level -> {
+                result[existingIndex] = id to level
+                temporaryEntities += id
+            }
+
+            // Insert or replace if not in team
+            existingIndex < 0 -> {
+                insertOrReplace(result, id to level, additional.keys, temporaryEntities)
+            }
+        }
+    }
+
+    return result.toMap()
+}
+
+private fun insertOrReplace(
+    team: MutableList<Pair<String, Int>>,
+    entry: Pair<String, Int>,
+    requiredIds: Set<String>,
+    temporaryEntities: MutableSet<String>
+) {
+    for (index in AppConstants.ARENA_MAX_PARTY - 1 downTo 0) {
+        val current = team.getOrNull(index)
+
+        when {
+            // Empty slot
+            current == null -> {
+                team.add(entry)
+                temporaryEntities += entry.first
+                return
+            }
+
+            // Skip required entities
+            current.first in requiredIds -> continue
+
+            // Replace
+            else -> {
+                team[index] = entry
+                temporaryEntities += entry.first
+                return
+            }
+        }
+    }
+    // If we get here: team is full of required entities -> ignore
+}
+
+private suspend fun buildParties(
+    context: EventContext,
+    partyLevels: Map<String, Int>,
+    statusOverride: Map<String, Event.Combat.Config.StatusOverride>?
+): List<PartyState> {
+
+    return partyLevels.mapNotNull { (id, level) ->
+        val entityData = context.archive.getEntityData(id) ?: return@mapNotNull null
+        val table = context.gameState.team.getEntityTable(id)
+        val override = statusOverride?.get(id)
+
+        PartyState(
+            entityData = entityData,
+            level = override?.level?.calculatedIn(context) ?: level,
+            currentHP = override?.hp?.calculatedIn(context) ?: table?.currentHP,
+            currentSP = override?.sp?.calculatedIn(context) ?: table?.currentSP,
+        )
+    }
+}
+
+private suspend fun buildEnemies(
+    context: EventContext,
+    enemies: List<Pair<String, EventValue>>
+): List<EnemyState> {
+    return enemies.mapNotNull { (id, levelValue) ->
+        EnemyState(
+            entityData = context.archive.getEntityData(id) ?: return@mapNotNull null,
+            level = levelValue.calculatedIn(context)
+        )
     }
 }

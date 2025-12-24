@@ -37,9 +37,8 @@ import sokeriaaa.return0.models.story.map.MapGenerator
 import sokeriaaa.return0.models.story.map.MapRow
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
-import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.return0.shared.data.models.story.event.value.EventValue
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import kotlin.random.Random
@@ -231,6 +230,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     ): EventContext = EventContext(
         gameState = _gameStateRepo,
         resources = _resourceRepo,
+        archive = _archiveRepo,
         key = key,
         callback = this,
     )
@@ -250,18 +250,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     private suspend fun encounteredCombat() {
         Event.Combat(
-            config = ArenaConfig(
-                mode = ArenaConfig.Mode.COMMON,
-                parties = _gameStateRepo.team.loadTeam(useCurrentData = false),
-                enemies = _gameStateRepo.map.current.buggyEntries.random()
-                    .enemies.map {
-                        EnemyState(
-                            entityData = _archiveRepo.getEntityData(it)!!,
-                            // TODO
-                            level = 1
-                        )
-                    }
-            )
+            config = Event.Combat.Config(
+                enemies = _gameStateRepo.map.current.buggyEntries.random().enemies
+                    .map { it to EventValue.Constant(1) },
+            ),
         ).executedIn(getEventContext(key = null))
     }
 

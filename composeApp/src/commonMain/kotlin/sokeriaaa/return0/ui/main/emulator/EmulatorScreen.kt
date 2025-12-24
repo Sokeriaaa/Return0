@@ -212,6 +212,7 @@ fun EmulatorScreen(
                             intent = CombatIntent.Prepare(
                                 config = ArenaConfig(
                                     mode = ArenaConfig.Mode.EMULATOR,
+                                    saveStatus = false,
                                     parties = viewModel.parties,
                                     enemies = viewModel.enemies,
                                 )

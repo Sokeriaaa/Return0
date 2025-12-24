@@ -18,6 +18,7 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
+import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 
 class GameTeamRepo(
@@ -65,6 +66,27 @@ class GameTeamRepo(
     }
 
     /**
+     * Load the current team levels in a pair list.
+     */
+    suspend fun loadTeamLevelPairs(): List<Pair<String, Int>> {
+        val currentTeam =
+            teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return emptyList()
+        val entityKeys = sequenceOf(
+            currentTeam.slot1,
+            currentTeam.slot2,
+            currentTeam.slot3,
+            currentTeam.slot4,
+        ).filterNotNull()
+        val results = ArrayList<Pair<String, Int>>()
+        entityKeys.forEach { key ->
+            entityDao.getEntity(AppConstants.CURRENT_SAVE_ID, key)?.let {
+                results.add(key to it.level)
+            }
+        }
+        return results
+    }
+
+    /**
      * Recover the HP and SP of all the team.
      */
     suspend fun recoverAll() {
@@ -79,6 +101,10 @@ class GameTeamRepo(
                 entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName = it, hp = null)
                 entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName = it, sp = null)
             }
+    }
+
+    suspend fun getEntityTable(entityName: String): EntityTable? {
+        return entityDao.getEntity(AppConstants.CURRENT_SAVE_ID, entityName)
     }
 
     /**

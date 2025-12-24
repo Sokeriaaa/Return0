@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.models.story.event
 
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import kotlin.random.Random
@@ -24,6 +25,7 @@ import kotlin.random.Random
 class EventContext(
     val gameState: GameStateRepo,
     val resources: ResourceRepo,
+    val archive: ArchiveRepo,
     val key: String?,
     val random: Random = Random,
     val callback: Callback,

@@ -287,9 +287,14 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
 
     override fun onCombatEnd(result: Boolean) {
         viewModelScope.launch {
-            // Save state if it's not emulator.
-            if (arenaConfig?.mode?.equals(ArenaConfig.Mode.EMULATOR) == false) {
-                _gameStateRepo.entity.saveEntityState(parties = parties)
+            // Save state if the flag is `true`.
+            if (arenaConfig?.saveStatus == true) {
+                _gameStateRepo.entity.saveEntityState(
+                    parties = parties.filter {
+                        // Filter the temporary entities.
+                        arenaConfig?.temporaryEntities?.contains(it.name) != true
+                    },
+                )
             }
             combatStatus = result
         }
