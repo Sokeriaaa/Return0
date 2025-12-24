@@ -93,6 +93,8 @@ fun SaveScreen(
         viewModel.readFrom(
             saveID = saveID,
             onFinished = {
+                // Refresh map
+                gameViewModel.onIntent(GameIntent.RefreshMap)
                 mainNavHostController.navigateUp()
                 mainNavHostController.navigateSingleTop(Scene.Game.route)
                 loadWarn = null

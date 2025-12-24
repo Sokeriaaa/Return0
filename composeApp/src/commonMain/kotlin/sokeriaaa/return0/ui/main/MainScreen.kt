@@ -54,7 +54,9 @@ import return0.composeapp.generated.resources.loading_precent
 import return0.composeapp.generated.resources.new_game
 import return0.composeapp.generated.resources.retry
 import return0.composeapp.generated.resources.settings
+import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
+import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
@@ -155,6 +157,10 @@ private fun RealMainScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    val gameViewModel: GameViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    )
     AppScaffold(
         modifier = modifier,
         viewModel = viewModel,
@@ -178,6 +184,8 @@ private fun RealMainScreen(
                     viewModel.onIntent(
                         MainIntent.StartNewGame(
                             onLoadFinished = {
+                                // Refresh map
+                                gameViewModel.onIntent(GameIntent.RefreshMap)
                                 mainNavHostController.navigateSingleTop(Scene.Game.route)
                             },
                         ),

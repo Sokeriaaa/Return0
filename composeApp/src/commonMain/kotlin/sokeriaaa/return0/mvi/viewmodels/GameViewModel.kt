@@ -108,12 +108,6 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     )
     val effects = _effects.asSharedFlow()
 
-    init {
-        viewModelScope.launch {
-            reloadMap()
-        }
-    }
-
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
