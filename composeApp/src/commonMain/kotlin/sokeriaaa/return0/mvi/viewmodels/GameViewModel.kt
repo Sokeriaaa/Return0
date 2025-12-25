@@ -72,6 +72,9 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     // The line numbers with an event triggered by overlapping.
     private val _overlapRows: MutableSet<Int> = mutableStateSetOf()
 
+    // Lines that are blocked by events.
+    private val _blockedRows: MutableSet<Int> = mutableStateSetOf()
+
     /**
      * The player is currently moving by an event.
      */
@@ -159,6 +162,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         _mapRows.forEach { it.events.clear() }
         _overlapRows.clear()
         _noLocationEvents.clear()
+        _blockedRows.clear()
     }
 
     /**
@@ -182,7 +186,12 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                     if (it.trigger != MapEvent.Trigger.ENTERED) {
                         _mapRows[it.lineNumber - 1].events.add(it)
                         if (it.trigger == MapEvent.Trigger.OVERLAPPED) {
+                            // Add overlap trigger.
                             _overlapRows.add(it.lineNumber)
+                        }
+                        if (it.blocksUser.calculatedIn(context)) {
+                            // Lines blocked
+                            _blockedRows.add(it.lineNumber)
                         }
                     }
                 }
@@ -217,6 +226,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
             while (current != targetLine) {
                 if (isByEvent) {
                     isMovingByEvent = true
+                }
+                if (current + direction in _blockedRows) {
+                    // Blocked by event.
+                    interruptMoving()
                 }
                 // Move for every 200ms.
                 delay(200)
