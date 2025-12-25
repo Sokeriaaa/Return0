@@ -56,7 +56,7 @@ object MapGenerator {
 
         // Close the brace right now.
         if (state.braceDepth > 0) {
-            val shouldClose = Random.nextInt(100) < 5 shl state.braceDepth
+            val shouldClose = random.nextInt(100) < 5 shl state.braceDepth
             if (shouldClose) {
                 state.braceDepth--
                 return MapRow(depth = state.braceDepth, text = "}")
