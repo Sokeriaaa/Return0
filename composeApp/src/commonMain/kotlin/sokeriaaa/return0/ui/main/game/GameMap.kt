@@ -139,7 +139,10 @@ private fun MapRow(
             }
             // Interacting
             events.forEachIndexed { index, event ->
-                if (lineNumber - currentLine in -1..1) {
+                if (
+                    event.trigger == MapEvent.Trigger.INTERACTED &&
+                    lineNumber - currentLine in -1..1
+                ) {
                     actions.add(MapRowAction.Interact(index, event))
                 }
             }
