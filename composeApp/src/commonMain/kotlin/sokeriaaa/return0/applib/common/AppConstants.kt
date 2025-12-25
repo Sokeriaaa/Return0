@@ -20,6 +20,7 @@ object AppConstants {
     const val CURRENT_SAVE_ID = -1
 
     const val ENTRANCE_MAP = "entrance"
+    const val MAP_MAX_MOVEMENT = 50
     const val COMBAT_RATE_BASE = 1 shl 16
 
     const val BASE_CRITICAL_RATE: Float = 0.05F

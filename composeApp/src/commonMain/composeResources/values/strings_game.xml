@@ -15,4 +15,5 @@
     <string name="map_action_move">Move to here</string>
     <string name="map_action_interact">Interact</string>
     <string name="map_action_interact_w_display">Interact %1$s</string>
+    <string name="map_action_too_far_away">Too far away…</string>
 </resources>

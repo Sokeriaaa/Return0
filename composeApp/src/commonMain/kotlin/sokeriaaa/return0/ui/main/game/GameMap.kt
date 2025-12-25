@@ -46,7 +46,9 @@ import return0.composeapp.generated.resources.ic_outline_move_down_24
 import return0.composeapp.generated.resources.ic_outline_move_up_24
 import return0.composeapp.generated.resources.map_action_interact_w_display
 import return0.composeapp.generated.resources.map_action_move
+import return0.composeapp.generated.resources.map_action_too_far_away
 import return0.composeapp.generated.resources.no_operation
+import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
@@ -134,8 +136,15 @@ private fun MapRow(
             val actions = ArrayList<MapRowAction>()
             // Moving
             when {
-                lineNumber > currentLine -> actions.add(MapRowAction.MoveDown)
-                lineNumber < currentLine -> actions.add(MapRowAction.MoveUp)
+                lineNumber - currentLine in 1..AppConstants.MAP_MAX_MOVEMENT -> actions.add(
+                    MapRowAction.MoveDown
+                )
+
+                currentLine - lineNumber in 1..AppConstants.MAP_MAX_MOVEMENT -> actions.add(
+                    MapRowAction.MoveUp
+                )
+
+                lineNumber != currentLine -> actions.add(MapRowAction.TooFarAway)
             }
             // Interacting
             events.forEachIndexed { index, event ->
@@ -248,6 +257,14 @@ private fun MapRow(
                                 },
                             )
                         }
+
+                        MapRowAction.TooFarAway -> {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                text = stringResource(Res.string.map_action_too_far_away),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
                     }
                 }
             }
@@ -262,4 +279,5 @@ private sealed class MapRowAction {
     data object MoveUp : MapRowAction()
     data object MoveDown : MapRowAction()
     data class Interact(val index: Int, val event: MapEvent) : MapRowAction()
+    data object TooFarAway : MapRowAction()
 }
