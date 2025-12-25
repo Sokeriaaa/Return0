@@ -47,23 +47,24 @@ kotlin {
 
     sourceSets {
         val commonMain by getting
+        val commonTest by getting
         // Shared source set for Android, iOS and JVM.
-        val commonNativeMain by creating {
-            dependsOn(commonMain)
-        }
+        val commonNativeMain by creating { dependsOn(commonMain) }
+        val commonNativeTest by creating { dependsOn(commonTest) }
 
         // Platforms
-        val androidMain by getting {
-            dependsOn(commonNativeMain)
-        }
-        val jvmMain by getting {
-            dependsOn(commonNativeMain)
-        }
+        val androidMain by getting { dependsOn(commonNativeMain) }
+        val androidUnitTest by getting { dependsOn(commonNativeTest) }
+        val jvmMain by getting { dependsOn(commonNativeMain) }
+        val jvmTest by getting { dependsOn(commonNativeTest) }
 
         // iOS consolidation
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosSimulatorArm64Test by getting
 
         val iosMain by creating {
             dependsOn(commonNativeMain)
@@ -71,16 +72,20 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
         }
+        val iosTest by creating {
+            dependsOn(commonNativeTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
+        }
 
-        val webMain by creating {
-            dependsOn(commonMain)
-        }
-        val jsMain by getting {
-            dependsOn(webMain)
-        }
-        val wasmJsMain by getting {
-            dependsOn(webMain)
-        }
+        // Web
+        val webMain by creating { dependsOn(commonMain) }
+        val webTest by creating { dependsOn(commonTest) }
+        val jsMain by getting { dependsOn(webMain) }
+        val jsTest by getting { dependsOn(webTest) }
+        val wasmJsMain by getting { dependsOn(webMain) }
+        val wasmJsTest by getting { dependsOn(webTest) }
 
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -102,12 +107,17 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         commonNativeMain.dependencies {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
         }
+        commonNativeTest.dependencies {
+            implementation(libs.androidx.room.testing)
+        }
+
         webMain.dependencies {
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.web.worker.driver)
@@ -120,6 +130,17 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
+        }
+        androidUnitTest.dependencies {
+            // For testing in Android Studio directly.
+            // Solve the java.lang.UnsatisfiedLinkError: no sqliteJni in java.library.path
+            implementation(libs.androidx.sqlite.bundled.jvm)
+
+            implementation(libs.androidx.test.core)
+            implementation(libs.androidx.test.ext.junit)
+            implementation(libs.androidx.test.monitor)
+            implementation(libs.androidx.test.runner)
+            implementation(libs.robolectric)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -138,6 +159,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "org.robolectric.RobolectricTestRunner"
     }
     packaging {
         resources {
