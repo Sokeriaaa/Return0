@@ -43,8 +43,7 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ic_outline_left_click_24
 import return0.composeapp.generated.resources.ic_outline_move_down_24
 import return0.composeapp.generated.resources.ic_outline_move_up_24
-import return0.composeapp.generated.resources.map_action_interact
-import return0.composeapp.generated.resources.map_action_interact_w_index
+import return0.composeapp.generated.resources.map_action_interact_w_display
 import return0.composeapp.generated.resources.map_action_move
 import return0.composeapp.generated.resources.no_operation
 import sokeriaaa.return0.mvi.intents.GameIntent
@@ -126,15 +125,25 @@ private fun MapRow(
     // Show DropDownMenu
     var isMenuExpanded by remember { mutableStateOf(false) }
     // Calculate map row action.
-    val mapRowAction = remember(key1 = lineNumber, key2 = currentLine, key3 = events) {
-        when {
-            lineNumber == null -> MapRowAction.NONE
-            lineNumber > currentLine -> MapRowAction.MOVE_DOWN
-            lineNumber < currentLine -> MapRowAction.MOVE_UP
-            events.isNotEmpty() -> MapRowAction.INTERACT
-            else -> MapRowAction.NONE
+    val mapRowAction: List<MapRowAction> =
+        remember(key1 = lineNumber, key2 = currentLine, key3 = events) {
+            if (lineNumber == null) {
+                return@remember emptyList()
+            }
+            val actions = ArrayList<MapRowAction>()
+            // Moving
+            when {
+                lineNumber > currentLine -> actions.add(MapRowAction.MoveDown)
+                lineNumber < currentLine -> actions.add(MapRowAction.MoveUp)
+            }
+            // Interacting
+            events.forEachIndexed { index, event ->
+                if (lineNumber - currentLine in -1..1) {
+                    actions.add(MapRowAction.Interact(index, event))
+                }
+            }
+            actions
         }
-    }
     // Colors
     val rowBackgroundColor = if (isMenuExpanded) {
         MaterialTheme.colorScheme.primaryContainer
@@ -189,50 +198,47 @@ private fun MapRow(
                     isMenuExpanded = false
                 },
             ) {
-                when (mapRowAction) {
-                    MapRowAction.NONE -> Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                if (mapRowAction.isEmpty()) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                         text = stringResource(Res.string.no_operation),
+                        style = MaterialTheme.typography.bodyMedium,
                     )
-
-                    MapRowAction.MOVE_UP -> AppDropdownMenuItem(
-                        iconRes = Res.drawable.ic_outline_move_up_24,
-                        text = stringResource(Res.string.map_action_move),
-                        onClick = {
-                            isMenuExpanded = false
-                            onMoveClicked()
-                        },
-                    )
-
-                    MapRowAction.MOVE_DOWN -> AppDropdownMenuItem(
-                        iconRes = Res.drawable.ic_outline_move_down_24,
-                        text = stringResource(Res.string.map_action_move),
-                        onClick = {
-                            isMenuExpanded = false
-                            onMoveClicked()
-                        },
-                    )
-
-                    MapRowAction.INTERACT -> if (events.size == 1) {
-                        AppDropdownMenuItem(
-                            iconRes = Res.drawable.ic_outline_left_click_24,
-                            text = stringResource(Res.string.map_action_interact),
-                            onClick = {
-                                isMenuExpanded = false
-                                onInteractClicked(events.first())
-                            },
-                        )
-                    } else {
-                        events.forEachIndexed { index, event ->
+                }
+                mapRowAction.forEach {
+                    when (it) {
+                        is MapRowAction.Interact -> {
                             AppDropdownMenuItem(
                                 iconRes = Res.drawable.ic_outline_left_click_24,
                                 text = stringResource(
-                                    resource = Res.string.map_action_interact_w_index,
-                                    /* index = */ index,
+                                    resource = Res.string.map_action_interact_w_display,
+                                    /* display = */ it.event.display ?: "#${it.index}",
                                 ),
                                 onClick = {
                                     isMenuExpanded = false
-                                    onInteractClicked(event)
+                                    onInteractClicked(it.event)
+                                },
+                            )
+                        }
+
+                        MapRowAction.MoveDown -> {
+                            AppDropdownMenuItem(
+                                iconRes = Res.drawable.ic_outline_move_down_24,
+                                text = stringResource(Res.string.map_action_move),
+                                onClick = {
+                                    isMenuExpanded = false
+                                    onMoveClicked()
+                                },
+                            )
+                        }
+
+                        MapRowAction.MoveUp -> {
+                            AppDropdownMenuItem(
+                                iconRes = Res.drawable.ic_outline_move_up_24,
+                                text = stringResource(Res.string.map_action_move),
+                                onClick = {
+                                    isMenuExpanded = false
+                                    onMoveClicked()
                                 },
                             )
                         }
@@ -246,6 +252,8 @@ private fun MapRow(
 /**
  * Types of the map row action.
  */
-private enum class MapRowAction {
-    NONE, MOVE_UP, MOVE_DOWN, INTERACT
+private sealed class MapRowAction {
+    data object MoveUp : MapRowAction()
+    data object MoveDown : MapRowAction()
+    data class Interact(val index: Int, val event: MapEvent) : MapRowAction()
 }
