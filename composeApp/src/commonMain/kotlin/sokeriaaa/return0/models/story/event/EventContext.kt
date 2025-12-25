@@ -14,6 +14,8 @@
  */
 package sokeriaaa.return0.models.story.event
 
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
@@ -23,13 +25,14 @@ import kotlin.random.Random
  * Context class for executing events.
  */
 class EventContext(
-    val gameState: GameStateRepo,
-    val resources: ResourceRepo,
-    val archive: ArchiveRepo,
     val key: String?,
     val random: Random = Random,
     val callback: Callback,
-) {
+) : KoinComponent {
+    val gameState: GameStateRepo by inject()
+    val resources: ResourceRepo by inject()
+    val archive: ArchiveRepo by inject()
+
     interface Callback {
         suspend fun waitForUserContinue()
         suspend fun waitForChoice(): Int

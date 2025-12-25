@@ -48,9 +48,7 @@ import kotlin.random.Random
 class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     // Repo
-    private val _archiveRepo: ArchiveRepo by inject()
     private val _gameStateRepo: GameStateRepo by inject()
-    private val _resourceRepo: ResourceRepo by inject()
 
     /**
      * File name.
@@ -293,9 +291,6 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     private fun getEventContext(
         key: String?,
     ): EventContext = EventContext(
-        gameState = _gameStateRepo,
-        resources = _resourceRepo,
-        archive = _archiveRepo,
         key = key,
         callback = this,
     )
