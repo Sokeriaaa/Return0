@@ -96,9 +96,12 @@ object TestKoinModules {
     }
 
     inline fun withModules(block: () -> Unit) {
-        start()
-        block()
-        stop()
+        try {
+            start()
+            block()
+        } finally {
+            stop()
+        }
     }
 
     fun start() {
