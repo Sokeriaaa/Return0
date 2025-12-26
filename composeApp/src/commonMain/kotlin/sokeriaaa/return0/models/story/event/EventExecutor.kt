@@ -20,8 +20,8 @@ import sokeriaaa.return0.models.story.event.value.calculatedIn
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.story.event.Event
-import sokeriaaa.return0.shared.data.models.story.event.value.EventValue
 
 suspend fun Event.executedIn(context: EventContext) {
     when (this) {
@@ -274,7 +274,7 @@ private suspend fun buildParties(
 
 private suspend fun buildEnemies(
     context: EventContext,
-    enemies: List<Pair<String, EventValue>>
+    enemies: List<Pair<String, Value.Event>>
 ): List<EnemyState> {
     return enemies.mapNotNull { (id, levelValue) ->
         EnemyState(
