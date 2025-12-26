@@ -327,16 +327,7 @@ class EventExecutorTest {
             context.gameState.entity.updateHPAndSP("foo", 50, 50)
             context.gameState.entity.updateHPAndSP("bar", 50, 50)
             context.gameState.entity.updateHPAndSP("baz", 50, 50)
-            // Put "foo" and "bar" in team 1.
-            context.gameState.team.updateTeam(
-                teamID = 1,
-                name = "Team 1",
-                isActivated = true,
-                slot1 = "foo",
-                slot2 = "bar",
-                slot3 = null,
-                slot4 = null
-            )
+            registerTestingTeams(context)
 
             // Recover
             Event.RecoverAll.executedIn(context)
@@ -367,6 +358,280 @@ class EventExecutorTest {
         }
     }
 
+    // Test Event.Combat.Config -> ArenaConfig
+    @Test
+    fun `ArenaConfig assembled correctly - common`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.updateHPAndSP("foo", 50, 42)
+            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            registerTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    )
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 20, "bar" to 25),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+            assertEquals(
+                expected = listOf(50, 50),
+                actual = arenaConfig.parties.map { it.currentHP },
+            )
+            assertEquals(
+                expected = listOf(42, 42),
+                actual = arenaConfig.parties.map { it.currentSP },
+            )
+            assertEquals(
+                expected = listOf("baz" to 26),
+                actual = arenaConfig.enemies.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - additional`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            registerTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    additionalParties = listOf(
+                        "baz" to EventValue.Constant(42),
+                    )
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 20, "bar" to 25, "baz" to 42),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - additional - replacing`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.obtainEntity("baz", level = 30)
+            context.gameState.entity.obtainEntity("qux", level = 35)
+            registerFullTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    additionalParties = listOf(
+                        "quux" to EventValue.Constant(42),
+                    )
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 20, "bar" to 25, "baz" to 30, "quux" to 42),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - additional - replacingSame`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.obtainEntity("baz", level = 30)
+            context.gameState.entity.obtainEntity("qux", level = 35)
+            registerFullTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    additionalParties = listOf(
+                        "qux" to EventValue.Constant(42),
+                    )
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 20, "bar" to 25, "baz" to 30, "qux" to 42),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - additional - onlyAdditional`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.obtainEntity("baz", level = 30)
+            context.gameState.entity.obtainEntity("qux", level = 35)
+            registerFullTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    additionalParties = listOf(
+                        "quux" to EventValue.Constant(42),
+                    ),
+                    useOnlyAdditional = true,
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("quux" to 42),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - additional - onlyAdditional - level`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.obtainEntity("baz", level = 30)
+            context.gameState.entity.obtainEntity("qux", level = 35)
+            registerFullTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    additionalParties = listOf(
+                        "foo" to EventValue.Constant(1),
+                    ),
+                    useOnlyAdditional = true,
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 1),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+        }
+    }
+
+    @Test
+    fun `ArenaConfig assembled correctly - override`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.updateHPAndSP("foo", 50, 42)
+            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            registerTestingTeams(context)
+
+            // Create ArenaConfig.
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = listOf(
+                        "baz" to EventValue.Constant(26),
+                    ),
+                    statusOverride = mapOf(
+                        "foo" to Event.Combat.Config.StatusOverride(
+                            level = EventValue.Constant(100),
+                            hp = EventValue.Constant(420),
+                            sp = EventValue.Constant(500),
+                        )
+                    )
+                ),
+                success = Event.Empty,
+                failure = Event.Empty,
+            ).executedIn(context)
+            assertTrue(callback.collectedEffects.firstOrNull() is EventEffect.StartCombat)
+
+            // assert
+            val arenaConfig = (callback.collectedEffects.first() as EventEffect.StartCombat).config
+            assertEquals(
+                expected = listOf("foo" to 100, "bar" to 25),
+                actual = arenaConfig.parties.map { it.entityData.name to it.level },
+            )
+            assertEquals(
+                expected = listOf(420, 50),
+                actual = arenaConfig.parties.map { it.currentHP },
+            )
+            assertEquals(
+                expected = listOf(500, 42),
+                actual = arenaConfig.parties.map { it.currentSP },
+            )
+        }
+    }
+
     private inline fun withContext(
         key: String? = null,
         random: Random = Random,
@@ -383,8 +648,6 @@ class EventExecutorTest {
             )
         }
     }
-
-    // TODO Test Event.Combat.Config -> ArenaConfig
 
     /**
      * Register entity data for testing.
@@ -431,6 +694,80 @@ class EventExecutorTest {
                 baseAP = 100,
                 functions = emptyList(),
             )
+        )
+        context.archive.registerEntity(
+            EntityData(
+                name = "qux",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+        context.archive.registerEntity(
+            EntityData(
+                name = "quux",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+        context.archive.registerEntity(
+            EntityData(
+                name = "corge",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+    }
+
+    /**
+     * Register testing teams. Put "foo" and "bar" in team 1.
+     */
+    private suspend fun registerTestingTeams(context: EventContext) {
+        // Put "foo" and "bar" in team 1.
+        context.gameState.team.updateTeam(
+            teamID = 1,
+            name = "Team 1",
+            isActivated = true,
+            slot1 = "foo",
+            slot2 = "bar",
+            slot3 = null,
+            slot4 = null
+        )
+    }
+
+    /**
+     * Register testing teams. Put 4 entities in team 1.
+     */
+    private suspend fun registerFullTestingTeams(context: EventContext) {
+        // Put "foo" and "bar" in team 1.
+        context.gameState.team.updateTeam(
+            teamID = 1,
+            name = "Team 1",
+            isActivated = true,
+            slot1 = "foo",
+            slot2 = "bar",
+            slot3 = "baz",
+            slot4 = "qux"
         )
     }
 
