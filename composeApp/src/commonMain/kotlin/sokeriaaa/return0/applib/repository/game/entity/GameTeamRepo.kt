@@ -15,54 +15,47 @@
 package sokeriaaa.return0.applib.repository.game.entity
 
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.data.ArchiveRepo
-import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
-import sokeriaaa.return0.applib.room.table.EntityTable
-import sokeriaaa.return0.shared.data.models.combat.PartyState
+import sokeriaaa.return0.applib.room.table.TeamTable
 
 class GameTeamRepo(
-    private val archive: ArchiveRepo,
-    private val entityDao: EntityDao,
+    private val entityRepo: GameEntityRepo,
     private val teamDao: TeamDao,
 ) {
 
     /**
-     * Load the activated team as party state for combating.
+     * Update the team data.
      */
-    suspend fun loadTeam(useCurrentData: Boolean): List<PartyState> {
-        val currentTeam =
-            teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return emptyList()
-        return sequenceOf(
-            currentTeam.slot1?.let {
-                generatePartyStateWithKey(
-                    saveID = AppConstants.CURRENT_SAVE_ID,
-                    entityName = it,
-                    useCurrentData = useCurrentData,
-                )
-            },
-            currentTeam.slot2?.let {
-                generatePartyStateWithKey(
-                    saveID = AppConstants.CURRENT_SAVE_ID,
-                    entityName = it,
-                    useCurrentData = useCurrentData,
-                )
-            },
-            currentTeam.slot3?.let {
-                generatePartyStateWithKey(
-                    saveID = AppConstants.CURRENT_SAVE_ID,
-                    entityName = it,
-                    useCurrentData = useCurrentData,
-                )
-            },
-            currentTeam.slot4?.let {
-                generatePartyStateWithKey(
-                    saveID = AppConstants.CURRENT_SAVE_ID,
-                    entityName = it,
-                    useCurrentData = useCurrentData,
-                )
-            },
-        ).filterNotNull().toList()
+    suspend fun updateTeam(
+        teamID: Int,
+        name: String,
+        isActivated: Boolean,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?,
+    ) {
+        teamDao.insertOrUpdate(
+            TeamTable(
+                saveID = AppConstants.CURRENT_SAVE_ID,
+                teamID = teamID,
+                name = name,
+                isActivated = isActivated,
+                slot1 = slot1,
+                slot2 = slot2,
+                slot3 = slot3,
+                slot4 = slot4,
+            )
+        )
+    }
+
+    /**
+     * Activate team.
+     */
+    suspend fun activateTeam(
+        teamID: Int,
+    ) {
+        teamDao.activateTeam(AppConstants.CURRENT_SAVE_ID, teamID)
     }
 
     /**
@@ -79,7 +72,7 @@ class GameTeamRepo(
         ).filterNotNull()
         val results = ArrayList<Pair<String, Int>>()
         entityKeys.forEach { key ->
-            entityDao.getEntity(AppConstants.CURRENT_SAVE_ID, key)?.let {
+            entityRepo.getEntityTable(key)?.let {
                 results.add(key to it.level)
             }
         }
@@ -87,7 +80,7 @@ class GameTeamRepo(
     }
 
     /**
-     * Recover the HP and SP of all the team.
+     * Recover the HP and SP of all the entities in current team.
      */
     suspend fun recoverAll() {
         val currentTeam = teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return
@@ -98,30 +91,7 @@ class GameTeamRepo(
             currentTeam.slot4,
         ).filterNotNull()
             .forEach {
-                entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName = it, hp = null)
-                entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName = it, sp = null)
+                entityRepo.updateHPAndSP(entityName = it, currentHP = null, currentSP = null)
             }
-    }
-
-    suspend fun getEntityTable(entityName: String): EntityTable? {
-        return entityDao.getEntity(AppConstants.CURRENT_SAVE_ID, entityName)
-    }
-
-    /**
-     * Generate the party state with the given entity name.
-     */
-    private suspend fun generatePartyStateWithKey(
-        saveID: Int = -1,
-        entityName: String,
-        useCurrentData: Boolean,
-    ): PartyState? {
-        val entityData = archive.getEntityData(entityName) ?: return null
-        val entityTable = entityDao.getEntity(saveID, entityName) ?: return null
-        return PartyState(
-            entityData = entityData,
-            level = entityTable.level,
-            currentHP = if (useCurrentData) entityTable.currentHP else null,
-            currentSP = if (useCurrentData) entityTable.currentSP else null,
-        )
     }
 }

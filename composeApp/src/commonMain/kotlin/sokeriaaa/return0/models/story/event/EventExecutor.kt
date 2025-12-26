@@ -260,7 +260,7 @@ private suspend fun buildParties(
 
     return partyLevels.mapNotNull { (id, level) ->
         val entityData = context.archive.getEntityData(id) ?: return@mapNotNull null
-        val table = context.gameState.team.getEntityTable(id)
+        val table = context.gameState.entity.getEntityTable(id)
         val override = statusOverride?.get(id)
 
         PartyState(

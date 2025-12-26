@@ -97,10 +97,22 @@ class GameEntityRepo(
      * Save the current entity state to database.
      * Mainly for the HP and SP after a combat finished.
      */
-    suspend fun saveEntityState(saveID: Int = -1, parties: List<Entity>) {
+    suspend fun saveEntityState(parties: List<Entity>) {
         parties.forEach {
-            entityDao.updateHP(saveID, it.name, it.hp)
-            entityDao.updateSP(saveID, it.name, it.sp)
+            updateHPAndSP(entityName = it.name, currentHP = it.hp, currentSP = it.sp)
         }
+    }
+
+    /**
+     * Save the current entity state to database.
+     * Mainly for the HP and SP after a combat finished.
+     */
+    suspend fun updateHPAndSP(
+        entityName: String,
+        currentHP: Int?,
+        currentSP: Int?,
+    ) {
+        entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName, currentHP)
+        entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName, currentSP)
     }
 }

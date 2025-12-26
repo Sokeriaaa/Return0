@@ -55,7 +55,7 @@ object TestKoinModules {
                 transactionManager = get(),
             )
         }
-        single { GameTeamRepo(get(), get(), get()) }
+        single { GameTeamRepo(get(), get()) }
         single { ResourceRepo() }
         single {
             SavedValuesRepo(
