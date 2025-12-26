@@ -18,13 +18,13 @@ import kotlinx.coroutines.test.runTest
 import sokeriaaa.return0.models.story.event.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
+import sokeriaaa.return0.shared.data.api.component.value.Value
+import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
-import sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition
-import sokeriaaa.return0.shared.data.models.story.event.value.EventValue
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import sokeriaaa.return0.test.annotations.AppRunner
@@ -133,7 +133,7 @@ class EventExecutorTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
             Event.MoveUserTo(
-                lineNumber = EventValue.Constant(15)
+                lineNumber = Value(15)
             ).executedIn(context)
             assertEquals(
                 expected = 15,
@@ -149,7 +149,7 @@ class EventExecutorTest {
             // FIXME: Handle the Context for Res.readBytes() or replace it.
             Event.TeleportUserTo(
                 map = "another_map",
-                lineNumber = EventValue.Constant(15)
+                lineNumber = Value(15)
             ).executedIn(context)
             assertEquals(
                 expected = 15,
@@ -170,7 +170,7 @@ class EventExecutorTest {
             difficulty = 1,
             events = listOf(
                 MapEvent(
-                    enabled = EventCondition.True,
+                    enabled = CommonCondition.True,
                     key = "event_key",
                     trigger = MapEvent.Trigger.INTERACTED,
                     lineNumber = 1,
@@ -183,7 +183,7 @@ class EventExecutorTest {
             callback = callback
         ) { context ->
             Event.TeleportThisEventTo(
-                lineNumber = EventValue.Constant(12)
+                lineNumber = Value(12)
             ).executedIn(context)
             assertTrue(
                 context.gameState.map.loadEvents(mapData = mapData)
@@ -198,7 +198,7 @@ class EventExecutorTest {
         withContext(callback = callback) { context ->
             Event.InventoryChange(
                 inventoryKey = "awesome_item",
-                change = EventValue.Constant(42)
+                change = Value(42)
             ).executedIn(context)
             assertEquals(
                 expected = 42,
@@ -207,7 +207,7 @@ class EventExecutorTest {
 
             Event.InventoryChange(
                 inventoryKey = "awesome_item",
-                change = EventValue.Constant(42)
+                change = Value(42)
             ).executedIn(context)
             assertEquals(
                 expected = 84,
@@ -222,7 +222,7 @@ class EventExecutorTest {
         withContext(callback = callback) { context ->
             Event.CurrencyChange(
                 currency = CurrencyType.TOKEN,
-                change = EventValue.Constant(42)
+                change = Value(42)
             ).executedIn(context)
             assertEquals(
                 expected = 42,
@@ -231,7 +231,7 @@ class EventExecutorTest {
 
             Event.CurrencyChange(
                 currency = CurrencyType.TOKEN,
-                change = EventValue.Constant(42)
+                change = Value(42)
             ).executedIn(context)
             assertEquals(
                 expected = 84,
@@ -273,14 +273,14 @@ class EventExecutorTest {
             )
             Event.SaveSwitch(
                 key = "switch1",
-                switch = EventCondition.True,
+                switch = CommonCondition.True,
             ).executedIn(context)
             assertTrue(
                 context.gameState.savedValues.getSwitch("switch1")
             )
             Event.SaveSwitch(
                 key = "switch1",
-                switch = EventCondition.False,
+                switch = CommonCondition.False,
             ).executedIn(context)
             assertFalse(
                 context.gameState.savedValues.getSwitch("switch1")
@@ -298,7 +298,7 @@ class EventExecutorTest {
             )
             Event.SaveVariable(
                 key = "var0",
-                variable = EventValue.Constant(42)
+                variable = Value(42)
             ).executedIn(context)
             assertEquals(
                 expected = 42,
@@ -306,7 +306,7 @@ class EventExecutorTest {
             )
             Event.SaveVariable(
                 key = "var0",
-                variable = EventValue.Constant(999)
+                variable = Value(999)
             ).executedIn(context)
             assertEquals(
                 expected = 999,
@@ -375,7 +375,7 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     )
                 ),
                 success = Event.Empty,
@@ -418,10 +418,10 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     additionalParties = listOf(
-                        "baz" to EventValue.Constant(42),
+                        "baz" to Value(42),
                     )
                 ),
                 success = Event.Empty,
@@ -454,10 +454,10 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     additionalParties = listOf(
-                        "quux" to EventValue.Constant(42),
+                        "quux" to Value(42),
                     )
                 ),
                 success = Event.Empty,
@@ -490,10 +490,10 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     additionalParties = listOf(
-                        "qux" to EventValue.Constant(42),
+                        "qux" to Value(42),
                     )
                 ),
                 success = Event.Empty,
@@ -526,10 +526,10 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     additionalParties = listOf(
-                        "quux" to EventValue.Constant(42),
+                        "quux" to Value(42),
                     ),
                     useOnlyAdditional = true,
                 ),
@@ -563,10 +563,10 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     additionalParties = listOf(
-                        "foo" to EventValue.Constant(1),
+                        "foo" to Value(1),
                     ),
                     useOnlyAdditional = true,
                 ),
@@ -600,13 +600,13 @@ class EventExecutorTest {
             Event.Combat(
                 config = Event.Combat.Config(
                     enemies = listOf(
-                        "baz" to EventValue.Constant(26),
+                        "baz" to Value(26),
                     ),
                     statusOverride = mapOf(
                         "foo" to Event.Combat.Config.StatusOverride(
-                            level = EventValue.Constant(100),
-                            hp = EventValue.Constant(420),
-                            sp = EventValue.Constant(500),
+                            level = Value(100),
+                            hp = Value(420),
+                            sp = Value(500),
                         )
                     )
                 ),
