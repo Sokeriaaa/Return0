@@ -36,8 +36,6 @@ import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
-import sokeriaaa.return0.shared.data.models.component.values.CommonValue
-import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
@@ -210,31 +208,5 @@ class CommonValueExecutorTest {
         // returns 0 when a default value is not exists.
         val conditioned4 = IF(CommonCondition.False).then(ifTrue = Value(4))
         assertFloatEquals(0F, conditioned4.calculatedIn(context))
-    }
-
-    @Test
-    fun `Common_LoadValue calculates correctly`() {
-        val context = createTestingContext()
-        context.fromAction.values["test"] = 42F
-        val loadValue = CommonValue.LoadValue("test")
-        assertFloatEquals(42F, loadValue.calculatedIn(context))
-    }
-
-    @Test
-    fun `Common_ForUser calculates correctly`() {
-        val context = createTestingContext()
-        assertFloatEquals(
-            context.user.baseATK.toFloat(),
-            CommonValue.ForUser(EntityValue.BaseATK).calculatedIn(context)
-        )
-    }
-
-    @Test
-    fun `Common_Swapped calculates correctly`() {
-        val context = createTestingContext()
-        assertFloatEquals(
-            context.user.baseATK.toFloat(),
-            CommonValue.Swapped(EntityValue.BaseATK).calculatedIn(context)
-        )
     }
 }

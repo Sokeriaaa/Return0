@@ -29,10 +29,13 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 /**
- * Calculate the [Value] in specified [context].
+ * Calculate the [Value.Combat] in specified [context].
+ * All non-combat values will always return 0.
  */
 fun Value.calculatedIn(context: ActionContext): Float {
     return when (this) {
+        // All non-combat values will always return 0.
+        !is Value.Combat -> 0F
         // start - CommonValue
         is CommonValue.Constant -> value
         is CommonValue.Math.Sum -> values.sumOf { it.calculatedIn(context).toDouble() }.toFloat()
@@ -79,7 +82,6 @@ fun Value.calculatedIn(context: ActionContext): Float {
 
         is CommonValue.ForUser -> context.forUser { ctx -> value.calculatedIn(ctx) }
         is CommonValue.Swapped -> context.swappedEntities { ctx -> value.calculatedIn(ctx) }
-
         is CommonValue.LoadValue -> context.fromAction.values[key]
             ?: defaultValue?.calculatedIn(context) ?: 0F
         // end - CommonValue
@@ -100,6 +102,10 @@ fun Value.calculatedIn(context: ActionContext): Float {
         }
         // end - ActionValue
         // start - CombatValue
+        is CombatValue.ForUser -> context.forUser { ctx -> value.calculatedIn(ctx) }
+        is CombatValue.Swapped -> context.swappedEntities { ctx -> value.calculatedIn(ctx) }
+        is CombatValue.LoadValue -> context.fromAction.values[key]
+            ?: defaultValue?.calculatedIn(context) ?: 0F
         CombatValue.Damage -> context.attackDamageResult?.finalDamage?.toFloat() ?: 0F
         CombatValue.DamageCoerced -> context.attackDamageResult?.damageCoerced?.toFloat() ?: 0F
         CombatValue.ShieldedDamage -> context.attackDamageResult?.shieldedDamage?.toFloat() ?: 0F
