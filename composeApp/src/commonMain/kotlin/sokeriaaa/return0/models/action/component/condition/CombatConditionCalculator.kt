@@ -22,8 +22,14 @@ import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.Condition
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
 
+/**
+ * Calculate the [Condition.Combat] in specified [context].
+ * All non-combat conditions will always return false.
+ */
 fun Condition.calculatedIn(context: ActionContext): Boolean {
     return when (this) {
+        // All non-combat conditions will always return false.
+        !is Condition.Combat -> false
         // start - CommonCondition
         is CommonCondition.And -> {
             for (condition in conditions) {

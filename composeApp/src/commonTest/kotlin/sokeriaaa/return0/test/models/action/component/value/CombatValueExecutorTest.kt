@@ -20,6 +20,7 @@ import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
+import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
@@ -51,6 +52,32 @@ class CombatValueExecutorTest {
             user = user,
             target = target,
             attackDamageResult = damageResult,
+        )
+    }
+
+    @Test
+    fun `Combat_LoadValue calculates correctly`() {
+        val context = createTestingContextWithRandomDamageResult()
+        context.fromAction.values["test"] = 42F
+        val loadValue = CombatValue.LoadValue("test")
+        assertFloatEquals(42F, loadValue.calculatedIn(context))
+    }
+
+    @Test
+    fun `Combat_ForUser calculates correctly`() {
+        val context = createTestingContextWithRandomDamageResult()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CombatValue.ForUser(EntityValue.BaseATK).calculatedIn(context)
+        )
+    }
+
+    @Test
+    fun `Combat_Swapped calculates correctly`() {
+        val context = createTestingContextWithRandomDamageResult()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CombatValue.Swapped(EntityValue.BaseATK).calculatedIn(context)
         )
     }
 
