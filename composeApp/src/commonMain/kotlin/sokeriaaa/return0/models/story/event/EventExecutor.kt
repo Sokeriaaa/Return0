@@ -142,7 +142,7 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.InventoryChange -> {
-            context.gameState.inventory[inventoryKey] = change.calculatedIn(context)
+            context.gameState.inventory[inventoryKey] += change.calculatedIn(context)
         }
 
         is Event.CurrencyChange -> {
