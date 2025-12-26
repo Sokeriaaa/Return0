@@ -18,6 +18,9 @@ import kotlinx.coroutines.test.runTest
 import sokeriaaa.return0.models.story.event.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
+import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition
@@ -316,7 +319,40 @@ class EventExecutorTest {
     fun `RecoverAll executes correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
-            // TODO Add test entities and teams
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo")
+            context.gameState.entity.obtainEntity("bar")
+            context.gameState.entity.obtainEntity("baz")
+            context.gameState.entity.updateHPAndSP("foo", 50, 50)
+            context.gameState.entity.updateHPAndSP("bar", 50, 50)
+            context.gameState.entity.updateHPAndSP("baz", 50, 50)
+            // Put "foo" and "bar" in team 1.
+            context.gameState.team.updateTeam(
+                teamID = 1,
+                name = "Team 1",
+                isActivated = true,
+                slot1 = "foo",
+                slot2 = "bar",
+                slot3 = null,
+                slot4 = null
+            )
+
+            // Recover
+            Event.RecoverAll.executedIn(context)
+
+            // Get status
+            val foo = context.gameState.entity.getEntityTable("foo")
+            val bar = context.gameState.entity.getEntityTable("bar")
+            val baz = context.gameState.entity.getEntityTable("baz")
+
+            // Assert
+            assertEquals(null, foo?.currentHP)
+            assertEquals(null, foo?.currentSP)
+            assertEquals(null, bar?.currentHP)
+            assertEquals(null, bar?.currentSP)
+            assertEquals(50, baz?.currentHP)
+            assertEquals(50, baz?.currentSP)
         }
     }
 
@@ -349,6 +385,54 @@ class EventExecutorTest {
     }
 
     // TODO Test Event.Combat.Config -> ArenaConfig
+
+    /**
+     * Register entity data for testing.
+     */
+    private fun registerTestingEntities(context: EventContext) {
+        context.archive.registerEntity(
+            EntityData(
+                name = "foo",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+        context.archive.registerEntity(
+            EntityData(
+                name = "bar",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+        context.archive.registerEntity(
+            EntityData(
+                name = "baz",
+                path = EntityPath.RUNTIME,
+                category = Category.CLASS,
+                baseATK = 100,
+                baseDEF = 100,
+                baseSPD = 100,
+                baseHP = 500,
+                baseSP = 500,
+                baseAP = 100,
+                functions = emptyList(),
+            )
+        )
+    }
 
     /**
      * A testing event callback.
