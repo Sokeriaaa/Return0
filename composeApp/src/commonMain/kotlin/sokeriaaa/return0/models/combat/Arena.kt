@@ -19,8 +19,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.combat.CombatRepo
+import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
@@ -34,10 +36,13 @@ import kotlin.random.Random
  * TODO Refactor this class and split the delay logic.
  */
 class Arena(
-    private val combatRepo: CombatRepo,
     private val arenaConfig: ArenaConfig,
     private val callback: Callback,
-) {
+) : KoinComponent {
+
+    // Entity Repo
+    private val _entityRepo: GameEntityRepo by inject()
+
     var isCombating: Boolean = false
         private set
 
@@ -67,31 +72,27 @@ class Arena(
         // Create entities.
         parties = Team(
             entities = arenaConfig.parties.mapIndexed { index, state ->
-                combatRepo.generateEntity(
+                _entityRepo.generateEntityInstance(
                     entityData = state.entityData,
                     index = index,
                     level = state.level,
                     isParty = true,
-                ).apply {
                     // For parties, apply current HP/SP.
-                    hp = state.currentHP ?: maxhp
-                    sp = state.currentSP ?: maxsp
-                }
+                    currentHP = state.currentHP,
+                    currentSP = state.currentSP,
+                )
             }
         )
         val partiesSize = parties.entities.size
         enemies = Team(
             entities = arenaConfig.enemies.mapIndexed { index, state ->
-                combatRepo.generateEntity(
+                _entityRepo.generateEntityInstance(
                     entityData = state.entityData,
                     index = partiesSize + index,
                     level = state.level,
                     isParty = false,
-                ).apply {
                     // For enemies, apply full HP/SP.
-                    hp = maxhp
-                    sp = maxsp
-                }
+                )
             }
         )
         entities = (parties.entities + enemies.entities).toTypedArray()

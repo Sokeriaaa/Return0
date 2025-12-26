@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
-import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
@@ -41,14 +40,7 @@ import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 class CombatViewModel : BaseViewModel(), Arena.Callback {
 
-    /**
-     * Combat Repo.
-     */
-    private val _combatRepo: CombatRepo by inject()
-
-    /**
-     * Game state Repo.
-     */
+    // Game state Repo.
     private val _gameStateRepo: GameStateRepo by inject()
 
     /**
@@ -128,7 +120,6 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 entitySelecting = null
                 // Create arena.
                 arena = Arena(
-                    combatRepo = _combatRepo,
                     arenaConfig = intent.config,
                     callback = this,
                 )

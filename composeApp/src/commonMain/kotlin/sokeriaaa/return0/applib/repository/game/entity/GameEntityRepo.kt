@@ -14,14 +14,84 @@
  */
 package sokeriaaa.return0.applib.repository.game.entity
 
+import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.room.dao.EntityDao
+import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
+import sokeriaaa.return0.models.entity.generate
+import sokeriaaa.return0.shared.data.models.entity.EntityData
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
     private val entityDao: EntityDao,
 ) {
+
+    /**
+     * Obtaining a new entity.
+     */
+    suspend fun obtainEntity(
+        entityName: String,
+        level: Int = 1,
+        exp: Int = 0,
+        currentHP: Int? = null,
+        currentSP: Int? = null,
+        pluginID: Long? = null,
+    ) {
+        entityDao.insert(
+            EntityTable(
+                saveID = AppConstants.CURRENT_SAVE_ID,
+                entityName = entityName,
+                level = level,
+                exp = exp,
+                currentHP = currentHP,
+                currentSP = currentSP,
+                pluginID = pluginID,
+            )
+        )
+    }
+
+    /**
+     * Get the entity table if exists.
+     */
+    suspend fun getEntityTable(entityName: String): EntityTable? {
+        return entityDao.getEntity(AppConstants.CURRENT_SAVE_ID, entityName)
+    }
+
+    /**
+     * Generate an [Entity] instance with EntityData, index in arena and level.
+     */
+    fun generateEntityInstance(
+        entityData: EntityData,
+        index: Int,
+        level: Int,
+        isParty: Boolean,
+        currentHP: Int? = null,
+        currentSP: Int? = null,
+    ): Entity {
+        // Get the growth data of the primary category of entity.
+        val growth = archive.getEntityGrowthByCategory(entityData.category)
+        return entityData.generate(index, level, growth, isParty).apply {
+            hp = currentHP ?: maxhp
+            sp = currentSP ?: maxsp
+        }
+    }
+
+    /**
+     * Get an [Entity] instance for displaying in the profile page.
+     */
+    suspend fun getEntityStatus(entityName: String): Entity? {
+        val entityData = archive.getEntityData(entityName) ?: return null
+        val entityTable = getEntityTable(entityName) ?: return null
+        return generateEntityInstance(
+            entityData = entityData,
+            index = -1,
+            level = entityTable.level,
+            isParty = true,
+            currentHP = entityTable.currentHP,
+            currentSP = entityTable.currentSP,
+        )
+    }
 
     /**
      * Save the current entity state to database.

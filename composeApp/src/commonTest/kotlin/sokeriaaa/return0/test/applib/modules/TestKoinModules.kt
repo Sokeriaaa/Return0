@@ -18,7 +18,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
@@ -37,7 +36,6 @@ object TestKoinModules {
     val modules = module {
         // Repo
         single { ArchiveRepo() }
-        single { CombatRepo(get()) }
         single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get()) }
         single { GameInventoryRepo(get()) }

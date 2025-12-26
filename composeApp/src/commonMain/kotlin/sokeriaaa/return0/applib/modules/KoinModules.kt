@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import sokeriaaa.return0.applib.repository.combat.CombatRepo
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
@@ -74,7 +73,6 @@ object KoinModules {
         single { EntityAnimatorManager() }
         // Repo
         single { ArchiveRepo() }
-        single { CombatRepo(get()) }
         single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get()) }
         single { GameInventoryRepo(get()) }
