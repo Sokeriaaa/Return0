@@ -33,6 +33,7 @@ import sokeriaaa.return0.shared.data.models.title.Title
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
+import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -272,6 +273,28 @@ class EventConditionExecutorTest : BaseEventTest() {
             context.gameState.savedValues.setSwitch("common_switch", true)
             assertTrue(EventCondition.SavedSwitch("common_switch").calculatedIn(context))
             assertFalse(EventCondition.SavedSwitch("another_switch").calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Common_Chance calculates correctly 1`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(
+            random = FakeRandom(0.2F),
+            callback = callback,
+        ) { context ->
+            assertTrue(CommonCondition.Chance(0.5F).calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Common_Chance calculates correctly 2`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(
+            random = FakeRandom(0.8F),
+            callback = callback,
+        ) { context ->
+            assertFalse(CommonCondition.Chance(0.5F).calculatedIn(context))
         }
     }
 }

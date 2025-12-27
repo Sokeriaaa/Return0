@@ -33,6 +33,8 @@ import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -48,11 +50,13 @@ class CommonConditionExecutorTest {
         action: (user: Entity) -> Action = {
             it.generateFunctionFor(DummyFunction.generateFunctionData())!!
         },
+        random: Random = Random,
         attackDamageResult: ActionResult.Damage? = null,
     ) = ActionExtraContext(
         fromAction = action(user),
         user = user,
         target = target,
+        random = random,
         attackDamageResult = attackDamageResult,
     )
 
@@ -191,5 +195,15 @@ class CommonConditionExecutorTest {
         assertTrue((Value(42) neq 40F).calculatedIn(context))
     }
 
-    // TODO Test Common_Chance
+    @Test
+    fun `Common_Chance calculates correctly 1`() {
+        val context = createTestingContext(random = FakeRandom(0.2F))
+        assertTrue(CommonCondition.Chance(0.5F).calculatedIn(context))
+    }
+
+    @Test
+    fun `Common_Chance calculates correctly 2`() {
+        val context = createTestingContext(random = FakeRandom(0.8F))
+        assertFalse(CommonCondition.Chance(0.5F).calculatedIn(context))
+    }
 }

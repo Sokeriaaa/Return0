@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.test.models.action.component.value
 
+import kotlinx.coroutines.test.runTest
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.value.calculatedIn
@@ -36,9 +37,12 @@ import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
+import kotlin.random.Random
 import kotlin.test.Test
 
 /**
@@ -52,11 +56,13 @@ class CommonValueExecutorTest {
         action: (user: Entity) -> Action = {
             it.generateFunctionFor(DummyFunction.generateFunctionData())!!
         },
+        random: Random = Random,
         attackDamageResult: ActionResult.Damage? = null,
     ) = ActionExtraContext(
         fromAction = action(user),
         user = user,
         target = target,
+        random = random,
         attackDamageResult = attackDamageResult,
     )
 
@@ -190,7 +196,17 @@ class CommonValueExecutorTest {
         assertFloatEquals(3F, maxOf.calculatedIn(context))
     }
 
-    // TODO test RandomInt and RandomFloat
+    @Test
+    fun `Common_RandomInt calculates correctly`() {
+        val context = createTestingContext(random = FakeRandom(7))
+        assertFloatEquals(7F, CommonValue.Math.RandomInt(5, 10).calculatedIn(context))
+    }
+
+    @Test
+    fun `Common_RandomFloat calculates correctly`() = runTest {
+        val context = createTestingContext(random = FakeRandom(0.4F))
+        assertFloatEquals(7F, CommonValue.Math.RandomFloat(5F, 10F).calculatedIn(context))
+    }
 
     @Test
     fun `Common_Conditioned calculates correctly`() {

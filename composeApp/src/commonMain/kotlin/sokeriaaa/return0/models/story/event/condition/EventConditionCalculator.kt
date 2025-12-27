@@ -86,6 +86,7 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
             comparator.compare(value1.calculatedIn(context), value2.calculatedIn(context))
         }
 
+        // FIXME: accuracy loss
         is CommonCondition.Chance -> chance(
             success = success.calculatedIn(context),
             base = base.calculatedIn(context),

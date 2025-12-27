@@ -32,11 +32,13 @@ import sokeriaaa.return0.shared.data.api.component.value.sumOf
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
+import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
+import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -198,7 +200,27 @@ class EventValueExecutorTest : BaseEventTest() {
         }
     }
 
-    // TODO test RandomInt and RandomFloat
+    @Test
+    fun `Common_RandomInt calculates correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(
+            random = FakeRandom(7),
+            callback = callback,
+        ) { context ->
+            assertEquals(7, CommonValue.Math.RandomInt(5, 10).calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Common_RandomFloat calculates correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(
+            random = FakeRandom(0.4F),
+            callback = callback,
+        ) { context ->
+            assertEquals(7, CommonValue.Math.RandomFloat(5F, 10F).calculatedIn(context))
+        }
+    }
 
     @Test
     fun `Common_Conditioned calculates correctly`() = runTest {
