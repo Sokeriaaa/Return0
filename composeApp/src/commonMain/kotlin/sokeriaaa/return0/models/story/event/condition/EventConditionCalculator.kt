@@ -15,7 +15,7 @@
 package sokeriaaa.return0.models.story.event.condition
 
 import sokeriaaa.return0.models.story.event.EventContext
-import sokeriaaa.return0.models.story.event.value.calculatedIn
+import sokeriaaa.return0.models.story.event.value.calculatedToFloat
 import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.Condition
@@ -51,13 +51,12 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
         is CommonCondition.Not -> !condition.calculatedIn(context)
 
         is CommonCondition.CompareValues -> {
-            comparator.compare(value1.calculatedIn(context), value2.calculatedIn(context))
+            comparator.compare(value1.calculatedToFloat(context), value2.calculatedToFloat(context))
         }
 
-        // FIXME: accuracy loss
         is CommonCondition.Chance -> chance(
-            success = success.calculatedIn(context),
-            base = base.calculatedIn(context),
+            success = success.calculatedToFloat(context),
+            base = base.calculatedToFloat(context),
             random = context.random,
         )
 

@@ -84,3 +84,62 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
         // end - EventValue
     }
 }
+
+/**
+ * Calculate this value to float when higher accuracy is required.
+ */
+suspend fun Value.calculatedToFloat(context: EventContext): Float {
+    return when (this) {
+        is CommonValue.Constant -> value
+        is CommonValue.Math.Sum -> values
+            .sumOf { it.calculatedToFloat(context).toDouble() }
+            .toFloat()
+
+        is CommonValue.Math.Times -> value1.calculatedToFloat(context) *
+                value2.calculatedToFloat(context)
+
+        is CommonValue.Math.TimesConst -> value1.calculatedToFloat(context) * value2
+        is CommonValue.Math.Div -> value1.calculatedToFloat(context) /
+                value2.calculatedToFloat(context)
+
+        is CommonValue.Math.UnaryMinus -> -value1.calculatedToFloat(context)
+        is CommonValue.Math.Shift -> {
+            val digit = shift.calculatedToFloat(context).toInt()
+            val value = value1.calculatedToFloat(context)
+            return when {
+                digit > 0 -> value.toInt().shl(digit).toFloat()
+                digit < 0 -> value.toInt().shr(-digit).toFloat()
+                else -> value
+            }
+        }
+
+        is CommonValue.Math.AbsoluteValue -> abs(value.calculatedToFloat(context))
+        is CommonValue.Math.Coerced -> {
+            var finalValue = value.calculatedToFloat(context)
+            min?.let {
+                finalValue = finalValue.coerceAtLeast(it.calculatedToFloat(context))
+            }
+            max?.let {
+                finalValue = finalValue.coerceAtMost(it.calculatedToFloat(context))
+            }
+            return finalValue
+        }
+
+        is CommonValue.Math.MinOf -> values.minOfOrNull { it.calculatedToFloat(context) } ?: 0F
+        is CommonValue.Math.MaxOf -> values.maxOfOrNull { it.calculatedToFloat(context) } ?: 0F
+        is CommonValue.Math.RandomInt -> context.random.nextInt(start, endInclusive + 1).toFloat()
+        is CommonValue.Math.RandomFloat -> context.random.nextFloat() * (end - start) + start
+
+        is CommonValue.Conditioned -> {
+            return if (condition.calculatedIn(context)) {
+                ifTrue
+            } else {
+                ifFalse
+            }?.calculatedToFloat(context)
+                ?: defaultValue?.calculatedToFloat(context)
+                ?: 0F
+        }
+
+        else -> calculatedIn(context).toFloat()
+    }
+}
