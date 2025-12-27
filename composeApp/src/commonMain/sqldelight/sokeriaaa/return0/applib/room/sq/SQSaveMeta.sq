@@ -42,7 +42,12 @@ VALUES (?, ?, ?, ?, ?, ?);
 updatePosition:
 UPDATE return0_save_metas
 SET file_name = ?,
-line_number= ?
+line_number = ?
+WHERE save_id= ?;
+
+updateTitle:
+UPDATE return0_save_metas
+SET title = ?
 WHERE save_id= ?;
 
 deleteById:

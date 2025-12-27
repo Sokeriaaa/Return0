@@ -19,6 +19,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.shared.data.models.title.Title
 
 @Dao
 actual interface SaveMetaDao {
@@ -40,6 +41,12 @@ actual interface SaveMetaDao {
                 "`line_number`=:lineNumber WHERE `save_id`=:saveID"
     )
     actual suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
+
+    @Query(
+        "UPDATE `${SaveMetaTable.TABLE_NAME}` SET `title`=:title " +
+                "WHERE `save_id`=:saveID"
+    )
+    actual suspend fun updateTitle(saveID: Int, title: Title)
 
     @Query(
         "DELETE FROM `${SaveMetaTable.TABLE_NAME}` WHERE `save_id`=:saveID"

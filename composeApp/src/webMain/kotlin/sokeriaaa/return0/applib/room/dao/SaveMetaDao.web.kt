@@ -15,11 +15,13 @@
 package sokeriaaa.return0.applib.room.dao
 
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.shared.data.models.title.Title
 
 actual interface SaveMetaDao {
     actual suspend fun queryAll(): List<SaveMetaTable>
     actual suspend fun query(saveID: Int): SaveMetaTable?
     actual suspend fun insertOrUpdate(table: SaveMetaTable)
     actual suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
+    actual suspend fun updateTitle(saveID: Int, title: Title)
     actual suspend fun delete(saveID: Int)
 }

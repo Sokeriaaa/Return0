@@ -52,6 +52,16 @@ class SaveMetaDaoImpl(
         )
     }
 
+    override suspend fun updateTitle(
+        saveID: Int,
+        title: Title
+    ) {
+        queries.updateTitle(
+            save_id = saveID.toLong(),
+            title = title.name
+        )
+    }
+
     override suspend fun delete(saveID: Int) {
         queries.deleteById(saveID.toLong())
     }

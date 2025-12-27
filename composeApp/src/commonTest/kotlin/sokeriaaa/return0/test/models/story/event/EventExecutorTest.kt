@@ -15,21 +15,16 @@
 package sokeriaaa.return0.test.models.story.event
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.return0.models.story.event.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
-import sokeriaaa.return0.shared.data.models.entity.EntityData
-import sokeriaaa.return0.shared.data.models.entity.category.Category
-import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
-import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -37,7 +32,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunWith(AppRunner::class)
-class EventExecutorTest {
+class EventExecutorTest : BaseEventTest() {
 
     @Test
     fun `Text executes correctly`() = runTest {
@@ -629,161 +624,6 @@ class EventExecutorTest {
                 expected = listOf(500, 42),
                 actual = arenaConfig.parties.map { it.currentSP },
             )
-        }
-    }
-
-    private inline fun withContext(
-        key: String? = null,
-        random: Random = Random,
-        callback: EventContext.Callback,
-        action: (EventContext) -> Unit
-    ) {
-        TestKoinModules.withModules {
-            action(
-                EventContext(
-                    key = key,
-                    random = random,
-                    callback = callback,
-                )
-            )
-        }
-    }
-
-    /**
-     * Register entity data for testing.
-     */
-    private fun registerTestingEntities(context: EventContext) {
-        context.archive.registerEntity(
-            EntityData(
-                name = "foo",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-        context.archive.registerEntity(
-            EntityData(
-                name = "bar",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-        context.archive.registerEntity(
-            EntityData(
-                name = "baz",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-        context.archive.registerEntity(
-            EntityData(
-                name = "qux",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-        context.archive.registerEntity(
-            EntityData(
-                name = "quux",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-        context.archive.registerEntity(
-            EntityData(
-                name = "corge",
-                path = EntityPath.RUNTIME,
-                category = Category.CLASS,
-                baseATK = 100,
-                baseDEF = 100,
-                baseSPD = 100,
-                baseHP = 500,
-                baseSP = 500,
-                baseAP = 100,
-                functions = emptyList(),
-            )
-        )
-    }
-
-    /**
-     * Register testing teams. Put "foo" and "bar" in team 1.
-     */
-    private suspend fun registerTestingTeams(context: EventContext) {
-        // Put "foo" and "bar" in team 1.
-        context.gameState.team.updateTeam(
-            teamID = 1,
-            name = "Team 1",
-            isActivated = true,
-            slot1 = "foo",
-            slot2 = "bar",
-            slot3 = null,
-            slot4 = null
-        )
-    }
-
-    /**
-     * Register testing teams. Put 4 entities in team 1.
-     */
-    private suspend fun registerFullTestingTeams(context: EventContext) {
-        // Put "foo" and "bar" in team 1.
-        context.gameState.team.updateTeam(
-            teamID = 1,
-            name = "Team 1",
-            isActivated = true,
-            slot1 = "foo",
-            slot2 = "bar",
-            slot3 = "baz",
-            slot4 = "qux"
-        )
-    }
-
-    /**
-     * A testing event callback.
-     */
-    private abstract class TestingCallback : EventContext.Callback {
-        private val _collectedEffects: MutableList<EventEffect> = ArrayList()
-        val collectedEffects: List<EventEffect> = _collectedEffects
-
-        override suspend fun waitForUserContinue() {}
-        override suspend fun waitForChoice(): Int = 0
-        override suspend fun waitForMoveFinished() {}
-        override suspend fun waitForCombatResult(): Boolean = true
-        override suspend fun onEffect(effect: EventEffect) {
-            _collectedEffects.add(effect)
         }
     }
 

@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.applib.repository.game.currency
 
+import androidx.compose.runtime.mutableStateMapOf
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
@@ -24,7 +25,7 @@ class GameCurrencyRepo(
     private val currencyDao: CurrencyDao,
 ) : BaseGameRepo {
 
-    private val _currencies: MutableMap<CurrencyType, Int> = HashMap()
+    private val _currencies: MutableMap<CurrencyType, Int> = mutableStateMapOf()
 
     operator fun get(type: CurrencyType): Int {
         return _currencies[type] ?: 0

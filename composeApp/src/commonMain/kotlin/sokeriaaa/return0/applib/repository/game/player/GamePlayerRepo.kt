@@ -14,7 +14,11 @@
  */
 package sokeriaaa.return0.applib.repository.game.player
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.shared.data.models.title.Title
 
@@ -23,8 +27,20 @@ import sokeriaaa.return0.shared.data.models.title.Title
  */
 class GamePlayerRepo(
     private val saveMetaDao: SaveMetaDao,
-) {
-    suspend fun getPlaterTitle(): Title {
-        return saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.title ?: Title.INTERN
+) : BaseGameRepo {
+
+    var title: Title by mutableStateOf(Title.INTERN)
+        private set
+
+    fun updateTitle(title: Title) {
+        this.title = title
+    }
+
+    override suspend fun load() {
+        title = saveMetaDao.query(AppConstants.CURRENT_SAVE_ID)?.title ?: Title.INTERN
+    }
+
+    override suspend fun flush() {
+        saveMetaDao.updateTitle(AppConstants.CURRENT_SAVE_ID, title)
     }
 }

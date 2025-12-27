@@ -33,7 +33,7 @@ suspend fun sokeriaaa.return0.shared.data.models.story.event.condition.EventCond
         )
 
         is sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.PlayerTitle -> comparator.compare(
-            context.gameState.player.getPlaterTitle().ordinal,
+            context.gameState.player.title.ordinal,
             title.ordinal,
         )
 
@@ -98,7 +98,7 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
 
         // start - EventCondition
         is EventCondition.PlayerTitle -> comparator.compare(
-            context.gameState.player.getPlaterTitle().ordinal,
+            context.gameState.player.title.ordinal,
             title.ordinal,
         )
 

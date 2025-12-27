@@ -15,6 +15,7 @@
 package sokeriaaa.return0.applib.room.dao
 
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.shared.data.models.title.Title
 
 expect interface SaveMetaDao {
 
@@ -37,6 +38,11 @@ expect interface SaveMetaDao {
      * Update player's position.
      */
     suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
+
+    /**
+     * Update player's title.
+     */
+    suspend fun updateTitle(saveID: Int, title: Title)
 
     /**
      * Delete the save with specified ID.

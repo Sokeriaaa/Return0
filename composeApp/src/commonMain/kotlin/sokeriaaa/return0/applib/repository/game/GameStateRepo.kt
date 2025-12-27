@@ -46,6 +46,7 @@ class GameStateRepo(
         currency.load()
         inventory.load()
         map.load()
+        player.load()
         quest.load()
         savedValues.load()
     }
@@ -58,6 +59,7 @@ class GameStateRepo(
             currency.flush()
             inventory.flush()
             map.flush()
+            player.flush()
             quest.flush()
             savedValues.flush()
         }
