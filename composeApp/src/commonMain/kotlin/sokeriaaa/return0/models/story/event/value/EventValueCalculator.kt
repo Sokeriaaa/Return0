@@ -21,23 +21,6 @@ import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
 
-suspend fun sokeriaaa.return0.shared.data.models.story.event.value.EventValue.calculatedIn(context: EventContext): Int {
-    return when (this) {
-        is sokeriaaa.return0.shared.data.models.story.event.value.EventValue.Constant -> value
-        is sokeriaaa.return0.shared.data.models.story.event.value.EventValue.RandomInt -> context.random.nextInt(
-            start,
-            endInclusive + 1
-        )
-
-        is sokeriaaa.return0.shared.data.models.story.event.value.EventValue.SavedVariable -> context.gameState.savedValues.getVariable(
-            key
-        )
-
-        is sokeriaaa.return0.shared.data.models.story.event.value.EventValue.Currency -> context.gameState.currency[type]
-        is sokeriaaa.return0.shared.data.models.story.event.value.EventValue.Inventory -> context.gameState.inventory[key]
-    }
-}
-
 /**
  * Calculate the [Value.Event] in specified [context].
  * All non-event values will always return 0.

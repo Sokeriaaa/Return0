@@ -51,12 +51,6 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
 
         is CommonCondition.Not -> !condition.calculatedIn(context)
 
-        is CommonCondition.Compare -> if (isIncludeEquals) {
-            value1.calculatedIn(context) >= value2.calculatedIn(context)
-        } else {
-            value1.calculatedIn(context) > value2.calculatedIn(context)
-        }
-
         is CommonCondition.CompareValues -> {
             comparator.compare(value1.calculatedIn(context), value2.calculatedIn(context))
         }
@@ -97,42 +91,6 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
 
         is EntityCondition.Shields.HasAny -> {
             context.target.shields.isNotEmpty()
-        }
-
-        is EntityCondition.Status.HPLessThan -> {
-            val rateValue = rate.calculatedIn(context)
-            if (isIncludeEquals) {
-                context.target.hp <= context.target.maxhp * rateValue
-            } else {
-                context.target.hp < context.target.maxhp * rateValue
-            }
-        }
-
-        is EntityCondition.Status.HPMoreThan -> {
-            val rateValue = rate.calculatedIn(context)
-            if (isIncludeEquals) {
-                context.target.hp >= context.target.maxhp * rateValue
-            } else {
-                context.target.hp > context.target.maxhp * rateValue
-            }
-        }
-
-        is EntityCondition.Status.SPLessThan -> {
-            val rateValue = rate.calculatedIn(context)
-            if (isIncludeEquals) {
-                context.target.sp <= context.target.maxsp * rateValue
-            } else {
-                context.target.sp < context.target.maxsp * rateValue
-            }
-        }
-
-        is EntityCondition.Status.SPMoreThan -> {
-            val rateValue = rate.calculatedIn(context)
-            if (isIncludeEquals) {
-                context.target.sp >= context.target.maxsp * rateValue
-            } else {
-                context.target.sp > context.target.maxsp * rateValue
-            }
         }
 
         is EntityCondition.Status.HPRate -> {

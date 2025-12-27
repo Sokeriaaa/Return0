@@ -128,79 +128,6 @@ class EntityConditionExecutorTest {
         val context = createTestingContext()
         context.target.hp = 42
         val rate = context.target.hp.toFloat() / context.target.maxhp
-        assertFalse(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPLessThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-
-        assertFalse(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPMoreThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
 
         assertFalse(
             EntityCondition.Status.HPRate(
@@ -238,7 +165,6 @@ class EntityConditionExecutorTest {
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
-
 
         assertFalse(
             EntityCondition.Status.HPRate(
@@ -283,79 +209,6 @@ class EntityConditionExecutorTest {
         val context = createTestingContext()
         context.target.sp = 42
         val rate = context.target.sp.toFloat() / context.target.maxsp
-        assertFalse(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPLessThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-
-        assertFalse(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate - 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = false,
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPMoreThan(
-                rate = Value(rate + 0.1F),
-                isIncludeEquals = true,
-            ).calculatedIn(context)
-        )
 
         assertFalse(
             EntityCondition.Status.SPRate(

@@ -21,32 +21,6 @@ import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.Condition
 import sokeriaaa.return0.shared.data.models.component.conditions.EventCondition
 
-suspend fun sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.calculatedIn(
-    context: EventContext
-): Boolean {
-    return when (this) {
-        sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.True -> true
-        sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.False -> false
-        is sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.Compare -> comparator.compare(
-            value1.calculatedIn(context),
-            value2.calculatedIn(context),
-        )
-
-        is sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.PlayerTitle -> comparator.compare(
-            context.gameState.player.title.ordinal,
-            title.ordinal,
-        )
-
-        is sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.QuestCompleted -> context.gameState.quest.isCompleted(
-            key
-        )
-
-        is sokeriaaa.return0.shared.data.models.story.event.condition.EventCondition.SavedSwitch -> context.gameState.savedValues.getSwitch(
-            key
-        )
-    }
-}
-
 /**
  * Calculate the [Condition.Event] in specified [context].
  * All non-event conditions will always return false.
@@ -75,12 +49,6 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
         }
 
         is CommonCondition.Not -> !condition.calculatedIn(context)
-
-        is CommonCondition.Compare -> if (isIncludeEquals) {
-            value1.calculatedIn(context) >= value2.calculatedIn(context)
-        } else {
-            value1.calculatedIn(context) > value2.calculatedIn(context)
-        }
 
         is CommonCondition.CompareValues -> {
             comparator.compare(value1.calculatedIn(context), value2.calculatedIn(context))
