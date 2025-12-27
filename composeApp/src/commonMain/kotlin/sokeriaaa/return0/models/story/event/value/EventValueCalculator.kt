@@ -20,7 +20,6 @@ import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
-import kotlin.random.Random
 
 suspend fun sokeriaaa.return0.shared.data.models.story.event.value.EventValue.calculatedIn(context: EventContext): Int {
     return when (this) {
@@ -78,8 +77,8 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
 
         is CommonValue.Math.MinOf -> values.minOfOrNull { it.calculatedIn(context) } ?: 0
         is CommonValue.Math.MaxOf -> values.maxOfOrNull { it.calculatedIn(context) } ?: 0
-        is CommonValue.Math.RandomInt -> Random.nextInt(start, endInclusive + 1)
-        is CommonValue.Math.RandomFloat -> (Random.nextFloat() * (end - start) + start).toInt()
+        is CommonValue.Math.RandomInt -> context.random.nextInt(start, endInclusive + 1)
+        is CommonValue.Math.RandomFloat -> (context.random.nextFloat() * (end - start) + start).toInt()
 
         is CommonValue.Conditioned -> {
             return if (condition.calculatedIn(context)) {

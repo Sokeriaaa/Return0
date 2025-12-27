@@ -89,6 +89,7 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
         is CommonCondition.Chance -> chance(
             success = success.calculatedIn(context),
             base = base.calculatedIn(context),
+            random = context.random,
         )
 
         CommonCondition.True -> true

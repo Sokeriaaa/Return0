@@ -19,6 +19,7 @@ import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import kotlin.random.Random
 
 /**
  * A context class for executing extras, calculating conditions and values during combat.
@@ -32,6 +33,7 @@ open class ActionContext(
     open val fromAction: Action,
     open val user: Entity,
     open val target: Entity,
+    open val random: Random = Random,
     attackDamageResult: ActionResult.Damage? = null
 ) : KoinComponent {
     /**

@@ -26,7 +26,6 @@ import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
-import kotlin.random.Random
 
 /**
  * Calculate the [Value.Combat] in specified [context].
@@ -67,8 +66,8 @@ fun Value.calculatedIn(context: ActionContext): Float {
 
         is CommonValue.Math.MinOf -> values.minOfOrNull { it.calculatedIn(context) } ?: 0F
         is CommonValue.Math.MaxOf -> values.maxOfOrNull { it.calculatedIn(context) } ?: 0F
-        is CommonValue.Math.RandomInt -> Random.nextInt(start, endInclusive + 1).toFloat()
-        is CommonValue.Math.RandomFloat -> Random.nextFloat() * (end - start) + start
+        is CommonValue.Math.RandomInt -> context.random.nextInt(start, endInclusive + 1).toFloat()
+        is CommonValue.Math.RandomFloat -> context.random.nextFloat() * (end - start) + start
 
         is CommonValue.Conditioned -> {
             return if (condition.calculatedIn(context)) {

@@ -18,6 +18,7 @@ import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.ActionContext
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import kotlin.random.Random
 
 /**
  * Create an [ActionExtraContext].
@@ -41,12 +42,14 @@ class ActionExtraContext(
     override val fromAction: Action,
     override val user: Entity,
     override val target: Entity,
+    override val random: Random = Random,
     attackDamageResult: ActionResult.Damage? = null,
     val actionResults: MutableList<ActionResult> = ArrayList(),
 ) : ActionContext(
     fromAction,
     user,
     target,
+    random,
     attackDamageResult,
 ) {
 
