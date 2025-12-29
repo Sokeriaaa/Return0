@@ -114,10 +114,6 @@ suspend fun Event.executedIn(context: EventContext) {
 
         is Event.TeleportUserTo -> {
             val line = lineNumber.calculatedIn(context)
-            context.gameState.map.updatePosition(
-                fileName = map,
-                lineNumber = line,
-            )
             context.callback.onEffect(
                 EventEffect.TeleportPlayer(
                     fileName = map,
