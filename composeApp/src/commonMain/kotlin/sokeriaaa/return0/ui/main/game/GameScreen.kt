@@ -15,6 +15,9 @@
 package sokeriaaa.return0.ui.main.game
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,9 +39,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -91,12 +98,19 @@ fun GameScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    val scope = rememberCoroutineScope()
     // Dialogue text
     var eventShowTextState by remember { mutableStateOf(EventShowTextState()) }
     // Choices
     var eventShowChoiceState by remember { mutableStateOf(EventShowChoiceState()) }
     // Save dialog
     var isShowingSaveDialog by remember { mutableStateOf(false) }
+
+    // Showing map
+    var isShowingMap by remember { mutableStateOf(true) }
+    // Shaking map
+    var shakeJob by remember { mutableStateOf<Job?>(null) }
+    val shakeOffset = remember { Animatable(0f) }
 
     fun showDialogueText(effect: EventEffect.ShowText) {
         eventShowTextState = EventShowTextState(
@@ -166,12 +180,27 @@ fun GameScreen(
                     )
                 }
 
+                EventEffect.ShowMap -> isShowingMap = true
+                EventEffect.HideMap -> isShowingMap = false
+                EventEffect.ShakeMap -> {
+                    shakeJob?.cancel()
+                    shakeJob = scope.launch {
+                        // Animate shake.
+                        repeat(5) {
+                            shakeOffset.animateTo(10f, tween(40))
+                            shakeOffset.animateTo(-10f, tween(40))
+                        }
+                        shakeOffset.animateTo(0f)
+                    }
+                }
+
                 EventEffect.RequestSave -> isShowingSaveDialog = true
                 EventEffect.RefreshEvents -> viewModel.onIntent(GameIntent.RefreshMap)
 
                 EventEffect.EventFinished -> {
                     hideDialogueText()
                     hideChoices()
+                    isShowingMap = true
                 }
             }
         }
@@ -183,6 +212,8 @@ fun GameScreen(
             viewModel = viewModel,
             mainNavHostController = mainNavHostController,
             windowAdaptiveInfo = windowAdaptiveInfo,
+            isShowingMap = isShowingMap,
+            mapOffset = shakeOffset.value,
         )
         // Event dialogs.
         // Click blocker.
@@ -256,9 +287,17 @@ private fun GameContent(
     viewModel: GameViewModel,
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
+    isShowingMap: Boolean,
+    mapOffset: Float,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    // Map alpha
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (isShowingMap) 1F else 0F,
+        label = "animatedMapAlpha",
+    )
 
     // Quit dialog
     var isShowingQuitDialog by remember { mutableStateOf(false) }
@@ -318,7 +357,10 @@ private fun GameContent(
             }
         ) { paddingValues ->
             GameMap(
-                modifier = Modifier.padding(paddingValues = paddingValues),
+                modifier = Modifier
+                    .padding(paddingValues = paddingValues)
+                    .alpha(animatedAlpha)
+                    .graphicsLayer { translationX = mapOffset },
                 viewModel = viewModel,
             )
         }

@@ -62,6 +62,22 @@ sealed interface EventEffect {
     data class TeleportPlayer(val fileName: String, val line: Int) : EventEffect
 
     /**
+     * Show the map again after being hidden by [HideMap].
+     */
+    data object ShowMap : EventEffect
+
+    /**
+     * Hide the map display during this event. The map will display automatically after the parent
+     *  event is finished.
+     */
+    data object HideMap : EventEffect
+
+    /**
+     * One shot effect to shake the map.
+     */
+    data object ShakeMap : EventEffect
+
+    /**
      * Display a dialog to remind the player to save current progress.
      */
     data object RequestSave : EventEffect

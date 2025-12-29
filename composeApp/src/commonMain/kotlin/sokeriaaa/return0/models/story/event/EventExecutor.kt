@@ -99,9 +99,7 @@ suspend fun Event.executedIn(context: EventContext) {
                 temporaryEntities = temporaryEntities
             )
 
-            context.callback.onEffect(
-                EventEffect.StartCombat(config = arenaConfig)
-            )
+            context.callback.onEffect(EventEffect.StartCombat(config = arenaConfig))
             if (context.callback.waitForCombatResult()) {
                 success.executedIn(context)
             } else {
@@ -111,11 +109,7 @@ suspend fun Event.executedIn(context: EventContext) {
 
         is Event.MoveUserTo -> {
             val line = lineNumber.calculatedIn(context)
-            context.callback.onEffect(
-                EventEffect.MovePlayer(
-                    line = line,
-                )
-            )
+            context.callback.onEffect(EventEffect.MovePlayer(line = line))
         }
 
         is Event.TeleportUserTo -> {
@@ -164,6 +158,10 @@ suspend fun Event.executedIn(context: EventContext) {
         is Event.SaveVariable -> {
             context.gameState.savedValues.setVariable(key, variable.calculatedIn(context))
         }
+
+        Event.ShowMap -> context.callback.onEffect(EventEffect.ShowMap)
+        Event.HideMap -> context.callback.onEffect(EventEffect.HideMap)
+        Event.ShakeMap -> context.callback.onEffect(EventEffect.ShakeMap)
 
         Event.RecoverAll -> {
             context.gameState.team.recoverAll()
