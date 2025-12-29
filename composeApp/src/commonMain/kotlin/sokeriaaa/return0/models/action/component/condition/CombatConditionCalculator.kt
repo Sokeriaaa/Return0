@@ -106,6 +106,7 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
                 value2 = context.target.maxsp * rate.calculatedIn(context),
             )
         }
+        EntityCondition.Status.IsFailed -> context.target.hp <= 0
         // end - EntityCondition
     }
 }

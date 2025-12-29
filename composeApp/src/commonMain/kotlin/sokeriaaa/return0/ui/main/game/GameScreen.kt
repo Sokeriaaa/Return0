@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -193,6 +192,8 @@ fun GameScreen(
                         shakeOffset.animateTo(0f)
                     }
                 }
+
+                EventEffect.ChooseEntity -> TODO()
 
                 EventEffect.RequestSave -> isShowingSaveDialog = true
                 EventEffect.RefreshEvents -> viewModel.onIntent(GameIntent.RefreshMap)

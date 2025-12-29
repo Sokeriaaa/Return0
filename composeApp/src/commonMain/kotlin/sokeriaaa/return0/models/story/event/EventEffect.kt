@@ -78,6 +78,11 @@ sealed interface EventEffect {
     data object ShakeMap : EventEffect
 
     /**
+     * Request the user to choose an entity in current team.
+     */
+    data object ChooseEntity : EventEffect
+
+    /**
      * Display a dialog to remind the player to save current progress.
      */
     data object RequestSave : EventEffect

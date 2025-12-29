@@ -15,6 +15,9 @@
 package sokeriaaa.return0.models.story.event
 
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.models.action.component.extra.createExtraContextFor
+import sokeriaaa.return0.models.action.component.extra.executedIn
+import sokeriaaa.return0.models.action.placeholder.PlaceholderAction
 import sokeriaaa.return0.models.story.event.condition.calculatedIn
 import sokeriaaa.return0.models.story.event.value.calculatedIn
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
@@ -163,6 +166,32 @@ suspend fun Event.executedIn(context: EventContext) {
             context.gameState.team.recoverAll()
         }
 
+        is Event.ExecuteExtra -> {
+            if (extra == null) {
+                onCanceled.executedIn(context)
+                return
+            }
+
+            context.callback.onEffect(EventEffect.ChooseEntity)
+            val choice = context.callback.waitForChoice()
+            // Get the entity of the selected index.
+            val entity = context.gameState.team.loadTeamLevelPairs()
+                .getOrNull(choice)
+                ?.first
+                ?.let { context.gameState.entity.getEntityStatus(it) }
+            if (entity == null) {
+                onCanceled.executedIn(context)
+                return
+            }
+
+            PlaceholderAction.createExtraContextFor(target = entity).let {
+                // Execute
+                extra.executedIn(it)
+                // Save
+                context.gameState.entity.saveEntityState(listOf(it.target))
+            }
+        }
+
         Event.RequestSave -> {
             context.callback.onEffect(EventEffect.RequestSave)
             context.callback.waitForUserContinue()
@@ -171,6 +200,19 @@ suspend fun Event.executedIn(context: EventContext) {
         Event.Failed -> {
             // TODO Teleport the player to last teleport point,
             //  with all entities slightly recovered.
+        }
+
+        is Event.RefuseToUse -> {
+            reasonRes?.let {
+                context.callback.onEffect(
+                    EventEffect.ShowText(
+                        type = EventEffect.ShowText.Type.Narrator,
+                        text = context.resources.getString(it)
+                    )
+                )
+                context.callback.waitForUserContinue()
+            }
+            throw RefuseToUseException()
         }
     }
 }
