@@ -16,7 +16,6 @@ package sokeriaaa.return0.applib.repository.data
 
 import sokeriaaa.return0.models.action.effect.CommonEffects
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
-import sokeriaaa.return0.shared.data.models.entity.EnemyRewardTable
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
@@ -29,7 +28,6 @@ class ArchiveRepo internal constructor() {
     private val _entityDataMap: MutableMap<String, EntityData> = HashMap()
     private val _effectDataMap: MutableMap<String, EffectData> = HashMap()
     private val _entityGrowthMap: MutableMap<Category, EntityGrowth> = HashMap()
-    private val _entityRewardMap: MutableMap<String, EnemyRewardTable> = HashMap()
     private val _categoryEffectivenessMap: MutableMap<Category, CategoryEffectiveness> = HashMap()
 
     init {
@@ -69,10 +67,6 @@ class ArchiveRepo internal constructor() {
         _categoryEffectivenessMap.putAll(map)
     }
 
-    fun registerEntityRewardTable(map: Map<String, EnemyRewardTable>) {
-        _entityRewardMap.putAll(map)
-    }
-
     fun getEntityData(name: String): EntityData? = _entityDataMap[name]
     fun getEffectData(name: String): EffectData? = _effectDataMap[name]
 
@@ -93,7 +87,6 @@ class ArchiveRepo internal constructor() {
         _entityDataMap.clear()
         _effectDataMap.clear()
         _entityGrowthMap.clear()
-        _entityRewardMap.clear()
         _categoryEffectivenessMap.clear()
     }
 }
