@@ -2,6 +2,7 @@
 <resources>
     <string name="game_menu">Menu</string>
     <string name="game_menu_save">Save Game</string>
+    <string name="game_menu_quests">Quests</string>
     <string name="game_menu_entities">Entities</string>
     <string name="game_menu_teams">Teams</string>
     <string name="game_menu_inventory">Inventory</string>

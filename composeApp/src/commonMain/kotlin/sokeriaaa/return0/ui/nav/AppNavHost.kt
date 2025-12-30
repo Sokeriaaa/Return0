@@ -37,7 +37,9 @@ import sokeriaaa.return0.ui.main.combat.CombatScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorPresetScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
 import sokeriaaa.return0.ui.main.game.GameScreen
-import sokeriaaa.return0.ui.main.profile.ProfileScreen
+import sokeriaaa.return0.ui.main.game.entities.EntitiesScreen
+import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
+import sokeriaaa.return0.ui.main.game.teams.TeamsScreen
 import sokeriaaa.return0.ui.main.save.SaveScreen
 
 @Composable
@@ -56,20 +58,34 @@ fun AppNavHost(
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
+
         myComposable(Scene.Game) {
             GameScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
-        myComposable(Scene.Combat) {
-            CombatScreen(
+        myComposable(Scene.Quests) {
+            QuestsScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
-        myComposable(Scene.Profile) {
-            ProfileScreen(
+        myComposable(Scene.Entities) {
+            EntitiesScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.Teams) {
+            TeamsScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+
+        myComposable(Scene.Combat) {
+            CombatScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
@@ -160,8 +176,11 @@ fun NavController.navigatePopUpTo(route: String) {
 sealed class Scene(val route: String) {
     data object Main : Scene(route = "r0_main")
     data object Game : Scene(route = "r0_game")
+    data object Quests : Scene(route = "r0_quests")
+    data object Entities : Scene(route = "r0_entities")
+    data object Teams : Scene(route = "r0_teams")
+
     data object Combat : Scene(route = "r0_combat")
-    data object Profile : Scene(route = "r0_profile")
     data object Save : Scene(route = "r0_save")
     data object Emulator : Scene(route = "r0_emulator")
     data object EmulatorPreset : Scene(route = "r0_emulator_preset")

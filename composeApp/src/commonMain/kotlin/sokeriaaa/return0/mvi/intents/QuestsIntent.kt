@@ -12,23 +12,6 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.ui.main.profile
+package sokeriaaa.return0.mvi.intents
 
-import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import org.koin.compose.koinInject
-import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
-
-@Composable
-fun ProfileScreen(
-    viewModel: ProfileViewModel = viewModel(
-        factory = koinInject(),
-        viewModelStoreOwner = koinInject(),
-    ),
-    mainNavHostController: NavHostController,
-    windowAdaptiveInfo: WindowAdaptiveInfo,
-) {
-
-}
+sealed class QuestsIntent : BaseIntent

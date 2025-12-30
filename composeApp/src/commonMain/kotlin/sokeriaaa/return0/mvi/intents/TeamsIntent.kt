@@ -12,12 +12,6 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.mvi.viewmodels
+package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.return0.mvi.intents.BaseIntent
-
-class ProfileViewModel : BaseViewModel() {
-    override fun onIntent(intent: BaseIntent) {
-        TODO("Not yet implemented")
-    }
-}
+class TeamsIntent : BaseIntent

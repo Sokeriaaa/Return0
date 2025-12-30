@@ -52,6 +52,7 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu
 import return0.composeapp.generated.resources.game_menu_entities
 import return0.composeapp.generated.resources.game_menu_inventory
+import return0.composeapp.generated.resources.game_menu_quests
 import return0.composeapp.generated.resources.game_menu_quit
 import return0.composeapp.generated.resources.game_menu_save
 import return0.composeapp.generated.resources.game_menu_settings
@@ -59,6 +60,7 @@ import return0.composeapp.generated.resources.game_menu_teams
 import return0.composeapp.generated.resources.game_quit_warn
 import return0.composeapp.generated.resources.game_save_text
 import return0.composeapp.generated.resources.game_save_title
+import return0.composeapp.generated.resources.ic_outline_assignment_24
 import return0.composeapp.generated.resources.ic_outline_code_24
 import return0.composeapp.generated.resources.ic_outline_groups_24
 import return0.composeapp.generated.resources.ic_outline_inventory_2_24
@@ -73,7 +75,7 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.TeamIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
-import sokeriaaa.return0.mvi.viewmodels.TeamViewModel
+import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.ModalOverlay
 import sokeriaaa.return0.ui.common.entity.EntitySelectionDialog
@@ -144,7 +146,7 @@ fun GameScreen(
         viewModelStoreOwner = koinInject(),
     )
     // For entity selecting
-    val teamViewModel: TeamViewModel = viewModel(
+    val teamsViewModel: TeamsViewModel = viewModel(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
@@ -205,7 +207,7 @@ fun GameScreen(
                 }
 
                 EventEffect.ChooseEntity -> {
-                    teamViewModel.onIntent(TeamIntent.RefreshTeams)
+                    teamsViewModel.onIntent(TeamIntent.RefreshTeams)
                     isShowingSelectEntityDialog = true
                 }
 
@@ -296,7 +298,7 @@ fun GameScreen(
         if (isShowingSelectEntityDialog) {
             EntitySelectionDialog(
                 modifier = Modifier.padding(vertical = 64.dp),
-                entities = teamViewModel.activatedTeamEntities,
+                entities = teamsViewModel.activatedTeamEntities,
                 onSelectedIndex = { index ->
                     isShowingSelectEntityDialog = false
                     viewModel.onIntent(GameIntent.EventChoice(index))
@@ -350,8 +352,15 @@ private fun GameContent(
                         drawerState.close()
                     }
                 },
-                onEntitiesClicked = {},
-                onTeamsClicked = {},
+                onQuestsClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Quests.route)
+                },
+                onEntitiesClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Entities.route)
+                },
+                onTeamsClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Teams.route)
+                },
                 onInventoryClicked = {},
                 onSettingsClicked = {},
                 onQuitClicked = {
@@ -396,6 +405,7 @@ private fun GameContent(
 @Composable
 private fun GameDrawerContent(
     onSaveClicked: () -> Unit,
+    onQuestsClicked: () -> Unit,
     onEntitiesClicked: () -> Unit,
     onTeamsClicked: () -> Unit,
     onInventoryClicked: () -> Unit,
@@ -408,6 +418,12 @@ private fun GameDrawerContent(
             iconRes = Res.drawable.ic_outline_save_24,
             label = stringResource(Res.string.game_menu_save),
             onClick = onSaveClicked,
+        )
+        // Quests
+        AppNavigateDrawerItem(
+            iconRes = Res.drawable.ic_outline_assignment_24,
+            label = stringResource(Res.string.game_menu_quests),
+            onClick = onQuestsClicked,
         )
         // Entities
         AppNavigateDrawerItem(

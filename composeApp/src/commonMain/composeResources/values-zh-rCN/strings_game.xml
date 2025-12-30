@@ -2,6 +2,7 @@
 <resources>
     <string name="game_menu">菜单</string>
     <string name="game_menu_save">保存游戏</string>
+    <string name="game_menu_quests">任务</string>
     <string name="game_menu_entities">对象</string>
     <string name="game_menu_teams">队伍</string>
     <string name="game_menu_inventory">背包</string>

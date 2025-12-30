@@ -30,7 +30,7 @@ import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.TeamIntent
 
-class TeamViewModel : BaseViewModel() {
+class TeamsViewModel : BaseViewModel() {
 
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()
