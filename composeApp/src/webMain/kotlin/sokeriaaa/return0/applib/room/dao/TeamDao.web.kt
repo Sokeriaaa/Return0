@@ -23,5 +23,15 @@ actual interface TeamDao {
     actual suspend fun insertList(list: List<TeamTable>)
     actual suspend fun delete(saveID: Int)
     actual suspend fun activateTeam(saveID: Int, teamID: Int)
+    actual suspend fun updateMembers(
+        saveID: Int,
+        teamID: Int,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?
+    )
+
+    actual suspend fun updateName(saveID: Int, teamID: Int, name: String)
     actual suspend fun getActivatedTeam(saveID: Int): TeamTable?
 }

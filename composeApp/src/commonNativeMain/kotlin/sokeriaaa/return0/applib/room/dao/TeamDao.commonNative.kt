@@ -51,6 +51,25 @@ actual interface TeamDao {
     actual suspend fun activateTeam(saveID: Int, teamID: Int)
 
     @Query(
+        "UPDATE `${TeamTable.TABLE_NAME}` SET `slot1`=:slot1, `slot2`=:slot2, " +
+                "`slot3`=:slot3, `slot4`=:slot4 WHERE `save_id`=:saveID AND `team_id`=:teamID"
+    )
+    actual suspend fun updateMembers(
+        saveID: Int,
+        teamID: Int,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?
+    )
+
+    @Query(
+        "UPDATE `${TeamTable.TABLE_NAME}` SET `name`=:name " +
+                "WHERE `save_id`=:saveID AND `team_id`=:teamID"
+    )
+    actual suspend fun updateName(saveID: Int, teamID: Int, name: String)
+
+    @Query(
         "SELECT * FROM `${TeamTable.TABLE_NAME}` " +
                 "WHERE `save_id`=:saveID AND `is_activated`=1 LIMIT 1"
     )

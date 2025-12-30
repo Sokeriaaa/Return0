@@ -26,14 +26,14 @@ class GameTeamRepo(
     /**
      * Update the team data.
      */
-    suspend fun updateTeam(
+    suspend fun createOrUpdateTeam(
         teamID: Int,
-        name: String,
-        isActivated: Boolean,
-        slot1: String?,
-        slot2: String?,
-        slot3: String?,
-        slot4: String?,
+        name: String? = null,
+        isActivated: Boolean = false,
+        slot1: String? = null,
+        slot2: String? = null,
+        slot3: String? = null,
+        slot4: String? = null,
     ) {
         teamDao.insertOrUpdate(
             TeamTable(
@@ -46,6 +46,34 @@ class GameTeamRepo(
                 slot3 = slot3,
                 slot4 = slot4,
             )
+        )
+    }
+
+    suspend fun updateTeamMember(
+        teamID: Int,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?,
+    ) {
+        teamDao.updateMembers(
+            saveID = AppConstants.CURRENT_SAVE_ID,
+            teamID = teamID,
+            slot1 = slot1,
+            slot2 = slot2,
+            slot3 = slot3,
+            slot4 = slot4,
+        )
+    }
+
+    suspend fun updateTeamName(
+        teamID: Int,
+        name: String,
+    ) {
+        teamDao.updateName(
+            saveID = AppConstants.CURRENT_SAVE_ID,
+            teamID = teamID,
+            name = name,
         )
     }
 
@@ -77,6 +105,10 @@ class GameTeamRepo(
             }
         }
         return results
+    }
+
+    suspend fun loadAllTeams(): List<TeamTable> {
+        return teamDao.queryAll(AppConstants.CURRENT_SAVE_ID)
     }
 
     /**

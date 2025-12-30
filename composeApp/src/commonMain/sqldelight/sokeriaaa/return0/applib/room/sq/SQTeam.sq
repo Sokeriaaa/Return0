@@ -57,6 +57,19 @@ SET is_activated = CASE
 END
 WHERE save_id = ?;
 
+updateTeamMembers:
+UPDATE return0_team
+SET slot1 = ?,
+    slot2 = ?,
+    slot3 = ?,
+    slot4 = ?
+WHERE save_id = ? AND team_id = ?;
+
+updateTeamName:
+UPDATE return0_team
+SET name = ?
+WHERE save_id = ? AND team_id = ?;
+
 getActivatedTeam:
 SELECT *
 FROM return0_team

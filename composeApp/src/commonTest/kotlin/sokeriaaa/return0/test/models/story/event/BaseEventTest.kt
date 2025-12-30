@@ -136,7 +136,7 @@ abstract class BaseEventTest {
      */
     protected suspend fun registerTestingTeams(context: EventContext) {
         // Put "foo" and "bar" in team 1.
-        context.gameState.team.updateTeam(
+        context.gameState.team.createOrUpdateTeam(
             teamID = 1,
             name = "Team 1",
             isActivated = true,
@@ -152,7 +152,7 @@ abstract class BaseEventTest {
      */
     protected suspend fun registerFullTestingTeams(context: EventContext) {
         // Put "foo" and "bar" in team 1.
-        context.gameState.team.updateTeam(
+        context.gameState.team.createOrUpdateTeam(
             teamID = 1,
             name = "Team 1",
             isActivated = true,

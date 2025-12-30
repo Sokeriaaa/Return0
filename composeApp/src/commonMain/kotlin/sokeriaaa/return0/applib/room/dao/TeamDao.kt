@@ -48,6 +48,24 @@ expect interface TeamDao {
     suspend fun activateTeam(saveID: Int = -1, teamID: Int)
 
     /**
+     * Update the members of the team.
+     */
+    suspend fun updateMembers(
+        saveID: Int,
+        teamID: Int,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?,
+    )
+
+    suspend fun updateName(
+        saveID: Int,
+        teamID: Int,
+        name: String,
+    )
+
+    /**
      * Get the activated team.
      */
     suspend fun getActivatedTeam(saveID: Int): TeamTable?

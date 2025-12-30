@@ -10,6 +10,7 @@
 
     <string name="more_operations">More…</string>
     <string name="no_operation">Nothing here…</string>
+    <string name="empty_slot">(Empty)</string>
 
     <string name="loading_precent">%1$s%</string>
     <string name="loading_error">Loading Error!</string>

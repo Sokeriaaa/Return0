@@ -77,6 +77,32 @@ class TeamDaoImpl(
         queries.activateTeam(save_id = saveID.toLong(), team_id = teamID.toLong())
     }
 
+    override suspend fun updateMembers(
+        saveID: Int,
+        teamID: Int,
+        slot1: String?,
+        slot2: String?,
+        slot3: String?,
+        slot4: String?
+    ) {
+        queries.updateTeamMembers(
+            save_id = saveID.toLong(),
+            team_id = teamID.toLong(),
+            slot1 = slot1,
+            slot2 = slot2,
+            slot3 = slot3,
+            slot4 = slot4,
+        )
+    }
+
+    override suspend fun updateName(saveID: Int, teamID: Int, name: String) {
+        queries.updateTeamName(
+            save_id = saveID.toLong(),
+            team_id = teamID.toLong(),
+            name = name,
+        )
+    }
+
     override suspend fun getActivatedTeam(saveID: Int): TeamTable? {
         return queries.getActivatedTeam(
             save_id = saveID.toLong(),

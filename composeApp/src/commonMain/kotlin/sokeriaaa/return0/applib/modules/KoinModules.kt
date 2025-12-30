@@ -41,6 +41,7 @@ import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.ProfileViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
+import sokeriaaa.return0.mvi.viewmodels.TeamViewModel
 
 object KoinModules {
 
@@ -52,6 +53,7 @@ object KoinModules {
             viewModelFactory {
                 initializer { MainViewModel() }
                 initializer { GameViewModel() }
+                initializer { TeamViewModel() }
                 initializer { CombatViewModel() }
                 initializer { ProfileViewModel() }
                 initializer {

@@ -10,6 +10,7 @@
 
     <string name="more_operations">更多操作…</string>
     <string name="no_operation">无可用选项…</string>
+    <string name="empty_slot">（空）</string>
 
     <string name="loading_precent">%1$s%</string>
     <string name="loading_error">加载出错！</string>

@@ -70,10 +70,13 @@ import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
+import sokeriaaa.return0.mvi.intents.TeamIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
+import sokeriaaa.return0.mvi.viewmodels.TeamViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.ModalOverlay
+import sokeriaaa.return0.ui.common.entity.EntitySelectionDialog
 import sokeriaaa.return0.ui.common.event.EventShowChoice
 import sokeriaaa.return0.ui.common.event.EventShowChoiceState
 import sokeriaaa.return0.ui.common.event.EventShowText
@@ -104,6 +107,8 @@ fun GameScreen(
     var eventShowChoiceState by remember { mutableStateOf(EventShowChoiceState()) }
     // Save dialog
     var isShowingSaveDialog by remember { mutableStateOf(false) }
+    // Select entity dialog
+    var isShowingSelectEntityDialog by remember { mutableStateOf(false) }
 
     // Showing map
     var isShowingMap by remember { mutableStateOf(true) }
@@ -138,6 +143,12 @@ fun GameScreen(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
+    // For entity selecting
+    val teamViewModel: TeamViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    )
+    // Collect event effects
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
@@ -193,7 +204,10 @@ fun GameScreen(
                     }
                 }
 
-                EventEffect.ChooseEntity -> TODO()
+                EventEffect.ChooseEntity -> {
+                    teamViewModel.onIntent(TeamIntent.RefreshTeams)
+                    isShowingSelectEntityDialog = true
+                }
 
                 EventEffect.RequestSave -> isShowingSaveDialog = true
                 EventEffect.RefreshEvents -> viewModel.onIntent(GameIntent.RefreshMap)
@@ -276,6 +290,17 @@ fun GameScreen(
                     isShowingSaveDialog = false
                     viewModel.onIntent(GameIntent.EventContinue)
                 },
+            )
+        }
+        // Select entity dialog
+        if (isShowingSelectEntityDialog) {
+            EntitySelectionDialog(
+                modifier = Modifier.padding(vertical = 64.dp),
+                entities = teamViewModel.activatedTeamEntities,
+                onSelectedIndex = { index ->
+                    isShowingSelectEntityDialog = false
+                    viewModel.onIntent(GameIntent.EventChoice(index))
+                }
             )
         }
     }
