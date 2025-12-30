@@ -71,6 +71,6 @@ object EntityLevelHelper {
         partyLevel: Int,
         enemyLevel: Int,
     ): Float {
-        return ((5 + enemyLevel) * 5 * (enemyLevel.toFloat() / partyLevel).coerceAtMost(5F))
+        return ((5 + enemyLevel) * 5 * ((enemyLevel + 10F) / (partyLevel + 10F)).coerceAtMost(5F))
     }
 }
