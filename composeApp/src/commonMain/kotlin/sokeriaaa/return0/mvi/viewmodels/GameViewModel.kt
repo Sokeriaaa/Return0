@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
-import sokeriaaa.return0.models.story.event.EventContext
+import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.condition.calculatedIn
 import sokeriaaa.return0.models.story.event.executedIn

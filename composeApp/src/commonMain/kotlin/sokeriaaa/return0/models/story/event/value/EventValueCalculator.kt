@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.models.story.event.value
 
-import sokeriaaa.return0.models.story.event.EventContext
+import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.condition.calculatedIn
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue

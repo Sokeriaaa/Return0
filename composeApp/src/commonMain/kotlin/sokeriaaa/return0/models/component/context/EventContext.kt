@@ -12,13 +12,14 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.story.event
+package sokeriaaa.return0.models.component.context
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.models.story.event.EventEffect
 import kotlin.random.Random
 
 /**
@@ -26,9 +27,9 @@ import kotlin.random.Random
  */
 class EventContext(
     val key: String?,
-    val random: Random = Random,
+    override val random: Random = Random.Default,
     val callback: Callback,
-) : KoinComponent {
+) : BaseContext, KoinComponent {
     val gameState: GameStateRepo by inject()
     val resources: ResourceRepo by inject()
     val archive: ArchiveRepo by inject()

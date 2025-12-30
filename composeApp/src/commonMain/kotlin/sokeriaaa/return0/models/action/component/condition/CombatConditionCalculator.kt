@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.models.action.component.condition
 
-import sokeriaaa.return0.models.action.ActionContext
 import sokeriaaa.return0.models.action.component.value.calculatedIn
+import sokeriaaa.return0.models.component.context.ActionContext
 import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.conditions.CombatCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition

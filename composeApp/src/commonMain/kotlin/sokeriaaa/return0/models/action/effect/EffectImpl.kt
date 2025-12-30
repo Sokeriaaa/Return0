@@ -17,9 +17,9 @@ package sokeriaaa.return0.models.action.effect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
-import sokeriaaa.return0.models.action.component.extra.createExtraContextFor
 import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.removeEffect
+import sokeriaaa.return0.models.component.context.createExtraContextFor
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier

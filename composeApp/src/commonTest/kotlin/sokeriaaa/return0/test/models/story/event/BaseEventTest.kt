@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.test.models.story.event
 
-import sokeriaaa.return0.models.story.event.EventContext
+import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.category.Category

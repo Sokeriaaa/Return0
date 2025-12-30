@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.models.story.event.condition
 
-import sokeriaaa.return0.models.story.event.EventContext
+import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.value.calculatedToFloat
 import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition

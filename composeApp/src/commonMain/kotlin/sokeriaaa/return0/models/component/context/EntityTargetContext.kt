@@ -15,12 +15,11 @@
 package sokeriaaa.return0.models.component.context
 
 import sokeriaaa.return0.models.entity.Entity
-import kotlin.random.Random
 
 /**
- * The context of executing components for items.
+ * The context with an [Entity] [target]. Effects may be applied on the [target] during a combat
+ * or on the map.
  */
-class ItemContext(
-    override val target: Entity,
-    override val random: Random = Random.Default,
-) : EntityTargetContext
+interface EntityTargetContext : BaseContext {
+    val target: Entity
+}

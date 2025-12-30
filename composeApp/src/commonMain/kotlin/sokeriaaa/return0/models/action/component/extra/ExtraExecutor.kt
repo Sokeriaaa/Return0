@@ -19,14 +19,15 @@ import sokeriaaa.return0.models.action.attachShield
 import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.effect.generateEffectFor
-import sokeriaaa.return0.models.action.forUser
+import sokeriaaa.return0.models.component.context.forUser
 import sokeriaaa.return0.models.action.instantAPChange
 import sokeriaaa.return0.models.action.instantHPChange
 import sokeriaaa.return0.models.action.instantSPChange
 import sokeriaaa.return0.models.action.noEffect
 import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.removeShield
-import sokeriaaa.return0.models.action.swappedEntities
+import sokeriaaa.return0.models.component.context.ActionExtraContext
+import sokeriaaa.return0.models.component.context.swappedEntities
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.component.extras.Extra

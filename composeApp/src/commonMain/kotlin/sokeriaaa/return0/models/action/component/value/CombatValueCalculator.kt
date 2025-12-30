@@ -14,12 +14,12 @@
  */
 package sokeriaaa.return0.models.action.component.value
 
-import sokeriaaa.return0.models.action.ActionContext
 import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.effect.Effect
-import sokeriaaa.return0.models.action.forUser
 import sokeriaaa.return0.models.action.function.Skill
-import sokeriaaa.return0.models.action.swappedEntities
+import sokeriaaa.return0.models.component.context.ActionContext
+import sokeriaaa.return0.models.component.context.forUser
+import sokeriaaa.return0.models.component.context.swappedEntities
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue

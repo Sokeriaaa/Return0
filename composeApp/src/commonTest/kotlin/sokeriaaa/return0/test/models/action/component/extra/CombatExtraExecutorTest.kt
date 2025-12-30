@@ -18,9 +18,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.models.action.Action
-import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.function.generateFunctionFor
+import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition

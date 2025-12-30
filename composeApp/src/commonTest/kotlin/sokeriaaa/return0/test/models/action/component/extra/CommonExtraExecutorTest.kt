@@ -15,9 +15,9 @@
 package sokeriaaa.return0.test.models.action.component.extra
 
 import sokeriaaa.return0.models.action.Action
-import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.extra.executedIn
 import sokeriaaa.return0.models.action.function.generateFunctionFor
+import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.condition.IF
 import sokeriaaa.return0.shared.data.api.component.extra.extrasGroupOf

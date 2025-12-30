@@ -14,9 +14,9 @@
  */
 package sokeriaaa.return0.test.models.action.component.value
 
-import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
 import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.function.generateFunctionFor
+import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue

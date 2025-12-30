@@ -12,9 +12,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.action
-
-import sokeriaaa.return0.models.action.component.extra.ActionExtraContext
+package sokeriaaa.return0.models.component.context
 
 /**
  * Swap user and target in this block.

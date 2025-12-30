@@ -12,10 +12,9 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.action.component.extra
+package sokeriaaa.return0.models.component.context
 
 import sokeriaaa.return0.models.action.Action
-import sokeriaaa.return0.models.action.ActionContext
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.random.Random

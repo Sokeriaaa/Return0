@@ -16,7 +16,6 @@ package sokeriaaa.return0.test.models.action
 
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.action.attachEffect
-import sokeriaaa.return0.models.action.component.extra.createExtraContextFor
 import sokeriaaa.return0.models.action.effect.generateEffectFor
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.action.instantAPChange
@@ -25,6 +24,7 @@ import sokeriaaa.return0.models.action.instantSPChange
 import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.singleExecute
 import sokeriaaa.return0.models.combat.CombatCalculator
+import sokeriaaa.return0.models.component.context.createExtraContextFor
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.entity.category.Category

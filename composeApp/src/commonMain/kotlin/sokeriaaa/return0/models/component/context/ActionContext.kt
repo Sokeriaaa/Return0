@@ -12,11 +12,12 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.action
+package sokeriaaa.return0.models.component.context
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.random.Random
@@ -32,10 +33,10 @@ import kotlin.random.Random
 open class ActionContext(
     open val fromAction: Action,
     open val user: Entity,
-    open val target: Entity,
-    open val random: Random = Random,
+    override val target: Entity,
+    override val random: Random = Random.Default,
     attackDamageResult: ActionResult.Damage? = null
-) : KoinComponent {
+) : EntityTargetContext, KoinComponent {
     /**
      * ArchiveRepo. Mainly for getting effect data.
      * Maybe there's a better way.
