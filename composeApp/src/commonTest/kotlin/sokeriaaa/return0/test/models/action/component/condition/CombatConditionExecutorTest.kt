@@ -15,9 +15,9 @@
 package sokeriaaa.return0.test.models.action.component.condition
 
 import sokeriaaa.return0.models.action.Action
-import sokeriaaa.return0.models.action.component.condition.calculatedIn
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.component.context.ActionExtraContext
+import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.conditions.CombatCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult

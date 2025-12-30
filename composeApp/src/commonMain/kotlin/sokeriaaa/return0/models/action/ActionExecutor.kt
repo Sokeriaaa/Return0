@@ -15,13 +15,13 @@
 package sokeriaaa.return0.models.action
 
 import androidx.compose.ui.util.fastCoerceIn
-import sokeriaaa.return0.models.action.component.condition.calculatedIn
-import sokeriaaa.return0.models.action.component.extra.executedIn
-import sokeriaaa.return0.models.action.component.value.calculatedIn
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.CombatCalculator
 import sokeriaaa.return0.models.component.context.ActionExtraContext
+import sokeriaaa.return0.models.component.executor.condition.calculatedIn
+import sokeriaaa.return0.models.component.executor.extra.executedIn
+import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.math.roundToInt

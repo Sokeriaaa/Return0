@@ -17,9 +17,9 @@ package sokeriaaa.return0.models.story.event
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.component.context.ItemContext
+import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.component.executor.extra.executedIn
-import sokeriaaa.return0.models.story.event.condition.calculatedIn
-import sokeriaaa.return0.models.story.event.value.calculatedIn
+import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState

@@ -12,10 +12,10 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.models.story.event.value
+package sokeriaaa.return0.models.component.executor.value
 
 import sokeriaaa.return0.models.component.context.EventContext
-import sokeriaaa.return0.models.story.event.condition.calculatedIn
+import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.component.values.Value

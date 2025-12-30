@@ -15,7 +15,7 @@
 package sokeriaaa.return0.test.models.story.event.condition
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.return0.models.story.event.condition.calculatedIn
+import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.shared.data.api.component.condition.and
 import sokeriaaa.return0.shared.data.api.component.condition.eq
 import sokeriaaa.return0.shared.data.api.component.condition.gt

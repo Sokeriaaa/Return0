@@ -15,7 +15,7 @@
 package sokeriaaa.return0.test.models.story.event.value
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.return0.models.story.event.value.calculatedIn
+import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.shared.data.api.component.condition.IF
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.api.component.value.abs
