@@ -31,6 +31,7 @@ import sokeriaaa.return0.models.combat.affectedTargetsFor
 import sokeriaaa.return0.models.combat.availableTargetsFor
 import sokeriaaa.return0.models.combat.selectableCount
 import sokeriaaa.return0.models.entity.Entity
+import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
@@ -280,12 +281,31 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
         viewModelScope.launch {
             // Save state if the flag is `true`.
             if (arenaConfig?.saveStatus == true) {
-                _gameStateRepo.entity.saveEntityState(
-                    parties = parties.filter {
-                        // Filter the temporary entities.
-                        arenaConfig?.temporaryEntities?.contains(it.name) != true
-                    },
-                )
+                val partiesForSaving = parties.filter {
+                    // Filter the temporary entities.
+                    arenaConfig?.temporaryEntities?.contains(it.name) != true
+                }
+                // Save state.
+                _gameStateRepo.entity.saveEntityState(partiesForSaving)
+                // If it's victory
+                if (result) {
+                    // Obtain exp.
+                    partiesForSaving.forEach { entity ->
+                        if (!entity.isFailed()) {
+                            // Calculate exp based on party and enemy level.
+                            _gameStateRepo.entity.obtainedExp(
+                                entityName = entity.name,
+                                obtainedExp = enemies.sumOf { enemy ->
+                                    EntityLevelHelper.enemyExp(
+                                        partyLevel = entity.level,
+                                        enemyLevel = enemy.level,
+                                    ).toDouble()
+                                }.toFloat() * (arenaConfig?.difficulty ?: 1F)
+                            )
+                        }
+                    }
+                    // TODO obtain token
+                }
             }
             combatStatus = result
         }

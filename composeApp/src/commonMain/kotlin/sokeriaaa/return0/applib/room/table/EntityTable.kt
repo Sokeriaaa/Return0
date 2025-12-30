@@ -24,7 +24,7 @@ expect class EntityTable(
     exp: Int = 0,
     currentHP: Int? = null,
     currentSP: Int? = null,
-    partyIndex: Int = -1,
+    indexedTime: Long,
     pluginID: Long? = null,
 ) {
 
@@ -61,7 +61,7 @@ expect class EntityTable(
     /**
      * The index in the party, between 0 and 3. -1 means not in party.
      */
-    var partyIndex: Int
+    var indexedTime: Long
 
     /**
      * The plugin (weapon) this entity equipped.

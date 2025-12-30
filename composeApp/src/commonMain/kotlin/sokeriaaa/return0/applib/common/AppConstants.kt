@@ -34,4 +34,13 @@ object AppConstants {
     const val ARENA_PLAY_SPEED = 50L
     const val ARENA_MAX_PARTY = 4
     const val ARENA_MAX_ENEMY = 5
+
+    const val ENTITY_MAX_LEVEL = 100
+
+    /**
+     * When the entity level reaches the upper limit for the current title, the entity cannot
+     * level up anymore, and the obtained experience will be significantly decreased
+     * (but at least 1) until the player reaches a higher title.
+     */
+    const val ENTITY_LEVEL_LIMIT_MULTIPLIER = 0.1F
 }

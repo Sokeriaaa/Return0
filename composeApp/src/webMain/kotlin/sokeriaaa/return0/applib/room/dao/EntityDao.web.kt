@@ -18,22 +18,9 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 
 actual interface EntityDao {
     actual suspend fun queryAll(saveID: Int): List<EntityTable>
-    actual suspend fun obtainedNewEntity(
-        saveID: Int,
-        entityName: String,
-        initialHP: Int,
-        initialSP: Int,
-        partyIndex: Int
-    )
-
     actual suspend fun getEntity(
         saveID: Int,
         entityName: String
-    ): EntityTable?
-
-    actual suspend fun getEntityByIndex(
-        saveID: Int,
-        partyIndex: Int
     ): EntityTable?
 
     actual suspend fun updateHP(saveID: Int, entityName: String, hp: Int?)

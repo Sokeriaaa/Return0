@@ -20,16 +20,23 @@ import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.generate
+import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
     private val entityDao: EntityDao,
 ) {
+    suspend fun queryAll(): List<EntityTable> {
+        return entityDao.queryAll(saveID = AppConstants.CURRENT_SAVE_ID)
+    }
 
     /**
      * Obtaining a new entity.
      */
+    @OptIn(ExperimentalTime::class)
     suspend fun obtainEntity(
         entityName: String,
         level: Int = 1,
@@ -46,6 +53,7 @@ class GameEntityRepo(
                 exp = exp,
                 currentHP = currentHP,
                 currentSP = currentSP,
+                indexedTime = Clock.System.now().toEpochMilliseconds(),
                 pluginID = pluginID,
             )
         )
@@ -101,6 +109,47 @@ class GameEntityRepo(
         parties.forEach {
             updateHPAndSP(entityName = it.name, currentHP = it.hp, currentSP = it.sp)
         }
+    }
+
+    /**
+     * Obtained exp for an entity.
+     *
+     * @param allowLevelDown Allow the level to go down under certain situations. Default is `false`
+     * @return obtainedExp to newLevel
+     */
+    suspend fun obtainedExp(
+        entityName: String,
+        obtainedExp: Float,
+        allowLevelDown: Boolean = false
+    ): Pair<Int, Int> {
+        val entityData = archive.getEntityData(entityName) ?: return 0 to 0
+        val entityTable = entityDao.getEntity(
+            saveID = AppConstants.CURRENT_SAVE_ID,
+            entityName = entityName,
+        ) ?: return 0 to 0
+        val upperLimit = 100 // TODO Calculate by user title
+
+        // Calculate exp
+        val finalObtainedExp = if (entityTable.level >= upperLimit) {
+            obtainedExp * AppConstants.ENTITY_LEVEL_LIMIT_MULTIPLIER
+        } else {
+            obtainedExp
+        }.toInt().coerceAtLeast(1)
+        entityTable.exp += finalObtainedExp
+
+        // Calculate level
+        val newLevel = EntityLevelHelper.levelFromTotalExp(
+            totalExp = entityTable.exp,
+            levelPacing = entityData.levelPacing,
+        ).coerceIn(1..upperLimit)
+        if (allowLevelDown || newLevel > entityTable.level) {
+            entityTable.level = newLevel
+        }
+
+        // Update database
+        entityDao.insert(entityTable)
+
+        return finalObtainedExp to entityTable.level
     }
 
     /**

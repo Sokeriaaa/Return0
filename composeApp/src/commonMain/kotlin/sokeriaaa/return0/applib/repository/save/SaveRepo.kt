@@ -96,6 +96,7 @@ class SaveRepo(
                 EntityTable(
                     saveID = saveID,
                     entityName = "Object",
+                    indexedTime = time
                 )
             )
             teamDao.insertOrUpdate(

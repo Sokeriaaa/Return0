@@ -17,13 +17,10 @@ CREATE TABLE return0_entities (
     exp INTEGER NOT NULL DEFAULT 0,
     current_hp INTEGER, -- nullable
     current_sp INTEGER, -- nullable
-    party_index INTEGER NOT NULL DEFAULT -1,
+    indexed_time INTEGER NOT NULL,
     plugin_id INTEGER, -- nullable
     PRIMARY KEY (save_id, entity_name)
 );
-
-CREATE INDEX return0_entities_party_index
-    ON return0_entities(party_index);
 
 CREATE INDEX return0_entities_plugin_id
     ON return0_entities(plugin_id);
@@ -33,28 +30,11 @@ SELECT *
 FROM return0_entities
 WHERE save_id = ?;
 
-obtainNewEntity:
-INSERT INTO return0_entities(
-    save_id,
-    entity_name,
-    current_hp,
-    current_sp,
-    party_index
-)
-VALUES (?, ?, ?, ?, ?);
-
 getEntity:
 SELECT *
 FROM return0_entities
 WHERE save_id = ?
   AND entity_name = ?
-LIMIT 1;
-
-getEntityByIndex:
-SELECT *
-FROM return0_entities
-WHERE save_id = ?
-  AND party_index = ?
 LIMIT 1;
 
 updateHP:
@@ -83,7 +63,7 @@ INSERT INTO return0_entities(
     exp,
     current_hp,
     current_sp,
-    party_index,
+    indexed_time,
     plugin_id
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?);

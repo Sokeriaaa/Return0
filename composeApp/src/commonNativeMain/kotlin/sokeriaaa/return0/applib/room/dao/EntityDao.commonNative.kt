@@ -28,34 +28,12 @@ actual interface EntityDao {
     actual suspend fun queryAll(saveID: Int): List<EntityTable>
 
     @Query(
-        "INSERT INTO `${EntityTable.TABLE_NAME}` " +
-                "(`save_id`, `entity_name`,`current_hp`,`current_sp`,`party_index`) " +
-                "VALUES (:saveID, :entityName, :initialHP, :initialSP, :partyIndex)"
-    )
-    actual suspend fun obtainedNewEntity(
-        saveID: Int,
-        entityName: String,
-        initialHP: Int,
-        initialSP: Int,
-        partyIndex: Int
-    )
-
-    @Query(
         "SELECT * FROM `${EntityTable.TABLE_NAME}` WHERE " +
                 "`save_id`=:saveID AND `entity_name`=:entityName LIMIT 1"
     )
     actual suspend fun getEntity(
         saveID: Int,
         entityName: String
-    ): EntityTable?
-
-    @Query(
-        "SELECT * FROM `${EntityTable.TABLE_NAME}` WHERE " +
-                "`save_id`=:saveID AND `party_index`=:partyIndex LIMIT 1"
-    )
-    actual suspend fun getEntityByIndex(
-        saveID: Int,
-        partyIndex: Int
     ): EntityTable?
 
     @Query(

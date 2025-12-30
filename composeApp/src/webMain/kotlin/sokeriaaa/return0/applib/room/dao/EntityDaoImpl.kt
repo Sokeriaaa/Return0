@@ -28,22 +28,6 @@ class EntityDaoImpl(
         ).executeAsList()
     }
 
-    override suspend fun obtainedNewEntity(
-        saveID: Int,
-        entityName: String,
-        initialHP: Int,
-        initialSP: Int,
-        partyIndex: Int
-    ) {
-        queries.obtainNewEntity(
-            save_id = saveID.toLong(),
-            entity_name = entityName,
-            current_hp = initialHP.toLong(),
-            current_sp = initialSP.toLong(),
-            party_index = partyIndex.toLong(),
-        )
-    }
-
     override suspend fun getEntity(
         saveID: Int,
         entityName: String
@@ -51,17 +35,6 @@ class EntityDaoImpl(
         return queries.getEntity(
             save_id = saveID.toLong(),
             entity_name = entityName,
-            mapper = ::convertToTable,
-        ).executeAsOneOrNull()
-    }
-
-    override suspend fun getEntityByIndex(
-        saveID: Int,
-        partyIndex: Int
-    ): EntityTable? {
-        return queries.getEntityByIndex(
-            save_id = saveID.toLong(),
-            party_index = partyIndex.toLong(),
             mapper = ::convertToTable,
         ).executeAsOneOrNull()
     }
@@ -102,7 +75,7 @@ class EntityDaoImpl(
             exp = entityTable.exp.toLong(),
             current_hp = entityTable.currentHP?.toLong(),
             current_sp = entityTable.currentHP?.toLong(),
-            party_index = entityTable.partyIndex.toLong(),
+            indexed_time = entityTable.indexedTime.toLong(),
             plugin_id = entityTable.pluginID,
         )
     }
@@ -123,7 +96,7 @@ class EntityDaoImpl(
         exp: Long,
         current_hp: Long?,
         current_sp: Long?,
-        party_index: Long,
+        indexed_time: Long,
         plugin_id: Long?,
     ): EntityTable = EntityTable(
         saveID = save_id.toInt(),
@@ -132,7 +105,7 @@ class EntityDaoImpl(
         exp = exp.toInt(),
         currentHP = current_hp?.toInt(),
         currentSP = current_sp?.toInt(),
-        partyIndex = party_index.toInt(),
+        indexedTime = indexed_time,
         pluginID = plugin_id,
     )
 

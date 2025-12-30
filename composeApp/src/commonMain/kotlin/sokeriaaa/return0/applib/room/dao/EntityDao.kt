@@ -26,30 +26,11 @@ expect interface EntityDao {
     ): List<EntityTable>
 
     /**
-     * Invokes when the player obtained a new entity.
-     */
-    suspend fun obtainedNewEntity(
-        saveID: Int = -1,
-        entityName: String,
-        initialHP: Int,
-        initialSP: Int,
-        partyIndex: Int = -1,
-    )
-
-    /**
      * Get entity by name.
      */
     suspend fun getEntity(
         saveID: Int = -1,
         entityName: String,
-    ): EntityTable?
-
-    /**
-     * Get entity by the index in party.
-     */
-    suspend fun getEntityByIndex(
-        saveID: Int = -1,
-        partyIndex: Int,
     ): EntityTable?
 
     /**

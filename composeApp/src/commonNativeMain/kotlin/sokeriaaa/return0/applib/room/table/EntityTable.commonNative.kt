@@ -21,7 +21,7 @@ import androidx.room.Index
 @Entity(
     tableName = EntityTable.TABLE_NAME,
     primaryKeys = ["save_id", "entity_name"],
-    indices = [Index("party_index"), Index("plugin_id")]
+    indices = [Index("plugin_id")]
 )
 actual data class EntityTable actual constructor(
     @ColumnInfo(name = "save_id")
@@ -36,8 +36,8 @@ actual data class EntityTable actual constructor(
     actual var currentHP: Int?,
     @ColumnInfo(name = "current_sp")
     actual var currentSP: Int?,
-    @ColumnInfo(name = "party_index")
-    actual var partyIndex: Int,
+    @ColumnInfo(name = "indexed_time")
+    actual var indexedTime: Long,
     @ColumnInfo(name = "plugin_id")
     actual var pluginID: Long?,
 ) {
