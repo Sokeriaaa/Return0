@@ -95,6 +95,7 @@ import sokeriaaa.return0.ui.nav.navigateSingleTop
  */
 @Composable
 fun GameScreen(
+    isNewGame: Boolean,
     viewModel: GameViewModel = viewModel(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
@@ -222,6 +223,13 @@ fun GameScreen(
             }
         }
     }
+    // New game
+    LaunchedEffect(isNewGame) {
+        if (isNewGame) {
+            viewModel.onIntent(GameIntent.StartNewGame)
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         // Game content.
         GameContent(

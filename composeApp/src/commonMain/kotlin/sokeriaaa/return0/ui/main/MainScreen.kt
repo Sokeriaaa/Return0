@@ -186,7 +186,9 @@ private fun RealMainScreen(
                             onLoadFinished = {
                                 // Refresh map
                                 gameViewModel.onIntent(GameIntent.RefreshMap)
-                                mainNavHostController.navigateSingleTop(Scene.Game.route)
+                                // New game
+                                gameViewModel.onIntent(GameIntent.PrepareNewGame)
+                                mainNavHostController.navigateSingleTop(Scene.Game.route + "/true")
                             },
                         ),
                     )

@@ -59,8 +59,18 @@ fun AppNavHost(
             )
         }
 
-        myComposable(Scene.Game) {
+        myComposable(
+            scene = Scene.Game,
+            arguments = listOf(
+                myNavArgument(
+                    name = "isNewGame",
+                    type = NavType.BoolType,
+                ),
+            ),
+        ) {
+            val argument = it.arguments!!
             GameScreen(
+                isNewGame = argument.read { getBoolean("isNewGame") },
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )

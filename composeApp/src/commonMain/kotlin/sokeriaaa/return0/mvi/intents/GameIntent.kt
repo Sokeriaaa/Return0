@@ -17,8 +17,11 @@ package sokeriaaa.return0.mvi.intents
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 
 sealed class GameIntent : BaseIntent {
-    data class LoadGame(val saveID: Int) : GameIntent()
-    data object QuitGame : GameIntent()
+    /**
+     * Prepare a new game
+     */
+    data object PrepareNewGame : GameIntent()
+    data object StartNewGame : GameIntent()
 
     /**
      * Send a request for moving the player to specified line animatedly.

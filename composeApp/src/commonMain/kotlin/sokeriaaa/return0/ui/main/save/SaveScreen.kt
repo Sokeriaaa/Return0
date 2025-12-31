@@ -96,7 +96,7 @@ fun SaveScreen(
                 // Refresh map
                 gameViewModel.onIntent(GameIntent.RefreshMap)
                 mainNavHostController.navigateUp()
-                mainNavHostController.navigateSingleTop(Scene.Game.route)
+                mainNavHostController.navigateSingleTop(Scene.Game.route + "/false")
                 loadWarn = null
             }
         )
@@ -108,7 +108,7 @@ fun SaveScreen(
             onFinished = {
                 gameViewModel.onIntent(GameIntent.EventContinue)
                 mainNavHostController.navigateUp()
-                mainNavHostController.navigateSingleTop(Scene.Game.route)
+                mainNavHostController.navigateSingleTop(Scene.Game.route + "/false")
                 saveWarn = null
             }
         )

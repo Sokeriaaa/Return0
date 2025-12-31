@@ -49,6 +49,11 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     private val _gameStateRepo: GameStateRepo by inject()
 
     /**
+     * Is prepared for new game.
+     */
+    private var _isPreparedForNewGame = false
+
+    /**
      * File name.
      */
     val current: MapData get() = _gameStateRepo.map.current
@@ -110,6 +115,19 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
+            GameIntent.PrepareNewGame -> {
+                _isPreparedForNewGame = true
+            }
+
+            GameIntent.StartNewGame -> {
+                if (_isPreparedForNewGame) {
+                    _isPreparedForNewGame = false
+                    viewModelScope.launch {
+                        // Trigger the events in entrance when a new game is started.
+                        triggerNoLocationEvents()
+                    }
+                }
+            }
             is GameIntent.RequestMoveTo -> requestMoveTo(
                 targetLine = intent.line,
                 isByEvent = intent.isByEvent,
