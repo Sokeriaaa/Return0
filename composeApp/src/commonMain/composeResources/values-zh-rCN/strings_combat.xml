@@ -47,4 +47,10 @@
 
     <string name="combat_log_end_win">你战胜了bug。</string>
     <string name="combat_log_end_lose">你在bug的乱流中迷失了…</string>
+
+    <string name="combat_rewards">战斗奖励</string>
+    <plurals name="combat_rewards_token">
+        <item quantity="other">· 获得了%1$s个token!</item>
+    </plurals>
+    <string name="combat_rewards_exp">· 获得经验</string>
 </resources>

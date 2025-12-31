@@ -36,10 +36,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -75,12 +77,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.close
 import return0.composeapp.generated.resources.combat
 import return0.composeapp.generated.resources.combat_defeat
 import return0.composeapp.generated.resources.combat_leave
+import return0.composeapp.generated.resources.combat_rewards
+import return0.composeapp.generated.resources.combat_rewards_exp
+import return0.composeapp.generated.resources.combat_rewards_token
 import return0.composeapp.generated.resources.combat_victory
 import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_outline_autopause_24
@@ -94,6 +101,7 @@ import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.BlockBackPressed
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
+import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
@@ -213,6 +221,20 @@ fun CombatScreen(
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
+    }
+    // Reward summary
+    viewModel.rewardSummary?.let {
+        RewardSummaryDialog(
+            modifier = Modifier.padding(vertical = 64.dp),
+            rewardSummary = it,
+            onLeave = {
+                viewModel.onIntent(CombatIntent.DismissRewardSummary)
+                mainNavHostController.navigateUp()
+            },
+            onDismiss = {
+                viewModel.onIntent(CombatIntent.DismissRewardSummary)
+            },
+        )
     }
 }
 
@@ -562,4 +584,90 @@ private fun EffectBadge(
             lineHeight = 7.sp,
         )
     }
+}
+
+@Composable
+private fun RewardSummaryDialog(
+    modifier: Modifier = Modifier,
+    rewardSummary: CombatViewModel.RewardSummary,
+    onLeave: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(Res.string.combat_rewards),
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                var divider = false
+                if (rewardSummary.obtainedTokens > 0) {
+                    Text(
+                        text = pluralStringResource(
+                            resource = Res.plurals.combat_rewards_token,
+                            quantity = rewardSummary.obtainedTokens,
+                            /* tokens = */ rewardSummary.obtainedTokens,
+                        ),
+                    )
+                    divider = true
+                }
+                if (rewardSummary.entityExp.isNotEmpty()) {
+                    if (divider) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    Text(
+                        text = stringResource(Res.string.combat_rewards_exp),
+                    )
+                    rewardSummary.entityExp.forEach { entry ->
+                        Text(
+                            text = buildString {
+                                val isLevelUp =
+                                    entry.value.levelChange.second > entry.value.levelChange.first
+                                // Level change
+                                if (isLevelUp) {
+                                    append("↑ ")
+                                } else {
+                                    append("- ")
+                                }
+                                // Level
+                                append(
+                                    stringResource(
+                                        resource = Res.string.general_level_w_value,
+                                        if (isLevelUp) {
+                                            entry.value.levelChange.second
+                                        } else {
+                                            entry.value.levelChange.first
+                                        }.toString().padStart(3, ' '),
+                                    ),
+                                )
+                                append(" ")
+                                append(entry.key)
+                                append(" +")
+                                append(entry.value.obtainedExp)
+                            },
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            AppTextButton(
+                text = stringResource(Res.string.combat_leave),
+                onClick = onLeave,
+            )
+        },
+        dismissButton = {
+            AppTextButton(
+                text = stringResource(Res.string.close),
+                onClick = onDismiss,
+            )
+        },
+    )
 }

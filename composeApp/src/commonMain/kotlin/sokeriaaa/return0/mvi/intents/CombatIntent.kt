@@ -53,4 +53,9 @@ sealed class CombatIntent : BaseIntent {
      */
     data object ToggleAutoCombat : CombatIntent()
 
+    /**
+     * Dismiss the reward summary dialog after a combat is finished.
+     */
+    data object DismissRewardSummary : CombatIntent()
+
 }

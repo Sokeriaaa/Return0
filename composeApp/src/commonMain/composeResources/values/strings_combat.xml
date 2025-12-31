@@ -49,4 +49,11 @@
 
     <string name="combat_log_end_win">You defeated the bugs.</string>
     <string name="combat_log_end_lose">You got lost in the bug flow…</string>
+
+    <string name="combat_rewards">Combat Rewards</string>
+    <plurals name="combat_rewards_token">
+        <item quantity="one">· Obtained %1$s token!</item>
+        <item quantity="other">· Obtained %1$s tokens!</item>
+    </plurals>
+    <string name="combat_rewards_exp">· Obtained EXP</string>
 </resources>

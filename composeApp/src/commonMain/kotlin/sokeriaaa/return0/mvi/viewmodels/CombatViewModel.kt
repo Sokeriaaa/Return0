@@ -34,8 +34,10 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
+import sokeriaaa.return0.mvi.viewmodels.CombatViewModel.RewardSummary.EntityEntry
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
@@ -90,6 +92,12 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
     val logList: List<ArenaLogV4> = _logList
 
     private val _animatorManager: EntityAnimatorManager by inject()
+
+    /**
+     * Reward summary.
+     */
+    var rewardSummary: RewardSummary? by mutableStateOf(null)
+        private set
 
     /**
      * Arena
@@ -202,6 +210,8 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 }
             }
 
+            CombatIntent.DismissRewardSummary -> rewardSummary = null
+
             else -> {}
         }
     }
@@ -290,10 +300,11 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 // If it's victory
                 if (result) {
                     // Obtain exp.
+                    val entityExp = HashMap<String, EntityEntry>()
                     partiesForSaving.forEach { entity ->
                         if (!entity.isFailed()) {
                             // Calculate exp based on party and enemy level.
-                            _gameStateRepo.entity.obtainedExp(
+                            val result = _gameStateRepo.entity.obtainedExp(
                                 entityName = entity.name,
                                 obtainedExp = enemies.sumOf { enemy ->
                                     EntityLevelHelper.enemyExp(
@@ -302,12 +313,36 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                                     ).toDouble()
                                 }.toFloat() * (arenaConfig?.difficulty ?: 1F)
                             )
+                            // Save to reward summary
+                            entityExp[entity.name] = EntityEntry(
+                                obtainedExp = result.first,
+                                levelChange = entity.level to result.second
+                            )
                         }
                     }
-                    // TODO obtain token
+                    // Obtain token based on enemy level.
+                    val obtainedTokens = (enemies.sumOf {
+                        it.level + 20
+                    } / 2F * (arenaConfig?.difficulty ?: 1F)).toInt().coerceAtLeast(1)
+                    _gameStateRepo.currency[CurrencyType.TOKEN] += obtainedTokens
+                    // Generate reward summary
+                    rewardSummary = RewardSummary(
+                        obtainedTokens = obtainedTokens,
+                        entityExp = entityExp,
+                    )
                 }
             }
             combatStatus = result
         }
+    }
+
+    data class RewardSummary(
+        val obtainedTokens: Int,
+        val entityExp: Map<String, EntityEntry>,
+    ) {
+        data class EntityEntry(
+            val obtainedExp: Int,
+            val levelChange: Pair<Int, Int>
+        )
     }
 }
