@@ -311,6 +311,42 @@ class EventExecutorTest : BaseEventTest() {
     }
 
     @Test
+    fun `ShowMap executes correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            Event.ShowMap.executedIn(context)
+            assertEquals(
+                expected = listOf(EventEffect.ShowMap),
+                actual = callback.collectedEffects,
+            )
+        }
+    }
+
+    @Test
+    fun `HideMap executes correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            Event.HideMap.executedIn(context)
+            assertEquals(
+                expected = listOf(EventEffect.HideMap),
+                actual = callback.collectedEffects,
+            )
+        }
+    }
+
+    @Test
+    fun `ShakeMap executes correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            Event.ShakeMap.executedIn(context)
+            assertEquals(
+                expected = listOf(EventEffect.ShakeMap),
+                actual = callback.collectedEffects,
+            )
+        }
+    }
+
+    @Test
     fun `RecoverAll executes correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
@@ -347,8 +383,9 @@ class EventExecutorTest : BaseEventTest() {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
             Event.RequestSave.executedIn(context)
-            assertTrue(
-                callback.collectedEffects.lastOrNull() is EventEffect.RequestSave,
+            assertEquals(
+                expected = listOf(EventEffect.RequestSave),
+                actual = callback.collectedEffects,
             )
         }
     }
