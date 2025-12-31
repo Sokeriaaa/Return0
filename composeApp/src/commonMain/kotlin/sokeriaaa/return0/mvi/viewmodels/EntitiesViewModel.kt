@@ -18,12 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
+import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.EntitiesIntent
 
 class EntitiesViewModel : BaseViewModel() {
 
@@ -40,6 +44,17 @@ class EntitiesViewModel : BaseViewModel() {
         private set
     var isDescending by mutableStateOf(true)
         private set
+
+    override fun onIntent(intent: BaseIntent) {
+        super.onIntent(intent)
+        when (intent) {
+            EntitiesIntent.Refresh -> viewModelScope.launch {
+                refresh()
+            }
+
+            else -> {}
+        }
+    }
 
     private suspend fun refresh() {
         _entities.clear()

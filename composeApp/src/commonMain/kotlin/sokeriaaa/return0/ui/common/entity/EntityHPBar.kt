@@ -61,7 +61,7 @@ fun EntityHPBar(
             color = color,
         )
         // Secondary
-        secondary?.let { secondary ->
+        secondary?.takeIf { it > 0 }?.let { secondary ->
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()

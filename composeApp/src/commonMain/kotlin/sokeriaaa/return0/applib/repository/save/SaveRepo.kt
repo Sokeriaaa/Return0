@@ -99,6 +99,20 @@ class SaveRepo(
                     indexedTime = time
                 )
             )
+            entityDao.insert(
+                EntityTable(
+                    saveID = saveID,
+                    entityName = "Iterator",
+                    indexedTime = time
+                )
+            )
+            entityDao.insert(
+                EntityTable(
+                    saveID = saveID,
+                    entityName = "System",
+                    indexedTime = time
+                )
+            )
             teamDao.insertOrUpdate(
                 TeamTable(
                     saveID = saveID,
@@ -106,8 +120,8 @@ class SaveRepo(
                     name = "testing",
                     isActivated = true,
                     slot1 = "Object",
-                    slot2 = null,
-                    slot3 = null,
+                    slot2 = "Iterator",
+                    slot3 = "System",
                     slot4 = null,
                 )
             )
