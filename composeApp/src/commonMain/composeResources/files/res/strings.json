@@ -16,5 +16,18 @@
   "desc.skill.next": "Seeks the next element. Bullseye; Greatly increases SPD until the next action.",
   "desc.skill.notify": "Notifies a single entity, deals small damage.",
   "desc.skill.remove": "Remove the element. Reduces the DEF of target for few turns.",
-  "desc.skill.wait": "Wait for a turn, greatly increase ATK on the next action."
+  "desc.skill.wait": "Wait for a turn, greatly increase ATK on the next action.",
+  "dialogue.hello_world": "Hello World!",
+  "dialogue.later": "Later",
+  "dialogue.leave": "Leave",
+  "dialogue.move": "Move to line 10",
+  "dialogue.nice_day": "Have a nice day!",
+  "dialogue.ping": "Ping!",
+  "dialogue.pong": "Pong!",
+  "dialogue.recover_all": "All the entities in the activated team have been recovered!.",
+  "dialogue.save": "Save for now",
+  "dialogue.start": "Start",
+  "dialogue.start_train": "Starting programming training.",
+  "name.println": "println",
+  "name.programming_training": "programmingTraining"
 }
