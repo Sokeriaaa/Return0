@@ -312,6 +312,19 @@ class EventExecutorTest : BaseEventTest() {
     }
 
     @Test
+    fun `ObtainEntity executes correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            assertEquals(null, context.gameState.entity.getEntityTable("foo"))
+
+            Event.ObtainEntity(entityName = "foo", level = 42).executedIn(context)
+            assertEquals(42, context.gameState.entity.getEntityTable("foo")?.level)
+        }
+    }
+
+    @Test
     fun `ShowMap executes correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->

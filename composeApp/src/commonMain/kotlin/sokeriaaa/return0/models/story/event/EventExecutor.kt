@@ -158,6 +158,17 @@ suspend fun Event.executedIn(context: EventContext) {
             context.gameState.savedValues.setVariable(key, variable.calculatedIn(context))
         }
 
+        is Event.ObtainEntity -> {
+            context.gameState.entity.obtainEntity(
+                entityName = entityName,
+                level = level,
+                exp = exp,
+                currentHP = currentHP,
+                currentSP = currentSP,
+                pluginID = pluginID,
+            )
+        }
+
         Event.ShowMap -> context.callback.onEffect(EventEffect.ShowMap)
         Event.HideMap -> context.callback.onEffect(EventEffect.HideMap)
         Event.ShakeMap -> context.callback.onEffect(EventEffect.ShakeMap)
