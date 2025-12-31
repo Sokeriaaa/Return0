@@ -25,7 +25,8 @@ object CommonEffects {
     /**
      * The common effect for defensing.
      *
-     * Increase the DEF for 100% for 1 turn.
+     * Increase the DEF for 200% for 1 turn. Each tier higher than 1 increases additional
+     * 20% of the DEF.
      */
     val defense = EffectData(
         name = Keys.DEFENSE,
@@ -35,8 +36,8 @@ object CommonEffects {
         modifiers = listOf(
             EffectModifier(
                 type = EffectModifier.Types.DEF,
-                offset = 1F,
-                tierBonus = 0F
+                offset = 2F,
+                tierBonus = 0.2F
             )
         ),
     )

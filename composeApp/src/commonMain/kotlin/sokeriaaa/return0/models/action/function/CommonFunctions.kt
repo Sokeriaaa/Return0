@@ -18,6 +18,8 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.action.effect.CommonEffects
 import sokeriaaa.return0.shared.data.api.component.extra.extrasGroupOf
 import sokeriaaa.return0.shared.data.api.component.value.Value
+import sokeriaaa.return0.shared.data.api.component.value.minus
+import sokeriaaa.return0.shared.data.api.component.value.plus
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
@@ -79,7 +81,7 @@ object CommonFunctions {
     )
 
     /**
-     * Take a relax, largely recovers SP. (1/8 of maxsp)
+     * Take a relax, largely recovers SP. (4% of MaxSP + 20% of consumed SP)
      */
     val relax = FunctionData(
         name = Keys.RELAX,
@@ -92,7 +94,7 @@ object CommonFunctions {
         spCostBonus = 0,
         growth = emptyList(),
         extra = CombatExtra.SPChange(
-            spChange = EntityValue.MAXSP * 0.125F,
+            spChange = (EntityValue.MAXSP * 0.04F) + ((EntityValue.MAXSP - EntityValue.SP) * 0.2F),
         ),
     )
 
