@@ -17,6 +17,7 @@ package sokeriaaa.return0.test.models.story.event
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
@@ -127,6 +128,17 @@ abstract class BaseEventTest {
                 baseSP = 500,
                 baseAP = 100,
                 functions = emptyList(),
+            )
+        )
+        context.archive.registerEntityGrowths(
+            mapOf(
+                Category.CLASS to EntityGrowth(
+                    atkGrowth = 0.25F,
+                    defGrowth = 0.25F,
+                    spdGrowth = 0.25F,
+                    hpGrowth = 0.25F,
+                    spGrowth = 0.25F
+                )
             )
         )
     }

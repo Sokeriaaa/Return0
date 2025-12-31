@@ -19,6 +19,7 @@ import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
+import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
@@ -375,6 +376,86 @@ class EventExecutorTest : BaseEventTest() {
             assertEquals(null, bar?.currentSP)
             assertEquals(50, baz?.currentHP)
             assertEquals(50, baz?.currentSP)
+        }
+    }
+
+    @Test
+    fun `ExecuteExtra executes correctly`() = runTest {
+        val callback = object : TestingCallback() {
+            override suspend fun waitForChoice(): Int {
+                // Always choose the entity with index 1 ("bar" here)
+                return 1
+            }
+        }
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.updateHPAndSP("foo", 50, 42)
+            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            registerTestingTeams(context)
+
+            // Heal 10 for bar
+            Event.ExecuteExtra(
+                extra = CombatExtra.HPChange(Value(10)),
+                // If canceled, hide the map.
+                onCanceled = Event.HideMap,
+            ).executedIn(context)
+
+            // Assert
+            assertEquals(
+                expected = 50,
+                actual = context.gameState.entity.getEntityTable("foo")?.currentHP,
+            )
+            assertEquals(
+                expected = 60,
+                actual = context.gameState.entity.getEntityTable("bar")?.currentHP,
+            )
+            assertEquals(
+                expected = listOf(EventEffect.ChooseEntity),
+                actual = callback.collectedEffects,
+            )
+        }
+    }
+
+    @Test
+    fun `ExecuteExtra cancels correctly`() = runTest {
+        val callback = object : TestingCallback() {
+            override suspend fun waitForChoice(): Int {
+                // Always cancel the execution
+                return -1
+            }
+        }
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            context.gameState.entity.obtainEntity("foo", level = 20)
+            context.gameState.entity.obtainEntity("bar", level = 25)
+            context.gameState.entity.updateHPAndSP("foo", 50, 42)
+            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            registerTestingTeams(context)
+
+            // Heal 10
+            Event.ExecuteExtra(
+                extra = CombatExtra.HPChange(Value(10)),
+                // If canceled, hide the map.
+                onCanceled = Event.HideMap,
+            ).executedIn(context)
+
+            // Assert
+            assertEquals(
+                expected = 50,
+                actual = context.gameState.entity.getEntityTable("foo")?.currentHP,
+            )
+            assertEquals(
+                expected = 50,
+                actual = context.gameState.entity.getEntityTable("bar")?.currentHP,
+            )
+            assertEquals(
+                expected = listOf(EventEffect.ChooseEntity, EventEffect.HideMap),
+                actual = callback.collectedEffects,
+            )
         }
     }
 
