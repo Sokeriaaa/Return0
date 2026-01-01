@@ -83,6 +83,7 @@ import sokeriaaa.return0.ui.common.event.EventShowChoice
 import sokeriaaa.return0.ui.common.event.EventShowChoiceState
 import sokeriaaa.return0.ui.common.event.EventShowText
 import sokeriaaa.return0.ui.common.event.EventShowTextState
+import sokeriaaa.return0.ui.common.event.TypeReturn0Dialog
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppNavigateDrawerItem
@@ -112,6 +113,8 @@ fun GameScreen(
     var isShowingSaveDialog by remember { mutableStateOf(false) }
     // Select entity dialog
     var isShowingSelectEntityDialog by remember { mutableStateOf(false) }
+    // Typing return 0;
+    var isTypingReturn0 by remember { mutableStateOf(false) }
 
     // Showing map
     var isShowingMap by remember { mutableStateOf(true) }
@@ -214,6 +217,7 @@ fun GameScreen(
 
                 EventEffect.RequestSave -> isShowingSaveDialog = true
                 EventEffect.RefreshEvents -> viewModel.onIntent(GameIntent.RefreshMap)
+                EventEffect.TypeReturn0 -> isTypingReturn0 = true
 
                 EventEffect.EventFinished -> {
                     hideDialogueText()
@@ -311,6 +315,16 @@ fun GameScreen(
                     isShowingSelectEntityDialog = false
                     viewModel.onIntent(GameIntent.EventChoice(index))
                 }
+            )
+        }
+        // Type return 0 dialog
+        if (isTypingReturn0) {
+            TypeReturn0Dialog(
+                modifier = Modifier.padding(vertical = 64.dp),
+                onContinue = {
+                    isTypingReturn0 = false
+                    viewModel.onIntent(GameIntent.EventContinue)
+                },
             )
         }
     }

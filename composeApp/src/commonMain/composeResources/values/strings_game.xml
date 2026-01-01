@@ -16,6 +16,10 @@
     <string name="game_select_entity">Select an Entity</string>
     <string name="game_select_entity_warn">Please select one entity.</string>
 
+    <string name="game_complete_code">Complete Code</string>
+    <string name="game_complete_code_run">Run</string>
+    <string name="game_complete_code_run_failed">Failed to run the code. Please check comments.</string>
+
     <string name="map_action_move">Move to here</string>
     <string name="map_action_interact">Interact</string>
     <string name="map_action_interact_w_display">Interact %1$s</string>

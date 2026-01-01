@@ -16,6 +16,10 @@
     <string name="game_select_entity">选择一个对象</string>
     <string name="game_select_entity_warn">请选择一个对象。</string>
 
+    <string name="game_complete_code">完成代码</string>
+    <string name="game_complete_code_run">运行</string>
+    <string name="game_complete_code_run_failed">运行代码失败。请查看注释。</string>
+
     <string name="map_action_move">移动到这里</string>
     <string name="map_action_interact">交互</string>
     <string name="map_action_interact_w_display">交互 %1$s</string>

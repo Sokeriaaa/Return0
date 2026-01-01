@@ -213,6 +213,11 @@ suspend fun Event.executedIn(context: EventContext) {
             //  with all entities slightly recovered.
         }
 
+        Event.TypeReturn0 -> {
+            context.callback.onEffect(EventEffect.TypeReturn0)
+            context.callback.waitForUserContinue()
+        }
+
         is Event.RefuseToUse -> {
             reasonRes?.let {
                 context.callback.onEffect(

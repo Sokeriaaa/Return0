@@ -93,6 +93,11 @@ sealed interface EventEffect {
     data object RefreshEvents : EventEffect
 
     /**
+     * A special event effect that requests the user to input "return 0;" in a text field.
+     */
+    data object TypeReturn0: EventEffect
+
+    /**
      * Finish the event.
      */
     data object EventFinished : EventEffect
