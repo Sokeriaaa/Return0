@@ -15,6 +15,7 @@
 package sokeriaaa.return0.ui.common.event
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.AlertDialog
@@ -88,6 +89,7 @@ fun TypeReturn0Dialog(
                     style = MaterialTheme.typography.labelSmall,
                 )
                 BasicTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = input,
                     onValueChange = { input = it },
                     maxLines = 1,
