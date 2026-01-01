@@ -8,6 +8,7 @@
     <string name="back">Back</string>
     <string name="retry">Retry</string>
     <string name="close">Close</string>
+    <string name="ack">Ack!</string>
 
     <string name="more_operations">More…</string>
     <string name="no_operation">Nothing here…</string>
@@ -15,6 +16,8 @@
 
     <string name="loading_precent">%1$s%</string>
     <string name="loading_error">Loading Error!</string>
+
+    <string name="tips">Tips</string>
 
     <string name="general_level">Level</string>
     <string name="general_level_w_value">Lv.%1$s</string>

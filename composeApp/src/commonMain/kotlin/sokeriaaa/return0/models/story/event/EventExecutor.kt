@@ -73,6 +73,15 @@ suspend fun Event.executedIn(context: EventContext) {
             context.callback.waitForUserContinue()
         }
 
+        is Event.Tips -> {
+            context.callback.onEffect(
+                EventEffect.Tips(
+                    text = context.resources.getString(tipsRes)
+                )
+            )
+            context.callback.waitForUserContinue()
+        }
+
         is Event.Choice -> {
             context.callback.onEffect(
                 EventEffect.ShowChoice(
@@ -82,6 +91,24 @@ suspend fun Event.executedIn(context: EventContext) {
                 )
             )
             items[context.callback.waitForChoice()].second.executedIn(context)
+        }
+
+        is Event.ChoiceOneByOne -> {
+            val selected = mutableSetOf<Int>()
+            while (selected.size < items.size) {
+                context.callback.onEffect(
+                    EventEffect.ShowChoice(
+                        choices = items.map {
+                            context.resources.getString(it.first)
+                        },
+                        selected = selected,
+                    )
+                )
+                val selectedIndex = context.callback.waitForChoice()
+                items[selectedIndex].second.executedIn(context)
+                selected.add(selectedIndex)
+            }
+            onFinished.executedIn(context)
         }
 
         is Event.Combat -> {

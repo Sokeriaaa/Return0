@@ -35,9 +35,21 @@ sealed interface EventEffect {
     }
 
     /**
-     * Show choice panel.
+     * Show a tips.
      */
-    data class ShowChoice(val choices: List<String>) : EventEffect
+    data class Tips(
+        val text: String,
+    ) : EventEffect
+
+    /**
+     * Show choice panel.
+     *
+     * @param selected Selected indices for a single effect.
+     */
+    data class ShowChoice(
+        val choices: List<String>,
+        val selected: Set<Int>? = null,
+    ) : EventEffect
 
     /**
      * Display a snack bar.

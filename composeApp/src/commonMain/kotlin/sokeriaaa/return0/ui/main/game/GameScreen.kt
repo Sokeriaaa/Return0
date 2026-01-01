@@ -83,6 +83,8 @@ import sokeriaaa.return0.ui.common.event.EventShowChoice
 import sokeriaaa.return0.ui.common.event.EventShowChoiceState
 import sokeriaaa.return0.ui.common.event.EventShowText
 import sokeriaaa.return0.ui.common.event.EventShowTextState
+import sokeriaaa.return0.ui.common.event.EventShowTips
+import sokeriaaa.return0.ui.common.event.EventShowTipsState
 import sokeriaaa.return0.ui.common.event.TypeReturn0Dialog
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
@@ -107,6 +109,8 @@ fun GameScreen(
     val scope = rememberCoroutineScope()
     // Dialogue text
     var eventShowTextState by remember { mutableStateOf(EventShowTextState()) }
+    // Tips
+    var eventShowTipsState by remember { mutableStateOf(EventShowTipsState()) }
     // Choices
     var eventShowChoiceState by remember { mutableStateOf(EventShowChoiceState()) }
     // Save dialog
@@ -131,6 +135,17 @@ fun GameScreen(
 
     fun hideDialogueText() {
         eventShowTextState = eventShowTextState.copy(visible = false)
+    }
+
+    fun showTips(effect: EventEffect.Tips) {
+        eventShowTipsState = EventShowTipsState(
+            visible = true,
+            effect = effect,
+        )
+    }
+
+    fun hideTips() {
+        eventShowTipsState = eventShowTipsState.copy(visible = false)
     }
 
     fun showChoices(effect: EventEffect.ShowChoice) {
@@ -159,6 +174,11 @@ fun GameScreen(
         viewModel.effects.collect { effect ->
             when (effect) {
                 is EventEffect.ShowText -> showDialogueText(effect)
+                is EventEffect.Tips -> {
+                    hideDialogueText()
+                    hideChoices()
+                    showTips(effect)
+                }
                 is EventEffect.ShowChoice -> showChoices(effect)
 
                 is EventEffect.ShowSnackBar -> {
@@ -167,6 +187,7 @@ fun GameScreen(
 
                 is EventEffect.StartCombat -> {
                     hideDialogueText()
+                    hideTips()
                     hideChoices()
                     combatViewModel.onIntent(CombatIntent.Prepare(effect.config))
                     mainNavHostController.navigateSingleTop(Scene.Combat.route)
@@ -174,6 +195,7 @@ fun GameScreen(
 
                 is EventEffect.MovePlayer -> {
                     hideDialogueText()
+                    hideTips()
                     hideChoices()
                     viewModel.onIntent(
                         GameIntent.RequestMoveTo(
@@ -187,6 +209,7 @@ fun GameScreen(
 
                 is EventEffect.TeleportPlayer -> {
                     hideDialogueText()
+                    hideTips()
                     hideChoices()
                     viewModel.onIntent(
                         GameIntent.TeleportTo(
@@ -221,6 +244,7 @@ fun GameScreen(
 
                 EventEffect.EventFinished -> {
                     hideDialogueText()
+                    hideTips()
                     hideChoices()
                     isShowingMap = true
                 }
@@ -287,6 +311,18 @@ fun GameScreen(
                         }
                     )
                 }
+            }
+        }
+        // Tips
+        if (eventShowTipsState.visible) {
+            eventShowTipsState.effect?.let {
+                EventShowTips(
+                    effect = it,
+                    onContinue = {
+                        hideTips()
+                        viewModel.onIntent(GameIntent.EventContinue)
+                    }
+                )
             }
         }
         // Save progress dialog
