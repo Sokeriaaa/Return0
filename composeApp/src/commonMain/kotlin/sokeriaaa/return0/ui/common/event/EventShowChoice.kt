@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.ic_outline_check_24
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.ui.common.widgets.AppButton
 
@@ -37,8 +39,15 @@ fun EventShowChoice(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         effect.choices.forEachIndexed { index, choice ->
+            val isExecuted = effect.selected?.contains(index) == true
             AppButton(
                 modifier = Modifier.padding(vertical = 8.dp),
+                enabled = !isExecuted,
+                iconRes = if (isExecuted) {
+                    Res.drawable.ic_outline_check_24
+                } else {
+                    null
+                },
                 text = choice,
                 onClick = { onSelected(index) }
             )

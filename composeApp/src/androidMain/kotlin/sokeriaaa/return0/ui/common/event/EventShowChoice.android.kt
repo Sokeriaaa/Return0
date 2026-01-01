@@ -28,3 +28,15 @@ private fun PreviewChoices() {
         onSelected = {}
     )
 }
+
+@Preview
+@Composable
+private fun PreviewChoicesSelected() {
+    EventShowChoice(
+        effect = EventEffect.ShowChoice(
+            choices = listOf("One", "Two", "Three"),
+            selected = setOf(0),
+        ),
+        onSelected = {}
+    )
+}
