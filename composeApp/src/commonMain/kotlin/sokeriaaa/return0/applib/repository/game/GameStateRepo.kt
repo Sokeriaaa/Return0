@@ -40,6 +40,11 @@ class GameStateRepo(
 ) : BaseGameRepo {
 
     /**
+     * Get enemy level based on player's title.
+     */
+    fun enemyLevel(): Int = player.title.ordinal * 10 + map.current.difficulty
+
+    /**
      * Load game state from database to this repo.
      */
     override suspend fun load() {

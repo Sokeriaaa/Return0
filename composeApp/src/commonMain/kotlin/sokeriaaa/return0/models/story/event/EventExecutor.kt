@@ -126,6 +126,7 @@ suspend fun Event.executedIn(context: EventContext) {
                 saveStatus = config.statusOverride == null,
                 parties = buildParties(context, partyLevels, config.statusOverride),
                 enemies = buildEnemies(context, config.enemies),
+                difficulty = config.difficulty,
                 temporaryEntities = temporaryEntities
             )
 

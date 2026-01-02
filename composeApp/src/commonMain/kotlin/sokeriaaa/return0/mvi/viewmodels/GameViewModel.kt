@@ -333,7 +333,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         Event.Combat(
             config = Event.Combat.Config(
                 enemies = _gameStateRepo.map.current.buggyEntries.random().enemies
-                    .map { it to Value(1) },
+                    .map { it to Value(_gameStateRepo.enemyLevel()) },
             ),
         ).executedIn(getEventContext(key = null))
     }
