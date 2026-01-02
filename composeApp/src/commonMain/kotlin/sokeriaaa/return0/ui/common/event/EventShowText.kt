@@ -23,8 +23,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
@@ -41,6 +47,15 @@ fun EventShowText(
     effect: EventEffect.ShowText,
     onContinue: () -> Unit
 ) {
+    var showTextLength by remember { mutableIntStateOf(0) }
+    LaunchedEffect(effect) {
+        showTextLength = 0
+        val finalLength = effect.text.length
+        while (showTextLength < finalLength) {
+            showTextLength++
+            delay(50)
+        }
+    }
     Column(
         modifier = modifier,
     ) {
@@ -63,11 +78,17 @@ fun EventShowText(
         }
         OutlinedCard(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onContinue,
+            onClick = {
+                if (showTextLength < effect.text.length) {
+                    showTextLength = effect.text.length
+                } else {
+                    onContinue()
+                }
+            },
         ) {
             Text(
                 modifier = Modifier.padding(all = 16.dp),
-                text = effect.text,
+                text = effect.text.take(showTextLength),
                 minLines = 3,
             )
             Row(
