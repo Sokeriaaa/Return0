@@ -16,6 +16,7 @@ package sokeriaaa.return0.test.models.story.event.value
 
 import kotlinx.coroutines.test.runTest
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
+import sokeriaaa.return0.models.component.executor.value.calculatedToFloat
 import sokeriaaa.return0.shared.data.api.component.condition.IF
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.api.component.value.abs
@@ -26,6 +27,7 @@ import sokeriaaa.return0.shared.data.api.component.value.coerceIn
 import sokeriaaa.return0.shared.data.api.component.value.div
 import sokeriaaa.return0.shared.data.api.component.value.maxOf
 import sokeriaaa.return0.shared.data.api.component.value.minOf
+import sokeriaaa.return0.shared.data.api.component.value.pow
 import sokeriaaa.return0.shared.data.api.component.value.shl
 import sokeriaaa.return0.shared.data.api.component.value.shr
 import sokeriaaa.return0.shared.data.api.component.value.sumOf
@@ -39,6 +41,7 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
 import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
+import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -118,6 +121,19 @@ class EventValueExecutorTest : BaseEventTest() {
             assertEquals(2, shift1.calculatedIn(context))
             val shift2 = Value(5) shl Value(2F)
             assertEquals(20, shift2.calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Common_Power calculates correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            val power1 = Value(8) pow Value(2F)
+            assertEquals(64, power1.calculatedIn(context))
+            val power2 = Value(3) pow 3
+            assertEquals(27, power2.calculatedIn(context))
+            val power3 = Value(16) pow 0.5F
+            assertFloatEquals(4F, power3.calculatedToFloat(context))
         }
     }
 

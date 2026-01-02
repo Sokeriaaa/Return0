@@ -26,6 +26,7 @@ import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
+import kotlin.math.pow
 
 /**
  * Calculate the [Value.Combat] in specified [context].
@@ -50,6 +51,9 @@ fun Value.calculatedIn(context: ActionContext): Float {
                 digit < 0 -> value.toInt().shr(-digit).toFloat()
                 else -> value
             }
+        }
+        is CommonValue.Math.Power -> {
+            return value1.calculatedIn(context).pow(value2.calculatedIn(context))
         }
 
         is CommonValue.Math.AbsoluteValue -> abs(value.calculatedIn(context))

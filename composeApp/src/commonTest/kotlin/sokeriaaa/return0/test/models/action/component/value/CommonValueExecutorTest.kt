@@ -30,6 +30,7 @@ import sokeriaaa.return0.shared.data.api.component.value.coerceIn
 import sokeriaaa.return0.shared.data.api.component.value.div
 import sokeriaaa.return0.shared.data.api.component.value.maxOf
 import sokeriaaa.return0.shared.data.api.component.value.minOf
+import sokeriaaa.return0.shared.data.api.component.value.pow
 import sokeriaaa.return0.shared.data.api.component.value.shl
 import sokeriaaa.return0.shared.data.api.component.value.shr
 import sokeriaaa.return0.shared.data.api.component.value.sumOf
@@ -125,6 +126,17 @@ class CommonValueExecutorTest {
         assertFloatEquals(2F, shift1.calculatedIn(context))
         val shift2 = Value(5) shl Value(2F)
         assertFloatEquals(20F, shift2.calculatedIn(context))
+    }
+
+    @Test
+    fun `Common_Power calculates correctly`() {
+        val context = createTestingContext()
+        val power1 = Value(8) pow Value(2F)
+        assertFloatEquals(64F, power1.calculatedIn(context))
+        val power2 = Value(3) pow 3
+        assertFloatEquals(27F, power2.calculatedIn(context))
+        val power3 = Value(16) pow 0.5F
+        assertFloatEquals(4F, power3.calculatedIn(context))
     }
 
     @Test

@@ -20,6 +20,7 @@ import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
+import kotlin.math.pow
 
 /**
  * Calculate the [Value.Event] in specified [context].
@@ -44,6 +45,9 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
                 digit < 0 -> value.shr(-digit)
                 else -> value
             }
+        }
+        is CommonValue.Math.Power -> {
+            return value1.calculatedIn(context).toFloat().pow(value2.calculatedIn(context)).toInt()
         }
 
         is CommonValue.Math.AbsoluteValue -> abs(value.calculatedIn(context))
@@ -111,6 +115,9 @@ suspend fun Value.calculatedToFloat(context: EventContext): Float {
                 digit < 0 -> value.toInt().shr(-digit).toFloat()
                 else -> value
             }
+        }
+        is CommonValue.Math.Power -> {
+            return value1.calculatedToFloat(context).pow(value2.calculatedToFloat(context))
         }
 
         is CommonValue.Math.AbsoluteValue -> abs(value.calculatedToFloat(context))
