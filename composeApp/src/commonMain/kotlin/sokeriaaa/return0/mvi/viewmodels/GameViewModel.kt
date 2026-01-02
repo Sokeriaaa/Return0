@@ -244,6 +244,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                 if (current + direction in _blockedRows) {
                     // Blocked by event.
                     interruptMoving()
+                    break
                 }
                 // Move for every 200ms.
                 delay(200)
@@ -253,6 +254,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                     // Trigger overlapped event when the player is not moving bu an event.
                     executeEvent(*_mapRows[current - 1].events.toTypedArray())
                     interruptMoving()
+                    break
                 }
                 if (!isEncounterDisabled) {
                     // Check buggy area.
@@ -271,6 +273,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                             // Start combat
                             encounteredCombat()
                             interruptMoving()
+                            break
                         }
                     } else {
                         // Outside in buggy range
