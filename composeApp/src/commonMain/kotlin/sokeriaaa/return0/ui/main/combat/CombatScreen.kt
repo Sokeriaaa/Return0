@@ -202,7 +202,12 @@ fun CombatScreen(
                         modifier = Modifier.align(Alignment.Center),
                         iconRes = Res.drawable.ic_outline_logout_24,
                         text = stringResource(Res.string.combat_leave),
-                        onClick = { mainNavHostController.navigateUp() }
+                        onClick = {
+                            mainNavHostController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("combat_result", viewModel.combatStatus)
+                            mainNavHostController.navigateUp()
+                        }
                     )
                 }
             }
@@ -229,6 +234,9 @@ fun CombatScreen(
             rewardSummary = it,
             onLeave = {
                 viewModel.onIntent(CombatIntent.DismissRewardSummary)
+                mainNavHostController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("combat_result", viewModel.combatStatus)
                 mainNavHostController.navigateUp()
             },
             onDismiss = {

@@ -32,6 +32,7 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -107,6 +108,8 @@ fun GameScreen(
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
     val scope = rememberCoroutineScope()
+    val savedStateHandle =
+        mainNavHostController.currentBackStackEntry?.savedStateHandle
     // Dialogue text
     var eventShowTextState by remember { mutableStateOf(EventShowTextState()) }
     // Tips
@@ -256,6 +259,15 @@ fun GameScreen(
         if (isNewGame) {
             viewModel.onIntent(GameIntent.StartNewGame)
         }
+    }
+    // Combat finished
+    val combatResult by savedStateHandle
+        ?.getStateFlow("combat_result", false)
+        ?.collectAsState() ?: remember { mutableStateOf(false) }
+    LaunchedEffect(combatResult) {
+        viewModel.onIntent(GameIntent.EventCombatResult(combatResult))
+        // Consume result
+        savedStateHandle?.remove<Boolean>("screen2_result")
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
