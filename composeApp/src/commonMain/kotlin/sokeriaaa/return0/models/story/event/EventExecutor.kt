@@ -185,6 +185,10 @@ suspend fun Event.executedIn(context: EventContext) {
             context.gameState.savedValues.setVariable(key, variable.calculatedIn(context))
         }
 
+        Event.RefreshEvents -> {
+            context.callback.onEffect(EventEffect.RefreshEvents)
+        }
+
         is Event.ObtainEntity -> {
             context.gameState.entity.obtainEntity(
                 entityName = entityName,
@@ -194,6 +198,7 @@ suspend fun Event.executedIn(context: EventContext) {
                 currentSP = currentSP,
                 pluginID = pluginID,
             )
+            context.gameState.team.obtainedNewEntity(entityName)
         }
 
         Event.ShowMap -> context.callback.onEffect(EventEffect.ShowMap)

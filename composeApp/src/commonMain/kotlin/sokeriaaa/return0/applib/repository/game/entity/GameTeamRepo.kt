@@ -66,6 +66,37 @@ class GameTeamRepo(
         )
     }
 
+    /**
+     * When obtaining a new entity and the current team has idle slot for it,
+     * automatically insert the new entity into it.
+     */
+    suspend fun obtainedNewEntity(
+        entityName: String,
+    ) {
+        val currentTeam =
+            teamDao.getActivatedTeam(AppConstants.CURRENT_SAVE_ID) ?: return
+        currentTeam.slot1 ?: run {
+            currentTeam.slot1 = entityName
+            teamDao.insertOrUpdate(currentTeam)
+            return
+        }
+        currentTeam.slot2 ?: run {
+            currentTeam.slot2 = entityName
+            teamDao.insertOrUpdate(currentTeam)
+            return
+        }
+        currentTeam.slot3 ?: run {
+            currentTeam.slot3 = entityName
+            teamDao.insertOrUpdate(currentTeam)
+            return
+        }
+        currentTeam.slot4 ?: run {
+            currentTeam.slot4 = entityName
+            teamDao.insertOrUpdate(currentTeam)
+            return
+        }
+    }
+
     suspend fun updateTeamName(
         teamID: Int,
         name: String,

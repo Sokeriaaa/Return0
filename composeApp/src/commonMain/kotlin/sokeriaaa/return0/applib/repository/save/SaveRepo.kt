@@ -26,7 +26,6 @@ import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
-import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.StatisticsTable
 import sokeriaaa.return0.applib.room.table.TeamTable
@@ -90,38 +89,15 @@ class SaveRepo(
                     linesMoved = 0,
                 )
             )
-            // TODO Temp code for adding entities for testing.
-            // TODO Will be removed later.
-            entityDao.insert(
-                EntityTable(
-                    saveID = saveID,
-                    entityName = "Object",
-                    indexedTime = time
-                )
-            )
-            entityDao.insert(
-                EntityTable(
-                    saveID = saveID,
-                    entityName = "Iterator",
-                    indexedTime = time
-                )
-            )
-            entityDao.insert(
-                EntityTable(
-                    saveID = saveID,
-                    entityName = "System",
-                    indexedTime = time
-                )
-            )
             teamDao.insertOrUpdate(
                 TeamTable(
                     saveID = saveID,
-                    teamID = 1,
-                    name = "testing",
+                    teamID = 0,
+                    name = null,
                     isActivated = true,
-                    slot1 = "Object",
-                    slot2 = "Iterator",
-                    slot3 = "System",
+                    slot1 = null,
+                    slot2 = null,
+                    slot3 = null,
                     slot4 = null,
                 )
             )
