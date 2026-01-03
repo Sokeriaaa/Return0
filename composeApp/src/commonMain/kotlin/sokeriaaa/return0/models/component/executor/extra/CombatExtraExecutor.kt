@@ -89,7 +89,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         }
 
         is CombatExtra.RemoveEffect -> {
-            context.target.effects.forEach {
+            context.target.effects.toList().forEach {
                 if (it.name == name) {
                     context.removeEffect(it)
                 }
@@ -97,7 +97,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         }
 
         is CombatExtra.RemoveAllEffect -> {
-            context.target.effects
+            context.target.effects.toList()
                 .filter { if (it.isDebuff) debuff else buff }
                 .forEach(context::removeEffect)
 
