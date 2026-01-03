@@ -73,6 +73,7 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
 
         is EventCondition.QuestCompleted -> context.gameState.quest.isCompleted(key)
         is EventCondition.SavedSwitch -> context.gameState.savedValues.getSwitch(key)
+        is EventCondition.CompareTime -> TODO()
         // end - EventCondition
     }
 }
