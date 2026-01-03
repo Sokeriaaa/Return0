@@ -20,18 +20,16 @@ import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.story.event.EventEffect
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import kotlin.random.Random
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 /**
  * Context class for executing events.
  */
-@OptIn(ExperimentalTime::class)
 class EventContext(
     val key: String?,
     override val random: Random = Random.Default,
-    val now: Long = Clock.System.now().toEpochMilliseconds(),
+    val now: Long = TimeHelper.currentTimeMillis(),
     val callback: Callback,
 ) : BaseContext, KoinComponent {
     val gameState: GameStateRepo by inject()

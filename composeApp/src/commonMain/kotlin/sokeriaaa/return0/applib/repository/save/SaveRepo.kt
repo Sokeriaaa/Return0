@@ -29,9 +29,8 @@ import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.StatisticsTable
 import sokeriaaa.return0.applib.room.table.TeamTable
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.title.Title
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 /**
  * Manages all saves in database.
@@ -54,10 +53,9 @@ class SaveRepo(
     /**
      * Generate a new save for specified save ID and **replace the old one**.
      */
-    @OptIn(ExperimentalTime::class)
     suspend fun newGame(saveID: Int = -1) {
         transactionManager.withTransaction {
-            val time = Clock.System.now().toEpochMilliseconds()
+            val time = TimeHelper.currentTimeMillis()
             // Remove the old one.
             currencyDao.delete(saveID = saveID)
             entityDao.deleteSave(saveID = saveID)
@@ -108,12 +106,11 @@ class SaveRepo(
      * Migrate one save to another slot. Typically form -1 to N, or from N to -1.
      * The destination slot will be cleared.
      */
-    @OptIn(ExperimentalTime::class)
     suspend fun migrateSave(fromID: Int, toID: Int) {
         if (fromID == toID) {
             return
         }
-        val time = Clock.System.now().toEpochMilliseconds()
+        val time = TimeHelper.currentTimeMillis()
         transactionManager.withTransaction {
             // Currency
             val currencyFrom = currencyDao.queryAll(saveID = fromID).onEach { it.saveID = toID }

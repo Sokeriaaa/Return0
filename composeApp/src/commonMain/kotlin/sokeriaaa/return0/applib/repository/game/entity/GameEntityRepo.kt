@@ -21,9 +21,8 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
@@ -36,7 +35,6 @@ class GameEntityRepo(
     /**
      * Obtaining a new entity.
      */
-    @OptIn(ExperimentalTime::class)
     suspend fun obtainEntity(
         entityName: String,
         level: Int = 1,
@@ -53,7 +51,7 @@ class GameEntityRepo(
                 exp = exp,
                 currentHP = currentHP,
                 currentSP = currentSP,
-                indexedTime = Clock.System.now().toEpochMilliseconds(),
+                indexedTime = TimeHelper.currentTimeMillis(),
                 pluginID = pluginID,
             )
         )

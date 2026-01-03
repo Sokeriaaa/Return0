@@ -29,11 +29,10 @@ import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 /**
  * The emulator that allows to start custom combats for testing/debugging.
@@ -53,7 +52,6 @@ class EmulatorViewModel : BaseViewModel() {
     private val _emulatorIndexDao: EmulatorIndexDao by inject()
     private val _emulatorEntryDao: EmulatorEntryDao by inject()
 
-    @OptIn(ExperimentalTime::class)
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
@@ -84,7 +82,7 @@ class EmulatorViewModel : BaseViewModel() {
             }
 
             is EmulatorIntent.SavePreset -> {
-                val createdTime = Clock.System.now().toEpochMilliseconds()
+                val createdTime = TimeHelper.currentTimeMillis()
                 // Create index.
                 viewModelScope.launch {
                     onIntent(CommonIntent.ShowLoading)
