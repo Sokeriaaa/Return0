@@ -60,6 +60,7 @@ object TestKoinModules {
         single {
             SavedValuesRepo(
                 savedSwitchDao = get(),
+                savedTimestampDao = get(),
                 savedVariableDao = get(),
             )
         }
@@ -87,6 +88,7 @@ object TestKoinModules {
         single { get<AppDatabase>().getInventoryDao() }
         single { get<AppDatabase>().getQuestDao() }
         single { get<AppDatabase>().getSavedSwitchDao() }
+        single { get<AppDatabase>().getSavedTimestampDao() }
         single { get<AppDatabase>().getSavedVariableDao() }
         single { get<AppDatabase>().getSaveMetaDao() }
         single { get<AppDatabase>().getStatisticsDao() }

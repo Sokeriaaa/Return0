@@ -33,6 +33,8 @@ import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDaoImpl
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDaoImpl
+import sokeriaaa.return0.applib.room.dao.SavedTimestampDao
+import sokeriaaa.return0.applib.room.dao.SavedTimestampDaoImpl
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDaoImpl
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
@@ -74,6 +76,10 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
         SavedSwitchDaoImpl(sqDatabase.sQSavedSwitchesQueries)
     }
 
+    private val _savedTimestampDao by lazy {
+        SavedTimestampDaoImpl(sqDatabase.sQSavedTimestampsQueries)
+    }
+
     private val _savedVariableDao by lazy {
         SavedVariableDaoImpl(sqDatabase.sQSavedVariablesQueries)
     }
@@ -98,6 +104,7 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
     override fun getInventoryDao(): InventoryDao = _inventoryDao
     override fun getQuestDao(): QuestDao = _questDao
     override fun getSavedSwitchDao(): SavedSwitchDao = _savedSwitchDao
+    override fun getSavedTimestampDao(): SavedTimestampDao = _savedTimestampDao
     override fun getSavedVariableDao(): SavedVariableDao = _savedVariableDao
     override fun getSaveMetaDao(): SaveMetaDao = _saveMetaDao
     override fun getStatisticsDao(): StatisticsDao = _statisticsDao

@@ -23,6 +23,7 @@ import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
+import sokeriaaa.return0.applib.room.dao.SavedTimestampDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
@@ -36,6 +37,7 @@ actual abstract class AppDatabase {
     actual abstract fun getInventoryDao(): InventoryDao
     actual abstract fun getQuestDao(): QuestDao
     actual abstract fun getSavedSwitchDao(): SavedSwitchDao
+    actual abstract fun getSavedTimestampDao(): SavedTimestampDao
     actual abstract fun getSavedVariableDao(): SavedVariableDao
     actual abstract fun getSaveMetaDao(): SaveMetaDao
     actual abstract fun getStatisticsDao(): StatisticsDao
@@ -46,5 +48,6 @@ actual abstract class AppDatabase {
             return AppDatabaseImpl(sqDatabase)
         }
     }
+
 }
 
