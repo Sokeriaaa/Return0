@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
@@ -43,8 +44,9 @@ import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 class CombatViewModel : BaseViewModel(), Arena.Callback {
 
-    // Game state Repo.
+    // Repo.
     private val _gameStateRepo: GameStateRepo by inject()
+    private val _resourceRepo: ResourceRepo by inject()
 
     /**
      * The combat status.
@@ -325,10 +327,23 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         it.level + 20
                     } / 2F * (arenaConfig?.difficulty ?: 1F)).toInt().coerceAtLeast(1)
                     _gameStateRepo.currency[CurrencyType.TOKEN] += obtainedTokens
+
+                    // Loot
+                    val loot = arenaConfig?.enemies?.asSequence()
+                        ?.map { it.entityData.dropTable?.generateRewards(it.level) }
+                        ?.filterNotNull()
+                        ?.flatMap { it.entries }
+                        ?.filter { it.value > 0 }
+                        ?.groupBy({ it.key }, { it.value })
+                        ?.mapValues { (_, values) -> values.sum() }
+                        ?: emptyMap()
+                    _gameStateRepo.inventory.obtainLoot(loot)
+
                     // Generate reward summary
                     rewardSummary = RewardSummary(
                         obtainedTokens = obtainedTokens,
                         entityExp = entityExp,
+                        loot = loot.mapKeys { _resourceRepo.getString("inventory.${it.key}") }
                     )
                 }
             }
@@ -339,6 +354,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
     data class RewardSummary(
         val obtainedTokens: Int,
         val entityExp: Map<String, EntityEntry>,
+        val loot: Map<String, Int>
     ) {
         data class EntityEntry(
             val obtainedExp: Int,

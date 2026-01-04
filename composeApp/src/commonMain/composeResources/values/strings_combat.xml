@@ -56,4 +56,5 @@
         <item quantity="other">· Obtained %1$s tokens!</item>
     </plurals>
     <string name="combat_rewards_exp">· Obtained EXP</string>
+    <string name="combat_rewards_loot">· Obtained Loot</string>
 </resources>

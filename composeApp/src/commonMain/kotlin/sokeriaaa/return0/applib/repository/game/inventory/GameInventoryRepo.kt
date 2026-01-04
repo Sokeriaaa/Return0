@@ -40,6 +40,12 @@ class GameInventoryRepo(
         _items[key] = value
     }
 
+    fun obtainLoot(loot: Map<String, Int>) {
+        loot.forEach { (key: String, value: Int) ->
+            this[key] += value
+        }
+    }
+
     override suspend fun load() {
         _items.clear()
         inventoryDao.queryAll(AppConstants.CURRENT_SAVE_ID).forEach {

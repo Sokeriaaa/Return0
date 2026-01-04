@@ -53,4 +53,5 @@
         <item quantity="other">· 获得了%1$s个token!</item>
     </plurals>
     <string name="combat_rewards_exp">· 获得经验</string>
+    <string name="combat_rewards_loot">· 获得战利品</string>
 </resources>

@@ -87,6 +87,7 @@ import return0.composeapp.generated.resources.combat_defeat
 import return0.composeapp.generated.resources.combat_leave
 import return0.composeapp.generated.resources.combat_rewards
 import return0.composeapp.generated.resources.combat_rewards_exp
+import return0.composeapp.generated.resources.combat_rewards_loot
 import return0.composeapp.generated.resources.combat_rewards_token
 import return0.composeapp.generated.resources.combat_victory
 import return0.composeapp.generated.resources.general_level_w_value
@@ -630,6 +631,7 @@ private fun RewardSummaryDialog(
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
+                    divider = true
                     Text(
                         text = stringResource(Res.string.combat_rewards_exp),
                     )
@@ -659,6 +661,28 @@ private fun RewardSummaryDialog(
                                 append(entry.key)
                                 append(" +")
                                 append(entry.value.obtainedExp)
+                            },
+                        )
+                    }
+                }
+                // Loot
+                if (rewardSummary.loot.isNotEmpty()) {
+                    if (divider) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                        Text(
+                            text = stringResource(Res.string.combat_rewards_loot),
+                        )
+                    }
+                    rewardSummary.loot.forEach { entry ->
+                        Text(
+                            text = buildString {
+                                append("- ")
+                                // Count
+                                append(entry.value.toString().padStart(3, ' '))
+                                append("x ")
+                                append(entry.key)
                             },
                         )
                     }
