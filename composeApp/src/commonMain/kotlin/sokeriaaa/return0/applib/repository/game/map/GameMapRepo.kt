@@ -50,7 +50,6 @@ class GameMapRepo(
             lines = 0,
             buggyRange = listOf(),
             buggyEntries = listOf(),
-            difficulty = 1,
             events = emptyList()
         )
     )

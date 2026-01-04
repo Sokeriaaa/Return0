@@ -37,7 +37,6 @@ import sokeriaaa.return0.models.story.map.MapGenerator
 import sokeriaaa.return0.models.story.map.MapRow
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
-import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
@@ -330,10 +329,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     }
 
     private suspend fun encounteredCombat() {
+        val entry = _gameStateRepo.map.current.buggyEntries.random()
         Event.Combat(
             config = Event.Combat.Config(
-                enemies = _gameStateRepo.map.current.buggyEntries.random().enemies
-                    .map { it to Value(_gameStateRepo.enemyLevel()) },
+                enemies = entry.enemies.map { it to entry.level }
             ),
         ).executedIn(getEventContext(key = null))
     }
