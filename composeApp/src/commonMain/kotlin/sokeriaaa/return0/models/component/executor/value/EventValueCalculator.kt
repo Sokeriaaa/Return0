@@ -85,6 +85,16 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
         is EventValue.SavedVariable -> context.gameState.savedValues.getVariable(key)
         is EventValue.Currency -> context.gameState.currency[type]
         is EventValue.Inventory -> context.gameState.inventory[key]
+        EventValue.TitleOrdinal -> context.gameState.player.title.ordinal
+        is EventValue.EnemyLevel -> {
+            val base = context.gameState.player.title.ordinal * 10 + difficulty
+            return if (offset == 0) {
+                base
+            } else {
+                context.random.nextInt(base - offset, base + offset + 1)
+                    .coerceIn(1..100)
+            }
+        }
         // end - EventValue
     }
 }

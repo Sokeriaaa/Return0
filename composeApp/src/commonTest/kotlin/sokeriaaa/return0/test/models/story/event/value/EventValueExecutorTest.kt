@@ -37,6 +37,7 @@ import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
+import sokeriaaa.return0.shared.data.models.title.Title
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
@@ -284,6 +285,27 @@ class EventValueExecutorTest : BaseEventTest() {
         withContext(callback = callback) { context ->
             context.gameState.inventory["epic_item"]++
             assertEquals(1, EventValue.Inventory("epic_item").calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Event_TitleOrdinal calculates correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            context.gameState.player.updateTitle(Title.SENIOR)
+            assertEquals(Title.SENIOR.ordinal, EventValue.TitleOrdinal.calculatedIn(context))
+        }
+    }
+
+    @Test
+    fun `Event_EnemyLevel calculates correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            context.gameState.player.updateTitle(Title.SENIOR)
+            assertEquals(
+                expected = Title.SENIOR.ordinal * 10 + 2,
+                actual = EventValue.EnemyLevel(difficulty = 2).calculatedIn(context),
+            )
         }
     }
 }
