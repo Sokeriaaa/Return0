@@ -1,0 +1,1 @@
+{"key":"mp_thread_spool","nameRes":"inventory.mp_thread_spool","descriptionRes":"inventory.mp_thread_spool.desc","rarity":"RARE","types":["MATERIAL"],"craftRule":{"first":4,"second":"mp_thread_loom"}}

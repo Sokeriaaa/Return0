@@ -1,0 +1,1 @@
+{"key":"mp_protocol_token","nameRes":"inventory.mp_protocol_token","descriptionRes":"inventory.mp_protocol_token.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mp_handshake_module"}}

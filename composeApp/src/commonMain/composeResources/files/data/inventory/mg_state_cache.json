@@ -1,0 +1,1 @@
+{"key":"mg_state_cache","nameRes":"inventory.mg_state_cache","descriptionRes":"inventory.mg_state_cache.desc","rarity":"COMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mg_persistent_cache"}}

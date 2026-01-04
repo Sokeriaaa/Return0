@@ -1,0 +1,1 @@
+{"key":"mg_signal_filament","nameRes":"inventory.mg_signal_filament","descriptionRes":"inventory.mg_signal_filament.desc","rarity":"COMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mg_signal_strand"}}

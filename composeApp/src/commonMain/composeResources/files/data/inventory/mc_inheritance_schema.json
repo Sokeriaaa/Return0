@@ -1,0 +1,1 @@
+{"key":"mc_inheritance_schema","nameRes":"inventory.mc_inheritance_schema","descriptionRes":"inventory.mc_inheritance_schema.desc","rarity":"RARE","types":["MATERIAL"],"craftRule":{"first":4,"second":"mc_class_archetype"}}

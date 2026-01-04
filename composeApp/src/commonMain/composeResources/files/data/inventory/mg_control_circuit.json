@@ -1,0 +1,1 @@
+{"key":"mg_control_circuit","nameRes":"inventory.mg_control_circuit","descriptionRes":"inventory.mg_control_circuit.desc","rarity":"COMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mg_integrated_circuit"}}

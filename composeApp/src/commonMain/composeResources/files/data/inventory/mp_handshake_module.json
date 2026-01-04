@@ -1,0 +1,1 @@
+{"key":"mp_handshake_module","nameRes":"inventory.mp_handshake_module","descriptionRes":"inventory.mp_handshake_module.desc","rarity":"RARE","types":["MATERIAL"],"craftRule":{"first":4,"second":"mp_protocol_codex"}}

@@ -1,0 +1,1 @@
+{"key":"mp_clock_pulse","nameRes":"inventory.mp_clock_pulse","descriptionRes":"inventory.mp_clock_pulse.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mp_frequency_core"}}

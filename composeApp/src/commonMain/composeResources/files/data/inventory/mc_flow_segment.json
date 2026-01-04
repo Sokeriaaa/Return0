@@ -1,0 +1,1 @@
+{"key":"mc_flow_segment","nameRes":"inventory.mc_flow_segment","descriptionRes":"inventory.mc_flow_segment.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mc_pipeline_module"}}

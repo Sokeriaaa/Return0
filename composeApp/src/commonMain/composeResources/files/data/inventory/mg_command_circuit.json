@@ -1,0 +1,1 @@
+{"key":"mg_command_circuit","nameRes":"inventory.mg_command_circuit","descriptionRes":"inventory.mg_command_circuit.desc","rarity":"RARE","types":["MATERIAL"],"craftRule":{"first":4,"second":"mg_directive_matrix"}}

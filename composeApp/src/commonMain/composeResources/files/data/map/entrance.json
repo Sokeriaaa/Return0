@@ -1,1 +1,1 @@
-{"name":"entrance","lines":0,"buggyRange":[],"buggyEntries":[],"difficulty":1,"events":[{"enabled":{"type":"Common.True"},"trigger":"ENTERED","event":{"type":"Sequence","events":[{"type":"TeleportUserTo","map":"matrix_corp","lineNumber":{"type":"Common.Constant","value":1.0}}]}}]}
+{"name":"entrance","lines":0,"buggyRange":[],"buggyEntries":[],"events":[{"enabled":{"type":"Common.True"},"trigger":"ENTERED","event":{"type":"Sequence","events":[{"type":"TeleportUserTo","map":"matrix_corp","lineNumber":{"type":"Common.Constant","value":1.0}}]}}]}

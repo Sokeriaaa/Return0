@@ -1,0 +1,1 @@
+{"key":"mc_heap_cell","nameRes":"inventory.mc_heap_cell","descriptionRes":"inventory.mc_heap_cell.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mc_memory_block"}}

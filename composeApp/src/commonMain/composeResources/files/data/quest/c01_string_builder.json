@@ -1,1 +1,1 @@
-{"key":"c01_string_builder","nameRes":"name.quest.c01_string_builder","descriptionRes":"desc.quest.c01_string_builder","priority":1,"navigation":{"first":"null_view","second":5}}
+{"key":"c01_string_builder","nameRes":"quest.c01_string_builder","descriptionRes":"quest.c01_string_builder.desc","priority":1,"navigation":{"first":"null_view","second":5}}

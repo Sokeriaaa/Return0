@@ -1,0 +1,1 @@
+{"key":"mp_daemon_trace","nameRes":"inventory.mp_daemon_trace","descriptionRes":"inventory.mp_daemon_trace.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mp_persistent_loop"}}

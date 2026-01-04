@@ -1,0 +1,1 @@
+{"key":"mc_thread_token","nameRes":"inventory.mc_thread_token","descriptionRes":"inventory.mc_thread_token.desc","rarity":"UNCOMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mc_scheduler_unit"}}

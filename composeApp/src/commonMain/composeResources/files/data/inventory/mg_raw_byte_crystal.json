@@ -1,0 +1,1 @@
+{"key":"mg_raw_byte_crystal","nameRes":"inventory.mg_raw_byte_crystal","descriptionRes":"inventory.mg_raw_byte_crystal.desc","rarity":"COMMON","types":["MATERIAL"],"craftRule":{"first":4,"second":"mg_aligned_byte_crystal"}}
