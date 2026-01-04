@@ -27,7 +27,7 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.EntitiesIntent
+import sokeriaaa.return0.mvi.intents.CommonIntent
 
 class EntitiesViewModel : BaseViewModel() {
 
@@ -48,7 +48,7 @@ class EntitiesViewModel : BaseViewModel() {
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
-            EntitiesIntent.Refresh -> viewModelScope.launch {
+            CommonIntent.Refresh -> viewModelScope.launch {
                 refresh()
             }
 

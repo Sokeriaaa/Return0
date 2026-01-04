@@ -73,7 +73,6 @@ import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
-import sokeriaaa.return0.mvi.intents.TeamIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
@@ -237,7 +236,7 @@ fun GameScreen(
                 }
 
                 EventEffect.ChooseEntity -> {
-                    teamsViewModel.onIntent(TeamIntent.RefreshTeams)
+                    teamsViewModel.onIntent(CommonIntent.Refresh)
                     isShowingSelectEntityDialog = true
                 }
 
@@ -431,7 +430,9 @@ private fun GameContent(
                 onTeamsClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Teams.route)
                 },
-                onInventoryClicked = {},
+                onInventoryClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Inventory.route)
+                },
                 onSettingsClicked = {},
                 onQuitClicked = {
                     scope.launch {

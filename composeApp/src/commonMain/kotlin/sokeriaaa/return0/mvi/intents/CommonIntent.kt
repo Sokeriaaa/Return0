@@ -21,4 +21,9 @@ sealed class CommonIntent : BaseIntent {
     data object ShowLoading : CommonIntent()
     data object HideLoading : CommonIntent()
     data class ShowSnackBar(val message: String) : CommonIntent()
+
+    /**
+     * A common intent for refreshing data.
+     */
+    data object Refresh : CommonIntent()
 }

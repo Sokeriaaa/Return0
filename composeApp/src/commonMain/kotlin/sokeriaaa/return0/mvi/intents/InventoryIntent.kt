@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -14,13 +14,4 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-sealed class TeamIntent : BaseIntent {
-    data object RefreshTeams : TeamIntent()
-    data class SelectTeam(val index: Int) : TeamIntent()
-    data object ActivateCurrentTeam : TeamIntent()
-    data class RenameCurrentTeam(val name: String) : TeamIntent()
-    data class SwitchEntityInCurrentTeam(
-        val entityIndex: Int,
-        val newEntity: String?,
-    ) : TeamIntent()
-}
+class InventoryIntent

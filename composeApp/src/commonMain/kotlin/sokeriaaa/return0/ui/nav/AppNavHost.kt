@@ -38,6 +38,7 @@ import sokeriaaa.return0.ui.main.emulator.EmulatorPresetScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
 import sokeriaaa.return0.ui.main.game.GameScreen
 import sokeriaaa.return0.ui.main.game.entities.EntitiesScreen
+import sokeriaaa.return0.ui.main.game.inventory.InventoryScreen
 import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
 import sokeriaaa.return0.ui.main.game.teams.TeamsScreen
 import sokeriaaa.return0.ui.main.save.SaveScreen
@@ -89,6 +90,12 @@ fun AppNavHost(
         }
         myComposable(Scene.Teams) {
             TeamsScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.Inventory) {
+            InventoryScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
@@ -189,6 +196,7 @@ sealed class Scene(val route: String) {
     data object Quests : Scene(route = "r0_quests")
     data object Entities : Scene(route = "r0_entities")
     data object Teams : Scene(route = "r0_teams")
+    data object Inventory : Scene(route = "r0_inventory")
 
     data object Combat : Scene(route = "r0_combat")
     data object Save : Scene(route = "r0_save")

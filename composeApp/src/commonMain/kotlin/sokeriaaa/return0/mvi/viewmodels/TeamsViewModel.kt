@@ -28,7 +28,8 @@ import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.TeamIntent
+import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.mvi.intents.TeamsIntent
 
 class TeamsViewModel : BaseViewModel() {
 
@@ -56,15 +57,15 @@ class TeamsViewModel : BaseViewModel() {
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
-            TeamIntent.RefreshTeams -> viewModelScope.launch { refreshTeams() }
-            is TeamIntent.SelectTeam -> currentTeamIndex = intent.index
+            CommonIntent.Refresh -> viewModelScope.launch { refreshTeams() }
+            is TeamsIntent.SelectTeam -> currentTeamIndex = intent.index
 
-            TeamIntent.ActivateCurrentTeam -> viewModelScope.launch {
+            TeamsIntent.ActivateCurrentTeam -> viewModelScope.launch {
                 _teamRepo.activateTeam(currentTeamIndex)
                 activatedTeamIndex = currentTeamIndex
             }
 
-            is TeamIntent.RenameCurrentTeam -> viewModelScope.launch {
+            is TeamsIntent.RenameCurrentTeam -> viewModelScope.launch {
                 _teamRepo.updateTeamName(
                     teamID = currentTeamIndex,
                     name = intent.name,
@@ -72,7 +73,7 @@ class TeamsViewModel : BaseViewModel() {
                 refreshTeams()
             }
 
-            is TeamIntent.SwitchEntityInCurrentTeam -> viewModelScope.launch {
+            is TeamsIntent.SwitchEntityInCurrentTeam -> viewModelScope.launch {
                 val entity = intent.newEntity?.let { getEntityByName(it) }
 
                 _teams[currentTeamIndex].entities[intent.entityIndex] = entity

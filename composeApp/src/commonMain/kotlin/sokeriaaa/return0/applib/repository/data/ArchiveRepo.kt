@@ -14,12 +14,16 @@
  */
 package sokeriaaa.return0.applib.repository.data
 
+import org.jetbrains.compose.resources.MissingResourceException
+import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.models.action.effect.CommonEffects
+import sokeriaaa.return0.shared.common.helpers.JsonHelper
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
+import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 
 /**
  * Stores archives data in memory.
@@ -75,6 +79,14 @@ class ArchiveRepo internal constructor() {
 
     fun getCategoryEffectiveness(category: Category): CategoryEffectiveness =
         _categoryEffectivenessMap[category] ?: CategoryEffectiveness(emptyMap(), emptyMap())
+
+    suspend fun getItemData(key: String): ItemData? = try {
+        JsonHelper.decodeFromString(
+            string = Res.readBytes("files/data/inventory/$key.json").decodeToString()
+        )
+    } catch (_: MissingResourceException) {
+        null
+    }
 
     /**
      * Returns all available entity data.
