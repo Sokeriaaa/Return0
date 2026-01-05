@@ -1,1 +1,1 @@
-{"key":"c01_journey_start","nameRes":"quest.c01_journey_start","descriptionRes":"quest.c01_journey_start.desc","priority":1,"navigation":{"first":"null_view","second":42}}
+{"key":"c01_journey_start","nameRes":"quest.c01_journey_start","descriptionRes":"quest.c01_journey_start.desc","priority":1,"navigation":{"first":"null_view","second":42},"currencyRewards":{"CRYPTO":1}}
