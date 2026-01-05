@@ -15,6 +15,7 @@
 package sokeriaaa.return0.models.component.executor.condition
 
 import sokeriaaa.return0.models.component.context.EventContext
+import sokeriaaa.return0.models.component.executor.value.calculateTime
 import sokeriaaa.return0.models.component.executor.value.calculatedToFloat
 import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
@@ -73,7 +74,10 @@ suspend fun Condition.calculatedIn(context: EventContext): Boolean {
 
         is EventCondition.QuestCompleted -> context.gameState.quest.isCompleted(key)
         is EventCondition.SavedSwitch -> context.gameState.savedValues.getSwitch(key)
-        is EventCondition.CompareTime -> TODO()
+        is EventCondition.CompareTime -> comparator.compare(
+            context.now,
+            time.calculateTime(context)
+        )
         // end - EventCondition
     }
 }

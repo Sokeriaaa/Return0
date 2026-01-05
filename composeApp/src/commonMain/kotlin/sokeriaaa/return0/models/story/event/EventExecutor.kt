@@ -36,9 +36,9 @@ suspend fun Event.executedIn(context: EventContext) {
 
         is Event.Conditioned -> {
             if (condition.calculatedIn(context)) {
-                ifTrue.executedIn(context)
+                ifTrue?.executedIn(context)
             } else {
-                ifFalse.executedIn(context)
+                ifFalse?.executedIn(context)
             }
         }
 
