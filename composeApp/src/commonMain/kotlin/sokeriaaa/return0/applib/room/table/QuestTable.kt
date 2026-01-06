@@ -14,34 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
 /**
  * Quest table.
  */
-expect class QuestTable(
-    saveID: Int,
-    key: String,
-    expiredAt: Long? = null,
-    completed: Boolean = false,
+@Entity(
+    tableName = QuestTable.TABLE_NAME,
+    primaryKeys = ["save_id", "quest_key"],
+)
+data class QuestTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "quest_key")
+    var key: String,
+    @ColumnInfo(name = "expired_at")
+    var expiredAt: Long?,
+    @ColumnInfo(name = "completed")
+    var completed: Boolean,
+    @ColumnInfo(name = "completed_time")
+    var completedTime: Long?,
 ) {
-
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * The key of quest.
-     */
-    var key: String
-
-    /**
-     * Expired time in millis. `null` presents this quest will never expire.
-     * Expired quests will be removed from the database, whether it's completed or not.
-     */
-    var expiredAt: Long?
-
-    /**
-     * This quest is completed.
-     */
-    var completed: Boolean
+    companion object {
+        const val TABLE_NAME = "return0_quests"
+    }
 }

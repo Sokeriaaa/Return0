@@ -97,6 +97,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.room.common)
             implementation(libs.compose.material3.adaptive)
             implementation(libs.koin.compose)
             implementation(libs.koin.core)

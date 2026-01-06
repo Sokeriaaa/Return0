@@ -19,6 +19,7 @@ import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao
+import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
@@ -34,6 +35,7 @@ expect abstract class AppDatabase {
     abstract fun getEmulatorIndexDao(): EmulatorIndexDao
     abstract fun getEntityDao(): EntityDao
     abstract fun getEventRelocationDao(): EventRelocationDao
+    abstract fun getIndexedHubDao(): IndexedHubDao
     abstract fun getInventoryDao(): InventoryDao
     abstract fun getQuestDao(): QuestDao
     abstract fun getSavedSwitchDao(): SavedSwitchDao

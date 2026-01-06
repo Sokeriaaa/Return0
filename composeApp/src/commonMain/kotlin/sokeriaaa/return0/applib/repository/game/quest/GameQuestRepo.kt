@@ -19,6 +19,7 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.table.QuestTable
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 
 class GameQuestRepo(
     private val questDao: QuestDao,
@@ -28,17 +29,17 @@ class GameQuestRepo(
     val activatedQuests: Map<String, Long?> = _activatedQuests
 
     private val _acceptedBuffer: MutableMap<String, Long?> = HashMap()
-    private val _completedBuffer: MutableList<String> = ArrayList()
+    private val _completedBuffer: MutableMap<String, Long> = HashMap()
 
     fun acceptedQuest(key: String, expiredAt: Long? = null) {
         _activatedQuests[key] = expiredAt
         _acceptedBuffer[key] = expiredAt
     }
 
-    fun completedQuest(key: String) {
+    fun completedQuest(key: String, now: Long = TimeHelper.currentTimeMillis()) {
         _activatedQuests.remove(key)
         _acceptedBuffer.remove(key)
-        _completedBuffer.add(key)
+        _completedBuffer[key] = now
     }
 
     suspend fun isCompleted(key: String): Boolean {
@@ -63,6 +64,7 @@ class GameQuestRepo(
                     key = it.key,
                     expiredAt = it.value,
                     completed = false,
+                    completedTime = null
                 )
             }
         )
@@ -70,9 +72,10 @@ class GameQuestRepo(
             _completedBuffer.map {
                 QuestTable(
                     saveID = AppConstants.CURRENT_SAVE_ID,
-                    key = it,
+                    key = it.key,
                     expiredAt = null,
                     completed = true,
+                    completedTime = it.value
                 )
             }
         )

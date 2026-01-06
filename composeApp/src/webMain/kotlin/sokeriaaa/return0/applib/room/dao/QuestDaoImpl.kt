@@ -55,6 +55,7 @@ class QuestDaoImpl(
             quest_key = table.key,
             expired_at = table.expiredAt,
             completed = if (table.completed) 1L else 0L,
+            completed_time = table.completedTime,
         )
     }
 
@@ -72,10 +73,12 @@ class QuestDaoImpl(
         quest_key: String,
         expired_at: Long?,
         completed: Long,
+        completedTime: Long?,
     ): QuestTable = QuestTable(
         saveID = save_id.toInt(),
         key = quest_key,
         expiredAt = expired_at,
-        completed = completed == 1L
+        completed = completed == 1L,
+        completedTime = completedTime,
     )
 }

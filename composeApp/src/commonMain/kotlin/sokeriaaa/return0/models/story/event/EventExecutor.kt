@@ -176,7 +176,7 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.CompleteQuest -> {
-            context.gameState.quest.completedQuest(key)
+            context.gameState.quest.completedQuest(key, context.now)
         }
 
         is Event.SaveSwitch -> {
