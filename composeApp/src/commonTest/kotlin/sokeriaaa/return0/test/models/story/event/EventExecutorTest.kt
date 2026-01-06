@@ -163,7 +163,6 @@ class EventExecutorTest : BaseEventTest() {
             lines = 100,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = listOf(
                 MapEvent(
                     enabled = CommonCondition.True,

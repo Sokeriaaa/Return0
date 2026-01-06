@@ -30,7 +30,6 @@ class MapGeneratorTest {
             lines = Random.nextInt(100) + 100,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = emptyList(),
         )
 
@@ -57,7 +56,6 @@ class MapGeneratorTest {
             lines = expectedRows,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = emptyList(),
         )
         val rows = MapGenerator.generateCode(mapData)
@@ -71,7 +69,6 @@ class MapGeneratorTest {
             lines = Random.nextInt(100) + 100,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = emptyList(),
         )
         val rows = MapGenerator.generateCode(mapData)
@@ -87,7 +84,6 @@ class MapGeneratorTest {
             lines = Random.nextInt(100) + 100,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = emptyList(),
         )
         val rows = MapGenerator.generateCode(mapData)
@@ -108,7 +104,6 @@ class MapGeneratorTest {
             lines = Random.nextInt(100) + 100,
             buggyRange = emptyList(),
             buggyEntries = emptyList(),
-            difficulty = 1,
             events = emptyList(),
         )
         val rows = MapGenerator.generateCode(mapData)
