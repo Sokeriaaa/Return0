@@ -14,28 +14,30 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * The index of emulator table, contains some meta.
+ *
+ * @param presetID Preset ID.
+ * @param name Name.
+ * @param createdTime Created time in millis.
  */
-expect class EmulatorIndexTable(
-    presetID: Int? = null,
-    name: String,
-    createdTime: Long,
+@Entity(
+    tableName = EmulatorIndexTable.TABLE_NAME,
+)
+data class EmulatorIndexTable(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "preset_id")
+    var presetID: Int? = null,
+    @ColumnInfo(name = "name")
+    var name: String,
+    @ColumnInfo(name = "created_time")
+    var createdTime: Long,
 ) {
-
-    /**
-     * Preset ID.
-     */
-    var presetID: Int?
-
-    /**
-     * Name.
-     */
-    var name: String
-
-    /**
-     * Created time in millis.
-     */
-    var createdTime: Long
-
+    companion object {
+        const val TABLE_NAME = "return0_emulator_indices"
+    }
 }

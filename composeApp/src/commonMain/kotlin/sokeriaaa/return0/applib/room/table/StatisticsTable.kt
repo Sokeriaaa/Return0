@@ -1,5 +1,3 @@
-package sokeriaaa.return0.applib.room.table
-
 /**
  * Copyright (C) 2025 Sokeriaaa
  *
@@ -14,27 +12,44 @@ package sokeriaaa.return0.applib.room.table
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+package sokeriaaa.return0.applib.room.table
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * Statistics table.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param tokensEarned
+ * @param cryptosEarned
+ * @param totalDamage
+ * @param totalHeal
+ * @param enemiesDefeated
+ * @param linesMoved
  */
-expect class StatisticsTable(
-    saveID: Int,
-    tokensEarned: Long = 0,
-    cryptosEarned: Long = 0,
-    totalDamage: Long = 0,
-    totalHeal: Long = 0,
-    enemiesDefeated: Long = 0,
-    linesMoved: Long = 0,
+@Entity(
+    tableName = StatisticsTable.TABLE_NAME,
+)
+data class StatisticsTable(
+    @PrimaryKey
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "tokens_earned")
+    var tokensEarned: Long = 0,
+    @ColumnInfo(name = "cryptos_earned")
+    var cryptosEarned: Long = 0,
+    @ColumnInfo(name = "total_damage")
+    var totalDamage: Long = 0,
+    @ColumnInfo(name = "total_heal")
+    var totalHeal: Long = 0,
+    @ColumnInfo(name = "enemies_defeated")
+    var enemiesDefeated: Long = 0,
+    @ColumnInfo(name = "lines_moved")
+    var linesMoved: Long = 0,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    var tokensEarned: Long
-    var cryptosEarned: Long
-    var totalDamage: Long
-    var totalHeal: Long
-    var enemiesDefeated: Long
-    var linesMoved: Long
+    companion object {
+        const val TABLE_NAME = "return0_statistics"
+    }
 }

@@ -14,33 +14,34 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+
 /**
  * Relocating events.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param eventKey Event key.
+ * @param fileName Current file name. (For game map)
+ * @param lineNumber Current line number. (For game map)
  */
-expect class EventRelocationTable(
-    saveID: Int,
-    eventKey: String,
-    fileName: String,
-    lineNumber: Int,
+@Entity(
+    tableName = EventRelocationTable.TABLE_NAME,
+    primaryKeys = ["save_id", "event_key"],
+    indices = [Index("file_name")]
+)
+data class EventRelocationTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "event_key")
+    var eventKey: String,
+    @ColumnInfo(name = "file_name")
+    var fileName: String,
+    @ColumnInfo(name = "line_number")
+    var lineNumber: Int,
 ) {
-
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Event key.
-     */
-    var eventKey: String
-
-    /**
-     * Current file name. (For game map)
-     */
-    var fileName: String
-
-    /**
-     * Current line number. (For game map)
-     */
-    var lineNumber: Int
+    companion object {
+        const val TABLE_NAME = "return0_event_relocations"
+    }
 }

@@ -14,28 +14,30 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
 /**
  * Currency table.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param currency Currency type.
+ * @param amount Currency amount.
  */
-expect class CurrencyTable(
-    saveID: Int,
-    currency: CurrencyType,
-    amount: Int = 0,
+@Entity(
+    tableName = CurrencyTable.TABLE_NAME,
+    primaryKeys = ["save_id", "currency"],
+)
+data class CurrencyTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "currency")
+    var currency: CurrencyType,
+    @ColumnInfo(name = "amount")
+    var amount: Int = 0,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Currency type.
-     */
-    var currency: CurrencyType
-
-    /**
-     * Currency amount.
-     */
-    var amount: Int
+    companion object {
+        const val TABLE_NAME = "return0_currencies"
+    }
 }

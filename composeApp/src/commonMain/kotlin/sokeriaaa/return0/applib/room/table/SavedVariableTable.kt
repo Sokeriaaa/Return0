@@ -14,26 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
 /**
  * Saved variables by events.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param key Variable key.
+ * @param value Variable value.
  */
-expect class SavedVariableTable(
-    saveID: Int,
-    key: String,
-    value: Int = 0,
+@Entity(
+    tableName = SavedVariableTable.TABLE_NAME,
+    primaryKeys = ["save_id", "saved_key"],
+)
+data class SavedVariableTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "saved_key")
+    var key: String,
+    @ColumnInfo(name = "saved_value")
+    var value: Int = 0,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Variable key.
-     */
-    var key: String
-
-    /**
-     * Variable value.
-     */
-    var value: Int
+    companion object {
+        const val TABLE_NAME = "return0_saved_variables"
+    }
 }

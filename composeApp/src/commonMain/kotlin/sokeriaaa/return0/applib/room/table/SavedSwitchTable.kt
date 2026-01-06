@@ -14,26 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
 /**
  * Saved switches by events.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param key Switch key.
+ * @param value Switch value.
  */
-expect class SavedSwitchTable(
-    saveID: Int,
-    key: String,
-    value: Boolean = false,
+@Entity(
+    tableName = SavedSwitchTable.TABLE_NAME,
+    primaryKeys = ["save_id", "saved_key"],
+)
+data class SavedSwitchTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "saved_key")
+    var key: String,
+    @ColumnInfo(name = "saved_value")
+    var value: Boolean = false,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Switch key.
-     */
-    var key: String
-
-    /**
-     * Switch value.
-     */
-    var value: Boolean
+    companion object {
+        const val TABLE_NAME = "return0_saved_switches"
+    }
 }

@@ -14,58 +14,46 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+
 /**
  * The entity table for the player.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param entityName Entity name.
+ * @param level Entity level.
+ * @param exp EXP of current entity.
+ * @param currentHP Current HP. `null` means full HP.
+ * @param currentSP Current SP. `null` means full SP.
+ * @param indexedTime The index in the party, between 0 and 3. -1 means not in party.
+ * @param pluginID The plugin (weapon) this entity equipped.
  */
-expect class EntityTable(
-    saveID: Int = -1,
-    entityName: String = "",
-    level: Int = 1,
-    exp: Int = 0,
-    currentHP: Int? = null,
-    currentSP: Int? = null,
-    indexedTime: Long,
-    pluginID: Long? = null,
+@Entity(
+    tableName = EntityTable.TABLE_NAME,
+    primaryKeys = ["save_id", "entity_name"],
+    indices = [Index("plugin_id")]
+)
+data class EntityTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int = -1,
+    @ColumnInfo(name = "entity_name")
+    var entityName: String = "",
+    @ColumnInfo(name = "level")
+    var level: Int = 1,
+    @ColumnInfo(name = "exp")
+    var exp: Int = 0,
+    @ColumnInfo(name = "current_hp")
+    var currentHP: Int? = null,
+    @ColumnInfo(name = "current_sp")
+    var currentSP: Int? = null,
+    @ColumnInfo(name = "indexed_time")
+    var indexedTime: Long,
+    @ColumnInfo(name = "plugin_id")
+    var pluginID: Long? = null,
 ) {
-
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Entity name.
-     */
-    var entityName: String
-
-    /**
-     * Entity level.
-     */
-    var level: Int
-
-    /**
-     * EXP of current entity.
-     */
-    var exp: Int
-
-    /**
-     * Current HP. `null` means fill HP.
-     */
-    var currentHP: Int?
-
-    /**
-     * Current SP. `null` means fill SP.
-     */
-    var currentSP: Int?
-
-    /**
-     * The index in the party, between 0 and 3. -1 means not in party.
-     */
-    var indexedTime: Long
-
-    /**
-     * The plugin (weapon) this entity equipped.
-     */
-    var pluginID: Long?
-
+    companion object {
+        const val TABLE_NAME = "return0_entities"
+    }
 }

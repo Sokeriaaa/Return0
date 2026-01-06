@@ -14,26 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
 /**
  * Saved timestamps by events.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param key Timestamp key.
+ * @param timestamp Timestamp value.
  */
-expect class SavedTimestampTable(
-    saveID: Int,
-    key: String,
-    timestamp: Long = 0L,
+@Entity(
+    tableName = SavedTimestampTable.TABLE_NAME,
+    primaryKeys = ["save_id", "saved_key"],
+)
+data class SavedTimestampTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "saved_key")
+    var key: String,
+    @ColumnInfo(name = "saved_timestamp")
+    var timestamp: Long = 0L,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Timestamp key.
-     */
-    var key: String
-
-    /**
-     * Timestamp value.
-     */
-    var timestamp: Long
+    companion object {
+        const val TABLE_NAME = "return0_saved_timestamps"
+    }
 }

@@ -14,47 +14,40 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import sokeriaaa.return0.shared.data.models.title.Title
 
 /**
  * The meta data for saves.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param createdTime Started time of this save in millis.
+ * @param savedTime Last saved time in millis.
+ * @param title User title.
+ * @param fileName Current file name. (For game map)
+ * @param lineNumber Current line number. (For game map)
  */
-expect class SaveMetaTable(
-    saveID: Int,
-    createdTime: Long,
-    savedTime: Long,
-    title: Title,
-    fileName: String,
-    lineNumber: Int,
+@Entity(
+    tableName = SaveMetaTable.TABLE_NAME,
+)
+data class SaveMetaTable(
+    @PrimaryKey
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "created_timed")
+    var createdTime: Long,
+    @ColumnInfo(name = "saved_timed")
+    var savedTime: Long,
+    @ColumnInfo(name = "title")
+    var title: Title,
+    @ColumnInfo(name = "file_name")
+    var fileName: String,
+    @ColumnInfo(name = "line_number")
+    var lineNumber: Int,
 ) {
-
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Started time of this save in millis.
-     */
-    var createdTime: Long
-
-    /**
-     * Last saved time in millis.
-     */
-    var savedTime: Long
-
-    /**
-     * User title.
-     */
-    var title: Title
-
-    /**
-     * Current file name. (For game map)
-     */
-    var fileName: String
-
-    /**
-     * Current line number. (For game map)
-     */
-    var lineNumber: Int
+    companion object {
+        const val TABLE_NAME = "return0_save_metas"
+    }
 }

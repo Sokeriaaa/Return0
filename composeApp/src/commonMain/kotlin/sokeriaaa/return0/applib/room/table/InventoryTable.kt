@@ -14,26 +14,29 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
 /**
  * Inventory table.
+ *
+ * @param saveID The save ID. -1 presents the temporary save the user is current playing.
+ * @param key Item key.
+ * @param amount Item amount.
  */
-expect class InventoryTable(
-    saveID: Int,
-    key: String,
-    amount: Int = 0,
+@Entity(
+    tableName = InventoryTable.TABLE_NAME,
+    primaryKeys = ["save_id", "item_key"],
+)
+data class InventoryTable(
+    @ColumnInfo(name = "save_id")
+    var saveID: Int,
+    @ColumnInfo(name = "item_key")
+    var key: String,
+    @ColumnInfo(name = "amount")
+    var amount: Int = 0,
 ) {
-    /**
-     * The save ID. -1 presents the temporary save the user is current playing.
-     */
-    var saveID: Int
-
-    /**
-     * Item key.
-     */
-    var key: String
-
-    /**
-     * Item amount.
-     */
-    var amount: Int
+    companion object {
+        const val TABLE_NAME = "return0_inventories"
+    }
 }

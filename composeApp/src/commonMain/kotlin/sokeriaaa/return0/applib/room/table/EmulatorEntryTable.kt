@@ -14,56 +14,45 @@
  */
 package sokeriaaa.return0.applib.room.table
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
 /**
  * The emulator table, mainly for storing presets.
+ *
+ * @param id Auto-generated ID.
+ * @param presetID Preset ID.
+ * @param isParty Is party.
+ * @param entityName Entity name.
+ * @param level Entity level.
+ * @param pluginID The ID of plugin which will be installed for this entity in the simulate combat.
+ *                 Preserved for future use.
+ * @param bossMultiplier Multiplier for the boss. Default is 1. Set to higher value will increase
+ *                       the status of this entity, especially for HP. Preserved for future use.
  */
-expect class EmulatorEntryTable(
-    id: Int? = null,
-    presetID: Int,
-    isParty: Boolean,
-    entityName: String,
-    level: Int = 1,
-    pluginID: Long? = null,
-    bossMultiplier: Int = 1,
+@Entity(
+    tableName = EmulatorEntryTable.TABLE_NAME,
+    indices = [Index("preset_id")]
+)
+data class EmulatorEntryTable(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
+    @ColumnInfo(name = "preset_id")
+    var presetID: Int,
+    @ColumnInfo(name = "is_party")
+    var isParty: Boolean,
+    @ColumnInfo(name = "entity_name")
+    var entityName: String,
+    @ColumnInfo(name = "level")
+    var level: Int = 1,
+    @ColumnInfo(name = "plugin_id")
+    var pluginID: Long? = null,
+    @ColumnInfo(name = "boss_multiplier")
+    var bossMultiplier: Int = 1,
 ) {
-
-    /**
-     * Auto-generated ID.
-     */
-    var id: Int?
-
-    /**
-     * Preset ID.
-     */
-    var presetID: Int
-
-    /**
-     * Is party.
-     */
-    var isParty: Boolean
-
-    /**
-     * Entity name.
-     */
-    var entityName: String
-
-    /**
-     * Entity level.
-     */
-    var level: Int
-
-    /**
-     * The ID of plugin which will be installed for this entity in the simulate combat.
-     *
-     * Preserved for future use.
-     */
-    var pluginID: Long?
-
-    /**
-     * Multiplier for the boss. Default is 1. Set to higher value will increase the status
-     *  of this entity, especially for HP.
-     *
-     * Preserved for future use.
-     */
-    var bossMultiplier: Int
+    companion object {
+        const val TABLE_NAME = "return0_emulator_entries"
+    }
 }
