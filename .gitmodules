@@ -4,3 +4,6 @@
 [submodule "composeApp/src/commonTest/kotlin/sokeriaaa/return0/test/shared"]
 	path = composeApp/src/commonTest/kotlin/sokeriaaa/return0/test/shared
 	url = https://github.com/Sokeriaaa/Return0-shared-test.git
+[submodule "room2sqldelight-ksp"]
+	path = room2sqldelight-ksp
+	url = https://github.com/Sokeriaaa/RoomToSQLDelightKSP.git
