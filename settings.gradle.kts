@@ -35,3 +35,4 @@ plugins {
 }
 
 include(":composeApp")
+include(":room2sqldelight-ksp")

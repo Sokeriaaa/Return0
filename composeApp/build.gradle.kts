@@ -203,6 +203,7 @@ dependencies {
     ).forEach {
         add(configurationName = it, dependencyNotation = libs.androidx.room.compiler)
     }
+    add(configurationName = "kspAndroid", dependencyNotation = project(":room2sqldelight-ksp"))
 }
 
 compose.desktop {
