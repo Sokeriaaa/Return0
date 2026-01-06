@@ -25,11 +25,12 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
-import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.generate
+import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.TeamsIntent
+import sokeriaaa.return0.ui.common.entity.EntityProfile
 
 class TeamsViewModel : BaseViewModel() {
 
@@ -43,7 +44,7 @@ class TeamsViewModel : BaseViewModel() {
     val teams: List<TeamDisplay> = _teams
 
     // Entities of activated team.
-    var activatedTeamEntities: Array<Entity?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
+    var activatedTeamEntities: Array<EntityProfile?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
         private set
 
     // The index of activated team.
@@ -53,6 +54,9 @@ class TeamsViewModel : BaseViewModel() {
     // The team index currently displaying.
     var currentTeamIndex: Int by mutableIntStateOf(0)
         private set
+
+    val currentTeam: TeamDisplay?
+        get() = teams.getOrNull(currentTeamIndex)
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -74,7 +78,7 @@ class TeamsViewModel : BaseViewModel() {
             }
 
             is TeamsIntent.SwitchEntityInCurrentTeam -> viewModelScope.launch {
-                val entity = intent.newEntity?.let { getEntityByName(it) }
+                val entity = intent.newEntity?.let { getEntityProfileByName(it) }
 
                 _teams[currentTeamIndex].entities[intent.entityIndex] = entity
                 _teamRepo.updateTeamMember(
@@ -98,14 +102,20 @@ class TeamsViewModel : BaseViewModel() {
         activatedTeamIndex = 0
         // Load
         _teamRepo.loadAllTeams().forEachIndexed { index, team ->
-            val teamEntities: Array<Entity?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
+            val teamEntities: Array<EntityProfile?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
             val names: Array<String?> = arrayOf(team.slot1, team.slot2, team.slot3, team.slot4)
             for (i in 0..<AppConstants.ARENA_MAX_PARTY) {
-                teamEntities[i] = getEntityByName(
+                teamEntities[i] = getEntityProfileByName(
                     entityName = names.getOrNull(i) ?: continue,
                 ) ?: continue
             }
-            _teams.add(TeamDisplay(name = team.name, entities = teamEntities))
+            _teams.add(
+                TeamDisplay(
+                    isActivated = team.isActivated,
+                    name = team.name,
+                    entities = teamEntities,
+                ),
+            )
             if (team.isActivated) {
                 activatedTeamEntities = teamEntities
                 activatedTeamIndex = index
@@ -113,14 +123,14 @@ class TeamsViewModel : BaseViewModel() {
         }
     }
 
-    private suspend fun getEntityByName(entityName: String): Entity? {
+    private suspend fun getEntityProfileByName(entityName: String): EntityProfile? {
+        val table = _entityRepo.getEntityTable(entityName) ?: return null
         val entityData = _archiveRepo.getEntityData(entityName) ?: return null
-        val table = _entityRepo.getEntityTable(entityData.name) ?: return null
 
         // Get the growth data of the primary category of entity.
         val growth = _archiveRepo.getEntityGrowthByCategory(entityData.category)
-        // Generate display
-        return entityData.generate(
+        // Generate entity
+        val entity = entityData.generate(
             index = -1,
             level = table.level,
             growth = growth,
@@ -129,11 +139,26 @@ class TeamsViewModel : BaseViewModel() {
             hp = table.currentHP ?: maxhp
             sp = table.currentSP ?: maxsp
         }
+        // Assemble display
+        return EntityProfile(
+            name = table.entityName,
+            level = table.level,
+            expProgress = EntityLevelHelper.levelProgress(
+                table.level,
+                table.exp,
+                entityData.levelPacing
+            ),
+            hp = entity.hp,
+            maxHP = entity.maxhp,
+            sp = entity.sp,
+            maxSP = entity.maxsp,
+        )
     }
 
     class TeamDisplay(
+        val isActivated: Boolean,
         val name: String?,
-        val entities: Array<Entity?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY),
+        val entities: Array<EntityProfile?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY),
     ) {
         init {
             require(entities.size == AppConstants.ARENA_MAX_PARTY) {

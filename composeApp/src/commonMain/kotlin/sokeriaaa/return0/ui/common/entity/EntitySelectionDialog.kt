@@ -42,7 +42,6 @@ import return0.composeapp.generated.resources.empty_slot
 import return0.composeapp.generated.resources.game_select_entity
 import return0.composeapp.generated.resources.game_select_entity_warn
 import return0.composeapp.generated.resources.ok
-import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
 /**
@@ -51,7 +50,7 @@ import sokeriaaa.return0.ui.common.widgets.AppTextButton
 @Composable
 fun EntitySelectionDialog(
     modifier: Modifier = Modifier,
-    entities: Array<Entity?>,
+    entities: Array<EntityProfile?>,
     onSelectedIndex: (index: Int) -> Unit,
 ) {
     // Selected index

@@ -14,20 +14,51 @@
  */
 package sokeriaaa.return0.ui.main.game.teams
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.empty_slot
 import return0.composeapp.generated.resources.game_menu_teams
+import return0.composeapp.generated.resources.game_team_activate
+import return0.composeapp.generated.resources.game_team_activated
+import return0.composeapp.generated.resources.game_team_default
+import return0.composeapp.generated.resources.game_team_new
+import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.mvi.intents.TeamsIntent
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.entity.EntityProfileItem
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.return0.ui.common.widgets.AppButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +70,9 @@ fun TeamsScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(CommonIntent.Refresh)
+    }
     AppScaffold(
         viewModel = viewModel,
         topBar = {
@@ -58,6 +92,149 @@ fun TeamsScreen(
             )
         }
     ) { paddingValues ->
+        Column(
+            modifier = Modifier.padding(paddingValues = paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            rememberCoroutineScope()
 
+            PrimaryScrollableTabRow(
+                selectedTabIndex = viewModel.currentTeamIndex,
+                indicator = {
+                    SecondaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(
+                            selectedTabIndex = viewModel.currentTeamIndex,
+                        )
+                    )
+                },
+            ) {
+                viewModel.teams.forEachIndexed { index, team ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = team.name ?: stringResource(
+                                    Res.string.game_team_default,
+                                    index
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        selected = viewModel.currentTeamIndex == index,
+                        onClick = {
+                            viewModel.onIntent(TeamsIntent.SelectTeam(index))
+                        },
+                    )
+                }
+                // Create new team
+                if (viewModel.teams.size < AppConstants.MAXIMUM_TEAMS) {
+                    Tab(
+                        text = {
+                            Text(
+                                text = stringResource(Res.string.game_team_new),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        selected = false,
+                        onClick = {
+                            // TODO Create a new team then scroll to it.
+                        },
+                    )
+                }
+            }
+            viewModel.currentTeam?.let {
+                TeamContent(
+                    index = viewModel.currentTeamIndex,
+                    display = it,
+                    onIntent = viewModel::onIntent,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TeamContent(
+    modifier: Modifier = Modifier,
+    index: Int,
+    display: TeamsViewModel.TeamDisplay,
+    onIntent: (BaseIntent) -> Unit,
+) {
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.FixedSize(192.dp),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        item(
+            span = { GridItemSpan(maxLineSpan) }
+        ) {
+            val name = display.name ?: stringResource(Res.string.game_team_default, index)
+            Text(
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
+                text = name,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+        }
+        items(
+            items = display.entities,
+        ) { entity ->
+            if (entity == null) {
+                EmptySlot(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 4.dp)
+                )
+            } else {
+                EntityProfileItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 4.dp),
+                    display = entity,
+                )
+            }
+        }
+        item(
+            span = { GridItemSpan(maxLineSpan) }
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                AppButton(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = stringResource(
+                        if (display.isActivated) {
+                            Res.string.game_team_activated
+                        } else {
+                            Res.string.game_team_activate
+                        }
+                    ),
+                    enabled = !display.isActivated && display.entities.any { it != null },
+                    onClick = {
+                        onIntent(TeamsIntent.ActivateCurrentTeam)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptySlot(
+    modifier: Modifier = Modifier,
+) {
+    OutlinedCard(
+        modifier = modifier,
+    ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(vertical = 34.dp),
+                text = stringResource(Res.string.empty_slot)
+            )
+        }
     }
 }

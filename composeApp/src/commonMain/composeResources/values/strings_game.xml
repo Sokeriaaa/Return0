@@ -16,6 +16,11 @@
     <string name="game_select_entity">Select an Entity</string>
     <string name="game_select_entity_warn">Please select one entity.</string>
 
+    <string name="game_team_default">Team #%1$s</string>
+    <string name="game_team_new">(New Team)</string>
+    <string name="game_team_activate">Activate Team</string>
+    <string name="game_team_activated">Activated</string>
+
     <string name="game_complete_code">Complete Code</string>
     <string name="game_complete_code_run">Run</string>
     <string name="game_complete_code_run_failed">Failed to run the code. Please check comments.</string>

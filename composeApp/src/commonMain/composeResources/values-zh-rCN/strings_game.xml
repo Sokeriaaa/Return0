@@ -16,6 +16,11 @@
     <string name="game_select_entity">选择一个对象</string>
     <string name="game_select_entity_warn">请选择一个对象。</string>
 
+    <string name="game_team_default">队伍 #%1$s</string>
+    <string name="game_team_new">（新队伍）</string>
+    <string name="game_team_activate">使用此队伍</string>
+    <string name="game_team_activated">队伍使用中</string>
+
     <string name="game_complete_code">完成代码</string>
     <string name="game_complete_code_run">运行</string>
     <string name="game_complete_code_run_failed">运行代码失败。请查看注释。</string>

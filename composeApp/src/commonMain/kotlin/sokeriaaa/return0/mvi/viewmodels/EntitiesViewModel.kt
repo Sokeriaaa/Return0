@@ -28,6 +28,7 @@ import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.ui.common.entity.EntityProfile
 
 class EntitiesViewModel : BaseViewModel() {
 
@@ -36,8 +37,8 @@ class EntitiesViewModel : BaseViewModel() {
     private val _entityRepo: GameEntityRepo by inject()
 
     // All entities
-    private val _entities: MutableList<Display> = mutableStateListOf()
-    val entities: List<Display> = _entities
+    private val _entities: MutableList<EntityProfile> = mutableStateListOf()
+    val entities: List<EntityProfile> = _entities
 
     // Sorter
     var orderBy by mutableStateOf(OrderBy.LEVEL)
@@ -60,12 +61,12 @@ class EntitiesViewModel : BaseViewModel() {
         _entities.clear()
         _entities.addAll(
             _entityRepo.queryAll().asSequence()
-                .mapNotNull { getEntityDisplay(it) }
+                .mapNotNull { getEntityProfile(it) }
         )
 
     }
 
-    private fun getEntityDisplay(table: EntityTable): Display? {
+    private fun getEntityProfile(table: EntityTable): EntityProfile? {
         val entityData = _archiveRepo.getEntityData(table.entityName) ?: return null
 
         // Get the growth data of the primary category of entity.
@@ -81,7 +82,7 @@ class EntitiesViewModel : BaseViewModel() {
             sp = table.currentSP ?: maxsp
         }
         // Assemble display
-        return Display(
+        return EntityProfile(
             name = table.entityName,
             level = table.level,
             expProgress = EntityLevelHelper.levelProgress(
@@ -95,19 +96,6 @@ class EntitiesViewModel : BaseViewModel() {
             maxSP = entity.maxsp,
         )
     }
-
-    /**
-     * Entity item display.
-     */
-    data class Display(
-        val name: String,
-        val level: Int,
-        val expProgress: Float,
-        val hp: Int,
-        val maxHP: Int,
-        val sp: Int,
-        val maxSP: Int,
-    )
 
     enum class OrderBy {
         NAME,
