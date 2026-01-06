@@ -21,6 +21,8 @@ import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao
 import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
+import sokeriaaa.return0.applib.room.dao.PluginConstDao
+import sokeriaaa.return0.applib.room.dao.PluginInventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
@@ -37,6 +39,8 @@ actual abstract class AppDatabase {
     actual abstract fun getEventRelocationDao(): EventRelocationDao
     actual abstract fun getIndexedHubDao(): IndexedHubDao
     actual abstract fun getInventoryDao(): InventoryDao
+    actual abstract fun getPluginConstDao(): PluginConstDao
+    actual abstract fun getPluginInventoryDao(): PluginInventoryDao
     actual abstract fun getQuestDao(): QuestDao
     actual abstract fun getSavedSwitchDao(): SavedSwitchDao
     actual abstract fun getSavedTimestampDao(): SavedTimestampDao

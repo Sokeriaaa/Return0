@@ -28,6 +28,8 @@ import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao
 import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
+import sokeriaaa.return0.applib.room.dao.PluginConstDao
+import sokeriaaa.return0.applib.room.dao.PluginInventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
@@ -42,6 +44,8 @@ import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
 import sokeriaaa.return0.applib.room.table.IndexedHubTable
 import sokeriaaa.return0.applib.room.table.InventoryTable
+import sokeriaaa.return0.applib.room.table.PluginConstTable
+import sokeriaaa.return0.applib.room.table.PluginInventoryTable
 import sokeriaaa.return0.applib.room.table.QuestTable
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
@@ -60,6 +64,8 @@ import sokeriaaa.return0.applib.room.table.TeamTable
         EventRelocationTable::class,
         IndexedHubTable::class,
         InventoryTable::class,
+        PluginConstTable::class,
+        PluginInventoryTable::class,
         QuestTable::class,
         SaveMetaTable::class,
         SavedSwitchTable::class,
@@ -78,6 +84,8 @@ actual abstract class AppDatabase : RoomDatabase() {
     actual abstract fun getEventRelocationDao(): EventRelocationDao
     actual abstract fun getIndexedHubDao(): IndexedHubDao
     actual abstract fun getInventoryDao(): InventoryDao
+    actual abstract fun getPluginConstDao(): PluginConstDao
+    actual abstract fun getPluginInventoryDao(): PluginInventoryDao
     actual abstract fun getQuestDao(): QuestDao
     actual abstract fun getSavedSwitchDao(): SavedSwitchDao
     actual abstract fun getSavedTimestampDao(): SavedTimestampDao

@@ -29,6 +29,10 @@ import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.IndexedHubDaoImpl
 import sokeriaaa.return0.applib.room.dao.InventoryDao
 import sokeriaaa.return0.applib.room.dao.InventoryDaoImpl
+import sokeriaaa.return0.applib.room.dao.PluginConstDao
+import sokeriaaa.return0.applib.room.dao.PluginConstDaoImpl
+import sokeriaaa.return0.applib.room.dao.PluginInventoryDao
+import sokeriaaa.return0.applib.room.dao.PluginInventoryDaoImpl
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.QuestDaoImpl
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
@@ -74,6 +78,14 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
         InventoryDaoImpl(sqDatabase.sQInventoryQueries)
     }
 
+    private val _pluginConstDao by lazy {
+        PluginConstDaoImpl(sqDatabase.sQPluginConstQueries)
+    }
+
+    private val _pluginInventoryDao by lazy {
+        PluginInventoryDaoImpl(sqDatabase.sQPluginInventoryQueries)
+    }
+
     private val _questDao by lazy {
         QuestDaoImpl(sqDatabase.sQQuestQueries)
     }
@@ -109,6 +121,8 @@ class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
     override fun getEventRelocationDao(): EventRelocationDao = _eventRelocationDao
     override fun getIndexedHubDao(): IndexedHubDao = _indexedHubDao
     override fun getInventoryDao(): InventoryDao = _inventoryDao
+    override fun getPluginConstDao(): PluginConstDao = _pluginConstDao
+    override fun getPluginInventoryDao(): PluginInventoryDao = _pluginInventoryDao
     override fun getQuestDao(): QuestDao = _questDao
     override fun getSavedSwitchDao(): SavedSwitchDao = _savedSwitchDao
     override fun getSavedTimestampDao(): SavedTimestampDao = _savedTimestampDao

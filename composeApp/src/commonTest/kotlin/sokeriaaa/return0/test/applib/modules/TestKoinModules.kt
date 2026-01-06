@@ -85,7 +85,10 @@ object TestKoinModules {
         single { get<AppDatabase>().getEmulatorIndexDao() }
         single { get<AppDatabase>().getEntityDao() }
         single { get<AppDatabase>().getEventRelocationDao() }
+        single { get<AppDatabase>().getIndexedHubDao() }
         single { get<AppDatabase>().getInventoryDao() }
+        single { get<AppDatabase>().getPluginConstDao() }
+        single { get<AppDatabase>().getPluginInventoryDao() }
         single { get<AppDatabase>().getQuestDao() }
         single { get<AppDatabase>().getSavedSwitchDao() }
         single { get<AppDatabase>().getSavedTimestampDao() }

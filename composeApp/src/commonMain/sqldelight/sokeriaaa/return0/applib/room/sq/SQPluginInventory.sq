@@ -1,0 +1,113 @@
+-- Copyright (C) 2026 Sokeriaaa
+--
+-- This program is free software: you can redistribute it and/or modify it under the terms of
+-- the GNU Affero General Public License as published by the Free Software Foundation, version 3.
+--
+-- This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+-- without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- See the GNU Affero General Public License for more details.
+--
+-- You should have received a copy of the GNU Affero General Public License along with this program.
+-- If not, see <https://www.gnu.org/licenses/>.
+CREATE TABLE return0_plugin_inventory (
+    save_id INTEGER NOT NULL,
+    plugin_id INTEGER NOT NULL,
+    installed_by TEXT,
+    param1 TEXT,
+    param2 TEXT,
+    param3 TEXT,
+    param4 TEXT,
+    param5 TEXT,
+
+    PRIMARY KEY (save_id, plugin_id)
+);
+
+CREATE INDEX idx_plugin_inventory_installed_by
+ON return0_plugin_inventory(installed_by);
+
+queryPluginItem:
+SELECT
+    i.save_id,
+    i.plugin_id,
+    i.installed_by,
+    i.param1,
+    i.param2,
+    i.param3,
+    i.param4,
+    i.param5,
+
+    c.plugin_id AS const_plugin_id,
+    c.name,
+    c.tier,
+    c.const1,
+    c.const1_tier,
+    c.const2,
+    c.const2_tier,
+    c.const3,
+    c.const3_tier,
+    c.const4,
+    c.const4_tier,
+    c.const5,
+    c.const5_tier,
+    c.const6,
+    c.const6_tier
+FROM return0_plugin_inventory i
+JOIN return0_plugin_const c
+  ON i.plugin_id = c.plugin_id
+WHERE i.save_id = ?
+  AND i.plugin_id = ?
+LIMIT 1;
+
+queryAllPluginItems:
+SELECT
+    i.save_id,
+    i.plugin_id,
+    i.installed_by,
+    i.param1,
+    i.param2,
+    i.param3,
+    i.param4,
+    i.param5,
+
+    c.plugin_id AS const_plugin_id,
+    c.name,
+    c.tier,
+    c.const1,
+    c.const1_tier,
+    c.const2,
+    c.const2_tier,
+    c.const3,
+    c.const3_tier,
+    c.const4,
+    c.const4_tier,
+    c.const5,
+    c.const5_tier,
+    c.const6,
+    c.const6_tier
+FROM return0_plugin_inventory i
+JOIN return0_plugin_const c
+  ON i.plugin_id = c.plugin_id
+WHERE i.save_id = ?;
+
+
+insertOrUpdate:
+INSERT OR REPLACE INTO return0_plugin_inventory (
+    save_id,
+    plugin_id,
+    installed_by,
+    param1,
+    param2,
+    param3,
+    param4,
+    param5
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+deletePlugin:
+DELETE FROM return0_plugin_inventory
+WHERE save_id = ?
+  AND plugin_id = ?;
+
+deleteBySave:
+DELETE FROM return0_plugin_inventory
+WHERE save_id = ?;
