@@ -14,31 +14,47 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.InventoryTable
 
-expect interface InventoryDao {
+@Dao
+interface InventoryDao {
     /**
      * Query the data with specified save ID and item key.
      */
+    @Query(
+        "SELECT * FROM `${InventoryTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `item_key`=:key"
+    )
     suspend fun query(saveID: Int, key: String): InventoryTable?
 
     /**
      * Query all the inventory data with specified save ID.
      */
+    @Query(
+        "SELECT * FROM `${InventoryTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun queryAll(saveID: Int): List<InventoryTable>
 
     /**
      * Insert or update.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(table: InventoryTable)
 
     /**
      * Insert a list of inventory data.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(list: List<InventoryTable>)
 
     /**
      * Delete the inventory data for specified save ID.
      */
+    @Query(
+        "DELETE FROM `${InventoryTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun delete(saveID: Int)
 }

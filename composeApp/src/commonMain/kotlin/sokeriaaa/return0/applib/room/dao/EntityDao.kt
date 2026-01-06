@@ -14,13 +14,21 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.EntityTable
 
-expect interface EntityDao {
+@Dao
+interface EntityDao {
 
     /**
      * Query all entities form specified save ID.
      */
+    @Query(
+        "SELECT * FROM `${EntityTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun queryAll(
         saveID: Int = -1,
     ): List<EntityTable>
@@ -28,6 +36,10 @@ expect interface EntityDao {
     /**
      * Get entity by name.
      */
+    @Query(
+        "SELECT * FROM `${EntityTable.TABLE_NAME}` WHERE " +
+                "`save_id`=:saveID AND `entity_name`=:entityName LIMIT 1"
+    )
     suspend fun getEntity(
         saveID: Int = -1,
         entityName: String,
@@ -36,6 +48,11 @@ expect interface EntityDao {
     /**
      * Update the current HP of entity.
      */
+    @Query(
+        "UPDATE `${EntityTable.TABLE_NAME}` SET " +
+                "`current_hp`=:hp WHERE " +
+                "`save_id`=:saveID AND `entity_name`=:entityName"
+    )
     suspend fun updateHP(
         saveID: Int = -1,
         entityName: String,
@@ -45,6 +62,11 @@ expect interface EntityDao {
     /**
      * Update the current SP of entity.
      */
+    @Query(
+        "UPDATE `${EntityTable.TABLE_NAME}` SET " +
+                "`current_sp`=:sp WHERE " +
+                "`save_id`=:saveID AND `entity_name`=:entityName"
+    )
     suspend fun updateSP(
         saveID: Int = -1,
         entityName: String,
@@ -54,6 +76,11 @@ expect interface EntityDao {
     /**
      * Change the equipped plugin of entity.
      */
+    @Query(
+        "UPDATE `${EntityTable.TABLE_NAME}` SET " +
+                "`plugin_id`=:pluginID WHERE " +
+                "`save_id`=:saveID AND `entity_name`=:entityName"
+    )
     suspend fun updatePlugin(
         saveID: Int = -1,
         entityName: String,
@@ -63,22 +90,21 @@ expect interface EntityDao {
     /**
      * Insert an EntityTable directly.
      */
-    suspend fun insert(
-        entityTable: EntityTable,
-    )
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entityTable: EntityTable)
 
     /**
      * Insert an EntityTable directly.
      */
-    suspend fun insertList(
-        list: List<EntityTable>,
-    )
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertList(list: List<EntityTable>)
 
     /**
      * Delete a whole save.
      */
-    suspend fun deleteSave(
-        saveID: Int,
+    @Query(
+        "DELETE FROM `${EntityTable.TABLE_NAME}` WHERE `save_id`=:saveID"
     )
+    suspend fun deleteSave(saveID: Int)
 
 }

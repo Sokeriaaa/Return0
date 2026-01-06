@@ -14,38 +14,61 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.shared.data.models.title.Title
 
-expect interface SaveMetaDao {
+@Dao
+interface SaveMetaDao {
 
     /**
      * Query all the saves in current device.
      */
+    @Query(
+        "SELECT * FROM `${SaveMetaTable.TABLE_NAME}`"
+    )
     suspend fun queryAll(): List<SaveMetaTable>
 
     /**
      * Query the save with the specified ID.
      */
+    @Query(
+        "SELECT * FROM `${SaveMetaTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun query(saveID: Int): SaveMetaTable?
 
     /**
      * Insert or update the save.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(table: SaveMetaTable)
 
     /**
      * Update player's position.
      */
+    @Query(
+        "UPDATE `${SaveMetaTable.TABLE_NAME}` SET `file_name`=:fileName, " +
+                "`line_number`=:lineNumber WHERE `save_id`=:saveID"
+    )
     suspend fun updatePosition(saveID: Int, fileName: String, lineNumber: Int)
 
     /**
      * Update player's title.
      */
+    @Query(
+        "UPDATE `${SaveMetaTable.TABLE_NAME}` SET `title`=:title " +
+                "WHERE `save_id`=:saveID"
+    )
     suspend fun updateTitle(saveID: Int, title: Title)
 
     /**
      * Delete the save with specified ID.
      */
+    @Query(
+        "DELETE FROM `${SaveMetaTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun delete(saveID: Int)
 }

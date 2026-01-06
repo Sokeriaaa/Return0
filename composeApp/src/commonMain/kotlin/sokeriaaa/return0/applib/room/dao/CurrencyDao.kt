@@ -14,32 +14,48 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
-expect interface CurrencyDao {
+@Dao
+interface CurrencyDao {
     /**
      * Query the currency value with specified save ID and currency type.
      */
+    @Query(
+        "SELECT * FROM `${CurrencyTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `currency`=:currency"
+    )
     suspend fun query(saveID: Int, currency: CurrencyType): CurrencyTable?
 
     /**
      * Query all the currency value with specified save ID.
      */
+    @Query(
+        "SELECT * FROM `${CurrencyTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun queryAll(saveID: Int): List<CurrencyTable>
 
     /**
      * Insert or update.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(table: CurrencyTable)
 
     /**
      * Insert a list of currency data.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(list: List<CurrencyTable>)
 
     /**
      * Delete the currency data for specified save ID.
      */
+    @Query(
+        "DELETE FROM `${CurrencyTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun delete(saveID: Int)
 }

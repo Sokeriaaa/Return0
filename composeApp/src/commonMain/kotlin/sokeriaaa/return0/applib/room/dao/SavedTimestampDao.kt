@@ -14,31 +14,47 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.SavedTimestampTable
 
-expect interface SavedTimestampDao {
+@Dao
+interface SavedTimestampDao {
     /**
      * Query the saved timestamp with specified save ID and key.
      */
+    @Query(
+        "SELECT * FROM `${SavedTimestampTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `saved_key`=:key"
+    )
     suspend fun query(saveID: Int, key: String): SavedTimestampTable?
 
     /**
      * Query all the saved timestamps with specified save ID.
      */
+    @Query(
+        "SELECT * FROM `${SavedTimestampTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun queryAll(saveID: Int): List<SavedTimestampTable>
 
     /**
      * Insert or update.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(table: SavedTimestampTable)
 
     /**
      * Insert a list of saved timestamps.
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(list: List<SavedTimestampTable>)
 
     /**
      * Delete the saved timestamps for specified save ID.
      */
+    @Query(
+        "DELETE FROM `${SavedTimestampTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
     suspend fun delete(saveID: Int)
 }

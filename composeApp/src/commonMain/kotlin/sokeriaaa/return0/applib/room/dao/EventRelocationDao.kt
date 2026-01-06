@@ -14,20 +14,30 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
 
-expect interface EventRelocationDao {
+@Dao
+interface EventRelocationDao {
 
     /**
      * Query all events form specified save ID.
      */
-    suspend fun queryAll(
-        saveID: Int = -1,
-    ): List<EventRelocationTable>
+    @Query(
+        "SELECT * FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID"
+    )
+    suspend fun queryAll(saveID: Int = -1): List<EventRelocationTable>
 
     /**
      * Query the event with specified key and from specified map in the specified save.
      */
+    @Query(
+        "SELECT * FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID " +
+                "AND `event_key`=:eventKey AND `file_name`=:fileName LIMIT 1"
+    )
     suspend fun query(
         saveID: Int = -1,
         eventKey: String,
@@ -37,6 +47,10 @@ expect interface EventRelocationDao {
     /**
      * Query all events from specified map in the specified save.
      */
+    @Query(
+        "SELECT * FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID " +
+                "AND `file_name`=:fileName"
+    )
     suspend fun queryAllByFileName(
         saveID: Int = -1,
         fileName: String,
@@ -45,21 +59,20 @@ expect interface EventRelocationDao {
     /**
      * Insert an EventRelocationTable directly.
      */
-    suspend fun insertOrUpdate(
-        table: EventRelocationTable,
-    )
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(table: EventRelocationTable)
 
     /**
      * Insert a list of EventRelocationTable directly.
      */
-    suspend fun insertOrUpdateList(
-        list: List<EventRelocationTable>,
-    )
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdateList(list: List<EventRelocationTable>)
 
     /**
      * Delete a whole save.
      */
-    suspend fun deleteSave(
-        saveID: Int,
+    @Query(
+        "DELETE FROM `${EventRelocationTable.TABLE_NAME}` WHERE `save_id`=:saveID"
     )
+    suspend fun deleteSave(saveID: Int)
 }
