@@ -10,15 +10,6 @@
 --
 -- You should have received a copy of the GNU Affero General Public License along with this program.
 -- If not, see <https://www.gnu.org/licenses/>.
-CREATE TABLE return0_indexed_hubs (
-    save_id INTEGER NOT NULL,
-    file_name TEXT NOT NULL,
-    line_number INTEGER NOT NULL,
-    indexed_time INTEGER NOT NULL,
-
-    PRIMARY KEY (save_id, file_name, line_number)
-);
-
 queryAll:
 SELECT *
 FROM return0_indexed_hubs

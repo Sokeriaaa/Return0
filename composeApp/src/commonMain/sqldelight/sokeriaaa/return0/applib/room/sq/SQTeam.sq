@@ -10,19 +10,6 @@
 --
 -- You should have received a copy of the GNU Affero General Public License along with this program.
 -- If not, see <https://www.gnu.org/licenses/>.
-CREATE TABLE return0_team (
-    save_id INTEGER NOT NULL,
-    team_id INTEGER NOT NULL,
-    name TEXT,
-    is_activated INTEGER NOT NULL,
-    slot1 TEXT,
-    slot2 TEXT,
-    slot3 TEXT,
-    slot4 TEXT,
-
-    PRIMARY KEY (save_id, team_id)
-);
-
 query:
 SELECT *
 FROM return0_team

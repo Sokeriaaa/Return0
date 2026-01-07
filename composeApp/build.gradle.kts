@@ -186,6 +186,11 @@ sqldelight {
     databases {
         create("SQDatabase") {
             packageName.set("sokeriaaa.return0.applib.room")
+            srcDirs(
+                // TODO Configure paths.
+                "build/generated/ksp/android/androidDebug/resources/sqldelight",
+                "src/commonMain/sqldelight",
+            )
             generateAsync.set(true)
         }
     }
@@ -203,7 +208,17 @@ dependencies {
     ).forEach {
         add(configurationName = it, dependencyNotation = libs.androidx.room.compiler)
     }
-    add(configurationName = "kspAndroid", dependencyNotation = project(":room2sqldelight-ksp"))
+    listOf(
+        "kspAndroid",
+        "kspJvm",
+        "kspIosX64",
+        "kspIosArm64",
+        "kspIosSimulatorArm64",
+        "kspJs",
+        "kspWasmJs",
+    ).forEach {
+        add(configurationName = it, dependencyNotation = project(":room2sqldelight-ksp"))
+    }
 }
 
 compose.desktop {

@@ -10,30 +10,6 @@
 --
 -- You should have received a copy of the GNU Affero General Public License along with this program.
 -- If not, see <https://www.gnu.org/licenses/>.
-CREATE TABLE return0_plugin_const (
-    plugin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    tier INTEGER NOT NULL,
-
-    const1 TEXT,
-    const1_tier INTEGER NOT NULL,
-
-    const2 TEXT,
-    const2_tier INTEGER NOT NULL,
-
-    const3 TEXT,
-    const3_tier INTEGER NOT NULL,
-
-    const4 TEXT,
-    const4_tier INTEGER NOT NULL,
-
-    const5 TEXT,
-    const5_tier INTEGER NOT NULL,
-
-    const6 TEXT,
-    const6_tier INTEGER NOT NULL
-);
-
 queryById:
 SELECT *
 FROM return0_plugin_const
