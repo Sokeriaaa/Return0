@@ -21,13 +21,16 @@ import sokeriaaa.return0.applib.room.table.PluginItem
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 
 class PluginInventoryDaoImpl(
-    private val queries: SQPluginInventoryQueries
+    private val queries: SQPluginInventoryDaoQueries,
+    // TODO Embedded entities are not supported yet.
+    // TODO Use manual implementation.
+    private val queriesManual: SQPluginInventoryQueries,
 ) : PluginInventoryDao {
     override suspend fun query(
         saveID: Int,
         pluginID: Int
     ): PluginItem? {
-        return queries.queryPluginItem(
+        return queriesManual.queryPluginItem(
             save_id = saveID.toLong(),
             plugin_id = pluginID.toLong(),
             mapper = ::pluginItemMapper
@@ -35,7 +38,7 @@ class PluginInventoryDaoImpl(
     }
 
     override suspend fun queryAll(saveID: Int): List<PluginItem> {
-        return queries.queryAllPluginItems(
+        return queriesManual.queryAllPluginItems(
             save_id = saveID.toLong(),
             mapper = ::pluginItemMapper
         ).executeAsList()
@@ -63,7 +66,7 @@ class PluginInventoryDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(saveID.toLong())
+        queries.delete(saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

@@ -14,16 +14,16 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQEmulatorEntryQueries
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 
 class EmulatorEntryDaoImpl(
-    private val queries: SQEmulatorEntryQueries,
+    private val queries: SQEmulatorEntryDaoQueries,
 ) : EmulatorEntryDao {
 
     override suspend fun insertList(list: List<EmulatorEntryTable>) {
         list.forEach {
-            queries.insert(
+            queries.insertList(
+                id = null,
                 preset_id = it.presetID.toLong(),
                 is_party = if (it.isParty) 1L else 0L,
                 entity_name = it.entityName,

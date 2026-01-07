@@ -14,25 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQTeamQueries
 import sokeriaaa.return0.applib.room.table.TeamTable
 
-/**
- * Copyright (C) 2025 Sokeriaaa
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of
- * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * See the GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License along with this program.
- * If not, see <https://www.gnu.org/licenses/>.
- */
 class TeamDaoImpl(
-    val queries: SQTeamQueries,
+    val queries: SQTeamDaoQueries,
 ) : TeamDao {
     override suspend fun query(
         saveID: Int,
@@ -70,7 +55,7 @@ class TeamDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySaveID(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     override suspend fun activateTeam(saveID: Int, teamID: Int) {
@@ -85,7 +70,7 @@ class TeamDaoImpl(
         slot3: String?,
         slot4: String?
     ) {
-        queries.updateTeamMembers(
+        queries.updateMembers(
             save_id = saveID.toLong(),
             team_id = teamID.toLong(),
             slot1 = slot1,
@@ -96,7 +81,7 @@ class TeamDaoImpl(
     }
 
     override suspend fun updateName(saveID: Int, teamID: Int, name: String) {
-        queries.updateTeamName(
+        queries.updateName(
             save_id = saveID.toLong(),
             team_id = teamID.toLong(),
             name = name,

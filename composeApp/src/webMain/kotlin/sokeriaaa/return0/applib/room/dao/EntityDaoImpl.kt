@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQEntityQueries
 import sokeriaaa.return0.applib.room.table.EntityTable
 
 class EntityDaoImpl(
-    private val queries: SQEntityQueries,
+    private val queries: SQEntityDaoQueries,
 ) : EntityDao {
 
     override suspend fun queryAll(saveID: Int): List<EntityTable> {
@@ -68,7 +67,7 @@ class EntityDaoImpl(
     }
 
     override suspend fun insert(entityTable: EntityTable) {
-        queries.insertEntity(
+        queries.insert(
             save_id = entityTable.saveID.toLong(),
             entity_name = entityTable.entityName,
             level = entityTable.level.toLong(),

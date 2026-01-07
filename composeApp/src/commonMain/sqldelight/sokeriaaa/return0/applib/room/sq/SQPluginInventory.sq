@@ -73,25 +73,3 @@ FROM return0_plugin_inventory i
 JOIN return0_plugin_const c
   ON i.plugin_id = c.plugin_id
 WHERE i.save_id = ?;
-
-
-insertOrUpdate:
-INSERT OR REPLACE INTO return0_plugin_inventory (
-    save_id,
-    plugin_id,
-    installed_by,
-    param1,
-    param2,
-    param3,
-    param4,
-    param5
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-
-deletePlugin:
-DELETE FROM return0_plugin_inventory
-WHERE save_id = ?
-  AND plugin_id = ?;
-
-deleteBySave:
-DELETE FROM return0_plugin_inventory
-WHERE save_id = ?;

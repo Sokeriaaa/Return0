@@ -14,16 +14,15 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQPluginConstQueries
 import sokeriaaa.return0.applib.room.table.PluginConstTable
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 
 class PluginConstDaoImpl(
-    private val queries: SQPluginConstQueries,
+    private val queries: SQPluginConstDaoQueries,
 ) : PluginConstDao {
     override suspend fun query(pluginID: Int): PluginConstTable? {
         return queries
-            .queryById(pluginID.toLong(), mapper = ::convertToTable)
+            .query(pluginID.toLong(), mapper = ::convertToTable)
             .executeAsOneOrNull()
     }
 
@@ -52,7 +51,7 @@ class PluginConstDaoImpl(
     }
 
     override suspend fun delete(pluginID: Int) {
-        queries.deleteById(pluginID.toLong())
+        queries.delete(pluginID.toLong())
     }
 
     @Suppress("LocalVariableName")

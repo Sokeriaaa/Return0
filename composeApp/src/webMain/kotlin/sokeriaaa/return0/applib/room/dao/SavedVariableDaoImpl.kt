@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQSavedVariablesQueries
 import sokeriaaa.return0.applib.room.table.SavedVariableTable
 
 class SavedVariableDaoImpl(
-    val queries: SQSavedVariablesQueries,
+    val queries: SQSavedVariableDaoQueries,
 ) : SavedVariableDao {
     override suspend fun query(
         saveID: Int,
@@ -51,7 +50,7 @@ class SavedVariableDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

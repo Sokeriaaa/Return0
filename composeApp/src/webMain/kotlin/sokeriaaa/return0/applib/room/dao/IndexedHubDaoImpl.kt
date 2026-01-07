@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQIndexedHubQueries
 import sokeriaaa.return0.applib.room.table.IndexedHubTable
 
 class IndexedHubDaoImpl(
-    private val queries: SQIndexedHubQueries,
+    private val queries: SQIndexedHubDaoQueries,
 ) : IndexedHubDao {
     override suspend fun queryAll(saveID: Int): List<IndexedHubTable> {
         return queries
@@ -40,7 +39,7 @@ class IndexedHubDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(saveID.toLong())
+        queries.delete(saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

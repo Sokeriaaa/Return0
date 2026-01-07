@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQInventoryQueries
 import sokeriaaa.return0.applib.room.table.InventoryTable
 
 class InventoryDaoImpl(
-    val queries: SQInventoryQueries,
+    val queries: SQInventoryDaoQueries,
 ) : InventoryDao {
     override suspend fun query(
         saveID: Int,
@@ -51,7 +50,7 @@ class InventoryDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

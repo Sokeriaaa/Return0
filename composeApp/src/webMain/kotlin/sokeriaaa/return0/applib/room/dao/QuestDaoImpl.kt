@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQQuestQueries
 import sokeriaaa.return0.applib.room.table.QuestTable
 
 class QuestDaoImpl(
-    val queries: SQQuestQueries,
+    val queries: SQQuestDaoQueries,
 ) : QuestDao {
     override suspend fun query(
         saveID: Int,
@@ -64,7 +63,7 @@ class QuestDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")
