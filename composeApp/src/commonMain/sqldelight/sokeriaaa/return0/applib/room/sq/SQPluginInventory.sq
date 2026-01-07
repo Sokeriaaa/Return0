@@ -10,19 +10,6 @@
 --
 -- You should have received a copy of the GNU Affero General Public License along with this program.
 -- If not, see <https://www.gnu.org/licenses/>.
-CREATE TABLE return0_plugin_inventory (
-    save_id INTEGER NOT NULL,
-    plugin_id INTEGER NOT NULL,
-    installed_by TEXT,
-    param1 TEXT,
-    param2 TEXT,
-    param3 TEXT,
-    param4 TEXT,
-    param5 TEXT,
-
-    PRIMARY KEY (save_id, plugin_id)
-);
-
 CREATE INDEX idx_plugin_inventory_installed_by
 ON return0_plugin_inventory(installed_by);
 

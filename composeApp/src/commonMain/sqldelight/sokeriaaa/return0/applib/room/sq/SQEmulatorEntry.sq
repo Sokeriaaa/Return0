@@ -10,16 +10,6 @@
 --
 -- You should have received a copy of the GNU Affero General Public License along with this program.
 -- If not, see <https://www.gnu.org/licenses/>.
-CREATE TABLE return0_emulator_entries (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    preset_id INTEGER NOT NULL,
-    is_party INTEGER NOT NULL,
-    entity_name TEXT NOT NULL,
-    level INTEGER NOT NULL DEFAULT 1,
-    plugin_id INTEGER,
-    boss_multiplier INTEGER NOT NULL DEFAULT 1
-);
-
 insert:
 INSERT INTO return0_emulator_entries (
     preset_id,
