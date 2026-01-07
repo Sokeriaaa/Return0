@@ -14,15 +14,14 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQEventRelocationQueries
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
 
 class EventRelocationDaoImpl(
-    private val queries: SQEventRelocationQueries,
+    private val queries: SQEventRelocationDaoQueries,
 ) : EventRelocationDao {
 
     override suspend fun queryAll(saveID: Int): List<EventRelocationTable> {
-        return queries.queryAllBySave(
+        return queries.queryAll(
             save_id = saveID.toLong(),
             mapper = ::convertToTable,
         ).executeAsList()
@@ -33,7 +32,7 @@ class EventRelocationDaoImpl(
         eventKey: String,
         fileName: String
     ): EventRelocationTable? {
-        return queries.queryByKeyAndFileName(
+        return queries.query(
             save_id = saveID.toLong(),
             event_key = eventKey,
             file_name = fileName,

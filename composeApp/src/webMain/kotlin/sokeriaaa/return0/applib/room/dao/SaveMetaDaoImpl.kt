@@ -14,23 +14,22 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQSaveMetaQueries
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.shared.data.models.title.Title
 
 class SaveMetaDaoImpl(
-    private val queries: SQSaveMetaQueries,
+    private val queries: SQSaveMetaDaoQueries,
 ) : SaveMetaDao {
     override suspend fun queryAll(): List<SaveMetaTable> {
         return queries.queryAll(mapper = ::convertTotable).executeAsList()
     }
 
     override suspend fun query(saveID: Int): SaveMetaTable? {
-        return queries.queryById(saveID.toLong(), mapper = ::convertTotable).executeAsOneOrNull()
+        return queries.query(saveID.toLong(), mapper = ::convertTotable).executeAsOneOrNull()
     }
 
     override suspend fun insertOrUpdate(table: SaveMetaTable) {
-        queries.insertOrReplace(
+        queries.insertOrUpdate(
             save_id = table.saveID.toLong(),
             created_timed = table.createdTime,
             saved_timed = table.savedTime,
@@ -63,7 +62,7 @@ class SaveMetaDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteById(saveID.toLong())
+        queries.delete(saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

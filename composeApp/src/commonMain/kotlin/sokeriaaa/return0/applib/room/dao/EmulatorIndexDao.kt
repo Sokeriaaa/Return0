@@ -34,6 +34,9 @@ interface EmulatorIndexDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(emulatorIndexTable: EmulatorIndexTable): Long
 
+    @Query("SELECT last_insert_rowid()")
+    suspend fun selectLastInsertRowId(): Long
+
     /**
      * Rename a preset.
      */

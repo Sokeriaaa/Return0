@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQSavedTimestampsQueries
 import sokeriaaa.return0.applib.room.table.SavedTimestampTable
 
 class SavedTimestampDaoImpl(
-    val queries: SQSavedTimestampsQueries,
+    val queries: SQSavedTimestampDaoQueries,
 ) : SavedTimestampDao {
     override suspend fun query(
         saveID: Int,
@@ -51,7 +50,7 @@ class SavedTimestampDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

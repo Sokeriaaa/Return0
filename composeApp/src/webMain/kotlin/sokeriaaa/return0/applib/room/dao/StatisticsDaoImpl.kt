@@ -14,18 +14,17 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQStatisticsQueries
 import sokeriaaa.return0.applib.room.table.StatisticsTable
 
 class StatisticsDaoImpl(
-    private val queries: SQStatisticsQueries,
+    private val queries: SQStatisticsDaoQueries,
 ) : StatisticsDao {
     override suspend fun queryAll(): List<StatisticsTable> {
         return queries.queryAll(mapper = ::convertTotable).executeAsList()
     }
 
     override suspend fun query(saveID: Int): StatisticsTable? {
-        return queries.queryBySaveId(saveID.toLong(), mapper = ::convertTotable)
+        return queries.query(saveID.toLong(), mapper = ::convertTotable)
             .executeAsOneOrNull()
     }
 
@@ -42,7 +41,7 @@ class StatisticsDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySaveId(saveID.toLong())
+        queries.delete(saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

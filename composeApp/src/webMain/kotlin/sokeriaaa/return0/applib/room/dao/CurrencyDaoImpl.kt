@@ -14,12 +14,11 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQCurrencyQueries
 import sokeriaaa.return0.applib.room.table.CurrencyTable
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
 class CurrencyDaoImpl(
-    val queries: SQCurrencyQueries,
+    val queries: SQCurrencyDaoQueries,
 ) : CurrencyDao {
     override suspend fun query(
         saveID: Int,
@@ -52,7 +51,7 @@ class CurrencyDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")

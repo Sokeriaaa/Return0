@@ -182,20 +182,6 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
-sqldelight {
-    databases {
-        create("SQDatabase") {
-            packageName.set("sokeriaaa.return0.applib.room")
-            srcDirs(
-                // TODO Configure paths.
-                "build/generated/ksp/android/androidDebug/resources/sqldelight",
-                "src/commonMain/sqldelight",
-            )
-            generateAsync.set(true)
-        }
-    }
-}
-
 dependencies {
     debugImplementation(compose.uiTooling)
     // Room compiler
@@ -218,6 +204,20 @@ dependencies {
         "kspWasmJs",
     ).forEach {
         add(configurationName = it, dependencyNotation = project(":room2sqldelight-ksp"))
+    }
+}
+
+sqldelight {
+    databases {
+        create("SQDatabase") {
+            packageName.set("sokeriaaa.return0.applib.room")
+            srcDirs(
+                // TODO Configure paths.
+                "build/generated/ksp/android/androidDebug/resources/sqldelight",
+                "src/commonMain/sqldelight",
+            )
+            generateAsync.set(true)
+        }
     }
 }
 

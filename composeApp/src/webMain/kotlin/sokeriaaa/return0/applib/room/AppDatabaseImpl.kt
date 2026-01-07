@@ -51,67 +51,70 @@ import sokeriaaa.return0.applib.room.dao.TeamDaoImpl
 class AppDatabaseImpl(private val sqDatabase: SQDatabase) : AppDatabase() {
 
     private val _currencyDao by lazy {
-        CurrencyDaoImpl(sqDatabase.sQCurrencyQueries)
+        CurrencyDaoImpl(sqDatabase.sQCurrencyDaoQueries)
     }
 
     private val _emulatorEntryDao by lazy {
-        EmulatorEntryDaoImpl(sqDatabase.sQEmulatorEntryQueries)
+        EmulatorEntryDaoImpl(sqDatabase.sQEmulatorEntryDaoQueries)
     }
 
     private val _emulatorIndexDao by lazy {
-        EmulatorIndexDaoImpl(sqDatabase.sQEmulatorIndexQueries)
+        EmulatorIndexDaoImpl(sqDatabase.sQEmulatorIndexDaoQueries)
     }
 
     private val _entityDao by lazy {
-        EntityDaoImpl(sqDatabase.sQEntityQueries)
+        EntityDaoImpl(sqDatabase.sQEntityDaoQueries)
     }
 
     private val _eventRelocationDao by lazy {
-        EventRelocationDaoImpl(sqDatabase.sQEventRelocationQueries)
+        EventRelocationDaoImpl(sqDatabase.sQEventRelocationDaoQueries)
     }
 
     private val _indexedHubDao by lazy {
-        IndexedHubDaoImpl(sqDatabase.sQIndexedHubQueries)
+        IndexedHubDaoImpl(sqDatabase.sQIndexedHubDaoQueries)
     }
 
     private val _inventoryDao by lazy {
-        InventoryDaoImpl(sqDatabase.sQInventoryQueries)
+        InventoryDaoImpl(sqDatabase.sQInventoryDaoQueries)
     }
 
     private val _pluginConstDao by lazy {
-        PluginConstDaoImpl(sqDatabase.sQPluginConstQueries)
+        PluginConstDaoImpl(sqDatabase.sQPluginConstDaoQueries)
     }
 
     private val _pluginInventoryDao by lazy {
-        PluginInventoryDaoImpl(sqDatabase.sQPluginInventoryQueries)
+        PluginInventoryDaoImpl(
+            sqDatabase.sQPluginInventoryDaoQueries,
+            sqDatabase.sQPluginInventoryQueries,
+        )
     }
 
     private val _questDao by lazy {
-        QuestDaoImpl(sqDatabase.sQQuestQueries)
+        QuestDaoImpl(sqDatabase.sQQuestDaoQueries)
     }
 
     private val _savedSwitchDao by lazy {
-        SavedSwitchDaoImpl(sqDatabase.sQSavedSwitchesQueries)
+        SavedSwitchDaoImpl(sqDatabase.sQSavedSwitchDaoQueries)
     }
 
     private val _savedTimestampDao by lazy {
-        SavedTimestampDaoImpl(sqDatabase.sQSavedTimestampsQueries)
+        SavedTimestampDaoImpl(sqDatabase.sQSavedTimestampDaoQueries)
     }
 
     private val _savedVariableDao by lazy {
-        SavedVariableDaoImpl(sqDatabase.sQSavedVariablesQueries)
+        SavedVariableDaoImpl(sqDatabase.sQSavedVariableDaoQueries)
     }
 
     private val _saveMetaDao by lazy {
-        SaveMetaDaoImpl(sqDatabase.sQSaveMetaQueries)
+        SaveMetaDaoImpl(sqDatabase.sQSaveMetaDaoQueries)
     }
 
     private val _statisticsDao by lazy {
-        StatisticsDaoImpl(sqDatabase.sQStatisticsQueries)
+        StatisticsDaoImpl(sqDatabase.sQStatisticsDaoQueries)
     }
 
     private val _teamDao by lazy {
-        TeamDaoImpl(sqDatabase.sQTeamQueries)
+        TeamDaoImpl(sqDatabase.sQTeamDaoQueries)
     }
 
     override fun getCurrencyDao(): CurrencyDao = _currencyDao

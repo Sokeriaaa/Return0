@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQEmulatorIndexQueries
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 
 class EmulatorIndexDaoImpl(
-    private val queries: SQEmulatorIndexQueries,
+    private val queries: SQEmulatorIndexDaoQueries,
 ) : EmulatorIndexDao {
     override suspend fun queryAll(): List<EmulatorIndexTable> {
         return queries.queryAll(mapper = ::convertToTable).executeAsList()
@@ -26,9 +25,14 @@ class EmulatorIndexDaoImpl(
 
     override suspend fun insert(emulatorIndexTable: EmulatorIndexTable): Long {
         queries.insert(
+            preset_id = null,
             name = emulatorIndexTable.name,
             created_time = emulatorIndexTable.createdTime,
         )
+        return selectLastInsertRowId()
+    }
+
+    override suspend fun selectLastInsertRowId(): Long {
         return queries.selectLastInsertRowId().executeAsOne()
     }
 

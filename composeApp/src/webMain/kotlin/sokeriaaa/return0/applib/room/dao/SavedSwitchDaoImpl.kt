@@ -14,11 +14,10 @@
  */
 package sokeriaaa.return0.applib.room.dao
 
-import sokeriaaa.return0.applib.room.sq.SQSavedSwitchesQueries
 import sokeriaaa.return0.applib.room.table.SavedSwitchTable
 
 class SavedSwitchDaoImpl(
-    val queries: SQSavedSwitchesQueries,
+    val queries: SQSavedSwitchDaoQueries,
 ) : SavedSwitchDao {
     override suspend fun query(
         saveID: Int,
@@ -51,7 +50,7 @@ class SavedSwitchDaoImpl(
     }
 
     override suspend fun delete(saveID: Int) {
-        queries.deleteBySave(save_id = saveID.toLong())
+        queries.delete(save_id = saveID.toLong())
     }
 
     @Suppress("LocalVariableName")
