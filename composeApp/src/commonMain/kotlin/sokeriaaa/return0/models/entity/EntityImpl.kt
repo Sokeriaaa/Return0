@@ -23,6 +23,7 @@ import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.CommonFunctions
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.action.function.generateFunctionFor
+import sokeriaaa.return0.models.entity.plugin.EntityPlugin
 import sokeriaaa.return0.models.entity.shield.Shield
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
@@ -36,25 +37,33 @@ fun EntityData.generate(
     level: Int,
     growth: EntityGrowth,
     isParty: Boolean,
-): Entity = EntityImpl(
-    index = index,
-    isParty = isParty,
-    name = this.name,
-    level = level,
-    path = path,
-    category = this.category,
-    category2 = this.category2,
-    baseATK = (this.baseATK * (1 + growth.atkGrowth * level)).toInt(),
-    baseDEF = (this.baseDEF * (1 + growth.defGrowth * level)).toInt(),
-    baseSPD = (this.baseSPD * (1 + growth.spdGrowth * level)).toInt(),
-    baseHP = (this.baseHP * (1 + growth.hpGrowth * level)).toInt(),
-    baseSP = (this.baseSP * (1 + growth.spGrowth * level)).toInt(),
-    baseAP = this.baseAP,
-    functions = this.functions,
-    attackModifier = this.attackModifier,
-)
+    plugin: EntityPlugin? = null,
+): Entity {
+    val entity = EntityImpl(
+        index = index,
+        isParty = isParty,
+        name = this.name,
+        level = level,
+        path = path,
+        category = this.category,
+        category2 = this.category2,
+        baseATK = (this.baseATK * (1 + growth.atkGrowth * level)).toInt(),
+        baseDEF = (this.baseDEF * (1 + growth.defGrowth * level)).toInt(),
+        baseSPD = (this.baseSPD * (1 + growth.spdGrowth * level)).toInt(),
+        baseHP = (this.baseHP * (1 + growth.hpGrowth * level)).toInt(),
+        baseSP = (this.baseSP * (1 + growth.spGrowth * level)).toInt(),
+        baseAP = this.baseAP,
+        functionDataList = this.functions,
+        attackModifier = this.attackModifier,
+    )
+    return if (plugin == null) {
+        entity
+    } else {
+        PluggedEntity(entity, plugin)
+    }
+}
 
-internal class EntityImpl(
+internal open class EntityImpl(
     override val index: Int,
     override val isParty: Boolean,
     override val name: String,
@@ -68,33 +77,33 @@ internal class EntityImpl(
     override val baseHP: Int,
     override val baseSP: Int,
     override val baseAP: Int,
-    functions: List<FunctionData>,
-    attackModifier: EntityData.GeneralAttackModifier?
+    val functionDataList: List<FunctionData>,
+    val attackModifier: EntityData.GeneralAttackModifier?
 ) : Entity {
     override var isFailedFlag: Boolean = false
     override var atk: Int = baseATK
-        private set
+        protected set
     override var def: Int = baseDEF
-        private set
+        protected set
     override var spd: Int = baseSPD
-        private set
+        protected set
     override var hp: Int by mutableIntStateOf(0)
     override var maxhp: Int by mutableIntStateOf(baseHP)
-        private set
+        protected set
     override var sp: Int by mutableIntStateOf(0)
     override var maxsp: Int by mutableIntStateOf(baseSP)
-        private set
+        protected set
     override var ap: Float by mutableFloatStateOf(0F)
     override var maxap: Int by mutableIntStateOf(baseAP)
-        private set
+        protected set
     override var critRate: Float = AppConstants.BASE_CRITICAL_RATE
-        private set
+        protected set
     override var critDMG: Float = AppConstants.BASE_CRITICAL_DMG
-        private set
+        protected set
     override var targetRate: Float = AppConstants.BASE_TARGET_RATE
-        private set
+        protected set
     override var hideRate: Float = AppConstants.BASE_HIDE_RATE
-        private set
+        protected set
     override var shieldValue: Int by mutableIntStateOf(0)
 
     private var _apRecovery: Float = 0F
@@ -106,7 +115,7 @@ internal class EntityImpl(
     override val relaxAction: Skill =
         this.generateFunctionFor(CommonFunctions.relax)!!
 
-    override val functions: List<Skill> = functions.mapNotNull {
+    override val functions: List<Skill> = functionDataList.mapNotNull {
         this.generateFunctionFor(it)
     }
 
