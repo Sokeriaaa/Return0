@@ -22,10 +22,7 @@ import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.emulator_preset_save_success
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
-import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
-import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
+import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
@@ -39,7 +36,9 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
  */
 class EmulatorViewModel : BaseViewModel() {
 
+    // Repo
     private val _archiveRepo: ArchiveRepo by inject()
+    private val _emulatorRepo: EmulatorRepo by inject()
 
     val availableEntities: List<EntityData> = _archiveRepo.availableEntities()
 
@@ -48,9 +47,6 @@ class EmulatorViewModel : BaseViewModel() {
 
     private val _enemies: MutableList<EnemyState> = mutableStateListOf()
     val enemies: List<EnemyState> = _enemies
-
-    private val _emulatorIndexDao: EmulatorIndexDao by inject()
-    private val _emulatorEntryDao: EmulatorEntryDao by inject()
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -86,45 +82,7 @@ class EmulatorViewModel : BaseViewModel() {
                 // Create index.
                 viewModelScope.launch {
                     onIntent(CommonIntent.ShowLoading)
-                    val presetID = _emulatorIndexDao.insert(
-                        EmulatorIndexTable(
-                            // Use created time as default name.
-                            name = createdTime.toString(),
-                            createdTime = createdTime,
-                        )
-                    ).toInt()
-                    // Save entries
-                    val list = ArrayList<EmulatorEntryTable>()
-                    parties.forEach {
-                        list.add(
-                            EmulatorEntryTable(
-                                presetID = presetID,
-                                isParty = true,
-                                entityName = it.entityData.name,
-                                level = it.level,
-                                // Preserved future use: Plugin
-                                pluginID = null,
-                                // Preserved future use: Boss multiplier
-                                bossMultiplier = 1,
-                            )
-                        )
-                    }
-                    enemies.forEach {
-                        list.add(
-                            EmulatorEntryTable(
-                                presetID = presetID,
-                                isParty = false,
-                                entityName = it.entityData.name,
-                                level = it.level,
-                                // Preserved future use: Plugin
-                                pluginID = null,
-                                // Preserved future use: Boss multiplier
-                                bossMultiplier = 1,
-                            )
-                        )
-                    }
-                    // Insert to database
-                    _emulatorEntryDao.insertList(list)
+                    _emulatorRepo.savePreset(parties, enemies)
                     onIntent(CommonIntent.HideLoading)
                     onIntent(
                         CommonIntent.ShowSnackBar(

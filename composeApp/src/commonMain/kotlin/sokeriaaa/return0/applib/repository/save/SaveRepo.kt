@@ -50,6 +50,14 @@ class SaveRepo(
     private val statisticsDao: StatisticsDao,
     private val teamDao: TeamDao,
 ) {
+
+    /**
+     * Query all saves.
+     */
+    suspend fun getAllSaves(): Map<Int, SaveMetaTable> {
+        return saveMetaDao.queryAll().associateBy { it.saveID }
+    }
+
     /**
      * Generate a new save for specified save ID and **replace the old one**.
      */

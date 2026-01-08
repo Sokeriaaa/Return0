@@ -22,8 +22,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
-import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
-import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
+import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.BaseIntent
@@ -33,10 +32,9 @@ import sokeriaaa.return0.shared.data.models.combat.PartyState
 
 class EmulatorPresetViewModel : BaseViewModel() {
 
+    // Repo
     private val _archiveRepo: ArchiveRepo by inject()
-
-    private val _emulatorIndexDao: EmulatorIndexDao by inject()
-    private val _emulatorEntryDao: EmulatorEntryDao by inject()
+    private val _emulatorRepo: EmulatorRepo by inject()
 
     /**
      * Emulator preset index list.
@@ -68,7 +66,7 @@ class EmulatorPresetViewModel : BaseViewModel() {
     fun refreshPresetIndices() {
         viewModelScope.launch {
             _emulatorIndexList.clear()
-            _emulatorIndexList.addAll(_emulatorIndexDao.queryAll())
+            _emulatorIndexList.addAll(_emulatorRepo.queryAllIndices())
         }
     }
 
@@ -97,7 +95,7 @@ class EmulatorPresetViewModel : BaseViewModel() {
                 // Query entries
                 viewModelScope.launch {
                     selectedEntries = intent.presetIndex.presetID?.let {
-                        _emulatorEntryDao.queryList(it)
+                        _emulatorRepo.queryEntries(it)
                     }
                 }
             }
@@ -119,7 +117,7 @@ class EmulatorPresetViewModel : BaseViewModel() {
             is EmulatorPresetIntent.ExecuteRename -> {
                 viewModelScope.launch {
                     selectedPresetIndex?.presetID?.let {
-                        _emulatorIndexDao.rename(it, intent.name)
+                        _emulatorRepo.rename(it, intent.name)
                         isRenaming = false
                         refreshPresetIndices()
                     }
@@ -129,7 +127,7 @@ class EmulatorPresetViewModel : BaseViewModel() {
             is EmulatorPresetIntent.DeletePreset -> {
                 viewModelScope.launch {
                     intent.presetIndex.presetID?.let {
-                        _emulatorIndexDao.delete(it)
+                        _emulatorRepo.delete(it)
                         selectedPresetIndex = null
                         selectedEntries = null
                         refreshPresetIndices()

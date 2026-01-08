@@ -20,6 +20,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
+import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
@@ -36,6 +37,7 @@ object TestKoinModules {
     val modules = module {
         // Repo
         single { ArchiveRepo() }
+        single { EmulatorRepo(get(), get(), get()) }
         single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get()) }
         single { GameInventoryRepo(get()) }

@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
-import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.mvi.intents.CommonIntent
 
@@ -35,9 +34,6 @@ class SaveViewModel(
     private val _gameStateRepo: GameStateRepo by inject()
     private val _saveRepo: SaveRepo by inject()
 
-    // Database
-    private val _saveMetaDao: SaveMetaDao by inject()
-
     private var _saveMap: Map<Int, SaveMetaTable> by mutableStateOf(emptyMap())
     val saveMap: Map<Int, SaveMetaTable> get() = _saveMap
 
@@ -45,7 +41,7 @@ class SaveViewModel(
     fun refresh() {
         viewModelScope.launch {
             onIntent(CommonIntent.ShowLoading)
-            _saveMap = _saveMetaDao.queryAll().associateBy { it.saveID }
+            _saveMap = _saveRepo.getAllSaves()
             onIntent(CommonIntent.HideLoading)
         }
     }
