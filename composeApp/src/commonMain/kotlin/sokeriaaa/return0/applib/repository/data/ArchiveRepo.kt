@@ -24,6 +24,7 @@ import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
+import sokeriaaa.return0.shared.data.models.story.quest.QuestData
 
 /**
  * Stores archives data in memory.
@@ -83,6 +84,13 @@ class ArchiveRepo internal constructor() {
     suspend fun getItemData(key: String): ItemData? = try {
         JsonHelper.decodeFromString(
             string = Res.readBytes("files/data/inventory/$key.json").decodeToString()
+        )
+    } catch (_: MissingResourceException) {
+        null
+    }
+    suspend fun getQuestData(key: String): QuestData? = try {
+        JsonHelper.decodeFromString(
+            string = Res.readBytes("files/data/quest/$key.json").decodeToString()
         )
     } catch (_: MissingResourceException) {
         null

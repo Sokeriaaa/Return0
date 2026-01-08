@@ -14,37 +14,33 @@
  */
 package sokeriaaa.return0.ui.main.game.inventory
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_inventory
+import return0.composeapp.generated.resources.ic_outline_code_blocks_24
+import return0.composeapp.generated.resources.ic_outline_deployed_code_24
+import return0.composeapp.generated.resources.ic_outline_more_horiz_24
+import return0.composeapp.generated.resources.ic_outline_terminal_24
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
+import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
@@ -80,7 +76,6 @@ fun InventoryScreen(
             )
         }
     ) { paddingValues ->
-        var selectedIndex by remember { mutableIntStateOf(-1) }
         LazyColumn(
             modifier = Modifier.padding(paddingValues = paddingValues),
         ) {
@@ -90,9 +85,8 @@ fun InventoryScreen(
                 InventoryItem(
                     modifier = Modifier.fillMaxWidth(),
                     display = item,
-                    isSelected = selectedIndex == index,
                     onSelected = {
-                        selectedIndex = if (selectedIndex == index) -1 else index
+                        // TODO
                     }
                 )
             }
@@ -104,44 +98,25 @@ fun InventoryScreen(
 private fun InventoryItem(
     modifier: Modifier = Modifier,
     display: InventoryViewModel.ItemDisplay,
-    isSelected: Boolean,
     onSelected: () -> Unit,
 ) {
-    Column(
+    ListItem(
         modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onSelected)
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.weight(1F),
-                text = display.name,
-                maxLines = if (isSelected) Int.MAX_VALUE else 1,
+        leadingContent = {
+            Icon(
+                painter = painterResource(
+                    when (display.itemData.types.firstOrNull()) {
+                        ItemData.Type.CONSUMABLE -> Res.drawable.ic_outline_terminal_24
+                        ItemData.Type.MATERIAL -> Res.drawable.ic_outline_code_blocks_24
+                        ItemData.Type.QUEST -> Res.drawable.ic_outline_deployed_code_24
+                        ItemData.Type.OTHER, null -> Res.drawable.ic_outline_more_horiz_24
+                    }
+                ),
+                contentDescription = null,
             )
-            Text(
-                modifier = Modifier.padding(start = 4.dp),
-                text = display.amount.toString(),
-                maxLines = 1,
-            )
-        }
-        AnimatedVisibility(
-            visible = isSelected,
-        ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
-                text = display.description,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
-        HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-    }
+        },
+        headlineContent = { Text(display.name) },
+        supportingContent = { Text(display.description) },
+        trailingContent = { Text(display.amount.toString()) }
+    )
 }
