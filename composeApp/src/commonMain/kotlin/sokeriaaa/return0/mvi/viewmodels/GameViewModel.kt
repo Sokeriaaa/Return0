@@ -257,11 +257,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                 }
                 if (!isEncounterDisabled) {
                     // Check buggy area.
-                    if (
-                        _gameStateRepo.map.current.buggyRange.any {
-                            it.first <= current && current <= it.second
-                        }
-                    ) {
+                    if (_gameStateRepo.map.isInBuggyRange(current)) {
                         // Is in buggy range
                         _linesSinceLastCombat++
                         if (checkEncounter()) {

@@ -70,6 +70,13 @@ class GameMapRepo(
     }
 
     /**
+     * Is [currentRow] in the buggy range.
+     */
+    fun isInBuggyRange(currentRow: Int): Boolean {
+        return current.buggyRange.any { it.first <= currentRow && currentRow <= it.second }
+    }
+
+    /**
      * Load a map with specified path.
      *
      * @throws org.jetbrains.compose.resources.MissingResourceException If the map file is not exist.

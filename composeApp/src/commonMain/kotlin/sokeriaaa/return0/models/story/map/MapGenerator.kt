@@ -44,11 +44,15 @@ object MapGenerator {
         index: Int,
         state: State,
     ): MapRow {
+        val currentRow = index + 1
+        val isInBuggyRange = mapData.buggyRange.any {
+            it.first <= currentRow && currentRow <= it.second
+        }
         // If the map generation is about to finish, and brace depth is too high to finish the code,
         // Force it to generate the brace.
         if (mapData.lines - index <= state.braceDepth) {
             state.braceDepth--
-            return MapRow(depth = state.braceDepth, text = "}")
+            return MapRow(depth = state.braceDepth, text = "}", isInBuggyRange = isInBuggyRange)
         }
 
         // Generate row.
@@ -59,7 +63,7 @@ object MapGenerator {
             val shouldClose = random.nextInt(100) < 5 shl state.braceDepth
             if (shouldClose) {
                 state.braceDepth--
-                return MapRow(depth = state.braceDepth, text = "}")
+                return MapRow(depth = state.braceDepth, text = "}", isInBuggyRange = isInBuggyRange)
             }
         }
 
@@ -102,6 +106,7 @@ object MapGenerator {
                 state.braceDepth
             },
             text = text,
+            isInBuggyRange = isInBuggyRange,
         )
     }
 

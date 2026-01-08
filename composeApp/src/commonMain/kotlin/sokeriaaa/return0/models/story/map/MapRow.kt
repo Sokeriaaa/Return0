@@ -28,4 +28,5 @@ class MapRow(
     val depth: Int,
     val text: String,
     val events: MutableList<MapEvent> = mutableStateListOf(),
+    val isInBuggyRange: Boolean,
 )

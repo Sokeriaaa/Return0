@@ -85,6 +85,7 @@ fun GameMap(
                     eventDisplays.joinToString(";") { it.display!! }
                 },
                 events = item.events,
+                isInBuggyRange = item.isInBuggyRange,
                 onMoveClicked = {
                     viewModel.onIntent(GameIntent.RequestMoveTo(index + 1))
                 },
@@ -122,6 +123,7 @@ private fun MapRow(
     currentLine: Int = -1,
     text: String,
     events: List<MapEvent> = emptyList(),
+    isInBuggyRange: Boolean = false,
     onMoveClicked: () -> Unit = {},
     onInteractClicked: (MapEvent) -> Unit = {},
 ) {
@@ -158,15 +160,15 @@ private fun MapRow(
             actions
         }
     // Colors
-    val rowBackgroundColor = if (isMenuExpanded) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.surface
+    val rowBackgroundColor = when {
+        isMenuExpanded -> MaterialTheme.colorScheme.primaryContainer
+        isInBuggyRange -> MaterialTheme.colorScheme.errorContainer
+        else -> MaterialTheme.colorScheme.surface
     }
-    val rowTextColor = if (events.isNotEmpty()) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.onSurface
+    val rowTextColor = when {
+        events.isNotEmpty() -> MaterialTheme.colorScheme.primary
+        isInBuggyRange -> MaterialTheme.colorScheme.onErrorContainer
+        else -> MaterialTheme.colorScheme.onSurface
     }
 
     Row(
