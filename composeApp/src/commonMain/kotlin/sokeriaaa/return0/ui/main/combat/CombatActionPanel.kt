@@ -28,8 +28,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -58,6 +58,10 @@ import return0.composeapp.generated.resources.combat_choose_action_item
 import return0.composeapp.generated.resources.combat_choose_action_relax
 import return0.composeapp.generated.resources.combat_choose_action_target_selected_count
 import return0.composeapp.generated.resources.ic_outline_check_24
+import return0.composeapp.generated.resources.ic_outline_destruction_24
+import return0.composeapp.generated.resources.ic_outline_health_cross_24
+import return0.composeapp.generated.resources.ic_outline_swords_24
+import return0.composeapp.generated.resources.ic_outline_wand_stars_24
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
@@ -181,14 +185,8 @@ fun CombatActionPanel(
                             viewModel.onIntent(CombatIntent.ChooseAction(it))
                             isSelectingFunction = false
                         }
-                        .alpha(if (isSufficient) 1f else 0.4F)
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
+                        .alpha(if (isSufficient) 1f else 0.4F),
                     function = it,
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
                 )
             }
             Row(
@@ -377,13 +375,25 @@ private fun FunctionItem(
     modifier: Modifier = Modifier,
     function: Skill,
 ) {
-    Row(
+    ListItem(
         modifier = modifier,
-    ) {
-        Text(text = function.name)
-        Spacer(modifier = Modifier.weight(1F))
-        Text(text = function.spCost.toString())
-    }
+        leadingContent = {
+            Icon(
+                painter = painterResource(
+                    resource = when {
+                        function.power >= 200 -> Res.drawable.ic_outline_destruction_24
+                        function.power > 0 -> Res.drawable.ic_outline_swords_24
+                        function.power == 0 -> Res.drawable.ic_outline_wand_stars_24
+                        function.power < 0 -> Res.drawable.ic_outline_health_cross_24
+                        else -> Res.drawable.ic_outline_wand_stars_24
+                    }
+                ),
+                contentDescription = null,
+            )
+        },
+        headlineContent = { Text(text = function.name) },
+        trailingContent = { Text(text = function.spCost.toString() + "SP") }
+    )
 }
 
 /**
