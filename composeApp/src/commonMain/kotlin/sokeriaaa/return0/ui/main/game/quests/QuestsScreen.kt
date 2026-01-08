@@ -34,6 +34,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_quests
+import return0.composeapp.generated.resources.general_location
 import return0.composeapp.generated.resources.ic_outline_assignment_24
 import sokeriaaa.return0.models.story.quest.QuestDisplay
 import sokeriaaa.return0.mvi.intents.CommonIntent
@@ -100,6 +101,17 @@ private fun QuestItem(
                 painter = painterResource(Res.drawable.ic_outline_assignment_24),
                 contentDescription = null,
             )
+        },
+        overlineContent = quest.navigation?.let {
+            {
+                Text(
+                    stringResource(
+                        resource = Res.string.general_location,
+                        /* file = */ it.first,
+                        /* row = */ it.second,
+                    )
+                )
+            }
         },
         headlineContent = { Text(quest.name) },
         supportingContent = { Text(quest.description) }
