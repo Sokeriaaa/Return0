@@ -47,6 +47,7 @@ import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.widgets.AppDropdownSelector
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import kotlin.math.roundToInt
@@ -71,10 +72,15 @@ fun EmulatorEntityPickerDialog(
     var level: Int by remember { mutableStateOf(currentEntity?.level ?: 100) }
     // Warning
     var warning: StringResource? by remember { mutableStateOf(null) }
-    // TODO Temp list
     val options = arrayOf(
         null,
-        *availableEntities.toTypedArray(),
+        *availableEntities.filter {
+            if (isParty) {
+                it.path != EntityPath.UNSPECIFIED
+            } else {
+                it.path == EntityPath.UNSPECIFIED
+            }
+        }.toTypedArray(),
     )
     val availableEntityNameList = options
         .map { it?.name ?: stringResource(Res.string.general_please_select) }
