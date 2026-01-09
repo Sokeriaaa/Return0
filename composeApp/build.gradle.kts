@@ -114,12 +114,17 @@ kotlin {
         commonNativeMain.dependencies {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.preferences)
         }
         commonNativeTest.dependencies {
             implementation(libs.androidx.room.testing)
         }
 
         webMain.dependencies {
+            implementation(libs.russhwolf.multiplatform.settings)
+            implementation(libs.russhwolf.multiplatform.settings.coroutines)
+            implementation(libs.russhwolf.multiplatform.settings.make.observable)
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.web.worker.driver)
             implementation(npm("sql.js", "1.8.0"))

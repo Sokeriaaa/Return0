@@ -16,6 +16,9 @@ package sokeriaaa.return0.applib.modules
 
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import sokeriaaa.return0.applib.datastore.AppDataStoreFactory
+import sokeriaaa.return0.applib.datastore.AppKeyValues
+import sokeriaaa.return0.applib.datastore.DataStoreKeyValues
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.applib.room.getDatabaseBuilder
 import sokeriaaa.return0.applib.room.helper.RoomTransaction
@@ -28,4 +31,7 @@ actual val platformModules: Module = module {
     single { AppDatabase.createDatabase(get()) }
     // Database: Transaction
     single<TransactionManager> { RoomTransaction(database = get()) }
+    // DataStore
+    single { AppDataStoreFactory() }
+    single<AppKeyValues> { DataStoreKeyValues(get<AppDataStoreFactory>().createDataStore("return0")) }
 }

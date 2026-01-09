@@ -14,8 +14,13 @@
  */
 package sokeriaaa.return0.applib.modules
 
+import com.russhwolf.settings.ExperimentalSettingsApi
+import com.russhwolf.settings.StorageSettings
+import com.russhwolf.settings.observable.makeObservable
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import sokeriaaa.return0.applib.datastore.AppKeyValues
+import sokeriaaa.return0.applib.datastore.SettingsKeyValues
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.applib.room.SQDatabase
 import sokeriaaa.return0.applib.room.driver
@@ -28,4 +33,7 @@ actual val platformModules: Module = module {
     single { AppDatabase.createDatabase(sqDatabase = get()) }
     // Database: Transaction
     single<TransactionManager> { SqlDelightTransaction(sqDatabase = get()) }
+    // Settings
+    @OptIn(ExperimentalSettingsApi::class)
+    single<AppKeyValues> { SettingsKeyValues(StorageSettings().makeObservable()) }
 }

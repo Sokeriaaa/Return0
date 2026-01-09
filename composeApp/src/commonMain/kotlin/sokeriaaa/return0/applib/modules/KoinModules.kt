@@ -33,6 +33,7 @@ import sokeriaaa.return0.applib.repository.game.player.GamePlayerRepo
 import sokeriaaa.return0.applib.repository.game.quest.GameQuestRepo
 import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
+import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.applib.room.AppDatabase
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
@@ -123,6 +124,9 @@ object KoinModules {
                 statisticsDao = get(),
                 teamDao = get(),
             )
+        }
+        single {
+            SettingsRepo(get())
         }
         // Database: Dao
         single { get<AppDatabase>().getCurrencyDao() }
