@@ -20,10 +20,12 @@ import sokeriaaa.return0.models.component.context.ActionContext
 import sokeriaaa.return0.models.component.context.forUser
 import sokeriaaa.return0.models.component.context.swappedEntities
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
+import sokeriaaa.return0.models.entity.PluggedEntity
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EntityValue
+import sokeriaaa.return0.shared.data.models.component.values.PluginValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import kotlin.math.abs
 import kotlin.math.pow
@@ -148,5 +150,8 @@ fun Value.calculatedIn(context: ActionContext): Float {
         is EntityValue.ShieldValueOf -> context.target.shields[key]?.value?.toFloat() ?: 0F
         EntityValue.SumOfShieldValue -> context.target.shields.values.sumOf { it.value }.toFloat()
         // end - EntityValue
+        // start - PluginValue
+        PluginValue.Tier -> (context.target as? PluggedEntity)?.plugin?.tier?.toFloat() ?: 0F
+        // end - PluginValue
     }
 }

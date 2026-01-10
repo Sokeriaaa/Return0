@@ -67,6 +67,7 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
         // end - CommonCondition
         // start - CombatCondition
         CombatCondition.Critical -> context.attackDamageResult?.isCritical == true
+        CombatCondition.TargetingSelf -> context.user == context.target
         // end - CombatCondition
         // start - EntityCondition
         is EntityCondition.Categories.Has -> {
