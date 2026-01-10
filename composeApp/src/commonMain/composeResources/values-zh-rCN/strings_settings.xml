@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_gameplay">游戏</string>
+    <string name="settings_gameplay_display_item_desc">显示物品描述</string>
+    <string name="settings_gameplay_display_item_desc_desc">在背包页面显示物品描述</string>
+
+    <string name="settings_combat">战斗</string>
+    <string name="settings_combat_auto">自动战斗</string>
+    <string name="settings_combat_auto_desc">战斗过程中自动选择行动</string>
+    <string name="settings_combat_display_action_desc">显示技能描述</string>
+    <string name="settings_combat_display_action_desc_desc">战斗中选择技能时显示描述</string>
+</resources>

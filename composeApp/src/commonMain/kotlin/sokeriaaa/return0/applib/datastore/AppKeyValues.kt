@@ -20,26 +20,27 @@ import kotlinx.coroutines.flow.Flow
  * Preference manager.
  */
 interface AppKeyValues {
-    fun getIntFlow(key: String, defaultValue: Int = 0): Flow<Int>
-    fun getIntOrNullFlow(key: String): Flow<Int?>
-    fun getLongFlow(key: String, defaultValue: Long = 0L): Flow<Long>
-    fun getLongOrNullFlow(key: String): Flow<Long?>
-    fun getStringFlow(key: String, defaultValue: String = ""): Flow<String>
-    fun getStringOrNullFlow(key: String): Flow<String?>
-    fun getFloatFlow(key: String, defaultValue: Float = 0F): Flow<Float>
-    fun getFloatOrNullFlow(key: String): Flow<Float?>
-    fun getDoubleFlow(key: String, defaultValue: Double = 0.0): Flow<Double>
-    fun getDoubleOrNullFlow(key: String): Flow<Double?>
-    fun getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean>
-    fun getBooleanOrNullFlow(key: String): Flow<Boolean?>
+    fun getIntFlow(key: AppKey<Int>, defaultValue: Int = 0): Flow<Int>
+    fun getIntOrNullFlow(key: AppKey<Int>): Flow<Int?>
+    fun getLongFlow(key: AppKey<Long>, defaultValue: Long = 0L): Flow<Long>
+    fun getLongOrNullFlow(key: AppKey<Long>): Flow<Long?>
+    fun getStringFlow(key: AppKey<String>, defaultValue: String = ""): Flow<String>
+    fun getStringOrNullFlow(key: AppKey<String>): Flow<String?>
+    fun getFloatFlow(key: AppKey<Float>, defaultValue: Float = 0F): Flow<Float>
+    fun getFloatOrNullFlow(key: AppKey<Float>): Flow<Float?>
+    fun getDoubleFlow(key: AppKey<Double>, defaultValue: Double = 0.0): Flow<Double>
+    fun getDoubleOrNullFlow(key: AppKey<Double>): Flow<Double?>
+    fun getBooleanFlow(key: AppKey<Boolean>, defaultValue: Boolean = false): Flow<Boolean>
+    fun getBooleanOrNullFlow(key: AppKey<Boolean>): Flow<Boolean?>
 
-    suspend operator fun set(key: String, value: Int)
-    suspend operator fun set(key: String, value: Long)
-    suspend operator fun set(key: String, value: String)
-    suspend operator fun set(key: String, value: Float)
-    suspend operator fun set(key: String, value: Double)
-    suspend operator fun set(key: String, value: Boolean)
+    suspend operator fun set(key: AppKey<Int>, value: Int)
+    suspend operator fun set(key: AppKey<Long>, value: Long)
+    suspend operator fun set(key: AppKey<String>, value: String)
+    suspend operator fun set(key: AppKey<Float>, value: Float)
+    suspend operator fun set(key: AppKey<Double>, value: Double)
+    suspend operator fun set(key: AppKey<Boolean>, value: Boolean)
 
-    suspend fun remove(key: String)
+    suspend fun <T> remove(key: AppKey<T>)
     suspend fun clear()
+
 }

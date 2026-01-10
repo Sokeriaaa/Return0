@@ -44,6 +44,7 @@ import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.QuestsViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
+import sokeriaaa.return0.mvi.viewmodels.SettingsViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
@@ -65,6 +66,11 @@ object KoinModules {
                 initializer {
                     SaveViewModel(
                         isSaving = this[SaveViewModel.isSavingKey]!!,
+                    )
+                }
+                initializer {
+                    SettingsViewModel(
+                        isInGame = this[SettingsViewModel.isInGameKey]!!,
                     )
                 }
                 initializer { EmulatorViewModel() }

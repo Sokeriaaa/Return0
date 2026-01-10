@@ -199,7 +199,9 @@ private fun RealMainScreen(
                 onEmulatorClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Emulator.route)
                 },
-                onSettingsClicked = {},
+                onSettingsClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Settings.route + "/false")
+                },
             )
         }
     }

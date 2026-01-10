@@ -85,6 +85,7 @@ fun InventoryScreen(
                 InventoryItem(
                     modifier = Modifier.fillMaxWidth(),
                     display = item,
+                    isShowDescription = viewModel.isShowDescription,
                     onSelected = {
                         // TODO
                     }
@@ -98,6 +99,7 @@ fun InventoryScreen(
 private fun InventoryItem(
     modifier: Modifier = Modifier,
     display: InventoryViewModel.ItemDisplay,
+    isShowDescription: Boolean,
     onSelected: () -> Unit,
 ) {
     ListItem(
@@ -116,7 +118,11 @@ private fun InventoryItem(
             )
         },
         headlineContent = { Text(display.name) },
-        supportingContent = { Text(display.description) },
+        supportingContent = if (isShowDescription) {
+            { Text(display.description) }
+        } else {
+            null
+        },
         trailingContent = { Text(display.amount.toString()) }
     )
 }

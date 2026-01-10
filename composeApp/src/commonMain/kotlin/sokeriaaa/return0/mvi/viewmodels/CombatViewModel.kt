@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
 import sokeriaaa.return0.models.combat.ArenaLogV4
@@ -47,6 +48,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
     // Repo.
     private val _gameStateRepo: GameStateRepo by inject()
     private val _resourceRepo: ResourceRepo by inject()
+    private val _settingRepo: SettingsRepo by inject()
 
     /**
      * The combat status.
@@ -116,6 +118,29 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
 
     private val _enemies: MutableList<Entity> = mutableStateListOf()
     val enemies: List<Entity> = _enemies
+
+    init {
+        // Auto-combat
+        viewModelScope.launch {
+            _settingRepo.combatAuto.flow.collect {
+                // Toggle auto-combat
+                isAutoCombat = it
+                // The user turned on auto-combat while selecting an action.
+                if (isAutoCombat && entitySelecting != null) {
+                    val entity = entitySelecting!!
+                    viewModelScope.launch {
+                        // Submit a random action for current entity.
+                        arena?.submitAction(arena!!.randomSkillExecutionFor(entity))
+                        // Reset data.
+                        entitySelecting = null
+                        availableTargets = null
+                        functionSelecting = null
+                        selectableCount = 0
+                    }
+                }
+            }
+        }
+    }
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -195,20 +220,8 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
             }
 
             CombatIntent.ToggleAutoCombat -> {
-                // Toggle.
-                isAutoCombat = !isAutoCombat
-                // The user turned on auto-combat while selecting an action.
-                if (isAutoCombat && entitySelecting != null) {
-                    val entity = entitySelecting!!
-                    viewModelScope.launch {
-                        // Submit a random action for current entity.
-                        arena?.submitAction(arena!!.randomSkillExecutionFor(entity))
-                        // Reset data.
-                        entitySelecting = null
-                        availableTargets = null
-                        functionSelecting = null
-                        selectableCount = 0
-                    }
+                viewModelScope.launch {
+                    _settingRepo.combatAuto.set(!isAutoCombat)
                 }
             }
 

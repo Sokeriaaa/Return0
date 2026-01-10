@@ -14,8 +14,42 @@
  */
 package sokeriaaa.return0.applib.repository.settings
 
+import kotlinx.coroutines.flow.Flow
+import sokeriaaa.return0.applib.datastore.AppKey
 import sokeriaaa.return0.applib.datastore.AppKeyValues
+import sokeriaaa.return0.applib.datastore.AppKeys
 
 class SettingsRepo(
     private val keyValues: AppKeyValues,
-)
+) {
+
+    val gameplayDisplayItemDesc: Entry<Boolean> =
+        BooleanEntry(AppKeys.GAMEPLAY_DISPLAY_ITEM_DESC, true)
+
+    val combatAuto: Entry<Boolean> =
+        BooleanEntry(AppKeys.COMBAT_AUTO, false)
+
+    /**
+     * KeyValue Entry.
+     */
+    abstract class Entry<T>(
+        protected val key: AppKey<T>,
+        val defaultValue: T,
+    ) {
+        abstract val flow: Flow<T>
+        abstract suspend fun set(value: T)
+    }
+
+    private inner class BooleanEntry(
+        key: AppKey<Boolean>,
+        defaultValue: Boolean = false,
+    ) : Entry<Boolean>(key, defaultValue) {
+        override val flow: Flow<Boolean>
+            get() = keyValues.getBooleanFlow(key, defaultValue)
+
+        override suspend fun set(value: Boolean) {
+            keyValues[key] = value
+        }
+    }
+
+}

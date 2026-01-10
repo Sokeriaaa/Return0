@@ -42,6 +42,7 @@ import sokeriaaa.return0.ui.main.game.inventory.InventoryScreen
 import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
 import sokeriaaa.return0.ui.main.game.teams.TeamsScreen
 import sokeriaaa.return0.ui.main.save.SaveScreen
+import sokeriaaa.return0.ui.main.settings.SettingsScreen
 
 @Composable
 fun AppNavHost(
@@ -123,6 +124,22 @@ fun AppNavHost(
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
+        myComposable(
+            scene = Scene.Settings,
+            arguments = listOf(
+                myNavArgument(
+                    name = "isInGame",
+                    type = NavType.BoolType,
+                ),
+            ),
+        ) {
+            val argument = it.arguments!!
+            SettingsScreen(
+                isInGame = argument.read { getBoolean("isInGame") },
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
         myComposable(Scene.Emulator) {
             EmulatorScreen(
                 mainNavHostController = mainNavHostController,
@@ -200,6 +217,7 @@ sealed class Scene(val route: String) {
 
     data object Combat : Scene(route = "r0_combat")
     data object Save : Scene(route = "r0_save")
+    data object Settings : Scene(route = "r0_settings")
     data object Emulator : Scene(route = "r0_emulator")
     data object EmulatorPreset : Scene(route = "r0_emulator_preset")
 }

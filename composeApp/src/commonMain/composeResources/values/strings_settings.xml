@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_gameplay">Gameplay</string>
+    <string name="settings_gameplay_display_item_desc">Display item descriptions</string>
+    <string name="settings_gameplay_display_item_desc_desc">Display item descriptions in the inventory page.</string>
+
+    <string name="settings_combat">Combat</string>
+    <string name="settings_combat_auto">Auto-combat</string>
+    <string name="settings_combat_auto_desc">Automatically choose actions during combats.</string>
+    <string name="settings_combat_display_action_desc">Display action descriptions</string>
+    <string name="settings_combat_display_action_desc_desc">Display the descriptions of actions during combats.</string>
+</resources>

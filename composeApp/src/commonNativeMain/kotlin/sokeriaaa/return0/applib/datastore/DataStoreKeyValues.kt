@@ -16,14 +16,7 @@ package sokeriaaa.return0.applib.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
@@ -32,68 +25,68 @@ import kotlinx.coroutines.flow.map
 class DataStoreKeyValues(
     private val dataStore: DataStore<Preferences>
 ) : AppKeyValues {
-    override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> =
-        dataStore.data.map { it[intPreferencesKey(key)] ?: defaultValue }
+    override fun getIntFlow(key: AppKey<Int>, defaultValue: Int) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getIntOrNullFlow(key: String): Flow<Int?> =
-        dataStore.data.map { it[intPreferencesKey(key)] }
+    override fun getIntOrNullFlow(key: AppKey<Int>) =
+        dataStore.data.map { it[key] }
 
-    override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> =
-        dataStore.data.map { it[longPreferencesKey(key)] ?: defaultValue }
+    override fun getLongFlow(key: AppKey<Long>, defaultValue: Long) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getLongOrNullFlow(key: String): Flow<Long?> =
-        dataStore.data.map { it[longPreferencesKey(key)] }
+    override fun getLongOrNullFlow(key: AppKey<Long>) =
+        dataStore.data.map { it[key] }
 
-    override fun getStringFlow(key: String, defaultValue: String): Flow<String> =
-        dataStore.data.map { it[stringPreferencesKey(key)] ?: defaultValue }
+    override fun getStringFlow(key: AppKey<String>, defaultValue: String) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getStringOrNullFlow(key: String): Flow<String?> =
-        dataStore.data.map { it[stringPreferencesKey(key)] }
+    override fun getStringOrNullFlow(key: AppKey<String>) =
+        dataStore.data.map { it[key] }
 
-    override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> =
-        dataStore.data.map { it[floatPreferencesKey(key)] ?: defaultValue }
+    override fun getFloatFlow(key: AppKey<Float>, defaultValue: Float) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getFloatOrNullFlow(key: String): Flow<Float?> =
-        dataStore.data.map { it[floatPreferencesKey(key)] }
+    override fun getFloatOrNullFlow(key: AppKey<Float>) =
+        dataStore.data.map { it[key] }
 
-    override fun getDoubleFlow(key: String, defaultValue: Double): Flow<Double> =
-        dataStore.data.map { it[doublePreferencesKey(key)] ?: defaultValue }
+    override fun getDoubleFlow(key: AppKey<Double>, defaultValue: Double) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getDoubleOrNullFlow(key: String): Flow<Double?> =
-        dataStore.data.map { it[doublePreferencesKey(key)] }
+    override fun getDoubleOrNullFlow(key: AppKey<Double>) =
+        dataStore.data.map { it[key] }
 
-    override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> =
-        dataStore.data.map { it[booleanPreferencesKey(key)] ?: defaultValue }
+    override fun getBooleanFlow(key: AppKey<Boolean>, defaultValue: Boolean) =
+        dataStore.data.map { it[key] ?: defaultValue }
 
-    override fun getBooleanOrNullFlow(key: String): Flow<Boolean?> =
-        dataStore.data.map { it[booleanPreferencesKey(key)] }
+    override fun getBooleanOrNullFlow(key: AppKey<Boolean>) =
+        dataStore.data.map { it[key] }
 
-    override suspend fun set(key: String, value: Int) {
-        dataStore.edit { it[intPreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<Int>, value: Int) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun set(key: String, value: Long) {
-        dataStore.edit { it[longPreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<Long>, value: Long) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun set(key: String, value: String) {
-        dataStore.edit { it[stringPreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<String>, value: String) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun set(key: String, value: Float) {
-        dataStore.edit { it[floatPreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<Float>, value: Float) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun set(key: String, value: Double) {
-        dataStore.edit { it[doublePreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<Double>, value: Double) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun set(key: String, value: Boolean) {
-        dataStore.edit { it[booleanPreferencesKey(key)] = value }
+    override suspend fun set(key: AppKey<Boolean>, value: Boolean) {
+        dataStore.edit { it[key] = value }
     }
 
-    override suspend fun remove(key: String) {
-        dataStore.edit { it.remove(stringPreferencesKey(key)) }
+    override suspend fun <T> remove(key: AppKey<T>) {
+        dataStore.edit { it.remove(key) }
     }
 
     override suspend fun clear() {

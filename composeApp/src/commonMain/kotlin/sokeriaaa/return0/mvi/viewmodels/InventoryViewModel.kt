@@ -14,13 +14,17 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
+import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
@@ -31,9 +35,21 @@ class InventoryViewModel : BaseViewModel() {
     private val _archiveRepo: ArchiveRepo by inject()
     private val _inventoryRepo: GameInventoryRepo by inject()
     private val _resourceRepo: ResourceRepo by inject()
+    private val _settingRepo: SettingsRepo by inject()
+
+    var isShowDescription by mutableStateOf(false)
+        private set
 
     private val _items: MutableList<ItemDisplay> = mutableStateListOf()
     val items: List<ItemDisplay> = _items
+
+    init {
+        viewModelScope.launch {
+            _settingRepo.gameplayDisplayItemDesc.flow.collect {
+                isShowDescription = it
+            }
+        }
+    }
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)

@@ -433,7 +433,9 @@ private fun GameContent(
                 onInventoryClicked = {
                     mainNavHostController.navigateSingleTop(Scene.Inventory.route)
                 },
-                onSettingsClicked = {},
+                onSettingsClicked = {
+                    mainNavHostController.navigateSingleTop(Scene.Settings.route + "/true")
+                },
                 onQuitClicked = {
                     scope.launch {
                         isShowingQuitDialog = true

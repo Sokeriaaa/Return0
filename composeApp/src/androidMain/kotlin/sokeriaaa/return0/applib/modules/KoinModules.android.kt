@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.applib.modules
 
+import android.content.Context
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.datastore.AppDataStoreFactory
@@ -32,6 +33,6 @@ actual val platformModules: Module = module {
     // Database: Transaction
     single<TransactionManager> { RoomTransaction(database = get()) }
     // DataStore
-    single { AppDataStoreFactory() }
+    single { AppDataStoreFactory(get<Context>()) }
     single<AppKeyValues> { DataStoreKeyValues(get<AppDataStoreFactory>().createDataStore("return0")) }
 }
