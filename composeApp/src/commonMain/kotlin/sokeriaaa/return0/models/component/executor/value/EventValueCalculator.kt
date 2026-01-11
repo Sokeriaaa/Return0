@@ -76,10 +76,6 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0
         }
-
-        is CommonValue.ForUser -> 0
-        is CommonValue.Swapped -> 0
-        is CommonValue.LoadValue -> 0
         // end - CommonValue
         // start - EventValue
         is EventValue.SavedVariable -> context.gameState.savedValues.getVariable(key)

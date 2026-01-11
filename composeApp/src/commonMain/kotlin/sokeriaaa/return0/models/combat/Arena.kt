@@ -350,12 +350,12 @@ class Arena(
             }
         if (parties.isFailed()) {
             pushLog(ArenaLogV4.General.Lose)
-            callback.onLose()
+            callback.onCombatEnd(false)
             return true
         }
         if (enemies.isFailed()) {
             pushLog(ArenaLogV4.General.Win)
-            callback.onWin()
+            callback.onCombatEnd(true)
             return true
         }
         return false
@@ -385,18 +385,6 @@ class Arena(
          * @param result true for winning, false for losing.
          */
         fun onCombatEnd(result: Boolean) {}
-
-        /**
-         * Invokes when the user won the combat.
-         */
-        @Deprecated("Use onCombatEnd() instead.")
-        fun onWin() = onCombatEnd(true)
-
-        /**
-         * Invokes when the user lost the combat.
-         */
-        @Deprecated("Use onCombatEnd() instead.")
-        fun onLose() = onCombatEnd(false)
     }
 
     /**

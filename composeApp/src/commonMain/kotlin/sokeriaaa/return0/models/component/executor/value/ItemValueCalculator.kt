@@ -71,10 +71,6 @@ fun Value.calculatedIn(context: ItemContext): Float {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0F
         }
-
-        is CommonValue.ForUser -> 0F
-        is CommonValue.Swapped -> 0F
-        is CommonValue.LoadValue -> 0F
         // end - CommonValue
         // start - EntityValue
         EntityValue.ATK -> context.target.atk.toFloat()

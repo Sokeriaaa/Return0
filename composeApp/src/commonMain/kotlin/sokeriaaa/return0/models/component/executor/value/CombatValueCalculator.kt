@@ -84,11 +84,6 @@ fun Value.calculatedIn(context: ActionContext): Float {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0F
         }
-
-        is CommonValue.ForUser -> context.forUser { ctx -> value.calculatedIn(ctx) }
-        is CommonValue.Swapped -> context.swappedEntities { ctx -> value.calculatedIn(ctx) }
-        is CommonValue.LoadValue -> context.fromAction.values[key]
-            ?: defaultValue?.calculatedIn(context) ?: 0F
         // end - CommonValue
         // start - ActionValue
         ActionValue.Tier -> context.fromAction.tier.toFloat()
