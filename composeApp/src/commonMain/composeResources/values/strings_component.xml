@@ -7,9 +7,6 @@
     <string name="component_value_coerce_in">{{slot0}}, limited in {{slot1}} and {{slot2}}</string>
     <string name="component_value_random_int">Random integer between {{slot0}} and {{slot1}}</string>
     <string name="component_value_random_float">Random float between {{slot0}} and {{slot1}}</string>
-    <string name="component_value_condition_if">If {{slot0}} {{slot1}}</string>
-    <string name="component_value_condition_unless">{{slot1}} unless {{slot0}}</string>
-    <string name="component_value_condition_if_else">If {{slot0}} {{slot1}}, otherwise {{slot2}}</string>
     <string name="component_value_action_tier">Action tier</string>
     <string name="component_value_action_times_used">Times used/applied</string>
     <string name="component_value_action_times_repeated">Repeated times in a single attack</string>
@@ -38,6 +35,10 @@
     <string name="component_value_time_next_week">At {{slot0}} of next week</string>
     <string name="component_value_time_saved">Saved timestamp with key "{{slot0}}"</string>
 
+    <string name="component_condition_if">If {{slot0}} {{slot1}}</string>
+    <string name="component_condition_unless">{{slot1}} unless {{slot0}}</string>
+    <string name="component_condition_if_else">If {{slot0}} {{slot1}}, otherwise {{slot2}}</string>
+
     <string name="component_condition_and"> and </string>
     <string name="component_condition_or"> or </string>
     <string name="component_condition_not">not {{slot0}}</string>
@@ -53,6 +54,22 @@
     <string name="component_condition_entity_is_failed">Is failed</string>
     <string name="component_condition_event_quest_completed">"{{slot0}}" is completed</string>
     <string name="component_condition_event_saved_switch">Saved switch "{{slot0}}" is true</string>
+
+    <string name="component_extra_empty">(None)</string>
+    <string name="component_extra_save_value">Save {{slot1}} on the key "{{slot0}}"</string>
+    <string name="component_extra_for_user">To user: {{slot0}}</string>
+    <string name="component_extra_swapped">With swapped user and target: {{slot0}}</string>
+    <string name="component_extra_hp_change">Change HP for {{slot0}}</string>
+    <string name="component_extra_sp_change">Change SP for {{slot0}}</string>
+    <string name="component_extra_ap_change">Change AP for {{slot0}}</string>
+    <string name="component_extra_attach_effect">Attach the effect "{{slot0}}" with tier of {{slot1}} for {{slot2}} turns</string>
+    <string name="component_extra_remove_effect">Remove the effect "{{slot0}}"</string>
+    <string name="component_extra_remove_all_effects">Remove all effects</string>
+    <string name="component_extra_attach_shield">Attach shield for {{slot1}} with key "{{slot0}}" for {{slot2}} turns</string>
+    <string name="component_extra_attach_shield_permanent">Attach shield for {{slot1}} with key "{{slot0}}"</string>
+    <string name="component_extra_remove_shield">Remove the shield with key "{{slot0}}"</string>
+    <string name="component_extra_remove_all_shields">Remove all shields</string>
+    <string name="component_extra_no_effect">No effect</string>
 
     <string name="component_comparator_gt">{{slot0}} is greater than {{slot1}}</string>
     <string name="component_comparator_gt_eq">{{slot0}} is greater than or equal to {{slot1}}</string>

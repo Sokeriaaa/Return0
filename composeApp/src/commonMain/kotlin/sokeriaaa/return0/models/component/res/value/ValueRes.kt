@@ -19,6 +19,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.component_condition_if_else
 import return0.composeapp.generated.resources.component_value_action_tier
 import return0.composeapp.generated.resources.component_value_action_times_repeated
 import return0.composeapp.generated.resources.component_value_action_times_used
@@ -31,7 +32,6 @@ import return0.composeapp.generated.resources.component_value_combat_damage_shie
 import return0.composeapp.generated.resources.component_value_combat_load_value
 import return0.composeapp.generated.resources.component_value_combat_swapped
 import return0.composeapp.generated.resources.component_value_combat_user
-import return0.composeapp.generated.resources.component_value_condition_if_else
 import return0.composeapp.generated.resources.component_value_effect_turns_left
 import return0.composeapp.generated.resources.component_value_entity_shield_all
 import return0.composeapp.generated.resources.component_value_entity_shield_of
@@ -232,7 +232,7 @@ fun valueResource(value: Value): AnnotatedString {
             )
 
             is CommonValue.Conditioned -> append(
-                stringResource(Res.string.component_value_condition_if_else)
+                stringResource(Res.string.component_condition_if_else)
                     .replaceAnnotatedString(
                         oldValue = "{{slot0}}",
                         newValue = conditionResource(value.condition),
