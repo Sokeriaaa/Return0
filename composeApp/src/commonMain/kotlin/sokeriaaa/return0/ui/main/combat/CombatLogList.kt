@@ -53,7 +53,7 @@ import sokeriaaa.return0.models.action.function.CommonFunctions
 import sokeriaaa.return0.models.combat.ArenaLogV4
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
-import sokeriaaa.return0.ui.common.CommonStrings
+import sokeriaaa.return0.ui.common.text.CommonStrings
 import sokeriaaa.return0.ui.common.GameLog
 import kotlin.jvm.JvmInline
 

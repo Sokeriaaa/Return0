@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="component_value_min_of">Minimum of {{slot0}}</string>
+    <string name="component_value_max_of">Maximum of {{slot0}}</string>
+    <string name="component_value_coerce_min">{{slot0}}, not less than {{slot1}}</string>
+    <string name="component_value_coerce_max">{{slot0}}, not more than {{slot1}}</string>
+    <string name="component_value_coerce_in">{{slot0}}, limited in {{slot1}} and {{slot2}}</string>
+    <string name="component_value_random_int">Random integer between {{slot0}} and {{slot1}}</string>
+    <string name="component_value_random_float">Random float between {{slot0}} and {{slot1}}</string>
+    <string name="component_value_condition_if">If {{slot0}} {{slot1}}</string>
+    <string name="component_value_condition_unless">{{slot1}} unless {{slot0}}</string>
+    <string name="component_value_condition_if_else">If {{slot0}} {{slot1}}, otherwise {{slot2}}</string>
+    <string name="component_value_action_tier">Action tier</string>
+    <string name="component_value_action_times_used">Times used/applied</string>
+    <string name="component_value_action_times_repeated">Repeated times in a single attack</string>
+    <string name="component_value_effect_turns_left">Turns left</string>
+    <string name="component_value_skill_power">Power</string>
+    <string name="component_value_skill_base_power">Base power</string>
+    <string name="component_value_combat_user">User's {{slot0}}</string>
+    <string name="component_value_combat_swapped"> {{slot0}} of swapped user and target</string>
+    <string name="component_value_combat_load_value">Saved value in key "{{slot0}}"</string>
+    <string name="component_value_combat_damage">Damage</string>
+    <string name="component_value_combat_damage_coerced">Damage, not more than HP of the target before attacking</string>
+    <string name="component_value_combat_damage_shielded">Shielded damage</string>
+    <string name="component_value_entity_turns_left_of">Turns left of {{slot0}}</string>
+    <string name="component_value_entity_turns_left_all">Turns left of all effects</string>
+    <string name="component_value_entity_shield_of">Shield of {{slot0}}</string>
+    <string name="component_value_entity_shield_all">All Shields</string>
+    <string name="component_value_plugin_tier">Plugin tier</string>
+    <string name="component_value_event_saved_variable">Saved variable with key "{{slot0}}"</string>
+    <string name="component_value_event_currency">Your {{slot0}}</string>
+    <string name="component_value_event_inventory">Amount of {{slot0}}</string>
+    <string name="component_value_event_title">Your title</string>
+    <string name="component_value_event_enemy_level">Calculated enemy level</string>
+    <string name="component_value_time_now">Now</string>
+    <string name="component_value_time_after">After {{slot0}}</string>
+    <string name="component_value_time_next_day">At {{slot0}} of next day</string>
+    <string name="component_value_time_next_week">At {{slot0}} of next week</string>
+    <string name="component_value_time_saved">Saved timestamp with key "{{slot0}}"</string>
+</resources>

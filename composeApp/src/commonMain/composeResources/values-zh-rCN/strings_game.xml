@@ -29,4 +29,27 @@
     <string name="map_action_interact">交互</string>
     <string name="map_action_interact_w_display">交互 %1$s</string>
     <string name="map_action_too_far_away">太远了…</string>
+
+    <string name="status_atk">攻击</string>
+    <string name="status_def">防御</string>
+    <string name="status_spd">速度</string>
+    <string name="status_hp">体力</string>
+    <string name="status_sp">法力</string>
+    <string name="status_ap">动作条</string>
+    <string name="status_base_atk">基础攻击</string>
+    <string name="status_base_def">基础防御</string>
+    <string name="status_base_spd">基础速度</string>
+    <string name="status_base_hp">基础体力</string>
+    <string name="status_base_sp">基础法力</string>
+    <string name="status_base_ap">基础动作条</string>
+    <string name="status_hp_rate">体力百分比</string>
+    <string name="status_sp_rate">法力百分比</string>
+    <string name="status_ap_rate">动作条百分比</string>
+    <string name="status_max_hp">最大体力</string>
+    <string name="status_max_sp">最大法力</string>
+    <string name="status_max_ap">最大动作条</string>
+    <string name="status_crit_rate">暴率</string>
+    <string name="status_crit_dmg">暴伤</string>
+    <string name="status_tgt_rate">命中率</string>
+    <string name="status_hid_rate">闪避率</string>
 </resources>

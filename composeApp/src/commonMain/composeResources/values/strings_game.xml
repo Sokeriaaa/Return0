@@ -29,4 +29,27 @@
     <string name="map_action_interact">Interact</string>
     <string name="map_action_interact_w_display">Interact %1$s</string>
     <string name="map_action_too_far_away">Too far away…</string>
+
+    <string name="status_atk">ATK</string>
+    <string name="status_def">DEF</string>
+    <string name="status_spd">SPD</string>
+    <string name="status_hp">HP</string>
+    <string name="status_sp">SP</string>
+    <string name="status_ap">AP</string>
+    <string name="status_base_atk">Base ATK</string>
+    <string name="status_base_def">Base DEF</string>
+    <string name="status_base_spd">Base SPD</string>
+    <string name="status_base_hp">Base HP</string>
+    <string name="status_base_sp">Base SP</string>
+    <string name="status_base_ap">Base AP</string>
+    <string name="status_hp_rate">HP rate</string>
+    <string name="status_sp_rate">SP rate</string>
+    <string name="status_ap_rate">AP rate</string>
+    <string name="status_max_hp">Max HP</string>
+    <string name="status_max_sp">Max SP</string>
+    <string name="status_max_ap">Max AP</string>
+    <string name="status_crit_rate">Critical rate</string>
+    <string name="status_crit_dmg">Critical damage</string>
+    <string name="status_tgt_rate">Target rate</string>
+    <string name="status_hid_rate">Hide rate</string>
 </resources>

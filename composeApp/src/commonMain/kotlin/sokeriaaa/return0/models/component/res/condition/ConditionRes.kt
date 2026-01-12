@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -12,28 +12,16 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.ui.common
+package sokeriaaa.return0.models.component.res.condition
 
-object CommonStrings {
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import sokeriaaa.return0.shared.data.models.component.conditions.Condition
 
-    /**
-     * Display a console-styled progress bar as HP bar.
-     */
-    fun hpBar(
-        rate: Float,
-        length: Int = 18,
-    ): String {
-        val consumed = (length * (1 - rate)).toInt().coerceIn(0, length)
-        return buildString {
-            append('[')
-            repeat(length - consumed) {
-                append('#')
-            }
-            repeat(consumed) {
-                append('.')
-            }
-            append(']')
-        }
+@Composable
+fun conditionResource(condition: Condition): AnnotatedString {
+    return buildAnnotatedString {
+
     }
-
 }
