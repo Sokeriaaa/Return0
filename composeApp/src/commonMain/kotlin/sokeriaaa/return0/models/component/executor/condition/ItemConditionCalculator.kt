@@ -51,7 +51,6 @@ fun Condition.calculatedIn(context: ItemContext): Boolean {
 
         is CommonCondition.Chance -> chance(
             success = success.calculatedIn(context),
-            base = base.calculatedIn(context),
             random = context.random,
         )
 
