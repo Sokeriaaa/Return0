@@ -12,24 +12,14 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.ui.common.entity
+package sokeriaaa.return0.models.entity.display
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import sokeriaaa.return0.models.entity.display.EntityProfile
-
-@Preview
-@Composable
-private fun EntityProfilePreview() {
-    EntityProfileItem(
-        display = EntityProfile(
-            name = "Example",
-            level = 42,
-            expProgress = 0.42F,
-            hp = 1234,
-            maxHP = 1357,
-            sp = 1000,
-            maxSP = 1111,
-        ),
-    )
-}
+open class EntityProfile(
+    val name: String,
+    val level: Int,
+    val expProgress: Float,
+    val hp: Int,
+    val maxHP: Int,
+    val sp: Int,
+    val maxSP: Int,
+)

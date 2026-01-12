@@ -16,9 +16,12 @@ package sokeriaaa.return0.applib.repository.game.entity
 
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
+import sokeriaaa.return0.models.entity.display.EntityProfile
+import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.shared.common.helpers.TimeHelper
@@ -26,6 +29,7 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
+    private val resource: ResourceRepo,
     private val entityDao: EntityDao,
 ) {
     suspend fun queryAll(): List<EntityTable> {
@@ -96,6 +100,74 @@ class GameEntityRepo(
             isParty = true,
             currentHP = entityTable.currentHP,
             currentSP = entityTable.currentSP,
+        )
+    }
+
+    fun getEntityProfileByTable(table: EntityTable): EntityProfile? {
+        val entityData = archive.getEntityData(table.entityName) ?: return null
+
+        // Get the growth data of the primary category of entity.
+        val growth = archive.getEntityGrowthByCategory(entityData.category)
+        // Generate entity
+        val entity = entityData.generate(
+            index = -1,
+            level = table.level,
+            growth = growth,
+            isParty = true,
+        ).apply {
+            hp = table.currentHP ?: maxhp
+            sp = table.currentSP ?: maxsp
+        }
+        // Assemble display
+        return EntityProfile(
+            name = table.entityName,
+            level = table.level,
+            expProgress = EntityLevelHelper.levelProgress(
+                table.level,
+                table.exp,
+                entityData.levelPacing
+            ),
+            hp = entity.hp,
+            maxHP = entity.maxhp,
+            sp = entity.sp,
+            maxSP = entity.maxsp,
+        )
+    }
+
+    suspend fun getEntityProfile(entityName: String): EntityProfile? {
+        return getEntityProfileByTable(getEntityTable(entityName) ?: return null)
+    }
+
+    suspend fun getExtendedEntityProfile(entityName: String): ExtendedEntityProfile? {
+        val table = getEntityTable(entityName) ?: return null
+        val entityData = archive.getEntityData(entityName) ?: return null
+
+        // Get the growth data of the primary category of entity.
+        val growth = archive.getEntityGrowthByCategory(entityData.category)
+        // Generate entity
+        val entity = entityData.generate(
+            index = -1,
+            level = table.level,
+            growth = growth,
+            isParty = true,
+        ).apply {
+            hp = table.currentHP ?: maxhp
+            sp = table.currentSP ?: maxsp
+        }
+        // Assemble display
+        return ExtendedEntityProfile(
+            name = table.entityName,
+            level = table.level,
+            expProgress = EntityLevelHelper.levelProgress(
+                table.level,
+                table.exp,
+                entityData.levelPacing
+            ),
+            hp = entity.hp,
+            maxHP = entity.maxhp,
+            sp = entity.sp,
+            maxSP = entity.maxsp,
+            functions = entity.functions,
         )
     }
 

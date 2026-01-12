@@ -25,12 +25,10 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
-import sokeriaaa.return0.models.entity.generate
-import sokeriaaa.return0.models.entity.level.EntityLevelHelper
+import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.TeamsIntent
-import sokeriaaa.return0.ui.common.entity.EntityProfile
 
 class TeamsViewModel : BaseViewModel() {
 
@@ -78,7 +76,7 @@ class TeamsViewModel : BaseViewModel() {
             }
 
             is TeamsIntent.SwitchEntityInCurrentTeam -> viewModelScope.launch {
-                val entity = intent.newEntity?.let { getEntityProfileByName(it) }
+                val entity = intent.newEntity?.let { _entityRepo.getEntityProfile(it) }
 
                 _teams[currentTeamIndex].entities[intent.entityIndex] = entity
                 _teamRepo.updateTeamMember(
@@ -105,7 +103,7 @@ class TeamsViewModel : BaseViewModel() {
             val teamEntities: Array<EntityProfile?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
             val names: Array<String?> = arrayOf(team.slot1, team.slot2, team.slot3, team.slot4)
             for (i in 0..<AppConstants.ARENA_MAX_PARTY) {
-                teamEntities[i] = getEntityProfileByName(
+                teamEntities[i] = _entityRepo.getEntityProfile(
                     entityName = names.getOrNull(i) ?: continue,
                 ) ?: continue
             }
@@ -121,38 +119,6 @@ class TeamsViewModel : BaseViewModel() {
                 activatedTeamIndex = index
             }
         }
-    }
-
-    private suspend fun getEntityProfileByName(entityName: String): EntityProfile? {
-        val table = _entityRepo.getEntityTable(entityName) ?: return null
-        val entityData = _archiveRepo.getEntityData(entityName) ?: return null
-
-        // Get the growth data of the primary category of entity.
-        val growth = _archiveRepo.getEntityGrowthByCategory(entityData.category)
-        // Generate entity
-        val entity = entityData.generate(
-            index = -1,
-            level = table.level,
-            growth = growth,
-            isParty = true,
-        ).apply {
-            hp = table.currentHP ?: maxhp
-            sp = table.currentSP ?: maxsp
-        }
-        // Assemble display
-        return EntityProfile(
-            name = table.entityName,
-            level = table.level,
-            expProgress = EntityLevelHelper.levelProgress(
-                table.level,
-                table.exp,
-                entityData.levelPacing
-            ),
-            hp = entity.hp,
-            maxHP = entity.maxhp,
-            sp = entity.sp,
-            maxSP = entity.maxsp,
-        )
     }
 
     class TeamDisplay(

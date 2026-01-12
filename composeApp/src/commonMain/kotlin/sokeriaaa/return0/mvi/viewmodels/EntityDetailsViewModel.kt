@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -15,31 +15,29 @@
 package sokeriaaa.return0.mvi.viewmodels
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
-import sokeriaaa.return0.models.entity.display.EntityProfile
+import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 
-class EntitiesViewModel : BaseViewModel() {
+class EntityDetailsViewModel(
+    val entityName: String,
+) : BaseViewModel() {
 
     // Repo
+    private val _archiveRepo: ArchiveRepo by inject()
     private val _entityRepo: GameEntityRepo by inject()
+    private val _resourceRepo: ResourceRepo by inject()
 
-    // All entities
-    private val _entities: MutableList<EntityProfile> = mutableStateListOf()
-    val entities: List<EntityProfile> = _entities
-
-    // Sorter
-    var orderBy by mutableStateOf(OrderBy.LEVEL)
-        private set
-    var isDescending by mutableStateOf(true)
-        private set
+    var entityProfile: ExtendedEntityProfile? by mutableStateOf(null)
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -48,22 +46,16 @@ class EntitiesViewModel : BaseViewModel() {
                 refresh()
             }
 
-            else -> {}
+            else -> Unit
         }
     }
 
     private suspend fun refresh() {
-        _entities.clear()
-        _entities.addAll(
-            _entityRepo.queryAll().asSequence()
-                .mapNotNull { _entityRepo.getEntityProfileByTable(it) }
-        )
-
+        entityProfile = _entityRepo.getExtendedEntityProfile(entityName)
     }
 
-    enum class OrderBy {
-        NAME,
-        LEVEL,
+    companion object {
+        val entityNameKey = object : CreationExtras.Key<String> {}
     }
 
 }

@@ -42,6 +42,7 @@ import return0.composeapp.generated.resources.empty_slot
 import return0.composeapp.generated.resources.game_select_entity
 import return0.composeapp.generated.resources.game_select_entity_warn
 import return0.composeapp.generated.resources.ok
+import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
 /**
