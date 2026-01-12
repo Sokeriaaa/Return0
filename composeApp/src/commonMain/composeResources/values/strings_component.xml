@@ -37,4 +37,27 @@
     <string name="component_value_time_next_day">At {{slot0}} of next day</string>
     <string name="component_value_time_next_week">At {{slot0}} of next week</string>
     <string name="component_value_time_saved">Saved timestamp with key "{{slot0}}"</string>
+
+    <string name="component_condition_and"> and </string>
+    <string name="component_condition_or"> or </string>
+    <string name="component_condition_not">not {{slot0}}</string>
+    <string name="component_condition_chance">{{slot0}} of chance</string>
+    <string name="component_condition_combat_critical">Is critical</string>
+    <string name="component_condition_combat_targeting_self">Is targeting self</string>
+    <string name="component_condition_entity_has_category">Is {{slot0}}</string>
+    <string name="component_condition_entity_has_one_of_category">Is one of: {{slot0}}</string>
+    <string name="component_condition_entity_has_effect">Has effect "{{slot0}}"</string>
+    <string name="component_condition_entity_has_any_effect">Has any effect</string>
+    <string name="component_condition_entity_has_shield">Has shield "{{slot0}}"</string>
+    <string name="component_condition_entity_has_any_shield">Has any shield</string>
+    <string name="component_condition_entity_is_failed">Is failed</string>
+    <string name="component_condition_event_quest_completed">"{{slot0}}" is completed</string>
+    <string name="component_condition_event_saved_switch">Saved switch "{{slot0}}" is true</string>
+
+    <string name="component_comparator_gt">{{slot0}} is greater than {{slot1}}</string>
+    <string name="component_comparator_gt_eq">{{slot0}} is greater than or equal to {{slot1}}</string>
+    <string name="component_comparator_lt">{{slot0}} is less than {{slot1}}</string>
+    <string name="component_comparator_lt_eq">{{slot0}} is less than or equal to {{slot1}}</string>
+    <string name="component_comparator_eq">{{slot0}} is equal to {{slot1}}</string>
+    <string name="component_comparator_neq">{{slot0}} is not equal to {{slot1}}</string>
 </resources>
