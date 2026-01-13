@@ -18,9 +18,17 @@
 
     <string name="game_select_entity">Select an Entity</string>
     <string name="game_select_entity_warn">Please select one entity.</string>
+    <string name="game_select_function">Select a function to view details here.</string>
 
     <string name="game_entity_functions">Functions</string>
     <string name="game_entity_plugin">Plugin</string>
+    <string name="game_entity_function_unlock_at">This function will be unlocked at level %1$s.</string>
+    <string name="game_entity_function_upgrade_at">This function will be upgraded at level %1$s.</string>
+    <string name="game_entity_function_max_tier">This function has reached max tier.</string>
+    <string name="game_entity_function_summary">Summary</string>
+    <string name="game_entity_function_specials">Specials</string>
+    <string name="game_entity_function_specials_bullseye">Bullseye: Cannot be dodged</string>
+    <string name="game_entity_function_specials_extra">On each hit: </string>
 
     <string name="game_team_default">Team #%1$s</string>
     <string name="game_team_new">(New Team)</string>

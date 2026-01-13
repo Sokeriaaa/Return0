@@ -167,7 +167,18 @@ class GameEntityRepo(
             maxHP = entity.maxhp,
             sp = entity.sp,
             maxSP = entity.maxsp,
-            functions = entity.functions,
+            functions = entityData.functions.map { functionData ->
+                val skill = entity.functions.firstOrNull { it.name == functionData.name }
+                ExtendedEntityProfile.Skill(
+                    name = functionData.name,
+                    description = resource.getString("skill.${functionData.name}.desc"),
+                    category = functionData.category,
+                    tier = skill?.tier ?: 0,
+                    power = skill?.power ?: functionData.basePower,
+                    spCost = skill?.spCost ?: functionData.baseSPCost,
+                    data = functionData,
+                )
+            },
             category = entity.category,
             category2 = entity.category2,
             path = entity.path,

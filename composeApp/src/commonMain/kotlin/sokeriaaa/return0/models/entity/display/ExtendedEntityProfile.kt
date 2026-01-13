@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.models.entity.display
 
-import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
@@ -42,4 +42,14 @@ class ExtendedEntityProfile(
     maxHP = maxHP,
     sp = sp,
     maxSP = maxSP,
-)
+) {
+    class Skill(
+        val name: String,
+        val description: String,
+        val category: Category,
+        val tier: Int,
+        val power: Int,
+        val spCost: Int,
+        val data: FunctionData,
+    )
+}

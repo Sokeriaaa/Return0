@@ -15,6 +15,17 @@
 
     <string name="game_select_entity">选择一个对象</string>
     <string name="game_select_entity_warn">请选择一个对象。</string>
+    <string name="game_select_function">选择一个函数以查看详细信息显示。</string>
+
+    <string name="game_entity_functions">函数</string>
+    <string name="game_entity_plugin">插件</string>
+    <string name="game_entity_function_unlock_at">此函数将在第%1$s级解锁。</string>
+    <string name="game_entity_function_upgrade_at">此函数将在第%1$s升阶。</string>
+    <string name="game_entity_function_max_tier">此函数已达到最高阶。</string>
+    <string name="game_entity_function_summary">简介</string>
+    <string name="game_entity_function_specials">特殊效果</string>
+    <string name="game_entity_function_specials_bullseye">必中：无法被闪避</string>
+    <string name="game_entity_function_specials_extra">每次命中时：</string>
 
     <string name="game_team_default">队伍 #%1$s</string>
     <string name="game_team_new">（新队伍）</string>

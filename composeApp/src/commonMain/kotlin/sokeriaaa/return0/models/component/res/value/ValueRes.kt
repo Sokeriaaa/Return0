@@ -91,7 +91,7 @@ fun valueResource(value: Value): AnnotatedString {
     return buildAnnotatedString {
         when (value) {
             // start - CommonValue
-            is CommonValue.Constant -> value.formatter.format(value.value)
+            is CommonValue.Constant -> append(value.formatter.format(value.value))
 
             is CommonValue.Math.Sum -> {
                 append("(")
