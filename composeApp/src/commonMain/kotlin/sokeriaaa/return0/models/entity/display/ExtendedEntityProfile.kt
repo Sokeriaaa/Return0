@@ -15,6 +15,8 @@
 package sokeriaaa.return0.models.entity.display
 
 import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
 class ExtendedEntityProfile(
     name: String,
@@ -25,6 +27,13 @@ class ExtendedEntityProfile(
     sp: Int,
     maxSP: Int,
     val functions: List<Skill>,
+    val category: Category,
+    val category2: Category?,
+    val path: EntityPath,
+    val atk: Int,
+    val def: Int,
+    val spd: Int,
+    val maxAP: Int,
 ) : EntityProfile(
     name = name,
     level = level,

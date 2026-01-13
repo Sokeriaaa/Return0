@@ -168,6 +168,13 @@ class GameEntityRepo(
             sp = entity.sp,
             maxSP = entity.maxsp,
             functions = entity.functions,
+            category = entity.category,
+            category2 = entity.category2,
+            path = entity.path,
+            atk = entity.atk,
+            def = entity.def,
+            spd = entity.spd,
+            maxAP = entity.maxap,
         )
     }
 

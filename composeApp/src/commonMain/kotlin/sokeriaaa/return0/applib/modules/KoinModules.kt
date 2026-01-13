@@ -39,6 +39,7 @@ import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.mvi.viewmodels.EntitiesViewModel
+import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
@@ -60,6 +61,11 @@ object KoinModules {
                 initializer { GameViewModel() }
                 initializer { QuestsViewModel() }
                 initializer { EntitiesViewModel() }
+                initializer {
+                    EntityDetailsViewModel(
+                        entityName = this[EntityDetailsViewModel.entityNameKey]!!
+                    )
+                }
                 initializer { TeamsViewModel() }
                 initializer { InventoryViewModel() }
                 initializer { CombatViewModel() }

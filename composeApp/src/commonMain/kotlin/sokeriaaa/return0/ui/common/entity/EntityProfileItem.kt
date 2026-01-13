@@ -15,13 +15,10 @@
 package sokeriaaa.return0.ui.common.entity
 
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -64,21 +61,10 @@ fun EntityProfileContent(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box {
-                // EXP progress
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .align(Alignment.Center),
-                    progress = { display.expProgress }
-                )
-                // Level
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = display.level.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
+            EntityExpCircularIndicator(
+                level = display.level,
+                progress = { display.expProgress },
+            )
             Column(
                 modifier = Modifier
                     .weight(1F)
