@@ -48,13 +48,23 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.component_extra_empty
 import return0.composeapp.generated.resources.game_entity_function_max_tier
 import return0.composeapp.generated.resources.game_entity_function_specials
+import return0.composeapp.generated.resources.game_entity_function_specials_actual_power
+import return0.composeapp.generated.resources.game_entity_function_specials_atk_override
+import return0.composeapp.generated.resources.game_entity_function_specials_attack_times
 import return0.composeapp.generated.resources.game_entity_function_specials_bullseye
+import return0.composeapp.generated.resources.game_entity_function_specials_critical_dmg_offset
+import return0.composeapp.generated.resources.game_entity_function_specials_critical_rate_offset
+import return0.composeapp.generated.resources.game_entity_function_specials_def_override
 import return0.composeapp.generated.resources.game_entity_function_specials_extra
+import return0.composeapp.generated.resources.game_entity_function_specials_ignores_shields
+import return0.composeapp.generated.resources.game_entity_function_specials_target_rate_offset
 import return0.composeapp.generated.resources.game_entity_function_summary
 import return0.composeapp.generated.resources.game_entity_function_unlock_at
 import return0.composeapp.generated.resources.game_entity_function_upgrade_at
 import return0.composeapp.generated.resources.game_select_function
+import sokeriaaa.return0.models.component.res.condition.conditionResource
 import sokeriaaa.return0.models.component.res.extra.extraResource
+import sokeriaaa.return0.models.component.res.value.valueResource
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.common.widgets.TextItem
@@ -253,6 +263,102 @@ private fun FunctionDetails(
             TextItem(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.game_entity_function_specials_bullseye),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.attackTimes != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_attack_times))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.attackTimes))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.actualPower != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_actual_power))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.actualPower))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.targetRateOffset != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_target_rate_offset))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.targetRateOffset))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.criticalRateOffset != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_critical_rate_offset))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.criticalRateOffset))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.criticalDMGOffset != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_critical_dmg_offset))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.criticalDMGOffset))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.userBaseATKOverride != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_atk_override))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.userBaseATKOverride))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.targetBaseDEFOverride != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_def_override))
+                    append('\n')
+                    append(valueResource(skill.data.attackModifier.targetBaseDEFOverride))
+                },
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (skill.data.attackModifier?.ignoresShields != null) {
+            hasSpecial = true
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                text = buildAnnotatedString {
+                    append(stringResource(Res.string.game_entity_function_specials_ignores_shields))
+                    append('\n')
+                    append(conditionResource(skill.data.attackModifier.ignoresShields))
+                },
                 style = MaterialTheme.typography.bodySmall,
             )
         }

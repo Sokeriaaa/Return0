@@ -28,6 +28,14 @@
     <string name="game_entity_function_summary">Summary</string>
     <string name="game_entity_function_specials">Specials</string>
     <string name="game_entity_function_specials_bullseye">Bullseye: Cannot be dodged</string>
+    <string name="game_entity_function_specials_attack_times">Attack times in a single execute:</string>
+    <string name="game_entity_function_specials_actual_power">The power will become:</string>
+    <string name="game_entity_function_specials_target_rate_offset">Target rate offset:</string>
+    <string name="game_entity_function_specials_critical_rate_offset">Critical rate offset:</string>
+    <string name="game_entity_function_specials_critical_dmg_offset">Critical DMG offset:</string>
+    <string name="game_entity_function_specials_atk_override">The base ATK of the user will be regarded as:</string>
+    <string name="game_entity_function_specials_def_override">The base DEF of the target will be regarded as:</string>
+    <string name="game_entity_function_specials_ignores_shields">Ignore shields when:</string>
     <string name="game_entity_function_specials_extra">On each hit: </string>
 
     <string name="game_team_default">Team #%1$s</string>

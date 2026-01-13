@@ -25,6 +25,14 @@
     <string name="game_entity_function_summary">简介</string>
     <string name="game_entity_function_specials">特殊效果</string>
     <string name="game_entity_function_specials_bullseye">必中：无法被闪避</string>
+    <string name="game_entity_function_specials_attack_times">单次使用攻击次数：</string>
+    <string name="game_entity_function_specials_actual_power">实际威力：</string>
+    <string name="game_entity_function_specials_target_rate_offset">命中率偏移：</string>
+    <string name="game_entity_function_specials_critical_rate_offset">暴击率偏移：</string>
+    <string name="game_entity_function_specials_critical_dmg_offset">暴击伤害偏移：</string>
+    <string name="game_entity_function_specials_atk_override">使用者的基础攻击力将被视为：</string>
+    <string name="game_entity_function_specials_def_override">目标的基础防御力将被视为：</string>
+    <string name="game_entity_function_specials_ignores_shields">满足此条件时无视护盾：</string>
     <string name="game_entity_function_specials_extra">每次命中时：</string>
 
     <string name="game_team_default">队伍 #%1$s</string>
