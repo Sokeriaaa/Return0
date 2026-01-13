@@ -19,6 +19,9 @@
     <string name="game_select_entity">Select an Entity</string>
     <string name="game_select_entity_warn">Please select one entity.</string>
 
+    <string name="game_entity_functions">Functions</string>
+    <string name="game_entity_plugin">Plugin</string>
+
     <string name="game_team_default">Team #%1$s</string>
     <string name="game_team_new">(New Team)</string>
     <string name="game_team_activate">Activate Team</string>

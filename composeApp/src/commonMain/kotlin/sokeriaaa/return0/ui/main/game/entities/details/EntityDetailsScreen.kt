@@ -25,24 +25,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.game_entity_functions
+import return0.composeapp.generated.resources.game_entity_plugin
 import return0.composeapp.generated.resources.status_ap
 import return0.composeapp.generated.resources.status_atk
 import return0.composeapp.generated.resources.status_def
@@ -57,6 +67,8 @@ import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
+import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
+import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +109,7 @@ fun EntityDetailsScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(360.dp)
+                        .width(300.dp)
                         .padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -139,6 +151,7 @@ fun EntityDetailsScreen(
                         )
                     }
                 }
+                VerticalDivider(modifier = Modifier.fillMaxHeight())
                 EntityMainPart(modifier = Modifier.weight(1F), entity = entity)
             }
         } else {
@@ -181,8 +194,7 @@ fun EntityDetailsScreen(
                 EntityMainPart(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F)
-                        .padding(horizontal = 16.dp),
+                        .weight(1F),
                     entity = entity,
                 )
             }
@@ -244,7 +256,7 @@ private fun EntityExpPart(
         )
         Spacer(modifier = Modifier.weight(1F))
         Column(
-            modifier = Modifier.width(192.dp),
+            modifier = Modifier.width(160.dp),
         ) {
             // HP
             EntityHPBar(
@@ -316,5 +328,64 @@ private fun EntityMainPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
 ) {
+    // Page titles
+    val pageTitles = listOf(
+        Res.string.game_entity_functions,
+        Res.string.game_entity_plugin,
+    )
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val pagerState = rememberPagerState(pageCount = { pageTitles.size })
+        val scope = rememberCoroutineScope()
 
+        // Page tab
+        PrimaryScrollableTabRow(
+            // Our selected tab is our current page
+            selectedTabIndex = pagerState.currentPage,
+            // Override the indicator, using the provided pagerTabIndicatorOffset modifier
+            indicator = {
+                SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(
+                        selectedTabIndex = pagerState.currentPage,
+                    )
+                )
+            },
+        ) {
+            pageTitles.forEachIndexed { index, titleRes ->
+                Tab(
+                    text = {
+                        Text(
+                            text = stringResource(titleRes),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                )
+            }
+        }
+
+        // Pager
+        HorizontalPager(
+            modifier = Modifier.weight(1F),
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
+        ) { page ->
+            when (page) {
+                0 -> EntityFunctionPage(
+                    modifier = Modifier.padding(horizontal = 14.dp),
+                    functions = entity.functions,
+                )
+
+                1 -> EntityPluginPage()
+            }
+        }
+    }
 }
