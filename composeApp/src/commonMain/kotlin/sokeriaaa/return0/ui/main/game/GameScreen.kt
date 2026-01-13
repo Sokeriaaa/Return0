@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -107,6 +109,7 @@ fun GameScreen(
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
     val scope = rememberCoroutineScope()
+    val mapState: LazyListState = rememberLazyListState()
     val savedStateHandle =
         mainNavHostController.currentBackStackEntry?.savedStateHandle
     // Dialogue text
@@ -219,6 +222,9 @@ fun GameScreen(
                             line = effect.line,
                         ),
                     )
+                    scope.launch {
+                        mapState.animateScrollToItem(effect.line)
+                    }
                 }
 
                 EventEffect.ShowMap -> isShowingMap = true
@@ -276,6 +282,7 @@ fun GameScreen(
             viewModel = viewModel,
             mainNavHostController = mainNavHostController,
             windowAdaptiveInfo = windowAdaptiveInfo,
+            mapState = mapState,
             isShowingMap = isShowingMap,
             mapOffset = shakeOffset.value,
         )
@@ -384,6 +391,7 @@ private fun GameContent(
     viewModel: GameViewModel,
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
+    mapState: LazyListState = rememberLazyListState(),
     isShowingMap: Boolean,
     mapOffset: Float,
 ) {
@@ -470,6 +478,7 @@ private fun GameContent(
                     .alpha(animatedAlpha)
                     .graphicsLayer { translationX = mapOffset },
                 viewModel = viewModel,
+                state = mapState,
             )
         }
     }
