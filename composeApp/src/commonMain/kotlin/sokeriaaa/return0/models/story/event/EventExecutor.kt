@@ -173,6 +173,7 @@ suspend fun Event.executedIn(context: EventContext) {
                             )
                         )
                     )
+                    context.callback.waitForUserContinue()
                 } else {
                     onDenied.executedIn(context)
                 }
