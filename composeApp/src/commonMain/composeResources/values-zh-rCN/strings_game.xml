@@ -20,6 +20,11 @@
     <string name="game_select_entity_warn">请选择一个对象。</string>
     <string name="game_select_function">选择一个函数以查看详细信息显示。</string>
 
+    <string name="game_hub">路由枢纽</string>
+    <string name="game_hub_current">当前枢纽</string>
+    <string name="game_hub_indexed">已索引的枢纽</string>
+    <string name="game_hub_teleport">传送</string>
+    <string name="game_hub_teleport_warn">请选择目的地。</string>
     <string name="game_hub_denied">访问被拒绝。</string>
     <string name="game_hub_denied_but_indexed">访问被拒绝，但仍然被编入索引。</string>
 

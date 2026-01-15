@@ -124,6 +124,9 @@ fun GameScreen(
     var isShowingSelectEntityDialog by remember { mutableStateOf(false) }
     // Typing return 0;
     var isTypingReturn0 by remember { mutableStateOf(false) }
+    // Route hub
+    var isShowingRouteHub by remember { mutableStateOf(false) }
+    var currentHub by remember { mutableStateOf<Pair<String, Int>?>(null) }
 
     // Showing map
     var isShowingMap by remember { mutableStateOf(true) }
@@ -199,7 +202,8 @@ fun GameScreen(
                 }
 
                 is EventEffect.RouteHub -> {
-
+                    currentHub = effect.currentLocation
+                    isShowingRouteHub = true
                 }
 
                 is EventEffect.MovePlayer -> {
@@ -383,6 +387,22 @@ fun GameScreen(
                     isTypingReturn0 = false
                     viewModel.onIntent(GameIntent.EventContinue)
                 },
+            )
+        }
+        // Show hub dialog
+        if (isShowingRouteHub) {
+            GameRouteHubDialog(
+                modifier = Modifier.padding(vertical = 64.dp),
+                currentLocation = currentHub,
+                availableHubs = viewModel.indexedHubMap.keys.toList(),
+                onDismiss = {
+                    isShowingRouteHub = false
+                    viewModel.onIntent(GameIntent.EventRouteHub(null))
+                },
+                onConfirm = {
+                    isShowingRouteHub = false
+                    viewModel.onIntent(GameIntent.EventRouteHub(it))
+                }
             )
         }
     }

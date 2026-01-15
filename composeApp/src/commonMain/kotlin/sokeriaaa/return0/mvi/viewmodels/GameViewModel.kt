@@ -75,6 +75,9 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     // Lines that are blocked by events.
     private val _blockedRows: MutableSet<Int> = mutableStateSetOf()
 
+    // Indexed route hubs
+    val indexedHubMap: Map<Pair<String, Int>, Long> get() = _gameStateRepo.map.indexedHubMap
+
     /**
      * The player is currently moving by an event.
      */
