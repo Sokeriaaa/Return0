@@ -198,6 +198,10 @@ fun GameScreen(
                     mainNavHostController.navigateSingleTop(Scene.Combat.route)
                 }
 
+                is EventEffect.RouteHub -> {
+
+                }
+
                 is EventEffect.MovePlayer -> {
                     hideDialogueText()
                     hideTips()

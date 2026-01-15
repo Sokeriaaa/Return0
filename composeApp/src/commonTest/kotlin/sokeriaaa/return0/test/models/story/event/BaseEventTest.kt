@@ -186,6 +186,7 @@ abstract class BaseEventTest {
         override suspend fun waitForChoice(): Int = 0
         override suspend fun waitForMoveFinished() {}
         override suspend fun waitForCombatResult(): Boolean = true
+        override suspend fun waitForRouteHubSelection(): Pair<String, Int>? = null
         override suspend fun onEffect(effect: EventEffect) {
             _collectedEffects.add(effect)
         }

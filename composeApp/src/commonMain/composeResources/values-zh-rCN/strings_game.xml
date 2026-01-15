@@ -9,6 +9,9 @@
     <string name="game_menu_settings">设置</string>
     <string name="game_menu_quit">退出游戏</string>
 
+    <string name="game_user_title">职称</string>
+    <string name="game_now">现在</string>
+
     <string name="game_save_title">存档提醒</string>
     <string name="game_save_text">现在去保存当前的游戏进度吗？</string>
     <string name="game_quit_warn">未保存的游戏进度可能会丢失。</string>
@@ -16,6 +19,9 @@
     <string name="game_select_entity">选择一个对象</string>
     <string name="game_select_entity_warn">请选择一个对象。</string>
     <string name="game_select_function">选择一个函数以查看详细信息显示。</string>
+
+    <string name="game_hub_denied">访问被拒绝。</string>
+    <string name="game_hub_denied_but_indexed">访问被拒绝，但仍然被编入索引。</string>
 
     <string name="game_entity_functions">函数</string>
     <string name="game_entity_plugin">插件</string>

@@ -47,4 +47,5 @@ sealed class GameIntent : BaseIntent {
     data object EventContinue : GameIntent()
     data class EventChoice(val index: Int) : GameIntent()
     data class EventCombatResult(val result: Boolean) : GameIntent()
+    data class EventRouteHub(val destination: Pair<String, Int>?) : GameIntent()
 }

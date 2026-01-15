@@ -14,6 +14,10 @@
  */
 package sokeriaaa.return0.models.story.event
 
+import org.jetbrains.compose.resources.getString
+import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.game_hub_denied
+import return0.composeapp.generated.resources.game_hub_denied_but_indexed
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.component.context.ItemContext
@@ -21,6 +25,7 @@ import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.component.executor.extra.executedIn
 import sokeriaaa.return0.models.component.executor.value.calculateTime
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
+import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
@@ -136,6 +141,41 @@ suspend fun Event.executedIn(context: EventContext) {
                 success.executedIn(context)
             } else {
                 failure.executedIn(context)
+            }
+        }
+
+        is Event.RouteHub -> {
+            context.location ?: return
+            val accessible = isAccessible?.calculatedIn(context) ?: true
+            val indexable = isIndexable?.calculatedIn(context) ?: true
+            if (indexable) {
+                context.gameState.map.indexedNewHub(context.location, context.now)
+            }
+            if (accessible) {
+                context.callback.onEffect(EventEffect.RouteHub(context.location))
+                val destination = context.callback.waitForRouteHubSelection()
+                destination?.let {
+                    // Teleport
+                    Event.TeleportUserTo(it.first, Value(it.second)).executedIn(context)
+                }
+            } else {
+                // Access denied
+                if (onDenied == null) {
+                    context.callback.onEffect(
+                        EventEffect.ShowText(
+                            type = EventEffect.ShowText.Type.Narrator,
+                            text = getString(
+                                if (indexable) {
+                                    Res.string.game_hub_denied_but_indexed
+                                } else {
+                                    Res.string.game_hub_denied
+                                }
+                            )
+                        )
+                    )
+                } else {
+                    onDenied.executedIn(context)
+                }
             }
         }
 

@@ -42,6 +42,13 @@ class EventContext(
         suspend fun waitForChoice(): Int
         suspend fun waitForMoveFinished()
         suspend fun waitForCombatResult(): Boolean
+
+        /**
+         * Selected a destination in the route hub panel.
+         *
+         * @return Destination. `null` means cancel.
+         */
+        suspend fun waitForRouteHubSelection(): Pair<String, Int>?
         suspend fun onEffect(effect: EventEffect)
     }
 }

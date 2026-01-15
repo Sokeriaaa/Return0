@@ -63,6 +63,10 @@ sealed interface EventEffect {
         val config: ArenaConfig,
     ) : EventEffect
 
+    data class RouteHub(
+        val currentLocation: Pair<String, Int>,
+    ) : EventEffect
+
     /**
      * Move player in the map animatedly.
      */

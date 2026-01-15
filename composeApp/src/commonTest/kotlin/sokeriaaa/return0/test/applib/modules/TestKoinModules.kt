@@ -41,7 +41,7 @@ object TestKoinModules {
         single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get(), get()) }
         single { GameInventoryRepo(get()) }
-        single { GameMapRepo(get(), get()) }
+        single { GameMapRepo(get(), get(), get()) }
         single { GamePlayerRepo(get()) }
         single { GameQuestRepo(get()) }
         single {

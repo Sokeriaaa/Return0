@@ -103,6 +103,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     private var _choiceDeferred: CompletableDeferred<Int>? = null
     private var _moveDeferred: CompletableDeferred<Unit>? = null
     private var _combatDeferred: CompletableDeferred<Boolean>? = null
+    private var _teleportDeferred: CompletableDeferred<Pair<String, Int>?>? = null
 
     // Current event effects
     private val _effects = MutableSharedFlow<EventEffect>(
@@ -154,6 +155,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
             GameIntent.EventContinue -> onUserContinue()
             is GameIntent.EventChoice -> onChoiceSelected(intent.index)
             is GameIntent.EventCombatResult -> onCombatFinished(intent.result)
+            is GameIntent.EventRouteHub -> onRouteHubSelected(intent.destination)
             else -> {}
         }
     }
@@ -361,6 +363,12 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         return deferred.await()
     }
 
+    override suspend fun waitForRouteHubSelection(): Pair<String, Int>? {
+        val deferred = CompletableDeferred<Pair<String, Int>?>()
+        _teleportDeferred = deferred
+        return deferred.await()
+    }
+
     override suspend fun onEffect(effect: EventEffect) {
         _effects.emit(effect)
     }
@@ -375,6 +383,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     private fun onCombatFinished(result: Boolean) {
         _combatDeferred?.complete(result)
+    }
+
+    private fun onRouteHubSelected(destination: Pair<String, Int>?) {
+        _teleportDeferred?.complete(destination)
     }
 
     private fun onMoveFinished() {

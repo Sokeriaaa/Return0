@@ -20,6 +20,9 @@
     <string name="game_select_entity_warn">Please select one entity.</string>
     <string name="game_select_function">Select a function to view details here.</string>
 
+    <string name="game_hub_denied">Access denied.</string>
+    <string name="game_hub_denied_but_indexed">Access denied, but it's still indexed.</string>
+
     <string name="game_entity_functions">Functions</string>
     <string name="game_entity_plugin">Plugin</string>
     <string name="game_entity_function_unlock_at">This function will be unlocked at level %1$s.</string>

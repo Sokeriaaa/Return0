@@ -16,14 +16,17 @@ package sokeriaaa.return0.applib.repository.game.map
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import return0.composeapp.generated.resources.Res
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao
+import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.table.EventRelocationTable
+import sokeriaaa.return0.applib.room.table.IndexedHubTable
 import sokeriaaa.return0.shared.common.helpers.JsonHelper
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
@@ -33,6 +36,7 @@ import sokeriaaa.return0.shared.data.models.story.map.MapEvent
  */
 class GameMapRepo(
     private val eventRelocationDao: EventRelocationDao,
+    private val indexedHubDao: IndexedHubDao,
     private val saveMetaDao: SaveMetaDao,
 ) : BaseGameRepo {
 
@@ -61,6 +65,8 @@ class GameMapRepo(
     var lineNumber: Int by mutableIntStateOf(1)
         private set
 
+    private val _indexedHubMap: MutableMap<Pair<String, Int>, Long> = mutableStateMapOf()
+    val indexedHubMap: Map<Pair<String, Int>, Long> = _indexedHubMap
 
     /**
      * Update line number.
@@ -74,6 +80,13 @@ class GameMapRepo(
      */
     fun isInBuggyRange(currentRow: Int): Boolean {
         return current.buggyRange.any { it.first <= currentRow && currentRow <= it.second }
+    }
+
+    fun indexedNewHub(location: Pair<String, Int>, time: Long) {
+        if (indexedHubMap.containsKey(location)) {
+            return
+        }
+        _indexedHubMap[location] = time
     }
 
     /**
@@ -148,6 +161,10 @@ class GameMapRepo(
             loadMap(it.fileName)
             lineNumber = it.lineNumber
         }
+        _indexedHubMap.clear()
+        indexedHubDao.queryAll(AppConstants.CURRENT_SAVE_ID).forEach {
+            _indexedHubMap[it.fileName to it.lineNumber] = it.indexedTime
+        }
     }
 
     override suspend fun flush() {
@@ -169,6 +186,18 @@ class GameMapRepo(
             )
         }
         _eventRelocateBuffer.clear()
+        // Save indexed hubs
+        indexedHubDao.delete(AppConstants.CURRENT_SAVE_ID)
+        indexedHubMap.forEach {
+            indexedHubDao.insertOrUpdate(
+                IndexedHubTable(
+                    saveID = AppConstants.CURRENT_SAVE_ID,
+                    fileName = it.key.first,
+                    lineNumber = it.key.second,
+                    indexedTime = it.value,
+                )
+            )
+        }
     }
 
 }
