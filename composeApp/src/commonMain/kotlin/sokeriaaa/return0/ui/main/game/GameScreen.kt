@@ -272,7 +272,7 @@ fun GameScreen(
     LaunchedEffect(combatResult) {
         viewModel.onIntent(GameIntent.EventCombatResult(combatResult))
         // Consume result
-        savedStateHandle?.remove<Boolean>("screen2_result")
+        savedStateHandle?.remove<Boolean>("combat_result")
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

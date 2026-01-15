@@ -183,7 +183,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
      */
     private suspend fun loadAllEvents() {
         _gameStateRepo.map.loadEvents().forEach {
-            val context = getEventContext(it.key)
+            val context = getEventContext(it)
             if (it.enabled.calculatedIn(context)) {
                 // If the event is enabled
                 if (it.lineNumber == null) {
@@ -302,10 +302,9 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         }
     }
 
-    private fun getEventContext(
-        key: String?,
-    ): EventContext = EventContext(
-        key = key,
+    private fun getEventContext(event: MapEvent?): EventContext = EventContext(
+        key = event?.key,
+        location = event?.lineNumber?.let { current.name to it },
         callback = this,
     )
 
@@ -318,7 +317,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     private suspend fun executeEvent(vararg mapEvents: MapEvent) {
         mapEvents.forEach {
-            it.event.executedIn(getEventContext(it.key))
+            it.event.executedIn(getEventContext(it))
         }
         // After execution finished, finish this event.
         _effects.emit(EventEffect.EventFinished)
@@ -330,7 +329,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
             config = Event.Combat.Config(
                 enemies = entry.enemies.map { it to entry.level }
             ),
-        ).executedIn(getEventContext(key = null))
+        ).executedIn(getEventContext(event = null))
     }
 
     private fun interruptMoving() {

@@ -29,6 +29,7 @@ import kotlin.random.Random
 class EventContext(
     val key: String?,
     override val random: Random = Random.Default,
+    val location: Pair<String, Int>? = null,
     val now: Long = TimeHelper.currentTimeMillis(),
     val callback: Callback,
 ) : BaseContext, KoinComponent {
