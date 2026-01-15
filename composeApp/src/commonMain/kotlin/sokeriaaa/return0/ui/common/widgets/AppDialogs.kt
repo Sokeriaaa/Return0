@@ -14,12 +14,13 @@
  */
 package sokeriaaa.return0.ui.common.widgets
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.cancel
@@ -31,8 +32,35 @@ import return0.composeapp.generated.resources.ok
 @Composable
 fun AppAlertDialog(
     modifier: Modifier = Modifier,
+    iconRes: DrawableResource? = null,
+    iconContentDescription: String? = null,
     title: String? = null,
     text: String? = null,
+    confirmText: String = stringResource(Res.string.ok),
+    cancelText: String? = stringResource(Res.string.cancel),
+    onDismiss: () -> Unit,
+    onConfirmed: () -> Unit = onDismiss,
+    onCanceled: () -> Unit = onDismiss,
+) = AppAlertDialog(
+    modifier = modifier,
+    iconRes = iconRes,
+    iconContentDescription = iconContentDescription,
+    title = title,
+    content = text?.let { @Composable { Text(text = it) } },
+    confirmText = confirmText,
+    cancelText = cancelText,
+    onDismiss = onDismiss,
+    onConfirmed = onConfirmed,
+    onCanceled = onCanceled,
+)
+
+@Composable
+fun AppAlertDialog(
+    modifier: Modifier = Modifier,
+    iconRes: DrawableResource? = null,
+    iconContentDescription: String? = null,
+    title: String? = null,
+    content: (@Composable () -> Unit)?,
     confirmText: String = stringResource(Res.string.ok),
     cancelText: String? = stringResource(Res.string.cancel),
     onDismiss: () -> Unit,
@@ -41,8 +69,16 @@ fun AppAlertDialog(
 ) = AlertDialog(
     modifier = modifier,
     onDismissRequest = onDismiss,
+    icon = iconRes?.let {
+        @Composable {
+            Icon(
+                painter = painterResource(it),
+                contentDescription = iconContentDescription,
+            )
+        }
+    },
     title = title?.let { @Composable { Text(text = it) } },
-    text = text?.let { @Composable { Text(text = it) } },
+    text = content,
     confirmButton = {
         AppTextButton(
             text = confirmText,
