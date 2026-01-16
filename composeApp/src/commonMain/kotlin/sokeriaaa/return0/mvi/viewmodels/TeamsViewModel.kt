@@ -67,7 +67,9 @@ class TeamsViewModel : BaseViewModel() {
             is TeamsIntent.ActivateTeam -> viewModelScope.launch {
                 _teamRepo.activateTeam(intent.teamIndex)
                 activatedTeamIndex = intent.teamIndex
-                refreshTeams()
+                teams.toList().forEachIndexed { index, team ->
+                    _teams[index] = team.copy(isActivated = index == intent.teamIndex)
+                }
             }
 
             TeamsIntent.RequestCreateTeam -> viewModelScope.launch {
@@ -92,7 +94,7 @@ class TeamsViewModel : BaseViewModel() {
                 // Create a new team
                 val newIndex = teams.size
                 _teamRepo.createOrUpdateTeam(teamID = newIndex)
-                refreshTeams()
+                _teams.add(TeamDisplay())
             }
 
             is TeamsIntent.RenameTeam -> viewModelScope.launch {
@@ -100,13 +102,18 @@ class TeamsViewModel : BaseViewModel() {
                     teamID = intent.teamIndex,
                     name = intent.name,
                 )
-                refreshTeams()
+                _teams[intent.teamIndex] = teams[intent.teamIndex].copy(name = intent.name)
             }
 
             is TeamsIntent.SwitchEntity -> {
                 viewModelScope.launch {
                     val entity = intent.newEntity?.let { _entityRepo.getEntityProfile(it) }
-                    _teams[intent.teamIndex].entities[intent.entityIndex] = entity
+
+                    val newTeamEntities = _teams[intent.teamIndex].entities.toMutableList()
+                        .apply { this[intent.entityIndex] = entity }
+
+                    _teams[intent.teamIndex] =
+                        _teams[intent.teamIndex].copy(entities = newTeamEntities)
                     _teamRepo.updateTeamMember(
                         teamID = intent.teamIndex,
                         slot1 = _teams[intent.teamIndex].entities[0]?.name,
@@ -114,7 +121,6 @@ class TeamsViewModel : BaseViewModel() {
                         slot3 = _teams[intent.teamIndex].entities[2]?.name,
                         slot4 = _teams[intent.teamIndex].entities[3]?.name,
                     )
-                    refreshTeams()
                 }
             }
 
@@ -140,7 +146,7 @@ class TeamsViewModel : BaseViewModel() {
                 TeamDisplay(
                     isActivated = team.isActivated,
                     name = team.name,
-                    entities = teamEntities,
+                    entities = teamEntities.toList(),
                 ),
             )
             if (team.isActivated) {
@@ -155,10 +161,10 @@ class TeamsViewModel : BaseViewModel() {
         _availableEntities.addAll(_entityRepo.queryAll())
     }
 
-    class TeamDisplay(
-        val isActivated: Boolean,
-        val name: String?,
-        val entities: Array<EntityProfile?> = arrayOfNulls(AppConstants.ARENA_MAX_PARTY),
+    data class TeamDisplay(
+        val isActivated: Boolean = false,
+        val name: String? = null,
+        val entities: List<EntityProfile?> = List(AppConstants.ARENA_MAX_PARTY) { null }
     ) {
         init {
             require(entities.size == AppConstants.ARENA_MAX_PARTY) {
