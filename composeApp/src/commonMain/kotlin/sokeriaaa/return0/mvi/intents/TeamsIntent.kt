@@ -15,11 +15,19 @@
 package sokeriaaa.return0.mvi.intents
 
 sealed class TeamsIntent : BaseIntent {
-    data class SelectTeam(val index: Int) : TeamsIntent()
-    data object ActivateCurrentTeam : TeamsIntent()
+    data class ActivateTeam(
+        val teamIndex: Int,
+    ) : TeamsIntent()
+
     data object RequestCreateTeam : TeamsIntent()
-    data class RenameCurrentTeam(val name: String) : TeamsIntent()
-    data class SwitchEntityInCurrentTeam(
+
+    data class RenameTeam(
+        val teamIndex: Int,
+        val name: String,
+    ) : TeamsIntent()
+
+    data class SwitchEntity(
+        val teamIndex: Int,
         val entityIndex: Int,
         val newEntity: String?,
     ) : TeamsIntent()

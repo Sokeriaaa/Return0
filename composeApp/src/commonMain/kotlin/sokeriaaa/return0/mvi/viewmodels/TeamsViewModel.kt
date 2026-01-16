@@ -26,7 +26,6 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_team_warn_empty_team_exists
 import return0.composeapp.generated.resources.game_team_warn_limit
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.room.table.EntityTable
@@ -53,13 +52,6 @@ class TeamsViewModel : BaseViewModel() {
     var activatedTeamIndex: Int by mutableIntStateOf(0)
         private set
 
-    // The team index currently displaying.
-    var currentTeamIndex: Int by mutableIntStateOf(0)
-        private set
-
-    val currentTeam: TeamDisplay?
-        get() = teams.getOrNull(currentTeamIndex)
-
     // Available entities
     private var _availableEntities: MutableList<EntityTable> = mutableStateListOf()
     val availableEntities: List<EntityTable> = _availableEntities
@@ -67,12 +59,14 @@ class TeamsViewModel : BaseViewModel() {
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
-            CommonIntent.Refresh -> viewModelScope.launch { refreshTeams() }
-            is TeamsIntent.SelectTeam -> currentTeamIndex = intent.index
+            CommonIntent.Refresh -> viewModelScope.launch {
+                refreshEntities()
+                refreshTeams()
+            }
 
-            TeamsIntent.ActivateCurrentTeam -> viewModelScope.launch {
-                _teamRepo.activateTeam(currentTeamIndex)
-                activatedTeamIndex = currentTeamIndex
+            is TeamsIntent.ActivateTeam -> viewModelScope.launch {
+                _teamRepo.activateTeam(intent.teamIndex)
+                activatedTeamIndex = intent.teamIndex
                 refreshTeams()
             }
 
@@ -99,30 +93,29 @@ class TeamsViewModel : BaseViewModel() {
                 val newIndex = teams.size
                 _teamRepo.createOrUpdateTeam(teamID = newIndex)
                 refreshTeams()
-                // Switch to the new team.
-                currentTeamIndex = newIndex
             }
 
-            is TeamsIntent.RenameCurrentTeam -> viewModelScope.launch {
+            is TeamsIntent.RenameTeam -> viewModelScope.launch {
                 _teamRepo.updateTeamName(
-                    teamID = currentTeamIndex,
+                    teamID = intent.teamIndex,
                     name = intent.name,
                 )
                 refreshTeams()
             }
 
-            is TeamsIntent.SwitchEntityInCurrentTeam -> viewModelScope.launch {
-                val entity = intent.newEntity?.let { _entityRepo.getEntityProfile(it) }
-
-                _teams[currentTeamIndex].entities[intent.entityIndex] = entity
-                _teamRepo.updateTeamMember(
-                    teamID = currentTeamIndex,
-                    slot1 = _teams[currentTeamIndex].entities[0]?.name,
-                    slot2 = _teams[currentTeamIndex].entities[1]?.name,
-                    slot3 = _teams[currentTeamIndex].entities[2]?.name,
-                    slot4 = _teams[currentTeamIndex].entities[3]?.name,
-                )
-                refreshTeams()
+            is TeamsIntent.SwitchEntity -> {
+                viewModelScope.launch {
+                    val entity = intent.newEntity?.let { _entityRepo.getEntityProfile(it) }
+                    _teams[intent.teamIndex].entities[intent.entityIndex] = entity
+                    _teamRepo.updateTeamMember(
+                        teamID = intent.teamIndex,
+                        slot1 = _teams[intent.teamIndex].entities[0]?.name,
+                        slot2 = _teams[intent.teamIndex].entities[1]?.name,
+                        slot3 = _teams[intent.teamIndex].entities[2]?.name,
+                        slot4 = _teams[intent.teamIndex].entities[3]?.name,
+                    )
+                    refreshTeams()
+                }
             }
 
             else -> {}
@@ -132,7 +125,6 @@ class TeamsViewModel : BaseViewModel() {
     private suspend fun refreshTeams() {
         // Reset
         _teams.clear()
-        _availableEntities.clear()
         activatedTeamEntities = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
         activatedTeamIndex = 0
         // Load
@@ -156,6 +148,10 @@ class TeamsViewModel : BaseViewModel() {
                 activatedTeamIndex = index
             }
         }
+    }
+
+    private suspend fun refreshEntities() {
+        _availableEntities.clear()
         _availableEntities.addAll(_entityRepo.queryAll())
     }
 

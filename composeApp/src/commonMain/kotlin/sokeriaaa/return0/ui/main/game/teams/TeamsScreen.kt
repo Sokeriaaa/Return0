@@ -25,6 +25,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -47,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
@@ -102,18 +105,18 @@ fun TeamsScreen(
             )
         }
     ) { paddingValues ->
+        val pagerState = rememberPagerState(pageCount = { viewModel.teams.size })
+        val scope = rememberCoroutineScope()
         Column(
             modifier = Modifier.padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            rememberCoroutineScope()
-
             PrimaryScrollableTabRow(
-                selectedTabIndex = viewModel.currentTeamIndex,
+                selectedTabIndex = pagerState.currentPage,
                 indicator = {
                     SecondaryIndicator(
                         modifier = Modifier.tabIndicatorOffset(
-                            selectedTabIndex = viewModel.currentTeamIndex,
+                            selectedTabIndex = pagerState.currentPage,
                         )
                     )
                 },
@@ -130,9 +133,11 @@ fun TeamsScreen(
                                 overflow = TextOverflow.Ellipsis,
                             )
                         },
-                        selected = viewModel.currentTeamIndex == index,
+                        selected = pagerState.currentPage == index,
                         onClick = {
-                            viewModel.onIntent(TeamsIntent.SelectTeam(index))
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
                         },
                     )
                 }
@@ -153,13 +158,19 @@ fun TeamsScreen(
                     )
                 }
             }
-            viewModel.currentTeam?.let {
-                TeamContent(
-                    availableEntities = viewModel.availableEntities,
-                    index = viewModel.currentTeamIndex,
-                    display = it,
-                    onIntent = viewModel::onIntent,
-                )
+            HorizontalPager(
+                modifier = Modifier.weight(1F),
+                state = pagerState,
+                verticalAlignment = Alignment.Top,
+            ) { page ->
+                viewModel.teams.getOrNull(page)?.let {
+                    TeamContent(
+                        availableEntities = viewModel.availableEntities,
+                        teamIndex = page,
+                        display = it,
+                        onIntent = viewModel::onIntent,
+                    )
+                }
             }
         }
     }
@@ -169,7 +180,7 @@ fun TeamsScreen(
 private fun TeamContent(
     modifier: Modifier = Modifier,
     availableEntities: List<EntityTable>,
-    index: Int,
+    teamIndex: Int,
     display: TeamsViewModel.TeamDisplay,
     onIntent: (BaseIntent) -> Unit,
 ) {
@@ -182,7 +193,7 @@ private fun TeamContent(
         item(
             span = { GridItemSpan(maxLineSpan) }
         ) {
-            val name = display.name ?: stringResource(Res.string.game_team_default, index)
+            val name = display.name ?: stringResource(Res.string.game_team_default, teamIndex)
             Text(
                 modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
                 text = name,
@@ -228,7 +239,7 @@ private fun TeamContent(
                     ),
                     enabled = !display.isActivated && display.entities.any { it != null },
                     onClick = {
-                        onIntent(TeamsIntent.ActivateCurrentTeam)
+                        onIntent(TeamsIntent.ActivateTeam(teamIndex))
                     },
                 )
             }
@@ -243,7 +254,8 @@ private fun TeamContent(
             selectingIndex = selectingIndex,
             onSelected = {
                 onIntent(
-                    TeamsIntent.SwitchEntityInCurrentTeam(
+                    TeamsIntent.SwitchEntity(
+                        teamIndex = teamIndex,
                         entityIndex = selectingIndex,
                         newEntity = it,
                     ),
