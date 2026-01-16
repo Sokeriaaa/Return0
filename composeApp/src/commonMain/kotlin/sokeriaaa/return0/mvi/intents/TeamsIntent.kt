@@ -17,6 +17,7 @@ package sokeriaaa.return0.mvi.intents
 sealed class TeamsIntent : BaseIntent {
     data class SelectTeam(val index: Int) : TeamsIntent()
     data object ActivateCurrentTeam : TeamsIntent()
+    data object RequestCreateTeam : TeamsIntent()
     data class RenameCurrentTeam(val name: String) : TeamsIntent()
     data class SwitchEntityInCurrentTeam(
         val entityIndex: Int,

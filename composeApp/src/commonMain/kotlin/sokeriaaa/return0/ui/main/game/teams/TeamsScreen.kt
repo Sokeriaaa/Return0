@@ -148,7 +148,7 @@ fun TeamsScreen(
                         },
                         selected = false,
                         onClick = {
-                            // TODO Create a new team then scroll to it.
+                            viewModel.onIntent(TeamsIntent.RequestCreateTeam)
                         },
                     )
                 }

@@ -52,6 +52,8 @@
     <string name="game_team_activate">Activate Team</string>
     <string name="game_team_activated">Activated</string>
     <string name="game_team_warn_last_member">The activated team requires at least 1 entity.</string>
+    <string name="game_team_warn_empty_team_exists">An empty team exists. Please use that team instead of creating a new one.</string>
+    <string name="game_team_warn_limit">The number of teams has reached the upper limit.</string>
 
     <string name="game_complete_code">Complete Code</string>
     <string name="game_complete_code_run">Run</string>

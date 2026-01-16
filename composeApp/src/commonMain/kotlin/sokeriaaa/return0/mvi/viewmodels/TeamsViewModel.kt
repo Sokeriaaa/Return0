@@ -20,7 +20,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
+import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.game_team_warn_empty_team_exists
+import return0.composeapp.generated.resources.game_team_warn_limit
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
@@ -34,7 +38,6 @@ import sokeriaaa.return0.mvi.intents.TeamsIntent
 class TeamsViewModel : BaseViewModel() {
 
     // Repo
-    private val _archiveRepo: ArchiveRepo by inject()
     private val _entityRepo: GameEntityRepo by inject()
     private val _teamRepo: GameTeamRepo by inject()
 
@@ -70,6 +73,34 @@ class TeamsViewModel : BaseViewModel() {
             TeamsIntent.ActivateCurrentTeam -> viewModelScope.launch {
                 _teamRepo.activateTeam(currentTeamIndex)
                 activatedTeamIndex = currentTeamIndex
+                refreshTeams()
+            }
+
+            TeamsIntent.RequestCreateTeam -> viewModelScope.launch {
+                // Check if the upper limit is reached.
+                if (teams.size >= AppConstants.MAXIMUM_TEAMS) {
+                    onIntent(
+                        CommonIntent.ShowSnackBar(
+                            getString(Res.string.game_team_warn_limit)
+                        )
+                    )
+                    return@launch
+                }
+                // Check if an empty team exists.
+                if (teams.any { t -> t.entities.all { e -> e == null } }) {
+                    onIntent(
+                        CommonIntent.ShowSnackBar(
+                            getString(Res.string.game_team_warn_empty_team_exists)
+                        )
+                    )
+                    return@launch
+                }
+                // Create a new team
+                val newIndex = teams.size
+                _teamRepo.createOrUpdateTeam(teamID = newIndex)
+                refreshTeams()
+                // Switch to the new team.
+                currentTeamIndex = newIndex
             }
 
             is TeamsIntent.RenameCurrentTeam -> viewModelScope.launch {
