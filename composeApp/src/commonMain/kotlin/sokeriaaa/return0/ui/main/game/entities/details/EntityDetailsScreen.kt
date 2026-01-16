@@ -15,6 +15,8 @@
 package sokeriaaa.return0.ui.main.game.entities.details
 
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,21 +29,28 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.MutableCreationExtras
@@ -52,6 +61,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_entity_functions
+import return0.composeapp.generated.resources.game_entity_max_level
 import return0.composeapp.generated.resources.game_entity_plugin
 import return0.composeapp.generated.resources.status_ap
 import return0.composeapp.generated.resources.status_atk
@@ -59,6 +69,7 @@ import return0.composeapp.generated.resources.status_def
 import return0.composeapp.generated.resources.status_hp
 import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_spd
+import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
@@ -241,19 +252,47 @@ private fun EntityPathCategoryPart(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EntityExpPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
 ) {
+    val state = rememberTooltipState()
+    val scope = rememberCoroutineScope()
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        EntityExpCircularIndicator(
-            level = entity.level,
-            progress = { entity.expProgress },
-        )
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable { scope.launch { state.show() } },
+        ) {
+            TooltipBox(
+                positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+                    positioning = TooltipAnchorPosition.Above
+                ),
+                tooltip = {
+                    PlainTooltip {
+                        Text(
+                            text = if (entity.level >= AppConstants.ENTITY_MAX_LEVEL) {
+                                stringResource(Res.string.game_entity_max_level)
+                            } else {
+                                "${entity.expTotal - entity.expCurrent} / ${entity.expNext - entity.expCurrent}"
+                            }
+                        )
+                    }
+                },
+                enableUserInput = false,
+                state = state,
+            ) {
+                EntityExpCircularIndicator(
+                    level = entity.level,
+                    progress = { entity.expProgress },
+                )
+            }
+        }
         Spacer(modifier = Modifier.weight(1F))
         Column(
             modifier = Modifier.width(160.dp),

@@ -34,6 +34,9 @@ class ExtendedEntityProfile(
     val def: Int,
     val spd: Int,
     val maxAP: Int,
+    val expCurrent: Int,
+    val expNext: Int,
+    val expTotal: Int,
 ) : EntityProfile(
     name = name,
     level = level,

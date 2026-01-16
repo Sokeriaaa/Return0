@@ -30,6 +30,7 @@
 
     <string name="game_entity_functions">Functions</string>
     <string name="game_entity_plugin">Plugin</string>
+    <string name="game_entity_max_level">Max Level</string>
     <string name="game_entity_function_unlock_at">This function will be unlocked at level %1$s.</string>
     <string name="game_entity_function_upgrade_at">This function will be upgraded at level %1$s.</string>
     <string name="game_entity_function_max_tier">This function has reached max tier.</string>

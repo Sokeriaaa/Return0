@@ -30,6 +30,7 @@
 
     <string name="game_entity_functions">函数</string>
     <string name="game_entity_plugin">插件</string>
+    <string name="game_entity_max_level">已满级</string>
     <string name="game_entity_function_unlock_at">此函数将在第%1$s级解锁。</string>
     <string name="game_entity_function_upgrade_at">此函数将在第%1$s升阶。</string>
     <string name="game_entity_function_max_tier">此函数已达到最高阶。</string>

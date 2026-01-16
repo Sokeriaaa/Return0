@@ -49,7 +49,7 @@ object EntityLevelHelper {
     /**
      * Calculate the level progress to next level in 0F..1F
      */
-    fun levelProgress(
+    fun levelProgressByLevel(
         level: Int,
         totalExp: Int,
         levelPacing: Int,
@@ -59,6 +59,17 @@ object EntityLevelHelper {
         }
         val expCurrent = expRequiredToReach(level, levelPacing)
         val expNext = expRequiredToReach(level + 1, levelPacing)
+        return levelProgressByExp(totalExp, expCurrent, expNext)
+    }
+
+    /**
+     * Calculate the level progress to next level in 0F..1F
+     */
+    fun levelProgressByExp(
+        totalExp: Int,
+        expCurrent: Int,
+        expNext: Int,
+    ): Float {
         return ((totalExp - expCurrent).toFloat() / (expNext - expCurrent)).coerceIn(0F, 1F)
     }
 

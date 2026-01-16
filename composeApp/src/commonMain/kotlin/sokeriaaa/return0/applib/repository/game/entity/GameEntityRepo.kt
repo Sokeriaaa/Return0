@@ -24,6 +24,7 @@ import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
+import sokeriaaa.return0.models.entity.level.EntityLevelHelper.expRequiredToReach
 import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 
@@ -122,10 +123,10 @@ class GameEntityRepo(
         return EntityProfile(
             name = table.entityName,
             level = table.level,
-            expProgress = EntityLevelHelper.levelProgress(
-                table.level,
-                table.exp,
-                entityData.levelPacing
+            expProgress = EntityLevelHelper.levelProgressByLevel(
+                level = table.level,
+                totalExp = table.exp,
+                levelPacing = entityData.levelPacing,
             ),
             hp = entity.hp,
             maxHP = entity.maxhp,
@@ -154,14 +155,16 @@ class GameEntityRepo(
             hp = table.currentHP ?: maxhp
             sp = table.currentSP ?: maxsp
         }
+        val expCurrent = expRequiredToReach(table.level, entityData.levelPacing)
+        val expNext = expRequiredToReach(table.level + 1, entityData.levelPacing)
         // Assemble display
         return ExtendedEntityProfile(
             name = table.entityName,
             level = table.level,
-            expProgress = EntityLevelHelper.levelProgress(
-                table.level,
-                table.exp,
-                entityData.levelPacing
+            expProgress = EntityLevelHelper.levelProgressByExp(
+                totalExp = table.exp,
+                expCurrent = expCurrent,
+                expNext = expNext,
             ),
             hp = entity.hp,
             maxHP = entity.maxhp,
@@ -186,6 +189,9 @@ class GameEntityRepo(
             def = entity.def,
             spd = entity.spd,
             maxAP = entity.maxap,
+            expCurrent = expCurrent,
+            expNext = expNext,
+            expTotal = table.exp
         )
     }
 
