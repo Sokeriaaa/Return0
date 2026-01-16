@@ -25,6 +25,7 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
+import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
@@ -55,6 +56,10 @@ class TeamsViewModel : BaseViewModel() {
 
     val currentTeam: TeamDisplay?
         get() = teams.getOrNull(currentTeamIndex)
+
+    // Available entities
+    private var _availableEntities: MutableList<EntityTable> = mutableStateListOf()
+    val availableEntities: List<EntityTable> = _availableEntities
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -96,6 +101,7 @@ class TeamsViewModel : BaseViewModel() {
     private suspend fun refreshTeams() {
         // Reset
         _teams.clear()
+        _availableEntities.clear()
         activatedTeamEntities = arrayOfNulls(AppConstants.ARENA_MAX_PARTY)
         activatedTeamIndex = 0
         // Load
@@ -119,6 +125,7 @@ class TeamsViewModel : BaseViewModel() {
                 activatedTeamIndex = index
             }
         }
+        _availableEntities.addAll(_entityRepo.queryAll())
     }
 
     class TeamDisplay(

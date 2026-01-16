@@ -51,6 +51,7 @@
     <string name="game_team_new">(New Team)</string>
     <string name="game_team_activate">Activate Team</string>
     <string name="game_team_activated">Activated</string>
+    <string name="game_team_warn_last_member">The activated team requires at least 1 entity.</string>
 
     <string name="game_complete_code">Complete Code</string>
     <string name="game_complete_code_run">Run</string>

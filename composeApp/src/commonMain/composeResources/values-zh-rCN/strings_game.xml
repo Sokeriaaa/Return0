@@ -51,6 +51,7 @@
     <string name="game_team_new">（新队伍）</string>
     <string name="game_team_activate">使用此队伍</string>
     <string name="game_team_activated">队伍使用中</string>
+    <string name="game_team_warn_last_member">使用中的队伍至少需要一个对象。</string>
 
     <string name="game_complete_code">完成代码</string>
     <string name="game_complete_code_run">运行</string>
