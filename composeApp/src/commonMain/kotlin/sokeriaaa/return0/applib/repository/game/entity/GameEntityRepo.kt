@@ -30,6 +30,7 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
+    private val plugin: GamePluginRepo,
     private val resource: ResourceRepo,
     private val entityDao: EntityDao,
 ) {
@@ -257,5 +258,21 @@ class GameEntityRepo(
     ) {
         entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName, currentHP)
         entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName, currentSP)
+    }
+
+    /**
+     * Switch the plugin installed by an entity.
+     */
+    suspend fun switchPlugin(
+        entityName: String,
+        newPluginID: Long?,
+    ) {
+        entityDao.updatePlugin(AppConstants.CURRENT_SAVE_ID, entityName, newPluginID)
+        // Notify the plugin repo
+        if (newPluginID == null) {
+            plugin.onPluginUninstalledFrom(entityName)
+        } else {
+            plugin.onPluginInstalled(newPluginID, installedBy = entityName)
+        }
     }
 }

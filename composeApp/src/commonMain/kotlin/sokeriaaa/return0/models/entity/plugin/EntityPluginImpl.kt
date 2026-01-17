@@ -18,49 +18,29 @@ import sokeriaaa.return0.shared.data.models.component.extras.Extra
 import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
+import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 
-/**
- * Instance of entity plugin.
- */
-interface EntityPlugin {
-    /**
-     * Name of this plugin.
-     */
-    val key: String
+fun PluginData.generatePlugin(
+    tier: Int,
+    constMap: Map<PluginConst, Int>,
+): EntityPlugin = EntityPluginImpl(
+    key = key,
+    tier = tier,
+    path = path,
+    constMap = constMap,
+    onAttack = onAttack,
+    onDefend = onDefend,
+    attackRateOffset = attackRateOffset,
+    defendRateOffset = defendRateOffset,
+)
 
-    /**
-     * Plugin tier (1~5)
-     */
-    val tier: Int
-
-    /**
-     * Entity path of this plugin. If the path of entity and plugin are not identical,
-     * only const values will take effect, other effects are disabled.
-     */
-    val path: EntityPath
-
-    /**
-     * Const values (buffs) of this plugin. Applied on base value.
-     */
-    val constMap: Map<PluginConst, Int>
-
-    /**
-     * Executes when this entity attacked successfully on an enemy.
-     */
-    val onAttack: Extra?
-
-    /**
-     * Executes when this entity is attacked successfully by an enemy.
-     */
-    val onDefend: Extra?
-
-    /**
-     * Damage multiplier when attacking enemy.
-     */
-    val attackRateOffset: Value?
-
-    /**
-     * Damage multiplier when being attacked by an enemy.
-     */
-    val defendRateOffset: Value?
-}
+internal class EntityPluginImpl(
+    override val key: String,
+    override val tier: Int,
+    override val path: EntityPath,
+    override val constMap: Map<PluginConst, Int>,
+    override val onAttack: Extra?,
+    override val onDefend: Extra?,
+    override val attackRateOffset: Value?,
+    override val defendRateOffset: Value?
+) : EntityPlugin

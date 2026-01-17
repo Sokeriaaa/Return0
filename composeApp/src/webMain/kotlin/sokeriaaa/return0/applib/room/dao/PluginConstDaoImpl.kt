@@ -20,13 +20,13 @@ import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 class PluginConstDaoImpl(
     private val queries: SQPluginConstDaoQueries,
 ) : PluginConstDao {
-    override suspend fun query(pluginID: Int): PluginConstTable? {
+    override suspend fun query(pluginID: Long): PluginConstTable? {
         return queries
-            .query(pluginID.toLong(), mapper = ::convertToTable)
+            .query(pluginID, mapper = ::convertToTable)
             .executeAsOneOrNull()
     }
 
-    override suspend fun insertOrUpdate(table: PluginConstTable) {
+    override suspend fun insertOrUpdate(table: PluginConstTable): Long {
         queries.insertOrUpdate(
             plugin_id = table.pluginID?.toLong(),
             name = table.name,
@@ -44,6 +44,11 @@ class PluginConstDaoImpl(
             const6 = table.const6?.name,
             const6_tier = table.const6Tier.toLong(),
         )
+        return selectLastInsertRowId()
+    }
+
+    override suspend fun selectLastInsertRowId(): Long {
+        return queries.selectLastInsertRowId().executeAsOne()
     }
 
     override suspend fun insertList(list: List<PluginConstTable>) {

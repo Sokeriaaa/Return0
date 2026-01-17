@@ -30,7 +30,7 @@ interface PluginInventoryDao {
         "SELECT * FROM `${PluginInventoryTable.TABLE_NAME}` " +
                 "WHERE `save_id`=:saveID AND `plugin_id`=:pluginID LIMIT 1"
     )
-    suspend fun query(saveID: Int, pluginID: Int): PluginItem?
+    suspend fun query(saveID: Int, pluginID: Long): PluginItem?
 
     @Transaction
     @Query(
@@ -52,12 +52,30 @@ interface PluginInventoryDao {
     suspend fun insertList(list: List<PluginInventoryTable>)
 
     /**
+     * Change the install status for a plugin.
+     */
+    @Query(
+        "UPDATE `${PluginInventoryTable.TABLE_NAME}` SET `installed_by`=:installedBy " +
+                "WHERE `save_id`=:saveID AND `plugin_id`=:pluginID"
+    )
+    suspend fun updateInstalledBy(saveID: Int, pluginID: Long, installedBy: String?)
+
+    /**
+     * Uninstall the plugin from an entity.
+     */
+    @Query(
+        "UPDATE `${PluginInventoryTable.TABLE_NAME}` SET `installed_by`=NULL " +
+                "WHERE `save_id`=:saveID AND `installed_by`=:entity"
+    )
+    suspend fun uninstalledPluginFor(saveID: Int, entity: String)
+
+    /**
      * Delete a plugin.
      */
     @Query(
         "DELETE FROM `${PluginInventoryTable.TABLE_NAME}` WHERE `save_id`=:saveID AND `plugin_id`=:pluginID"
     )
-    suspend fun deletePlugin(saveID: Int, pluginID: Int)
+    suspend fun deletePlugin(saveID: Int, pluginID: Long)
 
     /**
      * Delete plugins of a save.

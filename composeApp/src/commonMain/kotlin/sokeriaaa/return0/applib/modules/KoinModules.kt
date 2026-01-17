@@ -26,6 +26,7 @@ import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
+import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
@@ -95,10 +96,11 @@ object KoinModules {
         single { ArchiveRepo() }
         single { EmulatorRepo(get(), get(), get()) }
         single { GameCurrencyRepo(get()) }
-        single { GameEntityRepo(get(), get(), get()) }
+        single { GameEntityRepo(get(), get(), get(), get()) }
         single { GameInventoryRepo(get()) }
         single { GameMapRepo(get(), get(), get()) }
         single { GamePlayerRepo(get()) }
+        single { GamePluginRepo(get(), get(), get()) }
         single { GameQuestRepo(get()) }
         single {
             GameStateRepo(

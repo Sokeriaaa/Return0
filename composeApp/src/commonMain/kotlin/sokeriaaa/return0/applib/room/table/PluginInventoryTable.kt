@@ -32,7 +32,7 @@ data class PluginInventoryTable(
     @ColumnInfo(name = "save_id")
     var saveID: Int,
     @ColumnInfo(name = "plugin_id")
-    var pluginID: Int,
+    var pluginID: Long,
     @ColumnInfo(name = "installed_by")
     var installedBy: String? = null,
     // Params: Reserved for future use.

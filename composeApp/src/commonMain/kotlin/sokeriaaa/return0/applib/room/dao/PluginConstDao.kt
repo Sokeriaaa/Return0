@@ -29,13 +29,16 @@ interface PluginConstDao {
     @Query(
         "SELECT * FROM `${PluginConstTable.TABLE_NAME}` WHERE `plugin_id`=:pluginID"
     )
-    suspend fun query(pluginID: Int): PluginConstTable?
+    suspend fun query(pluginID: Long): PluginConstTable?
 
     /**
      * Insert or update.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(table: PluginConstTable)
+    suspend fun insertOrUpdate(table: PluginConstTable): Long
+
+    @Query("SELECT last_insert_rowid()")
+    suspend fun selectLastInsertRowId(): Long
 
     /**
      * Insert a list of tables.

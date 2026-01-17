@@ -26,13 +26,10 @@ class PluginInventoryDaoImpl(
     // TODO Use manual implementation.
     private val queriesManual: SQPluginInventoryQueries,
 ) : PluginInventoryDao {
-    override suspend fun query(
-        saveID: Int,
-        pluginID: Int
-    ): PluginItem? {
+    override suspend fun query(saveID: Int, pluginID: Long): PluginItem? {
         return queriesManual.queryPluginItem(
             save_id = saveID.toLong(),
-            plugin_id = pluginID.toLong(),
+            plugin_id = pluginID,
             mapper = ::pluginItemMapper
         ).executeAsOneOrNull()
     }
@@ -61,8 +58,23 @@ class PluginInventoryDaoImpl(
         list.forEach { insertOrUpdate(it) }
     }
 
-    override suspend fun deletePlugin(saveID: Int, pluginID: Int) {
-        queries.deletePlugin(saveID.toLong(), pluginID.toLong())
+    override suspend fun updateInstalledBy(saveID: Int, pluginID: Long, installedBy: String?) {
+        queries.updateInstalledBy(
+            save_id = saveID.toLong(),
+            plugin_id = pluginID,
+            installed_by = installedBy,
+        )
+    }
+
+    override suspend fun uninstalledPluginFor(saveID: Int, entity: String) {
+        queries.uninstalledPluginFor(
+            save_id = saveID.toLong(),
+            installed_by = entity,
+        )
+    }
+
+    override suspend fun deletePlugin(saveID: Int, pluginID: Long) {
+        queries.deletePlugin(saveID.toLong(), pluginID)
     }
 
     override suspend fun delete(saveID: Int) {
@@ -97,7 +109,7 @@ class PluginInventoryDaoImpl(
     ): PluginItem = PluginItem(
         inventory = PluginInventoryTable(
             saveID = save_id.toInt(),
-            pluginID = plugin_id.toInt(),
+            pluginID = plugin_id,
             installedBy = installed_by,
             param1 = param1,
             param2 = param2,
@@ -106,7 +118,7 @@ class PluginInventoryDaoImpl(
             param5 = param5
         ),
         constData = PluginConstTable(
-            pluginID = const_plugin_id.toInt(),
+            pluginID = const_plugin_id,
             name = name,
             tier = tier.toInt(),
             const1 = const1?.let(PluginConst::valueOf),

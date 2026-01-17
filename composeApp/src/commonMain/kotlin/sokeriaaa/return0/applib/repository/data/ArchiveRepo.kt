@@ -23,6 +23,7 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
+import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.shared.data.models.story.quest.QuestData
 
@@ -88,6 +89,15 @@ class ArchiveRepo internal constructor() {
     } catch (_: MissingResourceException) {
         null
     }
+
+    suspend fun getPluginData(key: String): PluginData? = try {
+        JsonHelper.decodeFromString(
+            string = Res.readBytes("files/data/plugin/$key.json").decodeToString()
+        )
+    } catch (_: MissingResourceException) {
+        null
+    }
+
     suspend fun getQuestData(key: String): QuestData? = try {
         JsonHelper.decodeFromString(
             string = Res.readBytes("files/data/quest/$key.json").decodeToString()

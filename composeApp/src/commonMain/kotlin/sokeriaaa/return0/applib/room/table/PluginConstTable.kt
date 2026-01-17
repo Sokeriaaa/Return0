@@ -21,6 +21,8 @@ import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 
 /**
  * A universal table for storing all the static plugin data used by all saves and emulators.
+ *
+ * @param isEmulator This plugin is created via emulator.
  */
 @Entity(
     tableName = PluginConstTable.TABLE_NAME,
@@ -28,11 +30,13 @@ import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 data class PluginConstTable(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "plugin_id")
-    var pluginID: Int? = null,
+    var pluginID: Long? = null,
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "tier")
     var tier: Int,
+    @ColumnInfo(name = "is_emulator")
+    var isEmulator: Boolean = false,
     @ColumnInfo(name = "const1")
     var const1: PluginConst? = null,
     @ColumnInfo(name = "const1_tier")
