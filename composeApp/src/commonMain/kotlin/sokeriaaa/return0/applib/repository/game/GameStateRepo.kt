@@ -17,6 +17,7 @@ package sokeriaaa.return0.applib.repository.game
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
+import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.game.map.GameMapRepo
@@ -32,6 +33,7 @@ class GameStateRepo(
     val inventory: GameInventoryRepo,
     val map: GameMapRepo,
     val player: GamePlayerRepo,
+    val plugin: GamePluginRepo,
     val quest: GameQuestRepo,
     val savedValues: SavedValuesRepo,
     val team: GameTeamRepo,

@@ -22,6 +22,7 @@ import sokeriaaa.return0.applib.room.table.PluginConstTable
 import sokeriaaa.return0.applib.room.table.PluginInventoryTable
 import sokeriaaa.return0.models.entity.plugin.EntityPlugin
 import sokeriaaa.return0.models.entity.plugin.generatePlugin
+import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 import kotlin.random.Random
@@ -100,7 +101,12 @@ class GamePluginRepo(
         pluginData: PluginData,
         table: PluginConstTable,
     ): EntityPlugin {
-        val constMap = sequenceOf(
+
+        return assemblePlugin(pluginData, table.tier, assembleConstMap(table))
+    }
+
+    private fun assembleConstMap(table: PluginConstTable): Map<PluginConst, Int> {
+        return sequenceOf(
             table.const1 to table.const1Tier,
             table.const2 to table.const2Tier,
             table.const3 to table.const3Tier,
@@ -108,7 +114,16 @@ class GamePluginRepo(
             table.const5 to table.const5Tier,
             table.const6 to table.const6Tier,
         ).mapNotNull { entry -> entry.first?.let { it to entry.second } }.toMap()
-        return assemblePlugin(pluginData, table.tier, constMap)
+    }
+
+    suspend fun getPluginStateByID(pluginID: Long): EntityState.Plugin? {
+        val table = pluginConstDao.query(pluginID) ?: return null
+        val pluginData = archive.getPluginData(table.name) ?: return null
+        return EntityState.Plugin(
+            pluginData = pluginData,
+            tier = table.tier,
+            constMap = assembleConstMap(table)
+        )
     }
 
     /**

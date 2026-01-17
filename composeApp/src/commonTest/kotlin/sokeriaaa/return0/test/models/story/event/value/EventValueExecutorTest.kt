@@ -33,6 +33,7 @@ import sokeriaaa.return0.shared.data.api.component.value.shr
 import sokeriaaa.return0.shared.data.api.component.value.sumOf
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
+import sokeriaaa.return0.shared.data.models.component.common.Formatter
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
 import sokeriaaa.return0.shared.data.models.component.values.EventValue
@@ -235,7 +236,14 @@ class EventValueExecutorTest : BaseEventTest() {
             random = FakeRandom(0.4F),
             callback = callback,
         ) { context ->
-            assertEquals(7, CommonValue.Math.RandomFloat(5F, 10F).calculatedIn(context))
+            assertEquals(
+                expected = 7,
+                actual = CommonValue.Math.RandomFloat(
+                    start = 5F,
+                    end = 10F,
+                    formatter = Formatter.Integer,
+                ).calculatedIn(context),
+            )
         }
     }
 

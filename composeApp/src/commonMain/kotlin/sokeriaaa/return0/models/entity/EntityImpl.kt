@@ -270,6 +270,7 @@ internal open class EntityImpl(
  * Wrapped entity with plugin installed.
  */
 internal class PluggedEntity(
+    // TODO change to Entity
     val entity: EntityImpl,
     val plugin: EntityPlugin,
 ) : EntityImpl(
@@ -298,18 +299,36 @@ internal class PluggedEntity(
     override var hideRate: Float =
         entity.hideRate + (plugin.constMap[PluginConst.HID_RATE] ?: 0) * 0.01F
 
-    override val onAttack: Extra? = extrasGroupOfOrNull(super.onAttack, plugin.onAttack)
-    override val onDefend: Extra? = extrasGroupOfOrNull(super.onDefend, plugin.onDefend)
-
-    override val attackRateOffset: Value? = when {
-        super.attackRateOffset == null -> plugin.attackRateOffset
-        plugin.attackRateOffset == null -> super.attackRateOffset
-        else -> super.attackRateOffset!! + plugin.attackRateOffset!!
+    override val onAttack: Extra? = if (plugin.path == entity.path) {
+        extrasGroupOfOrNull(super.onAttack, plugin.onAttack)
+    } else {
+        super.onAttack
     }
-    override val defendRateOffset: Value? = when {
-        super.defendRateOffset == null -> plugin.defendRateOffset
-        plugin.defendRateOffset == null -> super.defendRateOffset
-        else -> super.defendRateOffset!! + plugin.defendRateOffset!!
+
+    override val onDefend: Extra? = if (plugin.path == entity.path) {
+        extrasGroupOfOrNull(super.onDefend, plugin.onDefend)
+    } else {
+        super.onDefend
+    }
+
+    override val attackRateOffset: Value? = if (plugin.path == entity.path) {
+        when {
+            super.attackRateOffset == null -> plugin.attackRateOffset
+            plugin.attackRateOffset == null -> super.attackRateOffset
+            else -> super.attackRateOffset!! + plugin.attackRateOffset!!
+        }
+    } else {
+        super.attackRateOffset
+    }
+
+    override val defendRateOffset: Value? = if (plugin.path == entity.path) {
+        when {
+            super.defendRateOffset == null -> plugin.defendRateOffset
+            plugin.defendRateOffset == null -> super.defendRateOffset
+            else -> super.defendRateOffset!! + plugin.defendRateOffset!!
+        }
+    } else {
+        super.defendRateOffset
     }
 
 }

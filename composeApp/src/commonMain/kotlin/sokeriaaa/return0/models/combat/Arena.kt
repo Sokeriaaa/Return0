@@ -80,6 +80,7 @@ class Arena(
                     // For parties, apply current HP/SP.
                     currentHP = state.currentHP,
                     currentSP = state.currentSP,
+                    plugin = state.plugin,
                 )
             }
         )
@@ -91,6 +92,7 @@ class Arena(
                     index = partiesSize + index,
                     level = state.level,
                     isParty = false,
+                    plugin = state.plugin,
                     // For enemies, apply full HP/SP.
                 )
             }

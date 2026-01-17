@@ -392,6 +392,9 @@ private suspend fun buildParties(
     return partyLevels.mapNotNull { (id, level) ->
         val entityData = context.archive.getEntityData(id) ?: return@mapNotNull null
         val table = context.gameState.entity.getEntityTable(id)
+        val plugin = table?.pluginID?.let {
+            context.gameState.plugin.getPluginStateByID(it)
+        }
         val override = statusOverride?.get(id)
 
         PartyState(
@@ -399,6 +402,7 @@ private suspend fun buildParties(
             level = override?.level?.calculatedIn(context) ?: level,
             currentHP = override?.hp?.calculatedIn(context) ?: table?.currentHP,
             currentSP = override?.sp?.calculatedIn(context) ?: table?.currentSP,
+            plugin = plugin,
         )
     }
 }

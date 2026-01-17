@@ -20,12 +20,16 @@ import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
+import sokeriaaa.return0.models.entity.EntityImpl
+import sokeriaaa.return0.models.entity.PluggedEntity
 import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.generate
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper.expRequiredToReach
+import sokeriaaa.return0.models.entity.plugin.generatePlugin
 import sokeriaaa.return0.shared.common.helpers.TimeHelper
+import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 
 class GameEntityRepo(
@@ -80,12 +84,21 @@ class GameEntityRepo(
         isParty: Boolean,
         currentHP: Int? = null,
         currentSP: Int? = null,
+        plugin: EntityState.Plugin? = null,
     ): Entity {
         // Get the growth data of the primary category of entity.
         val growth = archive.getEntityGrowthByCategory(entityData.category)
-        return entityData.generate(index, level, growth, isParty).apply {
+        val entity = entityData.generate(index, level, growth, isParty).apply {
             hp = currentHP ?: maxhp
             sp = currentSP ?: maxsp
+        }
+        val pluginInstance = plugin?.let {
+            it.pluginData.generatePlugin(it.tier, it.constMap)
+        }
+        return if (pluginInstance == null) {
+            entity
+        } else {
+            PluggedEntity(entity as EntityImpl, pluginInstance)
         }
     }
 

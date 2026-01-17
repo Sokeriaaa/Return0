@@ -36,6 +36,7 @@ import sokeriaaa.return0.shared.data.api.component.value.shr
 import sokeriaaa.return0.shared.data.api.component.value.sumOf
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
+import sokeriaaa.return0.shared.data.models.component.common.Formatter
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
@@ -217,7 +218,14 @@ class CommonValueExecutorTest {
     @Test
     fun `Common_RandomFloat calculates correctly`() = runTest {
         val context = createTestingContext(random = FakeRandom(0.4F))
-        assertFloatEquals(7F, CommonValue.Math.RandomFloat(5F, 10F).calculatedIn(context))
+        assertFloatEquals(
+            expected = 7F,
+            actual = CommonValue.Math.RandomFloat(
+                start = 5F,
+                end = 10F,
+                formatter = Formatter.Integer,
+            ).calculatedIn(context),
+        )
     }
 
     @Test

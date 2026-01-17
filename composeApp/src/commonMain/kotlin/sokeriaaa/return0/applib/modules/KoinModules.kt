@@ -109,6 +109,7 @@ object KoinModules {
                 inventory = get(),
                 map = get(),
                 player = get(),
+                plugin = get(),
                 quest = get(),
                 savedValues = get(),
                 team = get(),
