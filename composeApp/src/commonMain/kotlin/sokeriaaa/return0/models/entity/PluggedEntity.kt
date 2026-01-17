@@ -15,6 +15,10 @@
 package sokeriaaa.return0.models.entity
 
 import sokeriaaa.return0.models.entity.plugin.EntityPlugin
+import sokeriaaa.return0.shared.data.api.component.extra.extrasGroupOfOrNull
+import sokeriaaa.return0.shared.data.api.component.value.plus
+import sokeriaaa.return0.shared.data.models.component.extras.Extra
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 
 /**
@@ -48,4 +52,19 @@ internal class PluggedEntity(
         entity.targetRate + (plugin.constMap[PluginConst.TGT_RATE] ?: 0) * 0.01F
     override var hideRate: Float =
         entity.hideRate + (plugin.constMap[PluginConst.HID_RATE] ?: 0) * 0.01F
+
+    override val onAttack: Extra? = extrasGroupOfOrNull(super.onAttack, plugin.onAttack)
+    override val onDefend: Extra? = extrasGroupOfOrNull(super.onDefend, plugin.onDefend)
+
+    override val attackRateOffset: Value? = when {
+        super.attackRateOffset == null -> plugin.attackRate
+        plugin.attackRate == null -> super.attackRateOffset
+        else -> super.attackRateOffset!! + plugin.attackRate!!
+    }
+    override val defendRateOffset: Value? = when {
+        super.defendRateOffset == null -> plugin.defendRate
+        plugin.defendRate == null -> super.defendRateOffset
+        else -> super.defendRateOffset!! + plugin.defendRate!!
+    }
+
 }

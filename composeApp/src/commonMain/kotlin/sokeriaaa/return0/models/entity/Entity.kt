@@ -17,6 +17,8 @@ package sokeriaaa.return0.models.entity
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.shield.Shield
+import sokeriaaa.return0.shared.data.models.component.extras.Extra
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
@@ -216,6 +218,28 @@ interface Entity {
      * Actions taken in a single combat.
      */
     val actionsTaken: Int
+
+    /**
+     * Executes when this entity attacked successfully on an enemy.
+     */
+    val onAttack: Extra?
+
+    /**
+     * Executes when this entity is attacked successfully by an enemy.
+     */
+    val onDefend: Extra?
+
+    /**
+     * Damage multiplier offset when attacking enemy.
+     * The final rate in this way will be coerced in 0.01..100
+     */
+    val attackRateOffset: Value?
+
+    /**
+     * Damage multiplier offset when being attacked by an enemy.
+     * The final rate in this way will be coerced in 0.01..100
+     */
+    val defendRateOffset: Value?
 
     /**
      * Tick current entity.

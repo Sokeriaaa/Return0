@@ -27,6 +27,8 @@ import sokeriaaa.return0.models.entity.plugin.EntityPlugin
 import sokeriaaa.return0.models.entity.shield.Shield
 import sokeriaaa.return0.shared.data.models.action.effect.EffectModifier
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
+import sokeriaaa.return0.shared.data.models.component.extras.Extra
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
@@ -127,6 +129,11 @@ internal open class EntityImpl(
 
     override var actionsTaken: Int = 0
         protected set
+
+    override val onAttack: Extra? = null
+    override val onDefend: Extra? = null
+    override val attackRateOffset: Value? = null
+    override val defendRateOffset: Value? = null
 
     init {
         updateAPRecovery()

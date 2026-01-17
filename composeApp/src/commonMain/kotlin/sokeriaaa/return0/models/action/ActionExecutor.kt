@@ -124,6 +124,15 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
                 ?.calculatedIn(this) ?: 0F)
             damage *= 1 + criticalDMG
         }
+        // Entity multipliers
+        // Coerced in 0.01..100 to prevent extremely huge values.
+        user.attackRateOffset?.let {
+            damage *= (1 + it.calculatedIn(this)).coerceIn(0.01F..100F)
+        }
+        target.defendRateOffset?.let {
+            damage /= (1 + it.calculatedIn(this)).coerceIn(0.01F..100F)
+        }
+
         val finalDamage = damage.toInt()
         // Calculate Shields
         var damageToTake = finalDamage
@@ -157,6 +166,8 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         // Execute extras with the damage result.
         withDamageResult(result) {
             fromAction.extra?.executedIn(this)
+            user.onAttack?.executedIn(this)
+            target.onDefend?.executedIn(this)
         }
     }
 }
