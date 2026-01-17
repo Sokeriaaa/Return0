@@ -55,6 +55,23 @@
     <string name="game_team_warn_empty_team_exists">当前有空队伍存在，请先使用现有的空队伍。</string>
     <string name="game_team_warn_limit">队伍数量已达到上限。</string>
 
+    <string name="game_plugin_install">安装</string>
+    <string name="game_plugin_switch">切换</string>
+    <string name="game_plugin_uninstall">卸载</string>
+    <string name="game_plugin_not_installed">未安装插件。</string>
+    <string name="game_plugin_const">常量</string>
+    <string name="game_plugin_warn_different_path">当对象和插件的定位不一致时，除常量外的所有插件增益将不会生效。</string>
+
+    <string name="game_plugin_select">选择插件</string>
+    <string name="game_plugin_select_installed_by">已被%1$s安装</string>
+    <string name="game_plugin_select_installed_by_warn">该插件已被%1$s安装。是否卸载此插件给%2$s安装？</string>
+    <string name="game_plugin_select_different_path">定位不一致</string>
+    <string name="game_plugin_select_different_path_warn">当对象和插件的定位不一致时，除常量外的所有插件增益将不会生效。仍然安装吗？</string>
+    <string name="game_plugin_special_on_attack">每次命中时：</string>
+    <string name="game_plugin_special_on_defend">每次被敌方命中：</string>
+    <string name="game_plugin_special_attack_rate_offset">攻击偏移率：</string>
+    <string name="game_plugin_special_defend_rate_offset">防御偏移率：</string>
+
     <string name="game_complete_code">完成代码</string>
     <string name="game_complete_code_run">运行</string>
     <string name="game_complete_code_run_failed">运行代码失败。请查看注释。</string>

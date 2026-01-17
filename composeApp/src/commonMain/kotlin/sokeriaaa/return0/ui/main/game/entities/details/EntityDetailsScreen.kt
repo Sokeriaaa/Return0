@@ -163,7 +163,11 @@ fun EntityDetailsScreen(
                     }
                 }
                 VerticalDivider(modifier = Modifier.fillMaxHeight())
-                EntityMainPart(modifier = Modifier.weight(1F), entity = entity)
+                EntityMainPart(
+                    modifier = Modifier.weight(1F),
+                    entity = entity,
+                    onIntent = viewModel::onIntent,
+                )
             }
         } else {
             Column(
@@ -207,6 +211,7 @@ fun EntityDetailsScreen(
                         .fillMaxWidth()
                         .weight(1F),
                     entity = entity,
+                    onIntent = viewModel::onIntent,
                 )
             }
         }
@@ -366,6 +371,7 @@ private fun EntityStatusPart(
 private fun EntityMainPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
+    onIntent: (CommonIntent) -> Unit,
 ) {
     // Page titles
     val pageTitles = listOf(
@@ -423,7 +429,12 @@ private fun EntityMainPart(
                     functions = entity.functions,
                 )
 
-                1 -> EntityPluginPage()
+                1 -> EntityPluginPage(
+                    modifier = Modifier.padding(horizontal = 14.dp),
+                    plugin = entity.plugin,
+                    entityPath = entity.path,
+                    onIntent = onIntent,
+                )
             }
         }
     }

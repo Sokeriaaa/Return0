@@ -17,6 +17,8 @@ package sokeriaaa.return0.models.entity.display
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
+import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
+import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 
 class ExtendedEntityProfile(
     name: String,
@@ -34,6 +36,7 @@ class ExtendedEntityProfile(
     val def: Int,
     val spd: Int,
     val maxAP: Int,
+    val plugin: Plugin?,
     val expCurrent: Int,
     val expNext: Int,
     val expTotal: Int,
@@ -54,5 +57,12 @@ class ExtendedEntityProfile(
         val power: Int,
         val spCost: Int,
         val data: FunctionData,
+    )
+    class Plugin(
+        val name: String,
+        val description: String,
+        val tier: Int,
+        val constMap: Map<PluginConst, Int>,
+        val data: PluginData,
     )
 }

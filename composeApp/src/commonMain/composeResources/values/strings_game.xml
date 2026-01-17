@@ -55,6 +55,23 @@
     <string name="game_team_warn_empty_team_exists">An empty team exists. Please use that team instead of creating a new one.</string>
     <string name="game_team_warn_limit">The number of teams has reached the upper limit.</string>
 
+    <string name="game_plugin_install">Install</string>
+    <string name="game_plugin_switch">Switch</string>
+    <string name="game_plugin_uninstall">Uninstall</string>
+    <string name="game_plugin_not_installed">Plugin not installed.</string>
+    <string name="game_plugin_const">Constants</string>
+    <string name="game_plugin_warn_different_path">Buffs other than the constants will not take effect when the path of the entity and the plugin are not identical.</string>
+
+    <string name="game_plugin_select">Select Plugin</string>
+    <string name="game_plugin_select_installed_by">Installed by %1$s</string>
+    <string name="game_plugin_select_installed_by_warn">This plugin is currently installed by %1$s. Uninstall it to install it on %2$s?</string>
+    <string name="game_plugin_select_different_path">Not identical path</string>
+    <string name="game_plugin_select_different_path_warn">Buffs other than the constants will not take effect when the path of the entity and the plugin are not identical. Install anyway?</string>
+    <string name="game_plugin_special_on_attack">On each hit: </string>
+    <string name="game_plugin_special_on_defend">On hit by enemy: </string>
+    <string name="game_plugin_special_attack_rate_offset">Attack rate offset: </string>
+    <string name="game_plugin_special_defend_rate_offset">Defend rate offset: </string>
+
     <string name="game_complete_code">Complete Code</string>
     <string name="game_complete_code_run">Run</string>
     <string name="game_complete_code_run_failed">Failed to run the code. Please check comments.</string>

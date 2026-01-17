@@ -169,6 +169,7 @@ class GameEntityRepo(
             hp = table.currentHP ?: maxhp
             sp = table.currentSP ?: maxsp
         }
+        val plugin = plugin.getPluginStateByID(table.pluginID)
         val expCurrent = expRequiredToReach(table.level, entityData.levelPacing)
         val expNext = expRequiredToReach(table.level + 1, entityData.levelPacing)
         // Assemble display
@@ -203,6 +204,15 @@ class GameEntityRepo(
             def = entity.def,
             spd = entity.spd,
             maxAP = entity.maxap,
+            plugin = plugin?.let {
+                ExtendedEntityProfile.Plugin(
+                    name = resource.getString("plugin.${it.pluginData.key}"),
+                    description = resource.getString("plugin.${it.pluginData.key}"),
+                    tier = it.tier,
+                    constMap = it.constMap,
+                    data = it.pluginData,
+                )
+            },
             expCurrent = expCurrent,
             expNext = expNext,
             expTotal = table.exp

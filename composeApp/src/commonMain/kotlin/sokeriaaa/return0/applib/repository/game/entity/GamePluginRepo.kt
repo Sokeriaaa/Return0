@@ -113,10 +113,14 @@ class GamePluginRepo(
             table.const4 to table.const4Tier,
             table.const5 to table.const5Tier,
             table.const6 to table.const6Tier,
-        ).mapNotNull { entry -> entry.first?.let { it to entry.second } }.toMap()
+        ).mapNotNull { entry ->
+            if (entry.second <= 0) return@mapNotNull null
+            entry.first?.let { it to entry.second }
+        }.toMap()
     }
 
-    suspend fun getPluginStateByID(pluginID: Long): EntityState.Plugin? {
+    suspend fun getPluginStateByID(pluginID: Long?): EntityState.Plugin? {
+        pluginID ?: return null
         val table = pluginConstDao.query(pluginID) ?: return null
         val pluginData = archive.getPluginData(table.name) ?: return null
         return EntityState.Plugin(
