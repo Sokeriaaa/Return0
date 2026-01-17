@@ -97,6 +97,7 @@ fun Value.calculatedIn(context: ItemContext): Float {
         EntityValue.TurnsLeftOfAllEffects -> 0F
         is EntityValue.ShieldValueOf -> 0F
         EntityValue.SumOfShieldValue -> 0F
+        EntityValue.ActionsTaken -> 0F
         // end - EntityValue
     }
 }

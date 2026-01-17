@@ -23,6 +23,7 @@
     <string name="component_value_entity_turns_left_all">所有状态的剩余回合总数</string>
     <string name="component_value_entity_shield_of">{{slot0}}的剩余护盾值</string>
     <string name="component_value_entity_shield_all">所有护盾的剩余护盾值总和</string>
+    <string name="component_value_entity_action_taken">行动次数</string>
     <string name="component_value_plugin_tier">插件阶数</string>
     <string name="component_value_event_saved_variable">以键“{{slot0}}”保存的值</string>
     <string name="component_value_event_currency">当前的{{slot0}}</string>

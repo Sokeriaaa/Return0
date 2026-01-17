@@ -23,6 +23,7 @@
     <string name="component_value_entity_turns_left_all">Turns left of all effects</string>
     <string name="component_value_entity_shield_of">Shield of {{slot0}}</string>
     <string name="component_value_entity_shield_all">All Shields</string>
+    <string name="component_value_entity_action_taken">Action times</string>
     <string name="component_value_plugin_tier">Plugin tier</string>
     <string name="component_value_event_saved_variable">Saved variable with key "{{slot0}}"</string>
     <string name="component_value_event_currency">Your {{slot0}}</string>

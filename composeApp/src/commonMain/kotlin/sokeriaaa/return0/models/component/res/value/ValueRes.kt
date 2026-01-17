@@ -33,6 +33,7 @@ import return0.composeapp.generated.resources.component_value_combat_load_value
 import return0.composeapp.generated.resources.component_value_combat_swapped
 import return0.composeapp.generated.resources.component_value_combat_user
 import return0.composeapp.generated.resources.component_value_effect_turns_left
+import return0.composeapp.generated.resources.component_value_entity_action_taken
 import return0.composeapp.generated.resources.component_value_entity_shield_all
 import return0.composeapp.generated.resources.component_value_entity_shield_of
 import return0.composeapp.generated.resources.component_value_entity_turns_left_all
@@ -343,6 +344,9 @@ fun valueResource(value: Value): AnnotatedString {
 
             EntityValue.SumOfShieldValue ->
                 append(stringResource(Res.string.component_value_entity_shield_all))
+
+            EntityValue.ActionsTaken ->
+                append(stringResource(Res.string.component_value_entity_action_taken))
             // end - EntityValue
             // start - PluginValue
             PluginValue.Tier ->

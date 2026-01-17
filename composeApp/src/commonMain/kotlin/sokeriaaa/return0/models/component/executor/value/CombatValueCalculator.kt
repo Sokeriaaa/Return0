@@ -144,6 +144,7 @@ fun Value.calculatedIn(context: ActionContext): Float {
 
         is EntityValue.ShieldValueOf -> context.target.shields[key]?.value?.toFloat() ?: 0F
         EntityValue.SumOfShieldValue -> context.target.shields.values.sumOf { it.value }.toFloat()
+        EntityValue.ActionsTaken -> context.target.actionsTaken.toFloat()
         // end - EntityValue
         // start - PluginValue
         PluginValue.Tier -> (context.target as? PluggedEntity)?.plugin?.tier?.toFloat() ?: 0F

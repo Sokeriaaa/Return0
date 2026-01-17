@@ -176,6 +176,8 @@ class Arena(
                         skillExecution = randomSkillExecutionFor(entity)
                         actionResults = executeSkill(skillExecution)
                     }
+                    // Action executed
+                    entity.onAction()
                     // Push log
                     pushLog(
                         ArenaLogV4.Actions.FunctionInvoked(

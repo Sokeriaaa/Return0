@@ -125,6 +125,9 @@ internal open class EntityImpl(
     override val shields: Map<String, Shield> get() = _shields
     private val _shields: MutableMap<String, Shield> = HashMap()
 
+    override var actionsTaken: Int = 0
+        protected set
+
     init {
         updateAPRecovery()
     }
@@ -135,6 +138,10 @@ internal open class EntityImpl(
             return
         }
         ap = (ap + _apRecovery).coerceAtMost(maxap.toFloat())
+    }
+
+    override fun onAction() {
+        actionsTaken++
     }
 
     override fun attachEffect(effect: Effect) {

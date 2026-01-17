@@ -213,9 +213,19 @@ interface Entity {
     val shields: Map<String, Shield>
 
     /**
+     * Actions taken in a single combat.
+     */
+    val actionsTaken: Int
+
+    /**
      * Tick current entity.
      */
     fun tick()
+
+    /**
+     * After an action is executed.
+     */
+    fun onAction()
 
     /**
      * Whether this entity is failed.
