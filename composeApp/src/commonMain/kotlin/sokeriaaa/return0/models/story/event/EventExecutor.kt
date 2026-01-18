@@ -212,6 +212,15 @@ suspend fun Event.executedIn(context: EventContext) {
             context.gameState.currency[currency] += change.calculatedIn(context)
         }
 
+        is Event.ObtainPlugin -> {
+            val pluginID = context.gameState.plugin.generateAndSavePlugin(
+                key = key,
+                tier = tier.calculatedIn(context),
+                random = context.random,
+            )
+            context.gameState.plugin.obtainedPlugin(pluginID)
+        }
+
         is Event.ClaimQuest -> {
             context.gameState.quest.acceptedQuest(key)
         }

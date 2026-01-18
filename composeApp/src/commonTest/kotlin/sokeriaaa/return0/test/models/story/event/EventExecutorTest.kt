@@ -26,6 +26,7 @@ import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -232,6 +233,23 @@ class EventExecutorTest : BaseEventTest() {
                 expected = 84,
                 actual = context.gameState.currency[CurrencyType.TOKEN],
             )
+        }
+    }
+
+    @Test
+    fun `ObtainPlugin executes correctly`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(
+            callback = callback,
+            // Generate a plugin with the constant of a random type +3%
+            random = FakeRandom(3, 0, 0, 0)
+        ) { context ->
+            Event.ObtainPlugin(
+                key = "growth_factor_array",
+                tier = Value(1),
+            ).executedIn(context)
+            val pluginInfo = context.gameState.plugin.pluginMap.values.lastOrNull()
+            assertEquals(3, pluginInfo?.constMap?.values?.firstOrNull())
         }
     }
 

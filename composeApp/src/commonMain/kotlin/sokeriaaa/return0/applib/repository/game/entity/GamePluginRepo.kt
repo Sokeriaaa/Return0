@@ -64,15 +64,13 @@ class GamePluginRepo(
     /**
      * Generate a brand new plugin with specified key and tier.
      *
-     * @return Inserted plugin ID and the plugin info.
+     * @return Inserted plugin ID.
      */
     suspend fun generateAndSavePlugin(
         key: String,
         tier: Int,
         random: Random = Random,
-    ): Pair<Long, PluginInfo>? {
-        // Data
-        val pluginData = archive.getPluginData(key) ?: return null
+    ): Long {
         // Generate const
         val constTypes = PluginConst.entries.shuffled().take(tier)
         val constLevels = IntArray(constTypes.size)
@@ -97,18 +95,7 @@ class GamePluginRepo(
             const6Tier = constLevels.getOrNull(5) ?: 0,
         )
         val pluginID = pluginConstDao.insertOrUpdate(constTable)
-        // Assemble plugin
-        val constMap: Map<PluginConst, Int> = constTypes.zip(constLevels.toList()).toMap()
-        return pluginID to PluginInfo(
-            id = pluginID,
-            name = resource.getString("plugin.${pluginData.key}"),
-            description = resource.getString("plugin.${pluginData.key}"),
-            tier = tier,
-            constMap = constMap,
-            data = pluginData,
-            isLocked = false,
-            installedBy = null,
-        )
+        return pluginID
     }
 
     private fun assemblePlugin(
@@ -124,6 +111,23 @@ class GamePluginRepo(
         table: PluginConstTable,
     ): EntityPlugin {
         return assemblePlugin(pluginData, table.tier, assembleConstMap(table))
+    }
+
+    private fun assemblePluginInfo(
+        pluginData: PluginData,
+        constTable: PluginConstTable,
+        inventoryTable: PluginInventoryTable,
+    ): PluginInfo {
+        return PluginInfo(
+            id = constTable.pluginID!!,
+            name = resource.getString("plugin.${pluginData.key}"),
+            description = resource.getString("plugin.${pluginData.key}"),
+            tier = constTable.tier,
+            constMap = assembleConstMap(constTable),
+            data = pluginData,
+            isLocked = inventoryTable.isLocked,
+            installedBy = inventoryTable.installedBy,
+        )
     }
 
     private fun assembleConstMap(table: PluginConstTable): Map<PluginConst, Int> {
@@ -160,19 +164,30 @@ class GamePluginRepo(
         return assemblePlugin(pluginData, table)
     }
 
+    suspend fun getPluginInfoByID(pluginID: Long): PluginInfo? {
+        val pluginItem =
+            pluginInventoryDao.query(AppConstants.CURRENT_SAVE_ID, pluginID) ?: return null
+        val pluginData = archive.getPluginData(pluginItem.constData.name) ?: return null
+        return assemblePluginInfo(
+            pluginData = pluginData,
+            constTable = pluginItem.constData,
+            inventoryTable = pluginItem.inventory,
+        )
+    }
+
     /**
      * Obtained a new plugin.
      */
-    suspend fun obtainedPlugin(
-        pluginInfo: PluginInfo,
-    ) {
-        _pluginMap[pluginInfo.id] = pluginInfo
+    suspend fun obtainedPlugin(pluginID: Long) {
         pluginInventoryDao.insertOrUpdate(
             PluginInventoryTable(
                 saveID = AppConstants.CURRENT_SAVE_ID,
-                pluginID = pluginInfo.id,
+                pluginID = pluginID,
             )
         )
+        getPluginInfoByID(pluginID)?.let {
+            _pluginMap[pluginID] = it
+        }
     }
 
     /**
@@ -242,15 +257,10 @@ class GamePluginRepo(
             val pluginData =
                 archive.getPluginData(item.constData.name) ?: continue
             // Info
-            val info = PluginInfo(
-                id = item.constData.pluginID ?: continue,
-                name = resource.getString("plugin.${pluginData.key}"),
-                description = resource.getString("plugin.${pluginData.key}"),
-                tier = item.constData.tier,
-                constMap = assembleConstMap(item.constData),
-                data = pluginData,
-                isLocked = item.inventory.isLocked,
-                installedBy = item.inventory.installedBy,
+            val info = assemblePluginInfo(
+                pluginData = pluginData,
+                constTable = item.constData,
+                inventoryTable = item.inventory,
             )
             // Put values
             _pluginMap[info.id] = info
