@@ -14,9 +14,14 @@
  */
 package sokeriaaa.return0.ui.main.game.entities.details.page
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -34,11 +39,14 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.component_extra_empty
 import return0.composeapp.generated.resources.game_entity_function_specials
 import return0.composeapp.generated.resources.game_plugin_const
+import return0.composeapp.generated.resources.game_plugin_install
 import return0.composeapp.generated.resources.game_plugin_not_installed
 import return0.composeapp.generated.resources.game_plugin_special_attack_rate_offset
 import return0.composeapp.generated.resources.game_plugin_special_defend_rate_offset
 import return0.composeapp.generated.resources.game_plugin_special_on_attack
 import return0.composeapp.generated.resources.game_plugin_special_on_defend
+import return0.composeapp.generated.resources.game_plugin_switch
+import return0.composeapp.generated.resources.game_plugin_uninstall
 import return0.composeapp.generated.resources.game_plugin_warn_different_path
 import return0.composeapp.generated.resources.status_atk
 import return0.composeapp.generated.resources.status_crit_dmg
@@ -55,6 +63,8 @@ import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
+import sokeriaaa.return0.ui.common.widgets.AppButton
+import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.common.widgets.TextItem
 
 @Composable
@@ -76,14 +86,34 @@ fun EntityPluginPage(
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
+            item {
+                AppButton(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(Res.string.game_plugin_install),
+                    onClick = {}
+                )
+            }
         } else {
             val isIdenticalPath = entityPath == plugin.data.path
             item {
-                Text(
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    text = plugin.name,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    OutlinedEmojiCard(
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .size(32.dp),
+                        emoji = plugin.data.path.icon,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .weight(1F)
+                            .basicMarquee(iterations = Int.MAX_VALUE),
+                        text = plugin.name,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
             }
             // Warn
             if (!isIdenticalPath) {
@@ -240,6 +270,21 @@ fun EntityPluginPage(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(Res.string.component_extra_empty),
                         style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+            item {
+                Row(
+                    modifier = Modifier.padding(top = 8.dp),
+                ) {
+                    AppButton(
+                        text = stringResource(Res.string.game_plugin_switch),
+                        onClick = {}
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    AppButton(
+                        text = stringResource(Res.string.game_plugin_uninstall),
+                        onClick = {}
                     )
                 }
             }
