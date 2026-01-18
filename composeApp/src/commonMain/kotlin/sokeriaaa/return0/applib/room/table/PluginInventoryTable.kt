@@ -22,11 +22,13 @@ import androidx.room.Relation
 
 /**
  * The plugin inventory.
+ *
+ * @param isLocked Lock this plugin to prevent one-key selling.
  */
 @Entity(
     tableName = PluginInventoryTable.TABLE_NAME,
     primaryKeys = ["save_id", "plugin_id"],
-    indices = [Index("installed_by")]
+    indices = [Index("installed_by"), Index("is_locked")]
 )
 data class PluginInventoryTable(
     @ColumnInfo(name = "save_id")
@@ -35,6 +37,8 @@ data class PluginInventoryTable(
     var pluginID: Long,
     @ColumnInfo(name = "installed_by")
     var installedBy: String? = null,
+    @ColumnInfo(name = "is_locked")
+    var isLocked: Boolean = false,
     // Params: Reserved for future use.
     @ColumnInfo(name = "param1")
     var param1: String? = null,
