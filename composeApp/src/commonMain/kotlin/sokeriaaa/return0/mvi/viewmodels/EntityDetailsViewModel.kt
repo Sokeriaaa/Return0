@@ -24,6 +24,7 @@ import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
+import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
@@ -35,9 +36,11 @@ class EntityDetailsViewModel(
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()
     private val _entityRepo: GameEntityRepo by inject()
+    private val _pluginRepo: GamePluginRepo by inject()
     private val _resourceRepo: ResourceRepo by inject()
 
     var entityProfile: ExtendedEntityProfile? by mutableStateOf(null)
+        private set
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)

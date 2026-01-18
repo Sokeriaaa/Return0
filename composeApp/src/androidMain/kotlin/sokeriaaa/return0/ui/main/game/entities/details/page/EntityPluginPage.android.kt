@@ -21,7 +21,8 @@ private fun EntityPluginPageNone() {
         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
         plugin = null,
         entityPath = EntityPath.UNSPECIFIED,
-        onIntent = {},
+        onRequestSwitch = {},
+        onRequestUninstall = {},
     )
 }
 
@@ -52,7 +53,8 @@ private fun EntityPluginPageIdenticalPath() {
             )
         ),
         entityPath = EntityPath.HEAP,
-        onIntent = {},
+        onRequestSwitch = {},
+        onRequestUninstall = {},
     )
 }
 
@@ -84,6 +86,7 @@ private fun EntityPluginPageDifferentPath() {
             )
         ),
         entityPath = EntityPath.PROTOCOL,
-        onIntent = {},
+        onRequestSwitch = {},
+        onRequestUninstall = {},
     )
 }

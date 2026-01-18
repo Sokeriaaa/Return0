@@ -39,6 +39,7 @@ import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
 import sokeriaaa.return0.ui.main.game.GameScreen
 import sokeriaaa.return0.ui.main.game.entities.EntitiesScreen
 import sokeriaaa.return0.ui.main.game.entities.details.EntityDetailsScreen
+import sokeriaaa.return0.ui.main.game.entities.plugin.EntityPluginSelectionScreen
 import sokeriaaa.return0.ui.main.game.inventory.InventoryScreen
 import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
 import sokeriaaa.return0.ui.main.game.teams.TeamsScreen
@@ -101,6 +102,22 @@ fun AppNavHost(
         ) {
             val argument = it.arguments!!
             EntityDetailsScreen(
+                entityName = argument.read { getString("entityName") },
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(
+            scene = Scene.EntityPluginSelection,
+            arguments = listOf(
+                myNavArgument(
+                    name = "entityName",
+                    type = NavType.StringType,
+                )
+            ),
+        ) {
+            val argument = it.arguments!!
+            EntityPluginSelectionScreen(
                 entityName = argument.read { getString("entityName") },
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
@@ -230,6 +247,7 @@ sealed class Scene(val route: String) {
     data object Quests : Scene(route = "r0_quests")
     data object Entities : Scene(route = "r0_entities")
     data object EntityDetails : Scene(route = "r0_entity_details")
+    data object EntityPluginSelection : Scene(route = "r0_entity_plugin_selection")
     data object Teams : Scene(route = "r0_teams")
     data object Inventory : Scene(route = "r0_inventory")
 

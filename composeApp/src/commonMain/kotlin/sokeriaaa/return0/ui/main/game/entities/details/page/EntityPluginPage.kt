@@ -60,7 +60,6 @@ import return0.composeapp.generated.resources.status_tgt_rate
 import sokeriaaa.return0.models.component.res.extra.extraResource
 import sokeriaaa.return0.models.component.res.value.valueResource
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 import sokeriaaa.return0.ui.common.widgets.AppButton
@@ -72,7 +71,8 @@ fun EntityPluginPage(
     modifier: Modifier = Modifier,
     plugin: ExtendedEntityProfile.Plugin?,
     entityPath: EntityPath,
-    onIntent: (CommonIntent) -> Unit,
+    onRequestSwitch: () -> Unit,
+    onRequestUninstall: () -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -90,7 +90,7 @@ fun EntityPluginPage(
                 AppButton(
                     modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(Res.string.game_plugin_install),
-                    onClick = {}
+                    onClick = onRequestSwitch,
                 )
             }
         } else {
@@ -279,12 +279,12 @@ fun EntityPluginPage(
                 ) {
                     AppButton(
                         text = stringResource(Res.string.game_plugin_switch),
-                        onClick = {}
+                        onClick = onRequestSwitch,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     AppButton(
                         text = stringResource(Res.string.game_plugin_uninstall),
-                        onClick = {}
+                        onClick = onRequestUninstall,
                     )
                 }
             }

@@ -80,6 +80,8 @@ import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
+import sokeriaaa.return0.ui.nav.Scene
+import sokeriaaa.return0.ui.nav.navigateSingleTop
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,6 +168,7 @@ fun EntityDetailsScreen(
                 EntityMainPart(
                     modifier = Modifier.weight(1F),
                     entity = entity,
+                    mainNavHostController = mainNavHostController,
                     onIntent = viewModel::onIntent,
                 )
             }
@@ -211,6 +214,7 @@ fun EntityDetailsScreen(
                         .fillMaxWidth()
                         .weight(1F),
                     entity = entity,
+                    mainNavHostController = mainNavHostController,
                     onIntent = viewModel::onIntent,
                 )
             }
@@ -371,6 +375,7 @@ private fun EntityStatusPart(
 private fun EntityMainPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
+    mainNavHostController: NavHostController,
     onIntent: (CommonIntent) -> Unit,
 ) {
     // Page titles
@@ -433,7 +438,14 @@ private fun EntityMainPart(
                     modifier = Modifier.padding(horizontal = 14.dp),
                     plugin = entity.plugin,
                     entityPath = entity.path,
-                    onIntent = onIntent,
+                    onRequestSwitch = {
+                        mainNavHostController.navigateSingleTop(
+                            route = Scene.EntityPluginSelection.route + "/" + entity.name,
+                        )
+                    },
+                    onRequestUninstall = {
+                        // TODO
+                    },
                 )
             }
         }
