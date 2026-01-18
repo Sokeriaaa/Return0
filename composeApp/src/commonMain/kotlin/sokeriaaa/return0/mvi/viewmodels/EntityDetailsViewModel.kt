@@ -42,6 +42,9 @@ class EntityDetailsViewModel(
     var entityProfile: ExtendedEntityProfile? by mutableStateOf(null)
         private set
 
+    // Plugin related
+    var isShowingAll: Boolean? by mutableStateOf(false)
+
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {

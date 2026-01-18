@@ -5,7 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
+import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.shared.data.api.component.value.PercentValue
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
@@ -31,7 +31,7 @@ private fun EntityPluginPageNone() {
 private fun EntityPluginPageIdenticalPath() {
     EntityPluginPage(
         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        plugin = ExtendedEntityProfile.Plugin(
+        plugin = PluginInfo(
             name = "Example Plugin",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             tier = 1,
@@ -50,7 +50,9 @@ private fun EntityPluginPageIdenticalPath() {
                 onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(42))),
                 attackRateOffset = PercentValue(0.42F),
                 defendRateOffset = PercentValue(0.42F),
-            )
+            ),
+            isLocked = false,
+            installedBy = "Example",
         ),
         entityPath = EntityPath.HEAP,
         onRequestSwitch = {},
@@ -64,7 +66,7 @@ private fun EntityPluginPageIdenticalPath() {
 private fun EntityPluginPageDifferentPath() {
     EntityPluginPage(
         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        plugin = ExtendedEntityProfile.Plugin(
+        plugin = PluginInfo(
             name = "Example Plugin",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             tier = 1,
@@ -83,7 +85,9 @@ private fun EntityPluginPageDifferentPath() {
                 onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(42))),
                 attackRateOffset = PercentValue(0.42F),
                 defendRateOffset = PercentValue(0.42F),
-            )
+            ),
+            isLocked = false,
+            installedBy = "Example",
         ),
         entityPath = EntityPath.PROTOCOL,
         onRequestSwitch = {},
