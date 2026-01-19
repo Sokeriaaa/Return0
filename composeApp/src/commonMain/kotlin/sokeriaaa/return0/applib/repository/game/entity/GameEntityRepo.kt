@@ -282,10 +282,16 @@ class GameEntityRepo(
         newPluginID: Long?,
     ) {
         entityDao.updatePlugin(AppConstants.CURRENT_SAVE_ID, entityName, newPluginID)
-        // Notify the plugin repo
         if (newPluginID == null) {
+            // Notify the plugin repo
             plugin.onPluginUninstalledFrom(entityName)
         } else {
+            // Remove the plugin from formal entity.
+            val wasInstalledBy = plugin.pluginMap[newPluginID]?.installedBy
+            wasInstalledBy?.let {
+                entityDao.updatePlugin(AppConstants.CURRENT_SAVE_ID, it, null)
+            }
+            // Notify the plugin repo
             plugin.onPluginInstalledTo(newPluginID, installedBy = entityName)
         }
     }
