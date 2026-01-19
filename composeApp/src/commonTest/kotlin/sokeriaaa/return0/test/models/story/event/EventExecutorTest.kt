@@ -143,7 +143,6 @@ class EventExecutorTest : BaseEventTest() {
     fun `TeleportUserTo executes correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
-            // FIXME: Handle the Context for Res.readBytes() or replace it.
             Event.TeleportUserTo(
                 map = "another_map",
                 lineNumber = Value(15)
@@ -244,6 +243,7 @@ class EventExecutorTest : BaseEventTest() {
             // Generate a plugin with the constant of a random type +3%
             random = FakeRandom(3, 0, 0, 0)
         ) { context ->
+            // FIXME: Handle the Context for Res.readBytes() or replace it.
             Event.ObtainPlugin(
                 key = "growth_factor_array",
                 tier = Value(1),

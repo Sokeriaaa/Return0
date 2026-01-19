@@ -25,9 +25,15 @@ import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.singleExecute
 import sokeriaaa.return0.models.combat.CombatCalculator
 import sokeriaaa.return0.models.component.context.createExtraContextFor
+import sokeriaaa.return0.models.entity.plugin.generatePlugin
+import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
+import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
+import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
+import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
@@ -103,6 +109,131 @@ class ActionExecutorTest {
                     def = entity2.def.toFloat(),
                 ) * (1 + AppConstants.BASE_CRITICAL_DMG)).toInt()
                 assertEquals((10000 - exceptedDamage3).coerceAtLeast(0), entity2.hp)
+            }
+        }
+    }
+
+    @Test
+    fun `damage calculated correctly with plugin offsets`() {
+        TestKoinModules.withModules {
+            repeat(10) {
+                val attackOffset = Random.nextFloat() * 0.2F - 0.1F
+                val defendOffset = Random.nextFloat() * 0.2F - 0.1F
+                val plugin = PluginData(
+                    key = "foo",
+                    nameRes = "plugin.foo",
+                    descriptionRes = "plugin.foo.desc",
+                    path = EntityPath.HEAP,
+                    attackRateOffset = Value(attackOffset),
+                    defendRateOffset = Value(defendOffset),
+                ).generatePlugin(
+                    tier = 1,
+                    constMap = emptyMap(),
+                )
+                val entity1 = DummyEntities.generateEntity(
+                    index = 0,
+                    path = EntityPath.HEAP,
+                    category = Category.NORMAL,
+                    name = "foo",
+                    baseATK = Random.nextInt(40, 80),
+                    baseHP = 99999,
+                    plugin = plugin,
+                )
+                val entity2 = DummyEntities.generateEntity(
+                    index = 1,
+                    path = EntityPath.HEAP,
+                    category = Category.NORMAL,
+                    name = "bar",
+                    baseDEF = Random.nextInt(15, 30),
+                    baseHP = 99999,
+                    plugin = plugin,
+                )
+                val power = Random.nextInt(20, 50)
+                val damagingFunctionData = DummyFunction.generateFunctionData(
+                    name = "damaging",
+                    category = Category.NORMAL,
+                    basePower = power,
+                    powerBonus = 0,
+                )
+                val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+                entity1.hp = 10000
+                entity2.hp = 10000
+
+                // No missed, non-critical
+                val random1 = FakeRandom(1, 1)
+                // Execute
+                damaging.createExtraContextFor(entity2).singleExecute(random = random1)
+                // Calculate expected damage
+                val exceptedDamage1 = (CombatCalculator.baseDamage(
+                    power = power,
+                    atk = entity1.atk.toFloat(),
+                    def = entity2.def.toFloat(),
+                ) * (1 + attackOffset) / (1 + defendOffset)).toInt()
+                assertEquals((10000 - exceptedDamage1).coerceAtLeast(0), entity2.hp)
+            }
+        }
+    }
+
+    @Test
+    fun `damage calculated correctly with plugin effects`() {
+        TestKoinModules.withModules {
+            repeat(10) {
+                val extraDamage = Random.nextInt(100)
+                val extraHeal = Random.nextInt(100)
+                val plugin = PluginData(
+                    key = "foo",
+                    nameRes = "plugin.foo",
+                    descriptionRes = "plugin.foo.desc",
+                    path = EntityPath.HEAP,
+                    onAttack = CombatExtra.HPChange(Value(-extraDamage)),
+                    onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(extraHeal)))
+                ).generatePlugin(
+                    tier = 1,
+                    constMap = emptyMap(),
+                )
+                val entity1 = DummyEntities.generateEntity(
+                    index = 0,
+                    path = EntityPath.HEAP,
+                    category = Category.NORMAL,
+                    name = "foo",
+                    baseATK = Random.nextInt(40, 80),
+                    baseHP = 99999,
+                    plugin = plugin,
+                )
+                val entity2 = DummyEntities.generateEntity(
+                    index = 1,
+                    path = EntityPath.HEAP,
+                    category = Category.NORMAL,
+                    name = "bar",
+                    baseDEF = Random.nextInt(15, 30),
+                    baseHP = 99999,
+                    plugin = plugin,
+                )
+                val power = Random.nextInt(20, 50)
+                val damagingFunctionData = DummyFunction.generateFunctionData(
+                    name = "damaging",
+                    category = Category.NORMAL,
+                    basePower = power,
+                    powerBonus = 0,
+                )
+                val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+                entity1.hp = 10000
+                entity2.hp = 10000
+
+                // No missed, non-critical
+                val random1 = FakeRandom(1, 1)
+                // Execute
+                damaging.createExtraContextFor(entity2).singleExecute(random = random1)
+                // Calculate expected damage
+                val exceptedDamage1 = CombatCalculator.baseDamage(
+                    power = power,
+                    atk = entity1.atk.toFloat(),
+                    def = entity2.def.toFloat(),
+                ).toInt()
+                assertEquals(
+                    expected = (10000 - exceptedDamage1 - extraDamage + extraHeal).coerceAtLeast(0),
+                    actual = entity2.hp,
+                )
             }
         }
     }

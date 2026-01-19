@@ -16,6 +16,7 @@ package sokeriaaa.return0.test.models.entity
 
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.generate
+import sokeriaaa.return0.models.entity.plugin.EntityPlugin
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityData.GeneralAttackModifier
@@ -66,6 +67,7 @@ object DummyEntities {
         index: Int = -1,
         name: String = "Dummy",
         level: Int = 1,
+        path: EntityPath = EntityPath.UNSPECIFIED,
         growth: EntityGrowth = defaultEntityGrowth,
         isParty: Boolean = true,
         category: Category = Category.CLASS,
@@ -77,9 +79,11 @@ object DummyEntities {
         baseSP: Int = 200,
         baseAP: Int = 100,
         functions: List<FunctionData> = emptyList(),
-        attackModifier: GeneralAttackModifier? = null
+        attackModifier: GeneralAttackModifier? = null,
+        plugin: EntityPlugin? = null,
     ): Entity = generateEntityData(
         name = name,
+        path = path,
         category = category,
         category2 = category2,
         baseATK = baseATK,
@@ -95,6 +99,7 @@ object DummyEntities {
         level = level,
         growth = growth,
         isParty = isParty,
+        plugin = plugin,
     )
 
     val defaultEntityGrowth = EntityGrowth(

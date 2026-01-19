@@ -19,6 +19,7 @@ import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.CombatCalculator
 import sokeriaaa.return0.models.component.context.ActionExtraContext
+import sokeriaaa.return0.models.component.context.swappedEntities
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.component.executor.extra.executedIn
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
@@ -167,7 +168,9 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         withDamageResult(result) {
             fromAction.extra?.executedIn(this)
             user.onAttack?.executedIn(this)
-            target.onDefend?.executedIn(this)
+            swappedEntities { context: ActionExtraContext ->
+                target.onDefend?.executedIn(context)
+            }
         }
     }
 }

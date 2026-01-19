@@ -226,6 +226,7 @@ interface Entity {
 
     /**
      * Executes when this entity is attacked successfully by an enemy.
+     * In this extra, the `user` is current entity, the `target` is the attacker.
      */
     val onDefend: Extra?
 
