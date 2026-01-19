@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import sokeriaaa.return0.models.entity.display.EntityProfile
 
 @Composable
@@ -93,4 +94,23 @@ fun EntityProfileContent(
             }
         }
     }
+}
+
+// =========================================
+// Previews
+// =========================================
+@Preview
+@Composable
+private fun EntityProfilePreview() {
+    EntityProfileItem(
+        display = EntityProfile(
+            name = "Example",
+            level = 42,
+            expProgress = 0.42F,
+            hp = 1234,
+            maxHP = 1357,
+            sp = 1000,
+            maxSP = 1111,
+        ),
+    )
 }

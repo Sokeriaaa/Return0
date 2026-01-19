@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ic_baseline_arrow_drop_down_24
 import return0.composeapp.generated.resources.player_name
@@ -152,3 +153,54 @@ data class EventShowTextState(
     val visible: Boolean = false,
     val effect: EventEffect.ShowText? = null,
 )
+
+// =========================================
+// Previews
+// =========================================
+@Preview
+@Composable
+private fun PreviewNPCShowText() {
+    EventShowText(
+        effect = EventEffect.ShowText(
+            type = EventEffect.ShowText.Type.NPC("Debugger 42"),
+            text = "Hello world!"
+        ),
+        onContinue = {},
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewNPCShowTextLong() {
+    EventShowText(
+        effect = EventEffect.ShowText(
+            type = EventEffect.ShowText.Type.NPC("Debugger 42"),
+            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam interdum purus eu lectus aliquam, at tristique elit consectetur. In finibus eu ipsum in tincidunt. Quisque vitae lacus nunc. Etiam sed cursus ante. Nunc sed mi vitae velit viverra imperdiet. Praesent auctor id nisi vitae placerat. Proin auctor lobortis lacus, porta facilisis leo vehicula et. Phasellus lacus felis, malesuada ut vulputate at, mattis nec nibh. Donec euismod lacinia ipsum, sit amet molestie orci finibus a. Maecenas ac ullamcorper quam, sit amet porttitor dolor. Nullam ornare urna lorem, et ultricies arcu vestibulum vel. Sed eget magna ex."
+        ),
+        onContinue = {},
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewUserShowText() {
+    EventShowText(
+        effect = EventEffect.ShowText(
+            type = EventEffect.ShowText.Type.User,
+            text = "Hi there!"
+        ),
+        onContinue = {},
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewNarratorShowText() {
+    EventShowText(
+        effect = EventEffect.ShowText(
+            type = EventEffect.ShowText.Type.Narrator,
+            text = "Something suspicious happened nearby."
+        ),
+        onContinue = {},
+    )
+}
