@@ -26,8 +26,10 @@ import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
+import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 
 class EntityDetailsViewModel(
     val entityName: String,
@@ -42,8 +44,12 @@ class EntityDetailsViewModel(
     var entityProfile: ExtendedEntityProfile? by mutableStateOf(null)
         private set
 
+    // All plugins in current save mapped by ID.
+    val pluginMap: Map<Long, PluginInfo> = _pluginRepo.pluginMap
+
     // Plugin related
-    var isShowingAll: Boolean? by mutableStateOf(false)
+    var isShowingAllPlugins: Boolean by mutableStateOf(false)
+        private set
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -51,6 +57,16 @@ class EntityDetailsViewModel(
             CommonIntent.Refresh -> viewModelScope.launch {
                 refresh()
             }
+
+            is EntityDetailsIntent.InstallPlugin -> viewModelScope.launch {
+                _entityRepo.switchPlugin(entityName, intent.pluginID)
+            }
+
+            EntityDetailsIntent.UninstallPlugin -> viewModelScope.launch {
+                _entityRepo.switchPlugin(entityName, null)
+            }
+
+            EntityDetailsIntent.ToggleShowAllPlugin -> isShowingAllPlugins = !isShowingAllPlugins
 
             else -> Unit
         }

@@ -58,14 +58,21 @@
     <string name="game_plugin_install">安装</string>
     <string name="game_plugin_switch">切换</string>
     <string name="game_plugin_uninstall">卸载</string>
+    <string name="game_plugin_installed">已安装</string>
     <string name="game_plugin_not_installed">未安装插件。</string>
+    <string name="game_plugin_lock">锁定</string>
+    <string name="game_plugin_unlock">解锁</string>
+    <string name="game_plugin_locked">已锁定</string>
     <string name="game_plugin_const">常量</string>
     <string name="game_plugin_warn_different_path">当对象和插件的定位不一致时，除常量外的所有插件增益将不会生效。</string>
 
     <string name="game_plugin_select">选择插件</string>
-    <string name="game_plugin_select_installed_by">已被%1$s安装</string>
+    <string name="game_plugin_select_installed_by">已被%1$s安装。</string>
     <string name="game_plugin_select_installed_by_warn">该插件已被%1$s安装。是否卸载此插件给%2$s安装？</string>
-    <string name="game_plugin_select_different_path">定位不一致</string>
+    <string name="game_plugin_select_current">%1$s当前安装的插件</string>
+    <string name="game_plugin_select_selected">选中的插件</string>
+    <string name="game_plugin_select_toggle_different_path">显示定位不一致的插件</string>
+    <string name="game_plugin_select_different_path">定位不一致。</string>
     <string name="game_plugin_select_different_path_warn">当对象和插件的定位不一致时，除常量外的所有插件增益将不会生效。仍然安装吗？</string>
     <string name="game_plugin_special_on_attack">每次命中时：</string>
     <string name="game_plugin_special_on_defend">每次被敌方命中：</string>

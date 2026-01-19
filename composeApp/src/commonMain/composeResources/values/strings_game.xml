@@ -58,14 +58,21 @@
     <string name="game_plugin_install">Install</string>
     <string name="game_plugin_switch">Switch</string>
     <string name="game_plugin_uninstall">Uninstall</string>
+    <string name="game_plugin_installed">Installed</string>
     <string name="game_plugin_not_installed">Plugin not installed.</string>
+    <string name="game_plugin_lock">Lock</string>
+    <string name="game_plugin_unlock">Unlock</string>
+    <string name="game_plugin_locked">Locked</string>
     <string name="game_plugin_const">Constants</string>
     <string name="game_plugin_warn_different_path">Buffs other than the constants will not take effect when the path of the entity and the plugin are not identical.</string>
 
     <string name="game_plugin_select">Select Plugin</string>
-    <string name="game_plugin_select_installed_by">Installed by %1$s</string>
+    <string name="game_plugin_select_installed_by">Installed by %1$s. </string>
     <string name="game_plugin_select_installed_by_warn">This plugin is currently installed by %1$s. Uninstall it to install it on %2$s?</string>
-    <string name="game_plugin_select_different_path">Not identical path</string>
+    <string name="game_plugin_select_current">Installed by %1$s</string>
+    <string name="game_plugin_select_selected">Selected plugin</string>
+    <string name="game_plugin_select_toggle_different_path">Show plugins with different path</string>
+    <string name="game_plugin_select_different_path">Not identical path. </string>
     <string name="game_plugin_select_different_path_warn">Buffs other than the constants will not take effect when the path of the entity and the plugin are not identical. Install anyway?</string>
     <string name="game_plugin_special_on_attack">On each hit: </string>
     <string name="game_plugin_special_on_defend">On hit by enemy: </string>
