@@ -20,8 +20,6 @@ import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.Entity
-import sokeriaaa.return0.models.entity.EntityImpl
-import sokeriaaa.return0.models.entity.PluggedEntity
 import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.generate
@@ -88,17 +86,17 @@ class GameEntityRepo(
     ): Entity {
         // Get the growth data of the primary category of entity.
         val growth = archive.getEntityGrowthByCategory(entityData.category)
-        val entity = entityData.generate(index, level, growth, isParty).apply {
+        return entityData.generate(
+            index = index,
+            level = level,
+            growth = growth,
+            isParty = isParty,
+            plugin = plugin?.let {
+                it.pluginData.generatePlugin(it.tier, it.constMap)
+            }
+        ).apply {
             hp = currentHP ?: maxhp
             sp = currentSP ?: maxsp
-        }
-        val pluginInstance = plugin?.let {
-            it.pluginData.generatePlugin(it.tier, it.constMap)
-        }
-        return if (pluginInstance == null) {
-            entity
-        } else {
-            PluggedEntity(entity as EntityImpl, pluginInstance)
         }
     }
 
@@ -129,6 +127,7 @@ class GameEntityRepo(
             level = table.level,
             growth = growth,
             isParty = true,
+            plugin = plugin.assemblePlugin(table.pluginID),
         ).apply {
             hp = table.currentHP ?: maxhp
             sp = table.currentSP ?: maxsp
@@ -165,6 +164,7 @@ class GameEntityRepo(
             level = table.level,
             growth = growth,
             isParty = true,
+            plugin = plugin.assemblePlugin(table.pluginID),
         ).apply {
             hp = table.currentHP ?: maxhp
             sp = table.currentSP ?: maxsp

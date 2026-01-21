@@ -98,6 +98,18 @@ class GamePluginRepo(
         return pluginID
     }
 
+    fun assemblePlugin(pluginID: Long?): EntityPlugin? {
+        return pluginMap[pluginID]?.let { assemblePlugin(it) }
+    }
+
+    fun assemblePlugin(pluginInfo: PluginInfo): EntityPlugin {
+        return assemblePlugin(
+            pluginData = pluginInfo.data,
+            tier = pluginInfo.tier,
+            constMap = pluginInfo.constMap,
+        )
+    }
+
     private fun assemblePlugin(
         pluginData: PluginData,
         tier: Int,
