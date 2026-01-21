@@ -60,10 +60,12 @@ class EntityDetailsViewModel(
 
             is EntityDetailsIntent.InstallPlugin -> viewModelScope.launch {
                 _entityRepo.switchPlugin(entityName, intent.pluginID)
+                refresh()
             }
 
             EntityDetailsIntent.UninstallPlugin -> viewModelScope.launch {
                 _entityRepo.switchPlugin(entityName, null)
+                refresh()
             }
 
             EntityDetailsIntent.ToggleShowAllPlugin -> isShowingAllPlugins = !isShowingAllPlugins

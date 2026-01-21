@@ -31,6 +31,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -55,23 +56,30 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.component_extra_empty
+import return0.composeapp.generated.resources.game_plugin_install
 import return0.composeapp.generated.resources.game_plugin_installed
 import return0.composeapp.generated.resources.game_plugin_locked
 import return0.composeapp.generated.resources.game_plugin_select
 import return0.composeapp.generated.resources.game_plugin_select_current
 import return0.composeapp.generated.resources.game_plugin_select_different_path
+import return0.composeapp.generated.resources.game_plugin_select_different_path_warn
 import return0.composeapp.generated.resources.game_plugin_select_installed_by
+import return0.composeapp.generated.resources.game_plugin_select_installed_by_warn
 import return0.composeapp.generated.resources.game_plugin_select_selected
 import return0.composeapp.generated.resources.game_plugin_select_toggle_different_path
+import return0.composeapp.generated.resources.game_plugin_select_uninstall_warn
+import return0.composeapp.generated.resources.game_plugin_uninstall
 import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_lock_24
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
+import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,6 +117,8 @@ fun EntityPluginSelectionScreen(
     ) { paddingValues ->
         var selectedPlugin: PluginInfo? by remember { mutableStateOf(null) }
         val entityProfile = viewModel.entityProfile ?: return@AppScaffold
+
+
         if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
             // Horizontal
             Row(modifier = Modifier.padding(paddingValues = paddingValues)) {
@@ -125,6 +135,7 @@ fun EntityPluginSelectionScreen(
                         entityName = entityName,
                         pluginInfo = entityProfile.plugin,
                         entityPath = entityProfile.path,
+                        onIntent = viewModel::onIntent,
                     )
                     HorizontalDivider()
                     SelectedPluginPanel(
@@ -133,6 +144,7 @@ fun EntityPluginSelectionScreen(
                             .weight(1F),
                         pluginInfo = selectedPlugin,
                         entityPath = entityProfile.path,
+                        onIntent = viewModel::onIntent,
                     )
                 }
                 VerticalDivider()
@@ -160,6 +172,7 @@ fun EntityPluginSelectionScreen(
                         entityName = entityName,
                         pluginInfo = entityProfile.plugin,
                         entityPath = entityProfile.path,
+                        onIntent = viewModel::onIntent,
                     )
                     VerticalDivider()
                     SelectedPluginPanel(
@@ -169,6 +182,7 @@ fun EntityPluginSelectionScreen(
                             .padding(horizontal = 8.dp),
                         pluginInfo = selectedPlugin,
                         entityPath = entityProfile.path,
+                        onIntent = viewModel::onIntent,
                     )
                 }
                 HorizontalDivider()
@@ -190,7 +204,20 @@ private fun CurrentPluginPanel(
     entityName: String,
     pluginInfo: PluginInfo?,
     entityPath: EntityPath,
+    onIntent: (BaseIntent) -> Unit,
 ) {
+    var isShowUninstallWarning: Boolean by remember { mutableStateOf(false) }
+    if (isShowUninstallWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_plugin_uninstall),
+            text = stringResource(Res.string.game_plugin_select_uninstall_warn),
+            onDismiss = { isShowUninstallWarning = false },
+            onConfirmed = {
+                isShowUninstallWarning = false
+                onIntent(EntityDetailsIntent.UninstallPlugin)
+            }
+        )
+    }
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -216,6 +243,11 @@ private fun CurrentPluginPanel(
                     )
                 }
             }
+            Row {
+                TextButton(onClick = { isShowUninstallWarning = true }) {
+                    Text(stringResource(Res.string.game_plugin_uninstall))
+                }
+            }
         }
     }
 }
@@ -225,7 +257,36 @@ private fun SelectedPluginPanel(
     modifier: Modifier = Modifier,
     pluginInfo: PluginInfo?,
     entityPath: EntityPath,
+    onIntent: (BaseIntent) -> Unit,
 ) {
+    var isShowInstalledWarning: Boolean by remember { mutableStateOf(false) }
+    var isShowDifferentWarning: Boolean by remember { mutableStateOf(false) }
+    if (isShowInstalledWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_plugin_install),
+            text = stringResource(
+                resource = Res.string.game_plugin_select_installed_by_warn,
+                /* installedBy = */ pluginInfo?.installedBy.toString(),
+            ),
+            onDismiss = { isShowInstalledWarning = false },
+            onConfirmed = {
+                isShowInstalledWarning = false
+                pluginInfo?.id?.let { onIntent(EntityDetailsIntent.InstallPlugin(it)) }
+            }
+        )
+    }
+    if (isShowDifferentWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_plugin_install),
+            text = stringResource(Res.string.game_plugin_select_different_path_warn),
+            onDismiss = { isShowDifferentWarning = false },
+            onConfirmed = {
+                isShowDifferentWarning = false
+                pluginInfo?.id?.let { onIntent(EntityDetailsIntent.InstallPlugin(it)) }
+            }
+        )
+    }
+
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -246,6 +307,19 @@ private fun SelectedPluginPanel(
                         plugin = pluginInfo,
                         entityPath = entityPath,
                     )
+                }
+            }
+            Row {
+                TextButton(
+                    onClick = {
+                        when {
+                            pluginInfo.installedBy != null -> isShowInstalledWarning = true
+                            pluginInfo.data.path != entityPath -> isShowDifferentWarning = true
+                            else -> onIntent(EntityDetailsIntent.InstallPlugin(pluginInfo.id))
+                        }
+                    }
+                ) {
+                    Text(stringResource(Res.string.game_plugin_install))
                 }
             }
         }

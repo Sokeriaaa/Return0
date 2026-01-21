@@ -67,8 +67,10 @@
     <string name="game_plugin_warn_different_path">当对象和插件的定位不一致时，除常量外的所有插件增益将不会生效。</string>
 
     <string name="game_plugin_select">选择插件</string>
+    <string name="game_plugin_select_install_warn">要安装此插件吗？</string>
+    <string name="game_plugin_select_uninstall_warn">要卸载此插件吗？</string>
     <string name="game_plugin_select_installed_by">已被%1$s安装。</string>
-    <string name="game_plugin_select_installed_by_warn">该插件已被%1$s安装。是否卸载此插件给%2$s安装？</string>
+    <string name="game_plugin_select_installed_by_warn">该插件已被%1$s安装。是否卸载此插件给当前对象安装？</string>
     <string name="game_plugin_select_current">%1$s当前安装的插件</string>
     <string name="game_plugin_select_selected">选中的插件</string>
     <string name="game_plugin_select_toggle_different_path">显示定位不一致的插件</string>

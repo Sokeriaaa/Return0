@@ -67,8 +67,10 @@
     <string name="game_plugin_warn_different_path">Buffs other than the constants will not take effect when the path of the entity and the plugin are not identical.</string>
 
     <string name="game_plugin_select">Select Plugin</string>
+    <string name="game_plugin_select_install_warn">Install the plugin?</string>
+    <string name="game_plugin_select_uninstall_warn">Uninstall the plugin?</string>
     <string name="game_plugin_select_installed_by">Installed by %1$s. </string>
-    <string name="game_plugin_select_installed_by_warn">This plugin is currently installed by %1$s. Uninstall it to install it on %2$s?</string>
+    <string name="game_plugin_select_installed_by_warn">This plugin is currently installed by %1$s. Uninstall it to install on the current entity?</string>
     <string name="game_plugin_select_current">Installed by %1$s</string>
     <string name="game_plugin_select_selected">Selected plugin</string>
     <string name="game_plugin_select_toggle_different_path">Show plugins with different path</string>
