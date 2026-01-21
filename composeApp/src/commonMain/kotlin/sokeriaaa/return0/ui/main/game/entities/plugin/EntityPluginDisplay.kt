@@ -257,7 +257,8 @@ private fun ConstantEntry(
                 append(" +")
                 append(tier)
                 append("%")
-            }
+            },
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

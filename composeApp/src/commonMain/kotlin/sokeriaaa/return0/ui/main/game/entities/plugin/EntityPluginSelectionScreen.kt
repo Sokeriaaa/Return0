@@ -225,7 +225,7 @@ private fun CurrentPluginPanel(
                 resource = Res.string.game_plugin_select_current,
                 /* entityName = */ entityName,
             ),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.bodySmall,
         )
         if (pluginInfo == null) {
             Text(stringResource(Res.string.component_extra_empty))
@@ -291,7 +291,7 @@ private fun SelectedPluginPanel(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(Res.string.game_plugin_select_selected),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.bodySmall,
         )
         if (pluginInfo == null) {
             Text(stringResource(Res.string.component_extra_empty))
@@ -346,7 +346,7 @@ private fun PluginSelectPanel(
                 .asSequence()
                 .mapNotNull {
                     if (
-                        viewModel.isShowingAllPlugins
+                        !viewModel.isShowingAllPlugins
                         && viewModel.entityProfile != null
                         && viewModel.entityProfile?.path != it.value.data.path
                     ) {
@@ -401,26 +401,17 @@ private fun PluginDisplayList(
             items = pluginMap.toList(),
             key = { it.first }
         ) {
-            Column(
-                modifier = modifier.fillMaxWidth()
-            ) {
-                PluginDisplayItem(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .clickable { onPluginSelected(it.second) },
-                    pluginName = it.second.name,
-                    pluginPath = it.second.data.path,
-                    pluginInstalledBy = it.second.installedBy,
-                    pluginIsLocked = it.second.isLocked,
-                    entityPath = entityProfile?.path,
-                    isInstalled = entityProfile?.plugin?.id == it.second.id,
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                )
-            }
+            PluginDisplayItem(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .clickable { onPluginSelected(it.second) },
+                pluginName = it.second.name,
+                pluginPath = it.second.data.path,
+                pluginInstalledBy = it.second.installedBy,
+                pluginIsLocked = it.second.isLocked,
+                entityPath = entityProfile?.path,
+                isInstalled = entityProfile?.plugin?.id == it.second.id,
+            )
         }
     }
 }

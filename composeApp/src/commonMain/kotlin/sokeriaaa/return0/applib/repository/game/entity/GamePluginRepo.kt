@@ -121,7 +121,7 @@ class GamePluginRepo(
         return PluginInfo(
             id = constTable.pluginID!!,
             name = resource.getString("plugin.${pluginData.key}"),
-            description = resource.getString("plugin.${pluginData.key}"),
+            description = resource.getString("plugin.${pluginData.key}.desc"),
             tier = constTable.tier,
             constMap = assembleConstMap(constTable),
             data = pluginData,
