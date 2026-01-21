@@ -564,6 +564,31 @@ class ActionExecutorTest {
         TestKoinModules.withModules {
             val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
             val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+            val entity3 = DummyEntities.generateEntity(name = "baz", baseHP = 99999)
+            val skill1 = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            val skill2 = entity2.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            entity1.hp = 500
+            entity2.hp = 500
+            entity3.hp = 500
+
+            val stackable = DummyEffects.generateEffectData(name = "stackable", isStackable = true)
+
+            val effect1 = entity1.generateEffectFor(effectData = stackable, tier = 1, turns = 1)
+            val effect2 = entity2.generateEffectFor(effectData = stackable, tier = 2, turns = 2)
+
+            // Execute
+            skill1.createExtraContextFor(entity3).attachEffect(effect1)
+            skill2.createExtraContextFor(entity3).attachEffect(effect2)
+            assertTrue(effect1 in entity3.effects)
+            assertTrue(effect2 in entity3.effects)
+        }
+    }
+
+    @Test
+    fun `stackable effects still be replaced when the user is identical`() {
+        TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
             val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
             entity1.hp = 500
             entity2.hp = 500
@@ -576,7 +601,7 @@ class ActionExecutorTest {
             // Execute
             skill.createExtraContextFor(entity2).attachEffect(effect1)
             skill.createExtraContextFor(entity2).attachEffect(effect2)
-            assertTrue(effect1 in entity2.effects)
+            assertFalse(effect1 in entity2.effects)
             assertTrue(effect2 in entity2.effects)
         }
     }

@@ -268,8 +268,14 @@ fun ActionExtraContext.instantAPChange(apChange: Float) {
  * Add/Override an effect.
  */
 fun ActionExtraContext.attachEffect(effect: Effect) {
-    if (effect.isStackable) {
-        // If the effect is stackable, directly add it.
+    val currentEffect = if (effect.isStackable) {
+        target.effects.firstOrNull { it.name == effect.name && it.user == user }
+    } else {
+        target.effects.firstOrNull { it.name == effect.name }
+    }
+    // Compare two effects and keep the one
+    //  with higher priority.
+    if (currentEffect == null) {
         saveResult(
             ActionResult.AttachEffect(
                 fromIndex = user.index,
@@ -281,10 +287,12 @@ fun ActionExtraContext.attachEffect(effect: Effect) {
         // Execute
         target.attachEffect(effect)
     } else {
-        // If the effect is not stackable, compare two effects and keep the one
-        //  with higher priority.
-        val currentEffect = target.effects.firstOrNull { it.name == effect.name }
-        if (currentEffect == null) {
+        if (effect >= currentEffect) {
+            // Copy action values.
+            currentEffect.values.forEach { entry ->
+                effect.values[entry.key] = (effect.values[entry.key] ?: 0F) + entry.value
+            }
+            // Save result
             saveResult(
                 ActionResult.AttachEffect(
                     fromIndex = user.index,
@@ -294,36 +302,18 @@ fun ActionExtraContext.attachEffect(effect: Effect) {
                 )
             )
             // Execute
+            target.removeEffect(currentEffect)
             target.attachEffect(effect)
         } else {
-            if (effect >= currentEffect) {
-                // Copy action values.
-                currentEffect.values.forEach { entry ->
-                    effect.values[entry.key] = (effect.values[entry.key] ?: 0F) + entry.value
-                }
-                // Save result
-                saveResult(
-                    ActionResult.AttachEffect(
-                        fromIndex = user.index,
-                        toIndex = target.index,
-                        effectName = effect.name,
-                        turns = effect.turnsLeft,
-                    )
+            // Still save the result and display logs, but actually no effect.
+            saveResult(
+                ActionResult.AttachEffect(
+                    fromIndex = user.index,
+                    toIndex = target.index,
+                    effectName = effect.name,
+                    turns = effect.turnsLeft,
                 )
-                // Execute
-                target.removeEffect(currentEffect)
-                target.attachEffect(effect)
-            } else {
-                // Still save the result and display logs, but actually no effect.
-                saveResult(
-                    ActionResult.AttachEffect(
-                        fromIndex = user.index,
-                        toIndex = target.index,
-                        effectName = effect.name,
-                        turns = effect.turnsLeft,
-                    )
-                )
-            }
+            )
         }
     }
 }
