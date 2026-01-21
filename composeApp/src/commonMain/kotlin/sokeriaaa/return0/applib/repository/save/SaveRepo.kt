@@ -18,7 +18,9 @@ import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EntityDao
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao
+import sokeriaaa.return0.applib.room.dao.IndexedHubDao
 import sokeriaaa.return0.applib.room.dao.InventoryDao
+import sokeriaaa.return0.applib.room.dao.PluginInventoryDao
 import sokeriaaa.return0.applib.room.dao.QuestDao
 import sokeriaaa.return0.applib.room.dao.SaveMetaDao
 import sokeriaaa.return0.applib.room.dao.SavedSwitchDao
@@ -42,7 +44,9 @@ class SaveRepo(
     private val currencyDao: CurrencyDao,
     private val entityDao: EntityDao,
     private val eventRelocationDao: EventRelocationDao,
+    private val indexedHubDao: IndexedHubDao,
     private val inventoryDao: InventoryDao,
+    private val pluginInventoryDao: PluginInventoryDao,
     private val questDao: QuestDao,
     private val savedSwitchDao: SavedSwitchDao,
     private val savedVariableDao: SavedVariableDao,
@@ -68,7 +72,9 @@ class SaveRepo(
             currencyDao.delete(saveID = saveID)
             entityDao.deleteSave(saveID = saveID)
             eventRelocationDao.deleteSave(saveID = saveID)
+            indexedHubDao.delete(saveID = saveID)
             inventoryDao.delete(saveID = saveID)
+            pluginInventoryDao.delete(saveID = saveID)
             questDao.delete(saveID = saveID)
             savedSwitchDao.delete(saveID = saveID)
             savedVariableDao.delete(saveID = saveID)
@@ -133,10 +139,21 @@ class SaveRepo(
                 eventRelocationDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
             eventRelocationDao.deleteSave(saveID = toID)
             eventRelocationDao.insertOrUpdateList(list = eventRelocationFrom)
+            // Indexed Hubs
+            val indexedHubFrom =
+                indexedHubDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
+            indexedHubDao.delete(saveID = toID)
+            indexedHubDao.insertList(list = indexedHubFrom)
             // Inventory
             val inventoryFrom = inventoryDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
             inventoryDao.delete(saveID = toID)
             inventoryDao.insertList(list = inventoryFrom)
+            // Plugin inventory
+            val pluginInventoryFrom = pluginInventoryDao.queryAll(saveID = fromID)
+                .map { item -> item.inventory }
+                .onEach { it.saveID = toID }
+            pluginInventoryDao.delete(saveID = toID)
+            pluginInventoryDao.insertList(list = pluginInventoryFrom)
             // Quest
             val questFrom = questDao.queryAll(saveID = fromID).onEach { it.saveID = toID }
             questDao.delete(saveID = toID)
