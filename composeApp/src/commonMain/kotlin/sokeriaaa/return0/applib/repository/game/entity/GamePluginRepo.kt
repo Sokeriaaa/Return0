@@ -226,13 +226,19 @@ class GamePluginRepo(
         installedBy: String? = null
     ) {
         val original = _pluginMap[pluginID]!!
-        // Update maps
-        _pluginMap[pluginID] = original.copy(installedBy = installedBy)
-        if (original.installedBy != null) {
-            _entityPluginIDMap.remove(original.installedBy)
+        val wasInstalledBy = original.installedBy
+        if (installedBy == wasInstalledBy) {
+            return
         }
+        // Update maps
         if (installedBy != null) {
+            // Uninstall the old plugin first.
+            onPluginUninstalledFrom(installedBy)
             _entityPluginIDMap[installedBy] = pluginID
+        }
+        _pluginMap[pluginID] = original.copy(installedBy = installedBy)
+        if (wasInstalledBy != null) {
+            _entityPluginIDMap.remove(wasInstalledBy)
         }
         // Update database
         pluginInventoryDao.updateInstalledBy(
