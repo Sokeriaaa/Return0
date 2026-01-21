@@ -404,6 +404,7 @@ private fun PluginDisplayList(
             PluginDisplayItem(
                 modifier = modifier
                     .fillMaxWidth()
+                    .animateItem()
                     .clickable { onPluginSelected(it.second) },
                 pluginName = it.second.name,
                 pluginPath = it.second.data.path,

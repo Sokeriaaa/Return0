@@ -47,7 +47,11 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,6 +67,8 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_entity_functions
 import return0.composeapp.generated.resources.game_entity_max_level
 import return0.composeapp.generated.resources.game_entity_plugin
+import return0.composeapp.generated.resources.game_plugin_select_uninstall_warn
+import return0.composeapp.generated.resources.game_plugin_uninstall
 import return0.composeapp.generated.resources.status_ap
 import return0.composeapp.generated.resources.status_atk
 import return0.composeapp.generated.resources.status_def
@@ -71,11 +77,14 @@ import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_spd
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
+import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
@@ -376,13 +385,25 @@ private fun EntityMainPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
     mainNavHostController: NavHostController,
-    onIntent: (CommonIntent) -> Unit,
+    onIntent: (BaseIntent) -> Unit,
 ) {
     // Page titles
     val pageTitles = listOf(
         Res.string.game_entity_functions,
         Res.string.game_entity_plugin,
     )
+    var isShowUninstallWarning: Boolean by remember { mutableStateOf(false) }
+    if (isShowUninstallWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_plugin_uninstall),
+            text = stringResource(Res.string.game_plugin_select_uninstall_warn),
+            onDismiss = { isShowUninstallWarning = false },
+            onConfirmed = {
+                isShowUninstallWarning = false
+                onIntent(EntityDetailsIntent.UninstallPlugin)
+            }
+        )
+    }
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -444,7 +465,7 @@ private fun EntityMainPart(
                         )
                     },
                     onRequestUninstall = {
-                        // TODO
+                        isShowUninstallWarning = true
                     },
                 )
             }
