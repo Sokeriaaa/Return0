@@ -341,6 +341,63 @@ class EventExecutorTest : BaseEventTest() {
         }
     }
 
+
+    @Test
+    fun `ObtainEntity executes onDuplicate`() = runTest {
+        val callback = object : TestingCallback() {}
+        withContext(callback = callback) { context ->
+            // Initialize entities.
+            registerTestingEntities(context)
+            Event.ObtainEntity(
+                entityName = "foo",
+                level = 42,
+                // Current HP is 10.
+                currentHP = 10,
+                // Obtain "bar" on duplicate.
+                onDuplicate = Event.ObtainEntity(
+                    entityName = "bar",
+                    level = 1,
+                )
+            ).executedIn(context)
+            // Not duplicated.
+            assertEquals(null, context.gameState.entity.getEntityTable("bar"))
+            assertEquals(10, context.gameState.entity.getEntityTable("foo")?.currentHP)
+
+            Event.ObtainEntity(
+                entityName = "foo",
+                level = 24,
+                currentHP = 20,
+                // Obtain "baz" on duplicate.
+                onDuplicate = Event.ObtainEntity(
+                    entityName = "baz",
+                    level = 1,
+                )
+            ).executedIn(context)
+            // Still level 42.
+            assertEquals(42, context.gameState.entity.getEntityTable("foo")?.level)
+            assertEquals(1, context.gameState.entity.getEntityTable("baz")?.level)
+            // HP not replaced, even if the new one is higher.
+            assertEquals(10, context.gameState.entity.getEntityTable("foo")?.currentHP)
+
+            Event.ObtainEntity(
+                entityName = "foo",
+                level = 100,
+                currentHP = 30,
+                // Obtain "qux" on duplicate.
+                onDuplicate = Event.ObtainEntity(
+                    entityName = "qux",
+                    level = 1,
+                )
+            ).executedIn(context)
+            // Use the higher level.
+            assertEquals(100, context.gameState.entity.getEntityTable("foo")?.level)
+            assertEquals(1, context.gameState.entity.getEntityTable("qux")?.level)
+            // HP not replaced, even if the new one is higher.
+            assertEquals(10, context.gameState.entity.getEntityTable("foo")?.currentHP)
+
+        }
+    }
+
     @Test
     fun `ShowMap executes correctly`() = runTest {
         val callback = object : TestingCallback() {}

@@ -221,6 +221,14 @@ suspend fun Event.executedIn(context: EventContext) {
             context.gameState.plugin.obtainedPlugin(pluginID)
         }
 
+        is Event.Shop -> {
+
+        }
+
+        Event.Workbench -> {
+
+        }
+
         is Event.ClaimQuest -> {
             context.gameState.quest.acceptedQuest(key)
         }
@@ -246,7 +254,7 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.ObtainEntity -> {
-            context.gameState.entity.obtainEntity(
+            val isNew = context.gameState.entity.obtainEntity(
                 entityName = entityName,
                 level = level,
                 exp = exp,
@@ -254,7 +262,11 @@ suspend fun Event.executedIn(context: EventContext) {
                 currentSP = currentSP,
                 pluginID = pluginID,
             )
-            context.gameState.team.obtainedNewEntity(entityName)
+            if (isNew) {
+                context.gameState.team.obtainedNewEntity(entityName)
+            } else {
+                onDuplicate.executedIn(context)
+            }
         }
 
         Event.ShowMap -> context.callback.onEffect(EventEffect.ShowMap)

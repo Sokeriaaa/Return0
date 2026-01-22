@@ -29,6 +29,7 @@ import sokeriaaa.return0.models.entity.plugin.generatePlugin
 import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import kotlin.math.max
 
 class GameEntityRepo(
     private val archive: ArchiveRepo,
@@ -42,6 +43,8 @@ class GameEntityRepo(
 
     /**
      * Obtaining a new entity.
+     *
+     * @return Whether the player had already obtained this entity. (currentEntity == null)
      */
     suspend fun obtainEntity(
         entityName: String,
@@ -50,19 +53,33 @@ class GameEntityRepo(
         currentHP: Int? = null,
         currentSP: Int? = null,
         pluginID: Long? = null,
-    ) {
+    ): Boolean {
+        val currentEntity = entityDao.getEntity(
+            saveID = AppConstants.CURRENT_SAVE_ID,
+            entityName = entityName,
+        )
         entityDao.insert(
             EntityTable(
                 saveID = AppConstants.CURRENT_SAVE_ID,
                 entityName = entityName,
-                level = level,
-                exp = exp,
-                currentHP = currentHP,
-                currentSP = currentSP,
-                indexedTime = TimeHelper.currentTimeMillis(),
-                pluginID = pluginID,
+                level = if (currentEntity == null) {
+                    level
+                } else {
+                    max(level, currentEntity.level)
+                },
+                exp = if (currentEntity == null) {
+                    exp
+                } else {
+                    max(exp, currentEntity.exp)
+                },
+                // For the other status, use the original's.
+                currentHP = currentEntity?.currentHP ?: currentHP,
+                currentSP = currentEntity?.currentSP ?: currentSP,
+                indexedTime = currentEntity?.indexedTime ?: TimeHelper.currentTimeMillis(),
+                pluginID = currentEntity?.pluginID ?: pluginID,
             )
         )
+        return currentEntity == null
     }
 
     /**
