@@ -47,7 +47,9 @@ import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.mvi.viewmodels.QuestsViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 import sokeriaaa.return0.mvi.viewmodels.SettingsViewModel
+import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
+import sokeriaaa.return0.mvi.viewmodels.WorkbenchViewModel
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 
 object KoinModules {
@@ -69,6 +71,8 @@ object KoinModules {
                 }
                 initializer { TeamsViewModel() }
                 initializer { InventoryViewModel() }
+                initializer { ShopViewModel() }
+                initializer { WorkbenchViewModel() }
                 initializer { CombatViewModel() }
                 initializer {
                     SaveViewModel(

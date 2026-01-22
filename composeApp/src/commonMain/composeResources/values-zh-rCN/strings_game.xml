@@ -81,6 +81,9 @@
     <string name="game_plugin_special_attack_rate_offset">攻击偏移率：</string>
     <string name="game_plugin_special_defend_rate_offset">防御偏移率：</string>
 
+    <string name="game_shop">商店</string>
+    <string name="game_workbench">工作台</string>
+
     <string name="game_complete_code">完成代码</string>
     <string name="game_complete_code_run">运行</string>
     <string name="game_complete_code_run_failed">运行代码失败。请查看注释。</string>

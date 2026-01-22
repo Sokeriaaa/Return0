@@ -40,6 +40,8 @@ import sokeriaaa.return0.ui.main.game.GameScreen
 import sokeriaaa.return0.ui.main.game.entities.EntitiesScreen
 import sokeriaaa.return0.ui.main.game.entities.details.EntityDetailsScreen
 import sokeriaaa.return0.ui.main.game.entities.plugin.EntityPluginSelectionScreen
+import sokeriaaa.return0.ui.main.game.events.shop.ShopScreen
+import sokeriaaa.return0.ui.main.game.events.workbench.WorkbenchScreen
 import sokeriaaa.return0.ui.main.game.inventory.InventoryScreen
 import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
 import sokeriaaa.return0.ui.main.game.teams.TeamsScreen
@@ -131,6 +133,18 @@ fun AppNavHost(
         }
         myComposable(Scene.Inventory) {
             InventoryScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.Shop) {
+            ShopScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.Workbench) {
+            WorkbenchScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
@@ -250,6 +264,8 @@ sealed class Scene(val route: String) {
     data object EntityPluginSelection : Scene(route = "r0_entity_plugin_selection")
     data object Teams : Scene(route = "r0_teams")
     data object Inventory : Scene(route = "r0_inventory")
+    data object Shop : Scene(route = "r0_shop")
+    data object Workbench : Scene(route = "r0_workbench")
 
     data object Combat : Scene(route = "r0_combat")
     data object Save : Scene(route = "r0_save")

@@ -21,4 +21,7 @@
     <string name="meta_thread_binder_info">Weaves parallel realities, binding threads into unified execution.</string>
     <string name="meta_grand_compiler_info">Resolves all code, transforming infinite instructions into truth.</string>
     <string name="meta_the_source_info">Origin of logic, from which every algorithm awakens.</string>
+
+    <string name="meta_token">Token</string>
+    <string name="meta_crypto">Crypto</string>
 </resources>

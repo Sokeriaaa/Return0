@@ -81,6 +81,9 @@
     <string name="game_plugin_special_attack_rate_offset">Attack rate offset: </string>
     <string name="game_plugin_special_defend_rate_offset">Defend rate offset: </string>
 
+    <string name="game_shop">Shop</string>
+    <string name="game_workbench">Shop</string>
+
     <string name="game_complete_code">Complete Code</string>
     <string name="game_complete_code_run">Run</string>
     <string name="game_complete_code_run_failed">Failed to run the code. Please check comments.</string>
