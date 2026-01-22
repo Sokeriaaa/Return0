@@ -15,6 +15,7 @@
 package sokeriaaa.return0.models.story.event
 
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
+import sokeriaaa.return0.shared.data.models.story.event.Event
 
 /**
  * Event effects emitted to the GameScreen.
@@ -76,6 +77,18 @@ sealed interface EventEffect {
      * Teleport the player to a specified location.
      */
     data class TeleportPlayer(val fileName: String, val line: Int) : EventEffect
+
+    /**
+     * Show the shop.
+     */
+    data class ShowShop(
+        val shop: Event.Shop,
+    ) : EventEffect
+
+    /**
+     * Show the workbench.
+     */
+    data object ShowWorkbench : EventEffect
 
     /**
      * Show the map again after being hidden by [HideMap].

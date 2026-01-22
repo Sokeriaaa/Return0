@@ -222,11 +222,13 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.Shop -> {
-
+            context.callback.onEffect(EventEffect.ShowShop(this))
+            context.callback.waitForUserContinue()
         }
 
         Event.Workbench -> {
-
+            context.callback.onEffect(EventEffect.ShowWorkbench)
+            context.callback.waitForUserContinue()
         }
 
         is Event.ClaimQuest -> {

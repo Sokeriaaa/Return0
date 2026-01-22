@@ -235,6 +235,14 @@ fun GameScreen(
                     }
                 }
 
+                is EventEffect.ShowShop -> {
+                    TODO()
+                }
+
+                is EventEffect.ShowWorkbench -> {
+                    TODO()
+                }
+
                 EventEffect.ShowMap -> isShowingMap = true
                 EventEffect.HideMap -> isShowingMap = false
                 EventEffect.ShakeMap -> {
