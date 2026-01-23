@@ -226,8 +226,8 @@ suspend fun Event.executedIn(context: EventContext) {
             context.callback.waitForUserContinue()
         }
 
-        Event.Workbench -> {
-            context.callback.onEffect(EventEffect.ShowWorkbench)
+        is Event.Workbench -> {
+            context.callback.onEffect(EventEffect.ShowWorkbench(this))
             context.callback.waitForUserContinue()
         }
 

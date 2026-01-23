@@ -88,7 +88,9 @@ sealed interface EventEffect {
     /**
      * Show the workbench.
      */
-    data object ShowWorkbench : EventEffect
+    data class ShowWorkbench(
+        val workbench: Event.Workbench,
+    ) : EventEffect
 
     /**
      * Show the map again after being hidden by [HideMap].
