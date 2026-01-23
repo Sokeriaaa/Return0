@@ -19,8 +19,8 @@ object AppConstants {
     const val MAXIMUM_TEAMS = 5
     const val CURRENT_SAVE_ID = -1
 
-    const val ENTRANCE_MAP = "entrance"
-//    const val ENTRANCE_MAP = "testing"
+    //    const val ENTRANCE_MAP = "entrance"
+    const val ENTRANCE_MAP = "testing"
     const val MAP_MAX_MOVEMENT = 50
     const val COMBAT_RATE_BASE = 1 shl 16
 
