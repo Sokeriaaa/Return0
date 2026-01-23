@@ -14,8 +14,14 @@
  */
 package sokeriaaa.return0.ui.common.text
 
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 fun CharSequence.replaceAnnotatedString(
     oldValue: String,
@@ -32,4 +38,43 @@ fun CharSequence.replaceAnnotatedString(
         append(newValue)
         append(end)
     }
+}
+
+@Preview
+@Composable
+private fun ReplaceExampleOriginal() {
+    Text(
+        text = buildAnnotatedString {
+            append("Lorem ipsum dolor sit amet, ")
+            withStyle(SpanStyle(color = Color.Red)) {
+                append("consectetur adipiscing elit.")
+            }
+        }
+    )
+}
+
+
+@Preview
+@Composable
+private fun ReplaceExample() {
+    Text(
+        // TODO Optimize code.
+        text = buildAnnotatedString {
+            append(
+                buildAnnotatedString {
+                    append("Lorem ipsum dolor sit amet, ")
+                    withStyle(SpanStyle(color = Color.Red)) {
+                        append("consectetur adipiscing elit.")
+                    }
+                }.replaceAnnotatedString(
+                    "adipiscing",
+                    buildAnnotatedString {
+                        withStyle(SpanStyle(color = Color.Blue)) {
+                            append("adipiscing")
+                        }
+                    }
+                )
+            )
+        }
+    )
 }
