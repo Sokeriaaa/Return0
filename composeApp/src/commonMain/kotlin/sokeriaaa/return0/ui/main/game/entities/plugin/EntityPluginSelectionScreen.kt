@@ -354,6 +354,17 @@ private fun PluginSelectPanel(
                     }
                     it.toPair()
                 }
+                .sortedByDescending { it.second.tier }
+                .sortedBy {
+                    if (
+                        viewModel.entityProfile != null
+                        && viewModel.entityProfile?.path != it.second.data.path
+                    ) {
+                        1
+                    } else {
+                        0
+                    }
+                }
                 .toList()
                 .toMap(),
             entityProfile = viewModel.entityProfile,

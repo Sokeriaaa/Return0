@@ -29,6 +29,7 @@ import sokeriaaa.return0.models.entity.plugin.generatePlugin
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
+import sokeriaaa.return0.ui.common.text.CommonStrings
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -132,7 +133,11 @@ class GamePluginRepo(
     ): PluginInfo {
         return PluginInfo(
             id = constTable.pluginID!!,
-            name = resource.getString("plugin.${pluginData.key}"),
+            name = buildString {
+                append(resource.getString("plugin.${pluginData.key}"))
+                append(" ")
+                append(CommonStrings.intToRomanOrDefault(constTable.tier))
+            },
             description = resource.getString("plugin.${pluginData.key}.desc"),
             tier = constTable.tier,
             constMap = assembleConstMap(constTable),
