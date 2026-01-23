@@ -29,7 +29,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -41,8 +40,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -66,7 +65,6 @@ import return0.composeapp.generated.resources.game_plugin_select_different_path_
 import return0.composeapp.generated.resources.game_plugin_select_installed_by
 import return0.composeapp.generated.resources.game_plugin_select_installed_by_warn
 import return0.composeapp.generated.resources.game_plugin_select_selected
-import return0.composeapp.generated.resources.game_plugin_select_toggle_different_path
 import return0.composeapp.generated.resources.game_plugin_select_uninstall_warn
 import return0.composeapp.generated.resources.game_plugin_uninstall
 import return0.composeapp.generated.resources.ic_outline_check_24
@@ -333,27 +331,13 @@ private fun PluginSelectPanel(
     onPluginSelected: (PluginInfo) -> Unit,
 ) {
     Column(modifier = modifier) {
-        PluginDisplayToggle(
-            modifier = Modifier.fillMaxWidth(),
-            isShowingAllPlugins = viewModel.isShowingAllPlugins,
-            onToggled = { viewModel.onIntent(EntityDetailsIntent.ToggleShowAllPlugin) }
-        )
         PluginDisplayList(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1F),
             pluginMap = viewModel.pluginMap
                 .asSequence()
-                .mapNotNull {
-                    if (
-                        !viewModel.isShowingAllPlugins
-                        && viewModel.entityProfile != null
-                        && viewModel.entityProfile?.path != it.value.data.path
-                    ) {
-                        return@mapNotNull null
-                    }
-                    it.toPair()
-                }
+                .map { it.toPair() }
                 .sortedByDescending { it.second.tier }
                 .sortedBy {
                     if (
@@ -369,31 +353,6 @@ private fun PluginSelectPanel(
                 .toMap(),
             entityProfile = viewModel.entityProfile,
             onPluginSelected = onPluginSelected,
-        )
-    }
-}
-
-@Composable
-private fun PluginDisplayToggle(
-    modifier: Modifier = Modifier,
-    isShowingAllPlugins: Boolean,
-    onToggled: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = modifier
-            .height(56.dp)
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            modifier = Modifier.weight(1F),
-            text = stringResource(Res.string.game_plugin_select_toggle_different_path),
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Switch(
-            modifier = Modifier.padding(start = 16.dp),
-            checked = isShowingAllPlugins,
-            onCheckedChange = onToggled,
         )
     }
 }
@@ -438,8 +397,9 @@ private fun PluginDisplayItem(
     entityPath: EntityPath?,
     isInstalled: Boolean,
 ) {
+    val isIdenticalPath = entityPath == null || entityPath == pluginPath
     val supportingText = buildAnnotatedString {
-        if (entityPath != null && entityPath != pluginPath) {
+        if (!isIdenticalPath) {
             withStyle(
                 style = SpanStyle(color = MaterialTheme.colorScheme.error)
             ) {
@@ -457,7 +417,12 @@ private fun PluginDisplayItem(
     }
     ListItem(
         modifier = modifier,
-        headlineContent = { Text(pluginName) },
+        headlineContent = {
+            Text(
+                modifier = Modifier.alpha(if (isIdenticalPath) 1F else 0.4F),
+                text = pluginName,
+            )
+        },
         leadingContent = {
             if (isInstalled) {
                 Icon(
@@ -487,24 +452,6 @@ private fun PluginDisplayItem(
 // =========================================
 // Previews
 // =========================================
-@Preview
-@Composable
-private fun PluginDisplayTogglePreview0() {
-    PluginDisplayToggle(
-        isShowingAllPlugins = false,
-        onToggled = {},
-    )
-}
-
-@Preview
-@Composable
-private fun PluginDisplayTogglePreview1() {
-    PluginDisplayToggle(
-        isShowingAllPlugins = true,
-        onToggled = {},
-    )
-}
-
 @Preview
 @Composable
 private fun GeneralPluginItem() {

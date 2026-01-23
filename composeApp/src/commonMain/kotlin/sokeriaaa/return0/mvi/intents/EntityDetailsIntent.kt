@@ -17,5 +17,4 @@ package sokeriaaa.return0.mvi.intents
 sealed class EntityDetailsIntent : BaseIntent {
     data class InstallPlugin(val pluginID: Long) : EntityDetailsIntent()
     data object UninstallPlugin : EntityDetailsIntent()
-    data object ToggleShowAllPlugin : EntityDetailsIntent()
 }

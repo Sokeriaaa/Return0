@@ -47,10 +47,6 @@ class EntityDetailsViewModel(
     // All plugins in current save mapped by ID.
     val pluginMap: Map<Long, PluginInfo> = _pluginRepo.pluginMap
 
-    // Plugin related
-    var isShowingAllPlugins: Boolean by mutableStateOf(false)
-        private set
-
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
@@ -67,8 +63,6 @@ class EntityDetailsViewModel(
                 _entityRepo.switchPlugin(entityName, null)
                 refresh()
             }
-
-            EntityDetailsIntent.ToggleShowAllPlugin -> isShowingAllPlugins = !isShowingAllPlugins
 
             else -> Unit
         }
