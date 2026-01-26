@@ -107,7 +107,6 @@ object DummyEntities {
         defGrowth = 0.25F,
         spdGrowth = 0.25F,
         hpGrowth = 0.25F,
-        spGrowth = 0.25F,
     )
 
 }

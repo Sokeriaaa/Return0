@@ -47,7 +47,6 @@ class EntityTest {
                 defGrowth = Random.nextFloat() * 0.1F + 0.2F,
                 spdGrowth = Random.nextFloat() * 0.1F + 0.2F,
                 hpGrowth = Random.nextFloat() * 0.1F + 0.2F,
-                spGrowth = Random.nextFloat() * 0.1F + 0.2F,
             )
             // Generate the Entity with random level.
             val level = Random.nextInt(1, 101)
@@ -75,8 +74,12 @@ class EntityTest {
                 actual = dummyEntity.baseHP,
             )
             assertEquals(
-                expected = (dummyData.baseSP * (1 + growth.spGrowth * level)).toInt(),
+                expected = dummyData.baseSP,
                 actual = dummyEntity.baseSP,
+            )
+            assertEquals(
+                expected = dummyData.baseAP,
+                actual = dummyEntity.baseAP,
             )
         }
     }
