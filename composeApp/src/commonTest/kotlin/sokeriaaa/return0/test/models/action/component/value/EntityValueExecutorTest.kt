@@ -53,7 +53,6 @@ class EntityValueExecutorTest {
             defGrowth = Random.nextFloat() * 0.1F + 0.2F,
             spdGrowth = Random.nextFloat() * 0.1F + 0.2F,
             hpGrowth = Random.nextFloat() * 0.1F + 0.2F,
-            spGrowth = Random.nextFloat() * 0.1F + 0.2F,
         )
         // Generate the Entity with random level.
         val level = Random.nextInt(1, 101)

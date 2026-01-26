@@ -56,7 +56,7 @@ fun EntityData.generate(
         baseDEF = (this.baseDEF * (1 + growth.defGrowth * level)).toInt(),
         baseSPD = (this.baseSPD * (1 + growth.spdGrowth * level)).toInt(),
         baseHP = (this.baseHP * (1 + growth.hpGrowth * level)).toInt(),
-        baseSP = (this.baseSP * (1 + growth.spGrowth * level)).toInt(),
+        baseSP = this.baseSP,
         baseAP = this.baseAP,
         functionDataList = this.functions,
         attackModifier = this.attackModifier,
