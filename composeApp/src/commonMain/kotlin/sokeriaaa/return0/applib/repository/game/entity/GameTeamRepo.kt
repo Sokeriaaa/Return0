@@ -154,7 +154,7 @@ class GameTeamRepo(
             currentTeam.slot4,
         ).filterNotNull()
             .forEach {
-                entityRepo.updateHPAndSP(entityName = it, currentHP = null, currentSP = null)
+                entityRepo.updateHP(entityName = it, currentHP = null)
             }
     }
 }
