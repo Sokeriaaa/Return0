@@ -47,7 +47,6 @@ object CommonFunctions {
         basePower = attackModifier?.power ?: AppConstants.DEFAULT_ATTACK_POWER,
         powerBonus = 0,
         baseSPCost = 0,
-        spCostBonus = 0,
         growth = emptyList(),
         attackModifier = FunctionData.AttackModifier(
             attackTimes = Value(attackModifier?.attackTimes ?: 1),
@@ -66,7 +65,6 @@ object CommonFunctions {
         basePower = 0,
         powerBonus = 0,
         baseSPCost = 0,
-        spCostBonus = 0,
         growth = emptyList(),
         extra = extrasGroupOf(
             CombatExtra.AttachEffect(
@@ -91,7 +89,6 @@ object CommonFunctions {
         basePower = 0,
         powerBonus = 0,
         baseSPCost = 0,
-        spCostBonus = 0,
         growth = emptyList(),
         extra = CombatExtra.SPChange(
             spChange = (EntityValue.MAXSP * 0.04F) + ((EntityValue.MAXSP - EntityValue.SP) * 0.2F),

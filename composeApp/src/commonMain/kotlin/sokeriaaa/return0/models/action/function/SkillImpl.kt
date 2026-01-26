@@ -43,7 +43,7 @@ fun Entity.generateFunctionFor(functionData: FunctionData): Skill? {
         category = functionData.category,
         functionTarget = functionData.target,
         basePower = functionData.basePower + functionData.powerBonus * (skillTier - 1),
-        baseSPCost = functionData.baseSPCost + functionData.spCostBonus * (skillTier - 1),
+        baseSPCost = functionData.baseSPCost,
         bullseye = functionData.bullseye,
         attackModifier = functionData.attackModifier,
         extra = functionData.extra,
