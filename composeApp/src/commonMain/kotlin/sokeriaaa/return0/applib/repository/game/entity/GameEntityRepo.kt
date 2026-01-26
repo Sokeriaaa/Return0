@@ -74,7 +74,6 @@ class GameEntityRepo(
                 },
                 // For the other status, use the original's.
                 currentHP = currentEntity?.currentHP ?: currentHP,
-                currentSP = currentEntity?.currentSP ?: currentSP,
                 indexedTime = currentEntity?.indexedTime ?: TimeHelper.currentTimeMillis(),
                 pluginID = currentEntity?.pluginID ?: pluginID,
             )
@@ -129,7 +128,6 @@ class GameEntityRepo(
             level = entityTable.level,
             isParty = true,
             currentHP = entityTable.currentHP,
-            currentSP = entityTable.currentSP,
         )
     }
 
@@ -147,7 +145,6 @@ class GameEntityRepo(
             plugin = plugin.assemblePlugin(table.pluginID),
         ).apply {
             hp = table.currentHP ?: maxhp
-            sp = table.currentSP ?: maxsp
         }
         // Assemble display
         return EntityProfile(
@@ -184,7 +181,6 @@ class GameEntityRepo(
             plugin = plugin.assemblePlugin(table.pluginID),
         ).apply {
             hp = table.currentHP ?: maxhp
-            sp = table.currentSP ?: maxsp
         }
         val expCurrent = expRequiredToReach(table.level, entityData.levelPacing)
         val expNext = expRequiredToReach(table.level + 1, entityData.levelPacing)
@@ -233,7 +229,7 @@ class GameEntityRepo(
      */
     suspend fun saveEntityState(parties: List<Entity>) {
         parties.forEach {
-            updateHPAndSP(entityName = it.name, currentHP = it.hp, currentSP = it.sp)
+            updateHP(entityName = it.name, currentHP = it.hp)
         }
     }
 
@@ -280,15 +276,13 @@ class GameEntityRepo(
 
     /**
      * Save the current entity state to database.
-     * Mainly for the HP and SP after a combat finished.
+     * Mainly for the HP after a combat finished.
      */
-    suspend fun updateHPAndSP(
+    suspend fun updateHP(
         entityName: String,
         currentHP: Int?,
-        currentSP: Int?,
     ) {
         entityDao.updateHP(AppConstants.CURRENT_SAVE_ID, entityName, currentHP)
-        entityDao.updateSP(AppConstants.CURRENT_SAVE_ID, entityName, currentSP)
     }
 
     /**

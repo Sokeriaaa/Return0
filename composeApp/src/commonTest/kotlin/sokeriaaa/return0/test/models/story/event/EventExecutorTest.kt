@@ -443,9 +443,9 @@ class EventExecutorTest : BaseEventTest() {
             context.gameState.entity.obtainEntity("foo")
             context.gameState.entity.obtainEntity("bar")
             context.gameState.entity.obtainEntity("baz")
-            context.gameState.entity.updateHPAndSP("foo", 50, 50)
-            context.gameState.entity.updateHPAndSP("bar", 50, 50)
-            context.gameState.entity.updateHPAndSP("baz", 50, 50)
+            context.gameState.entity.updateHP("foo", 50)
+            context.gameState.entity.updateHP("bar", 50)
+            context.gameState.entity.updateHP("baz", 50)
             registerTestingTeams(context)
 
             // Recover
@@ -458,11 +458,8 @@ class EventExecutorTest : BaseEventTest() {
 
             // Assert
             assertEquals(null, foo?.currentHP)
-            assertEquals(null, foo?.currentSP)
             assertEquals(null, bar?.currentHP)
-            assertEquals(null, bar?.currentSP)
             assertEquals(50, baz?.currentHP)
-            assertEquals(50, baz?.currentSP)
         }
     }
 
@@ -479,8 +476,8 @@ class EventExecutorTest : BaseEventTest() {
             registerTestingEntities(context)
             context.gameState.entity.obtainEntity("foo", level = 20)
             context.gameState.entity.obtainEntity("bar", level = 25)
-            context.gameState.entity.updateHPAndSP("foo", 50, 42)
-            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            context.gameState.entity.updateHP("foo", 50)
+            context.gameState.entity.updateHP("bar", 50)
             registerTestingTeams(context)
 
             // Heal 10 for bar
@@ -519,8 +516,8 @@ class EventExecutorTest : BaseEventTest() {
             registerTestingEntities(context)
             context.gameState.entity.obtainEntity("foo", level = 20)
             context.gameState.entity.obtainEntity("bar", level = 25)
-            context.gameState.entity.updateHPAndSP("foo", 50, 42)
-            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            context.gameState.entity.updateHP("foo", 50)
+            context.gameState.entity.updateHP("bar", 50)
             registerTestingTeams(context)
 
             // Heal 10
@@ -567,8 +564,8 @@ class EventExecutorTest : BaseEventTest() {
             registerTestingEntities(context)
             context.gameState.entity.obtainEntity("foo", level = 20)
             context.gameState.entity.obtainEntity("bar", level = 25)
-            context.gameState.entity.updateHPAndSP("foo", 50, 42)
-            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            context.gameState.entity.updateHP("foo", 50)
+            context.gameState.entity.updateHP("bar", 50)
             registerTestingTeams(context)
 
             // Create ArenaConfig.
@@ -592,10 +589,6 @@ class EventExecutorTest : BaseEventTest() {
             assertEquals(
                 expected = listOf(50, 50),
                 actual = arenaConfig.parties.map { it.currentHP },
-            )
-            assertEquals(
-                expected = listOf(42, 42),
-                actual = arenaConfig.parties.map { it.currentSP },
             )
             assertEquals(
                 expected = listOf("baz" to 26),
@@ -792,8 +785,8 @@ class EventExecutorTest : BaseEventTest() {
             registerTestingEntities(context)
             context.gameState.entity.obtainEntity("foo", level = 20)
             context.gameState.entity.obtainEntity("bar", level = 25)
-            context.gameState.entity.updateHPAndSP("foo", 50, 42)
-            context.gameState.entity.updateHPAndSP("bar", 50, 42)
+            context.gameState.entity.updateHP("foo", 50)
+            context.gameState.entity.updateHP("bar", 50)
             registerTestingTeams(context)
 
             // Create ArenaConfig.
@@ -826,7 +819,7 @@ class EventExecutorTest : BaseEventTest() {
                 actual = arenaConfig.parties.map { it.currentHP },
             )
             assertEquals(
-                expected = listOf(500, 42),
+                expected = listOf(500, null),
                 actual = arenaConfig.parties.map { it.currentSP },
             )
         }

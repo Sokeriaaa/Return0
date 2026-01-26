@@ -422,7 +422,7 @@ private suspend fun buildParties(
             entityData = entityData,
             level = override?.level?.calculatedIn(context) ?: level,
             currentHP = override?.hp?.calculatedIn(context) ?: table?.currentHP,
-            currentSP = override?.sp?.calculatedIn(context) ?: table?.currentSP,
+            currentSP = override?.sp?.calculatedIn(context),
             plugin = plugin,
         )
     }

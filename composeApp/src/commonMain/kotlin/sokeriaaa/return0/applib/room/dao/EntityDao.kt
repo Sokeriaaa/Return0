@@ -60,20 +60,6 @@ interface EntityDao {
     )
 
     /**
-     * Update the current SP of entity.
-     */
-    @Query(
-        "UPDATE `${EntityTable.TABLE_NAME}` SET " +
-                "`current_sp`=:sp WHERE " +
-                "`save_id`=:saveID AND `entity_name`=:entityName"
-    )
-    suspend fun updateSP(
-        saveID: Int = -1,
-        entityName: String,
-        sp: Int?,
-    )
-
-    /**
      * Change the equipped plugin of entity.
      */
     @Query(

@@ -46,14 +46,6 @@ class EntityDaoImpl(
         )
     }
 
-    override suspend fun updateSP(saveID: Int, entityName: String, sp: Int?) {
-        queries.updateSP(
-            save_id = saveID.toLong(),
-            entity_name = entityName,
-            current_sp = sp?.toLong(),
-        )
-    }
-
     override suspend fun updatePlugin(
         saveID: Int,
         entityName: String,
@@ -73,8 +65,7 @@ class EntityDaoImpl(
             level = entityTable.level.toLong(),
             exp = entityTable.exp.toLong(),
             current_hp = entityTable.currentHP?.toLong(),
-            current_sp = entityTable.currentHP?.toLong(),
-            indexed_time = entityTable.indexedTime.toLong(),
+            indexed_time = entityTable.indexedTime,
             plugin_id = entityTable.pluginID,
         )
     }
@@ -94,7 +85,6 @@ class EntityDaoImpl(
         level: Long,
         exp: Long,
         current_hp: Long?,
-        current_sp: Long?,
         indexed_time: Long,
         plugin_id: Long?,
     ): EntityTable = EntityTable(
@@ -103,7 +93,6 @@ class EntityDaoImpl(
         level = level.toInt(),
         exp = exp.toInt(),
         currentHP = current_hp?.toInt(),
-        currentSP = current_sp?.toInt(),
         indexedTime = indexed_time,
         pluginID = plugin_id,
     )

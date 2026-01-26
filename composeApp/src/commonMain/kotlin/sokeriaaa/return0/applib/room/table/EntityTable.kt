@@ -26,7 +26,6 @@ import androidx.room.Index
  * @param level Entity level.
  * @param exp EXP of current entity.
  * @param currentHP Current HP. `null` means full HP.
- * @param currentSP Current SP. `null` means full SP.
  * @param indexedTime The index in the party, between 0 and 3. -1 means not in party.
  * @param pluginID The plugin (weapon) this entity equipped.
  */
@@ -46,8 +45,6 @@ data class EntityTable(
     var exp: Int = 0,
     @ColumnInfo(name = "current_hp")
     var currentHP: Int? = null,
-    @ColumnInfo(name = "current_sp")
-    var currentSP: Int? = null,
     @ColumnInfo(name = "indexed_time")
     var indexedTime: Long,
     @ColumnInfo(name = "plugin_id")
