@@ -16,7 +16,6 @@ package sokeriaaa.return0.ui.main.game.entities.details.page
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +23,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
@@ -66,6 +62,7 @@ import sokeriaaa.return0.models.component.res.condition.conditionResource
 import sokeriaaa.return0.models.component.res.extra.extraResource
 import sokeriaaa.return0.models.component.res.value.valueResource
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
+import sokeriaaa.return0.ui.common.entity.function.EntityFunctionCard
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.common.widgets.TextItem
 
@@ -83,10 +80,16 @@ fun EntityFunctionPage(
             Spacer(modifier = Modifier.height(6.dp))
         }
         items(items = functions) { function ->
-            FunctionCard(
-                modifier = Modifier.padding(all = 2.dp),
-                skill = function,
-                onSelected = { selectedSkill = it }
+            EntityFunctionCard(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .alpha(if (function.tier > 0) 1F else 0.4F)
+                    .clickable { selectedSkill = function },
+                name = function.name,
+                category = function.category,
+                tier = function.tier,
+                power = function.power,
+                spCost = function.spCost,
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -103,87 +106,6 @@ fun EntityFunctionPage(
                         .padding(horizontal = 2.dp),
                     skill = skill,
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun FunctionCard(
-    modifier: Modifier = Modifier,
-    skill: ExtendedEntityProfile.Skill,
-    onSelected: (ExtendedEntityProfile.Skill) -> Unit,
-) {
-    OutlinedCard(
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .alpha(if (skill.tier > 0) 1F else 0.4F)
-                .clickable { onSelected(skill) },
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(
-                modifier = Modifier
-                    .width(32.dp)
-                    .padding(start = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // Category icon
-                Text(
-                    text = skill.category.icon,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-                // Tier
-                Text(
-                    text = skill.tier.toString(),
-                    modifier = Modifier.padding(top = 4.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .weight(1F)
-                    .padding(
-                        start = 10.dp,
-                        end = 8.dp,
-                        top = 6.dp,
-                        bottom = 6.dp,
-                    ),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                // Name
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = skill.name,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp)
-                ) {
-                    // SP cost
-                    Text(
-                        modifier = Modifier.weight(1F),
-                        text = "Power:${skill.power}",
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    // SP cost
-                    Text(
-                        modifier = Modifier.padding(start = 4.dp),
-                        text = "${skill.spCost}SP",
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
             }
         }
     }

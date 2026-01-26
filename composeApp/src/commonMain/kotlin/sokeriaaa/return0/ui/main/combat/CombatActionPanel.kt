@@ -26,10 +26,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -58,14 +61,10 @@ import return0.composeapp.generated.resources.combat_choose_action_item
 import return0.composeapp.generated.resources.combat_choose_action_relax
 import return0.composeapp.generated.resources.combat_choose_action_target_selected_count
 import return0.composeapp.generated.resources.ic_outline_check_24
-import return0.composeapp.generated.resources.ic_outline_destruction_24
-import return0.composeapp.generated.resources.ic_outline_health_cross_24
-import return0.composeapp.generated.resources.ic_outline_swords_24
-import return0.composeapp.generated.resources.ic_outline_wand_stars_24
-import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
+import sokeriaaa.return0.ui.common.entity.function.EntityFunctionCard
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 
 
@@ -173,38 +172,47 @@ fun CombatActionPanel(
         modifier = modifier,
         visible = status == ActionPanelStatus.FUNCTION,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 160.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            entitySelecting?.functions?.forEach {
-                val isSufficient: Boolean = it.user.sp >= it.spCost
-                FunctionItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = isSufficient) {
-                            viewModel.onIntent(CombatIntent.ChooseAction(it))
-                            isSelectingFunction = false
-                        }
-                        .alpha(if (isSufficient) 1f else 0.4F),
-                    function = it,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
-                    text = stringResource(Res.string.combat_choose_action_back),
-                    onClick = {
-                        isSelectingFunction = false
+            entitySelecting?.functions?.let { items ->
+                items(items = items) {
+                    val isSufficient: Boolean = it.user.sp >= it.spCost
+                    EntityFunctionCard(
+                        modifier = Modifier
+                            .clickable(enabled = isSufficient) {
+                                viewModel.onIntent(CombatIntent.ChooseAction(it))
+                                isSelectingFunction = false
+                            }
+                            .alpha(if (isSufficient) 1f else 0.4F),
+                        name = it.name,
+                        category = it.category,
+                        tier = it.tier,
+                        power = it.power,
+                        spCost = it.spCost,
+                    )
+                }
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        AppTextButton(
+                            modifier = Modifier.weight(1F),
+                            text = stringResource(Res.string.combat_choose_action_back),
+                            onClick = {
+                                isSelectingFunction = false
+                            }
+                        )
+                        Spacer(
+                            modifier = Modifier.weight(1F),
+                        )
                     }
-                )
-                Spacer(
-                    modifier = Modifier.weight(1F),
-                )
+                }
             }
         }
     }
@@ -364,35 +372,6 @@ private fun TargetItem(
         } else {
             null
         },
-    )
-}
-
-/**
- * Function item.
- */
-@Composable
-private fun FunctionItem(
-    modifier: Modifier = Modifier,
-    function: Skill,
-) {
-    ListItem(
-        modifier = modifier,
-        leadingContent = {
-            Icon(
-                painter = painterResource(
-                    resource = when {
-                        function.power >= 200 -> Res.drawable.ic_outline_destruction_24
-                        function.power > 0 -> Res.drawable.ic_outline_swords_24
-                        function.power == 0 -> Res.drawable.ic_outline_wand_stars_24
-                        function.power < 0 -> Res.drawable.ic_outline_health_cross_24
-                        else -> Res.drawable.ic_outline_wand_stars_24
-                    }
-                ),
-                contentDescription = null,
-            )
-        },
-        headlineContent = { Text(text = function.name) },
-        trailingContent = { Text(text = function.spCost.toString() + "SP") }
     )
 }
 
