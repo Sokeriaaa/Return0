@@ -52,7 +52,6 @@ class ActionValueExecutorTest {
                 basePower = Random.nextInt(200),
                 powerBonus = Random.nextInt(20),
                 baseSPCost = Random.nextInt(200),
-                spCostBonus = Random.nextInt(20),
                 growth = listOf(0, 20, 40, 60, 80, 100),
             ),
         )!!
