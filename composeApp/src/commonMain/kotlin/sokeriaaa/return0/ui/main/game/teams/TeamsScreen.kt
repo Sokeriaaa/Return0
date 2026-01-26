@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -27,9 +28,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
@@ -68,6 +69,7 @@ import sokeriaaa.return0.mvi.intents.TeamsIntent
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityProfileItem
+import sokeriaaa.return0.ui.common.widgets.AddCard
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
@@ -204,11 +206,14 @@ private fun TeamContent(
             items = display.entities,
         ) { index, entity ->
             if (entity == null) {
-                EmptySlot(
+                // EmptySlot
+                AddCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 4.dp)
-                        .clickable { selectingIndex = index },
+                        .height(100.dp)
+                        .padding(all = 4.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    onClick = { selectingIndex = index },
                 )
             } else {
                 EntityProfileItem(
@@ -264,24 +269,6 @@ private fun TeamContent(
             },
             onDismiss = { selectingIndex = -1 }
         )
-    }
-}
-
-@Composable
-private fun EmptySlot(
-    modifier: Modifier = Modifier,
-) {
-    OutlinedCard(
-        modifier = modifier,
-    ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(vertical = 34.dp),
-                text = stringResource(Res.string.empty_slot)
-            )
-        }
     }
 }
 

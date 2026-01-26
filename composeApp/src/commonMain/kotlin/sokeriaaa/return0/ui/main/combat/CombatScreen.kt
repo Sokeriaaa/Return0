@@ -36,7 +36,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,7 +46,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -417,14 +418,18 @@ private fun EntityItem(
         modifier = modifier,
     ) {
         // Entity card
-        OutlinedCard(
+        Card(
             modifier = Modifier
                 // Animate: Shake
                 .graphicsLayer { translationX = shakeOffset.value },
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
+            ),
             border = if (isWaitingAction) {
                 BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary)
             } else {
-                CardDefaults.outlinedCardBorder()
+                null
             },
         ) {
             val apProgress = entity.ap / entity.maxap
@@ -466,7 +471,10 @@ private fun EntityItem(
                             )
                         }
                     }
-                    .padding(all = 8.dp)
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp,
+                    )
                     .alpha(animatedAlpha),
             ) {
                 val animatedHP by animateIntAsState(
@@ -482,9 +490,12 @@ private fun EntityItem(
                     label = "EntityItemHP",
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    // Name
                     Text(
                         modifier = Modifier
                             .weight(1F)
@@ -502,6 +513,7 @@ private fun EntityItem(
                                 /* level = */ entity.level,
                             ),
                             textAlign = TextAlign.End,
+                            style = MaterialTheme.typography.labelSmall,
                         )
                     } else {
                         // Display all effects.
