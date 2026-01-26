@@ -14,8 +14,9 @@
  */
 package sokeriaaa.return0.ui.main.game.inventory
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -41,7 +46,9 @@ import return0.composeapp.generated.resources.ic_outline_terminal_24
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
-import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
+import sokeriaaa.return0.ui.common.AppBackHandler
+import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,45 +61,55 @@ fun InventoryScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
+    var selectedItem: InventoryViewModel.ItemDisplay? by remember { mutableStateOf(null) }
+    val onBack: () -> Unit = {
+        if (state.isWideScreen || !state.isShowingPane) {
+            mainNavHostController.navigateUp()
+        } else {
+            state.hidePane()
+        }
+    }
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    AppBackHandler(onBack = onBack)
+    AppAdaptiveScaffold(
         viewModel = viewModel,
+        state = state,
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(Res.string.game_menu_inventory)
-                    )
-                },
-                navigationIcon = {
-                    AppBackIconButton(
-                        onClick = {
-                            mainNavHostController.navigateUp()
-                        }
-                    )
-                },
+                title = { Text(stringResource(Res.string.game_menu_inventory)) },
+                navigationIcon = { AppBackIconButton(onClick = onBack) },
             )
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues = paddingValues),
-        ) {
-            itemsIndexed(
-                items = viewModel.items
-            ) { index, item ->
-                InventoryItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    display = item,
-                    isShowDescription = viewModel.isShowDescription,
-                    onSelected = {
-                        // TODO
-                    }
+        },
+        mainContent = {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(
+                    items = viewModel.items
+                ) { index, item ->
+                    InventoryItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                selectedItem = item
+                                state.showPane()
+                            },
+                        display = item,
+                        isShowDescription = viewModel.isShowDescription,
+                    )
+                }
+            }
+        },
+        paneContent = {
+            selectedItem?.let {
+                InventoryDetail(
+                    modifier = Modifier.fillMaxSize(),
+                    display = it,
                 )
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -100,7 +117,6 @@ private fun InventoryItem(
     modifier: Modifier = Modifier,
     display: InventoryViewModel.ItemDisplay,
     isShowDescription: Boolean,
-    onSelected: () -> Unit,
 ) {
     ListItem(
         modifier = modifier,
@@ -123,6 +139,33 @@ private fun InventoryItem(
         } else {
             null
         },
+        trailingContent = { Text(display.amount.toString()) }
+    )
+}
+
+@Composable
+private fun InventoryDetail(
+    modifier: Modifier = Modifier,
+    display: InventoryViewModel.ItemDisplay,
+) {
+    // TODO Placeholder for testing the AppAdaptiveScaffold.
+    ListItem(
+        modifier = modifier,
+        leadingContent = {
+            Icon(
+                painter = painterResource(
+                    when (display.itemData.types.firstOrNull()) {
+                        ItemData.Type.CONSUMABLE -> Res.drawable.ic_outline_terminal_24
+                        ItemData.Type.MATERIAL -> Res.drawable.ic_outline_code_blocks_24
+                        ItemData.Type.QUEST -> Res.drawable.ic_outline_deployed_code_24
+                        ItemData.Type.OTHER, null -> Res.drawable.ic_outline_more_horiz_24
+                    }
+                ),
+                contentDescription = null,
+            )
+        },
+        headlineContent = { Text(display.name) },
+        supportingContent = { Text(display.description) },
         trailingContent = { Text(display.amount.toString()) }
     )
 }
