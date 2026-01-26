@@ -24,10 +24,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -40,11 +42,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -79,6 +78,7 @@ import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -374,6 +374,10 @@ private fun PluginDisplayList(
             PluginDisplayItem(
                 modifier = modifier
                     .fillMaxWidth()
+                    .padding(
+                        horizontal = 10.dp,
+                        vertical = 4.dp,
+                    )
                     .animateItem()
                     .clickable { onPluginSelected(it.second) },
                 pluginName = it.second.name,
@@ -398,13 +402,9 @@ private fun PluginDisplayItem(
     isInstalled: Boolean,
 ) {
     val isIdenticalPath = entityPath == null || entityPath == pluginPath
-    val supportingText = buildAnnotatedString {
+    val supportingText = buildString {
         if (!isIdenticalPath) {
-            withStyle(
-                style = SpanStyle(color = MaterialTheme.colorScheme.error)
-            ) {
-                append(stringResource(Res.string.game_plugin_select_different_path))
-            }
+            append(stringResource(Res.string.game_plugin_select_different_path))
         }
         if (pluginInstalledBy != null) {
             append(
@@ -415,38 +415,48 @@ private fun PluginDisplayItem(
             )
         }
     }
-    ListItem(
+    Card(
         modifier = modifier,
-        headlineContent = {
-            Text(
-                modifier = Modifier.alpha(if (isIdenticalPath) 1F else 0.4F),
-                text = pluginName,
+        shape = RoundedCornerShape(32.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isIdenticalPath) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceDim
+            },
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            OutlinedEmojiHeader(
+                modifier = Modifier.weight(1F),
+                emoji = pluginPath.icon,
+                label = pluginName,
+                supportingText = supportingText.takeIf { it.isNotEmpty() },
+                supportingTextColor = if (isIdenticalPath) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.error
+                },
             )
-        },
-        leadingContent = {
             if (isInstalled) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_outline_check_24),
                     contentDescription = stringResource(Res.string.game_plugin_installed),
                 )
             }
-        },
-        supportingContent = if (supportingText.isEmpty()) {
-            null
-        } else {
-            { Text(supportingText) }
-        },
-        trailingContent = if (pluginIsLocked) {
-            {
+            if (pluginIsLocked) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_outline_lock_24),
                     contentDescription = stringResource(Res.string.game_plugin_locked),
                 )
             }
-        } else {
-            null
-        },
-    )
+        }
+    }
 }
 
 // =========================================

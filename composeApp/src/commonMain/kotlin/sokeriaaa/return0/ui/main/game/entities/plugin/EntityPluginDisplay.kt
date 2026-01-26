@@ -14,25 +14,21 @@
  */
 package sokeriaaa.return0.ui.main.game.entities.plugin
 
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
@@ -59,7 +55,7 @@ import sokeriaaa.return0.models.component.res.value.valueResource
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
-import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
+import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 import sokeriaaa.return0.ui.common.widgets.TextItem
 
 @Composable
@@ -71,8 +67,9 @@ fun EntityPluginDisplay(
     val isIdenticalPath = entityPath == plugin.data.path
     Card(
         modifier = modifier,
+        shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Column(
@@ -220,32 +217,12 @@ private fun PluginHeader(
     name: String,
     path: EntityPath,
 ) {
-    Row(
+    OutlinedEmojiHeader(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        OutlinedEmojiCard(
-            modifier = Modifier.size(36.dp),
-            emoji = path.icon,
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .basicMarquee(iterations = Int.MAX_VALUE),
-                text = name,
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = path.name,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
+        emoji = path.icon,
+        label = name,
+        supportingText = path.name
+    )
 }
 
 @Composable

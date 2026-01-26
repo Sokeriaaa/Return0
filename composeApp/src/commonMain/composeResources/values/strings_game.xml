@@ -56,6 +56,7 @@
     <string name="game_team_warn_limit">The number of teams has reached the upper limit.</string>
 
     <string name="game_plugin_install">Install</string>
+    <string name="game_plugin_install_alt">Install plugin…</string>
     <string name="game_plugin_switch">Switch</string>
     <string name="game_plugin_uninstall">Uninstall</string>
     <string name="game_plugin_installed">Installed</string>

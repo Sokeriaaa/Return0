@@ -15,25 +15,31 @@
 package sokeriaaa.return0.ui.main.game.entities.details.page
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import return0.composeapp.generated.resources.Res
-import return0.composeapp.generated.resources.game_plugin_install
-import return0.composeapp.generated.resources.game_plugin_not_installed
+import return0.composeapp.generated.resources.game_plugin_install_alt
 import return0.composeapp.generated.resources.game_plugin_switch
 import return0.composeapp.generated.resources.game_plugin_uninstall
+import return0.composeapp.generated.resources.ic_outline_add_circle_24
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.shared.data.api.component.value.PercentValue
 import sokeriaaa.return0.shared.data.api.component.value.Value
@@ -42,6 +48,7 @@ import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
+import sokeriaaa.return0.ui.common.modifier.dashedBorder
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.main.game.entities.plugin.EntityPluginDisplay
 
@@ -59,23 +66,19 @@ fun EntityPluginPage(
     ) {
         if (plugin == null) {
             item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(Res.string.game_plugin_not_installed),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            }
-            item {
-                AppButton(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(Res.string.game_plugin_install),
-                    onClick = onRequestSwitch,
+                InstallPluginCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    onClick = onRequestSwitch
                 )
             }
         } else {
             item {
                 EntityPluginDisplay(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
                     plugin = plugin,
                     entityPath = entityPath,
                 )
@@ -99,9 +102,48 @@ fun EntityPluginPage(
     }
 }
 
+@Composable
+private fun InstallPluginCard(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .dashedBorder(
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(32.dp),
+            )
+            .clickable(onClick = onClick)
+            .padding(vertical = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Icon(
+            modifier = Modifier.size(48.dp),
+            painter = painterResource(Res.drawable.ic_outline_add_circle_24),
+            contentDescription = stringResource(Res.string.game_plugin_install_alt),
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(
+            modifier = Modifier.padding(top = 12.dp),
+            text = stringResource(Res.string.game_plugin_install_alt),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium,
+        )
+    }
+}
+
 // =========================================
 // Previews
 // =========================================
+@Preview
+@Composable
+private fun InstallPluginCardPreview() {
+    InstallPluginCard(
+        modifier = Modifier.width(360.dp),
+        onClick = {},
+    )
+}
+
 @Preview
 @Composable
 private fun EntityPluginPageNone() {
