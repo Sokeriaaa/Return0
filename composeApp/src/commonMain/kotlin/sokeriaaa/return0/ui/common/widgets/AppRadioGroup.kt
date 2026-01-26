@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 inline fun <reified T> AppRadioGroup(
@@ -76,4 +77,14 @@ inline fun <reified T> AppRadioGroup(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun AppRadioGroupExample() {
+    AppRadioGroup(
+        items = listOf("one", "two", "three"),
+        selectedIndex = 0,
+        onSelected = {},
+    )
 }

@@ -17,6 +17,7 @@ package sokeriaaa.return0.ui.common.widgets
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -25,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 @Composable
 fun OutlinedEmojiCard(
@@ -45,4 +48,31 @@ fun OutlinedEmojiCard(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun OutlinedEmojiCardExample1() {
+    OutlinedEmojiCard(
+        modifier = Modifier.size(32.dp),
+        emoji = Category.CLASS.icon,
+    )
+}
+
+@Preview
+@Composable
+private fun OutlinedEmojiCardExample2() {
+    OutlinedEmojiCard(
+        modifier = Modifier.size(32.dp),
+        emoji = Category.CONCURRENT.icon,
+    )
+}
+
+@Preview
+@Composable
+private fun OutlinedEmojiCardExample3() {
+    OutlinedEmojiCard(
+        modifier = Modifier.size(32.dp),
+        emoji = Category.INTERFACE.icon,
+    )
 }
