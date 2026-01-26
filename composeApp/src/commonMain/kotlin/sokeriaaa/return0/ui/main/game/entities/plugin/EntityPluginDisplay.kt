@@ -232,7 +232,7 @@ private fun DifferentPathWarning(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
+            containerColor = MaterialTheme.colorScheme.error
         )
     ) {
         Text(
@@ -255,7 +255,7 @@ private fun ConstantEntry(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
         Text(
