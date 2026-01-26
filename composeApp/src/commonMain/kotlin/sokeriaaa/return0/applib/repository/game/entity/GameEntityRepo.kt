@@ -112,7 +112,7 @@ class GameEntityRepo(
             }
         ).apply {
             hp = currentHP ?: maxhp
-            sp = currentSP ?: maxsp
+            sp = currentSP ?: (maxsp / 5)
         }
     }
 
