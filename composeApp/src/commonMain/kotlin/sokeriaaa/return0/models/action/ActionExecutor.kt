@@ -26,6 +26,7 @@ import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 /**
@@ -135,6 +136,7 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         }
 
         val finalDamage = damage.toInt()
+        val damageCoerced = finalDamage.coerceAtMost(target.hp)
         // Calculate Shields
         var damageToTake = finalDamage
         if (fromAction.attackModifier?.ignoresShields?.calculatedIn(this) != true) {
@@ -152,20 +154,32 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
             // Clear invalid shields
             target.cleanUpShields()
         }
-        val result = ActionResult.Damage(
+        val damageResult = ActionResult.Damage(
             fromIndex = user.index,
             toIndex = target.index,
             finalDamage = finalDamage,
             shieldedDamage = finalDamage - damageToTake,
-            damageCoerced = finalDamage.coerceAtMost(target.hp),
+            damageCoerced = damageCoerced,
             effectiveness = 0, // TODO Category rate implement.
             isCritical = isCritical,
         )
-        saveResult(result)
+        // Recovers target's HP based on the rate of damageCoerced and MaxHP.
+        // (Include shielded damage)
+        val spToRecover = (sqrt(damageCoerced.toFloat() / target.maxhp) / 8 * target.maxsp).toInt()
+        val spResult = ActionResult.SpChange(
+            fromIndex = user.index,
+            toIndex = target.index,
+            finalChange = spToRecover,
+            changeCoerced = spToRecover.coerceAtMost(target.maxsp - target.sp)
+        )
+        // Save results
+        saveResult(damageResult)
+        saveResult(spResult)
         // Execute
         target.changeHP(-damageToTake)
+        target.changeSP(spToRecover)
         // Execute extras with the damage result.
-        withDamageResult(result) {
+        withDamageResult(damageResult) {
             fromAction.extra?.executedIn(this)
             user.onAttack?.executedIn(this)
             swappedEntities { context: ActionExtraContext ->
