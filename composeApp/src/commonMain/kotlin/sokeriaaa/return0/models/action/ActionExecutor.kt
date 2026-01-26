@@ -166,15 +166,15 @@ fun ActionExtraContext.singleExecute(random: Random = Random) {
         // Recovers target's HP based on the rate of damageCoerced and MaxHP.
         // (Include shielded damage)
         val spToRecover = (sqrt(damageCoerced.toFloat() / target.maxhp) / 8 * target.maxsp).toInt()
-        val spResult = ActionResult.SpChange(
-            fromIndex = user.index,
-            toIndex = target.index,
-            finalChange = spToRecover,
-            changeCoerced = spToRecover.coerceAtMost(target.maxsp - target.sp)
-        )
+//        val spResult = ActionResult.SpChange(
+//            fromIndex = user.index,
+//            toIndex = target.index,
+//            finalChange = spToRecover,
+//            changeCoerced = spToRecover.coerceAtMost(target.maxsp - target.sp)
+//        )
         // Save results
         saveResult(damageResult)
-        saveResult(spResult)
+//        saveResult(spResult)
         // Execute
         target.changeHP(-damageToTake)
         target.changeSP(spToRecover)
