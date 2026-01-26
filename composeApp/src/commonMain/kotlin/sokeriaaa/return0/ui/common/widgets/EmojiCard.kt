@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -40,10 +42,12 @@ import sokeriaaa.return0.shared.data.models.entity.category.Category
 fun OutlinedEmojiCard(
     modifier: Modifier = Modifier,
     emoji: String,
+    shape: Shape = CircleShape,
     style: TextStyle = MaterialTheme.typography.bodyLarge,
 ) {
     OutlinedCard(
         modifier = modifier,
+        shape = shape,
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
@@ -64,6 +68,7 @@ fun OutlinedEmojiHeader(
     label: String,
     supportingText: String? = null,
     emojiSize: Dp = 36.dp,
+    emojiShape: Shape = CircleShape,
     emojiStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     labelStyle: TextStyle = MaterialTheme.typography.titleMedium,
     supportingTextStyle: TextStyle = MaterialTheme.typography.labelSmall,
@@ -78,6 +83,7 @@ fun OutlinedEmojiHeader(
         OutlinedEmojiCard(
             modifier = Modifier.size(emojiSize),
             emoji = emoji,
+            shape = emojiShape,
             style = emojiStyle,
         )
         Column(modifier = Modifier.weight(1f)) {
