@@ -240,15 +240,15 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         is Event.SaveSwitch -> {
-            context.gameState.savedValues.setSwitch(key, switch.calculatedIn(context))
+            context.gameState.savedValues.setSwitch("event:$key", switch.calculatedIn(context))
         }
 
         is Event.SaveVariable -> {
-            context.gameState.savedValues.setVariable(key, variable.calculatedIn(context))
+            context.gameState.savedValues.setVariable("event:$key", variable.calculatedIn(context))
         }
 
         is Event.SaveTimeStamp -> {
-            context.gameState.savedValues.setTimestamp(key, time.calculateTime(context))
+            context.gameState.savedValues.setTimestamp("event:$key", time.calculateTime(context))
         }
 
         Event.RefreshEvents -> {

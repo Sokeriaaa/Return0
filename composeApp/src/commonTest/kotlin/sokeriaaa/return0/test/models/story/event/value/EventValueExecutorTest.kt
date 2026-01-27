@@ -272,7 +272,7 @@ class EventValueExecutorTest : BaseEventTest() {
     fun `Event_SavedVariable calculates correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
-            context.gameState.savedValues.setVariable("common_value", 42)
+            context.gameState.savedValues.setVariable("event:common_value", 42)
             assertEquals(42, EventValue.SavedVariable("common_value").calculatedIn(context))
             assertEquals(0, EventValue.SavedVariable("another_value").calculatedIn(context))
         }

@@ -282,21 +282,21 @@ class EventExecutorTest : BaseEventTest() {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
             assertFalse(
-                context.gameState.savedValues.getSwitch("switch1")
+                context.gameState.savedValues.getSwitch("event:switch1")
             )
             Event.SaveSwitch(
                 key = "switch1",
                 switch = CommonCondition.True,
             ).executedIn(context)
             assertTrue(
-                context.gameState.savedValues.getSwitch("switch1")
+                context.gameState.savedValues.getSwitch("event:switch1")
             )
             Event.SaveSwitch(
                 key = "switch1",
                 switch = CommonCondition.False,
             ).executedIn(context)
             assertFalse(
-                context.gameState.savedValues.getSwitch("switch1")
+                context.gameState.savedValues.getSwitch("event:switch1")
             )
         }
     }
@@ -307,7 +307,7 @@ class EventExecutorTest : BaseEventTest() {
         withContext(callback = callback) { context ->
             assertEquals(
                 expected = 0,
-                actual = context.gameState.savedValues.getVariable("var0"),
+                actual = context.gameState.savedValues.getVariable("event:var0"),
             )
             Event.SaveVariable(
                 key = "var0",
@@ -315,7 +315,7 @@ class EventExecutorTest : BaseEventTest() {
             ).executedIn(context)
             assertEquals(
                 expected = 42,
-                actual = context.gameState.savedValues.getVariable("var0"),
+                actual = context.gameState.savedValues.getVariable("event:var0"),
             )
             Event.SaveVariable(
                 key = "var0",
@@ -323,7 +323,7 @@ class EventExecutorTest : BaseEventTest() {
             ).executedIn(context)
             assertEquals(
                 expected = 999,
-                actual = context.gameState.savedValues.getVariable("var0"),
+                actual = context.gameState.savedValues.getVariable("event:var0"),
             )
         }
     }

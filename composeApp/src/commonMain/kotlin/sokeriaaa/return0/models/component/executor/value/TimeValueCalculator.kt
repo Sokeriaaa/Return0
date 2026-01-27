@@ -24,6 +24,6 @@ suspend fun Value.Time.calculateTime(context: EventContext): Long = when (this) 
     is TimeValue.After -> context.now + millis
     is TimeValue.NextDay -> TimeHelper.nextDay(context.now) + offsetMillis
     is TimeValue.NextWeek -> TimeHelper.nextSunday(context.now) + offsetMillis
-    is TimeValue.Saved -> context.gameState.savedValues.getTimeStamp(key)
+    is TimeValue.Saved -> context.gameState.savedValues.getTimeStamp("event:$key")
     is TimeValue.Custom -> timeInMillis
 }

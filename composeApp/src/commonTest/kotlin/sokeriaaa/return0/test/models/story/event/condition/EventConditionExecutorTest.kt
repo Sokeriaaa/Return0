@@ -270,7 +270,7 @@ class EventConditionExecutorTest : BaseEventTest() {
     fun `Event_SavedSwitch calculates correctly`() = runTest {
         val callback = object : TestingCallback() {}
         withContext(callback = callback) { context ->
-            context.gameState.savedValues.setSwitch("common_switch", true)
+            context.gameState.savedValues.setSwitch("event:common_switch", true)
             assertTrue(EventCondition.SavedSwitch("common_switch").calculatedIn(context))
             assertFalse(EventCondition.SavedSwitch("another_switch").calculatedIn(context))
         }
