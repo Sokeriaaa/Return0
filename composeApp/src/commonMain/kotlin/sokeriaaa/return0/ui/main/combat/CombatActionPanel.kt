@@ -15,7 +15,6 @@
 package sokeriaaa.return0.ui.main.combat
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -181,17 +180,17 @@ fun CombatActionPanel(
                 items(items = items) {
                     val isSufficient: Boolean = it.user.sp >= it.spCost
                     EntityFunctionCard(
-                        modifier = Modifier
-                            .clickable(enabled = isSufficient) {
-                                viewModel.onIntent(CombatIntent.ChooseAction(it))
-                                isSelectingFunction = false
-                            }
-                            .alpha(if (isSufficient) 1f else 0.4F),
+                        modifier = Modifier.alpha(if (isSufficient) 1f else 0.4F),
                         name = it.name,
                         category = it.category,
                         tier = it.tier,
                         power = it.power,
                         spCost = it.spCost,
+                        enabled = isSufficient,
+                        onClick = {
+                            viewModel.onIntent(CombatIntent.ChooseAction(it))
+                            isSelectingFunction = false
+                        }
                     )
                 }
                 item(span = { GridItemSpan(maxLineSpan) }) {

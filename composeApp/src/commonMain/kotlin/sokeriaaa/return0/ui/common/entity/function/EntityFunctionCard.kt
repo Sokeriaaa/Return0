@@ -40,9 +40,13 @@ fun EntityFunctionCard(
     tier: Int,
     power: Int,
     spCost: Int,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = modifier,
+        enabled = enabled,
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -131,6 +135,7 @@ fun EntityFunctionCardExample1() {
         tier = 1,
         power = 100,
         spCost = 100,
+        onClick = {},
     )
 }
 
@@ -143,6 +148,7 @@ fun EntityFunctionCardExample2() {
         tier = 5,
         power = 0,
         spCost = 80,
+        onClick = {},
     )
 }
 
@@ -155,5 +161,6 @@ fun EntityFunctionCardExample3() {
         tier = 8,
         power = -10,
         spCost = 50,
+        onClick = {},
     )
 }

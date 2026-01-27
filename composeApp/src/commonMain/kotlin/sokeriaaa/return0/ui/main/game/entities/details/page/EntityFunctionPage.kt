@@ -15,7 +15,6 @@
 package sokeriaaa.return0.ui.main.game.entities.details.page
 
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -83,13 +82,15 @@ fun EntityFunctionPage(
             EntityFunctionCard(
                 modifier = Modifier
                     .padding(all = 4.dp)
-                    .alpha(if (function.tier > 0) 1F else 0.4F)
-                    .clickable { selectedSkill = function },
+                    .alpha(if (function.tier > 0) 1F else 0.4F),
                 name = function.name,
                 category = function.category,
                 tier = function.tier,
                 power = function.power,
                 spCost = function.spCost,
+                onClick = {
+                    selectedSkill = function
+                }
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
