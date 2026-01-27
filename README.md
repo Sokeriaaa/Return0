@@ -45,12 +45,18 @@ by 80%~120% based on the categories of function and target entity.
 
 ## Screenshots
 
-![Game field](screenshots/game_field.gif)
-![Buggy range](screenshots/buggy_range.gif)
-![Combat animations](screenshots/animations.gif)
-![Game field mini quizzes](screenshots/mini_quiz.gif)
-![Install plugin](screenshots/install_plugin.gif)
-![Emulator setup](screenshots/emulator_setup.gif)
+[//]: # (![Game field]&#40;screenshots/game_field.gif&#41;)
+[//]: # (![Buggy range]&#40;screenshots/buggy_range.gif&#41;)
+[//]: # (![Combat animations]&#40;screenshots/animations.gif&#41;)
+[//]: # (![Game field mini quizzes]&#40;screenshots/mini_quiz.gif&#41;)
+[//]: # (![Install plugin]&#40;screenshots/install_plugin.gif&#41;)
+[//]: # (![Emulator setup]&#40;screenshots/emulator_setup.gif&#41;)
+<details style="display:inline-block"><summary>Game field</summary><img src="screenshots/game_field.gif" width="500"></details>
+<details style="display:inline-block"><summary>Buggy range</summary><img src="screenshots/buggy_range.gif" width="500"></details>
+<details style="display:inline-block"><summary>Combat animations</summary><img src="screenshots/animations.gif" width="500"></details>
+<details style="display:inline-block"><summary>Game field mini quizzes</summary><img src="screenshots/mini_quiz.gif" width="500"></details>
+<details style="display:inline-block"><summary>Install plugin</summary><img src="screenshots/install_plugin.gif" width="500"></details>
+<details style="display:inline-block"><summary>Emulator setup</summary><img src="screenshots/emulator_setup.gif" width="500"></details>
 
 ## Architecture
 
