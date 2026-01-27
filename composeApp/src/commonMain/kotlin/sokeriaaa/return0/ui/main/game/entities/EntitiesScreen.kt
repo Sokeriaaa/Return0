@@ -14,7 +14,6 @@
  */
 package sokeriaaa.return0.ui.main.game.entities
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -82,14 +81,13 @@ fun EntitiesScreen(
                 key = { it.name }
             ) {
                 EntityProfileItem(
-                    modifier = Modifier
-                        .padding(all = 4.dp)
-                        .clickable {
-                            mainNavHostController.navigateSingleTop(
-                                route = Scene.EntityDetails.route + "/" + it.name,
-                            )
-                        },
-                    display = it
+                    modifier = Modifier.padding(all = 4.dp),
+                    display = it,
+                    onClick = {
+                        mainNavHostController.navigateSingleTop(
+                            route = Scene.EntityDetails.route + "/" + it.name,
+                        )
+                    }
                 )
             }
         }

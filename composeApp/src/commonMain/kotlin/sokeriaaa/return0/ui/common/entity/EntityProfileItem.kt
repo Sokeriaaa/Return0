@@ -35,6 +35,7 @@ import sokeriaaa.return0.models.entity.display.EntityProfile
 fun EntityProfileItem(
     modifier: Modifier = Modifier,
     display: EntityProfile,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = modifier,
@@ -42,6 +43,7 @@ fun EntityProfileItem(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
+        onClick = onClick,
     ) {
         EntityProfileContent(
             modifier = Modifier.padding(
@@ -123,5 +125,6 @@ private fun EntityProfilePreview() {
             sp = 1000,
             maxSP = 1111,
         ),
+        onClick = {},
     )
 }

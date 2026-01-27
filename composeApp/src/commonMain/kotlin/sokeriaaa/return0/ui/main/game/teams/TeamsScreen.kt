@@ -14,7 +14,6 @@
  */
 package sokeriaaa.return0.ui.main.game.teams
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -219,9 +218,9 @@ private fun TeamContent(
                 EntityProfileItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 4.dp)
-                        .clickable { selectingIndex = index },
+                        .padding(all = 4.dp),
                     display = entity,
+                    onClick = { selectingIndex = index }
                 )
             }
         }
