@@ -16,13 +16,10 @@ package sokeriaaa.return0.ui.main.game.entities.plugin
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -64,7 +60,6 @@ import return0.composeapp.generated.resources.game_plugin_select_installed_by
 import return0.composeapp.generated.resources.game_plugin_select_installed_by_warn
 import return0.composeapp.generated.resources.game_plugin_select_uninstall_warn
 import return0.composeapp.generated.resources.game_plugin_uninstall
-import return0.composeapp.generated.resources.ic_baseline_arrow_drop_down_24
 import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_extension_24
 import return0.composeapp.generated.resources.ic_outline_extension_off_24
@@ -81,6 +76,7 @@ import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
+import sokeriaaa.return0.ui.common.widgets.stickyHeaderedDropdownVisibility
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,7 +102,7 @@ fun EntityPluginSelectionScreen(
             state.hidePane()
         }
     }
-    var isShowCurrent: Boolean by remember { mutableStateOf(false) }
+    val isShowCurrentState = remember { mutableStateOf(false) }
     var isShowInstalledWarning: Boolean by remember { mutableStateOf(false) }
     var isShowDifferentWarning: Boolean by remember { mutableStateOf(false) }
     var isShowUninstallWarning: Boolean by remember { mutableStateOf(false) }
@@ -214,38 +210,15 @@ fun EntityPluginSelectionScreen(
                 }
                 // Current
                 if (entityProfile.plugin != null) {
-                    stickyHeader {
-                        val animatedRotate: Float by animateFloatAsState(
-                            targetValue = if (isShowCurrent) 0f else -90f,
-                            label = "DropdownMenuTrailer",
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp)
-                                .clickable { isShowCurrent = !isShowCurrent },
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                                    .rotate(animatedRotate),
-                                painter = painterResource(Res.drawable.ic_baseline_arrow_drop_down_24),
-                                contentDescription = null,
+                    stickyHeaderedDropdownVisibility(
+                        label = {
+                            stringResource(
+                                resource = Res.string.game_plugin_select_current,
+                                /* entityName = */ entityName,
                             )
-                            Text(
-                                text = stringResource(
-                                    resource = Res.string.game_plugin_select_current,
-                                    /* entityName = */ entityName,
-                                ),
-                            )
-                        }
-                    }
-                    item {
-                        AnimatedVisibility(
-                            modifier = Modifier.fillMaxWidth(),
-                            visible = isShowCurrent,
-                        ) {
+                        },
+                        expandedState = isShowCurrentState,
+                        content = {
                             EntityPluginDisplay(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -254,7 +227,7 @@ fun EntityPluginSelectionScreen(
                                 entityPath = entityProfile.path,
                             )
                         }
-                    }
+                    )
                 }
             }
         }
