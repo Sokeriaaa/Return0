@@ -57,6 +57,7 @@ import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.res.TitleRes
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.nav.Scene
@@ -255,8 +256,12 @@ private fun SaveCard(
         ) {
             // Line 1: title
             Text(
-                text = saveMetaTable?.title?.toString() ?: stringResource(
-                    Res.string.saves_idle,
+                text = stringResource(
+                    resource = if (saveMetaTable?.title == null) {
+                        Res.string.saves_idle
+                    } else {
+                        TitleRes.nameOf(saveMetaTable.title)
+                    },
                 ),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
