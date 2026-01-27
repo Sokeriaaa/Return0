@@ -158,7 +158,8 @@ class GameEntityRepo(
             ),
             hp = entity.hp,
             maxHP = entity.maxhp,
-            sp = entity.sp,
+            // For now, we display the full sp here.
+            sp = entity.maxsp,
             maxSP = entity.maxsp,
         )
     }
@@ -196,7 +197,8 @@ class GameEntityRepo(
             ),
             hp = entity.hp,
             maxHP = entity.maxhp,
-            sp = entity.sp,
+            // For now, we display the full sp here.
+            sp = entity.maxsp,
             maxSP = entity.maxsp,
             functions = entityData.functions.map { functionData ->
                 val skill = entity.functions.firstOrNull { it.name == functionData.name }
