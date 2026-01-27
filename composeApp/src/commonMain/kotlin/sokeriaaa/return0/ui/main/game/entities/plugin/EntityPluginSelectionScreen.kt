@@ -14,27 +14,26 @@
  */
 package sokeriaaa.return0.ui.main.game.entities.plugin
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,7 +53,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
-import return0.composeapp.generated.resources.component_extra_empty
 import return0.composeapp.generated.resources.game_plugin_install
 import return0.composeapp.generated.resources.game_plugin_installed
 import return0.composeapp.generated.resources.game_plugin_locked
@@ -63,21 +62,24 @@ import return0.composeapp.generated.resources.game_plugin_select_different_path
 import return0.composeapp.generated.resources.game_plugin_select_different_path_warn
 import return0.composeapp.generated.resources.game_plugin_select_installed_by
 import return0.composeapp.generated.resources.game_plugin_select_installed_by_warn
-import return0.composeapp.generated.resources.game_plugin_select_selected
 import return0.composeapp.generated.resources.game_plugin_select_uninstall_warn
 import return0.composeapp.generated.resources.game_plugin_uninstall
+import return0.composeapp.generated.resources.ic_baseline_arrow_drop_down_24
 import return0.composeapp.generated.resources.ic_outline_check_24
+import return0.composeapp.generated.resources.ic_outline_extension_24
+import return0.composeapp.generated.resources.ic_outline_extension_off_24
 import return0.composeapp.generated.resources.ic_outline_lock_24
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
-import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
+import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,181 +97,181 @@ fun EntityPluginSelectionScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
+    var selectedPlugin: PluginInfo? by remember { mutableStateOf(null) }
+    val onBack: () -> Unit = {
+        if (state.isWideScreen || !state.isShowingPane) {
+            mainNavHostController.navigateUp()
+        } else {
+            state.hidePane()
+        }
+    }
+    var isShowCurrent: Boolean by remember { mutableStateOf(false) }
+    var isShowInstalledWarning: Boolean by remember { mutableStateOf(false) }
+    var isShowDifferentWarning: Boolean by remember { mutableStateOf(false) }
+    var isShowUninstallWarning: Boolean by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    AppAdaptiveScaffold(
         viewModel = viewModel,
+        state = state,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(Res.string.game_plugin_select)) },
-                navigationIcon = {
-                    AppBackIconButton(
-                        onClick = {
-                            mainNavHostController.navigateUp()
+                navigationIcon = { AppBackIconButton(onClick = onBack) },
+            )
+        },
+        mainContent = {
+            PluginDisplayList(
+                modifier = Modifier.fillMaxSize(),
+                pluginMap = viewModel.pluginMap
+                    .asSequence()
+                    .map { it.toPair() }
+                    .sortedByDescending { it.second.tier }
+                    .sortedBy {
+                        if (
+                            viewModel.entityProfile != null
+                            && viewModel.entityProfile?.path != it.second.data.path
+                        ) {
+                            1
+                        } else {
+                            0
                         }
-                    )
+                    }
+                    .toList()
+                    .toMap(),
+                entityProfile = viewModel.entityProfile,
+                onPluginSelected = {
+                    selectedPlugin = it
+                    state.showPane()
                 },
             )
-        }
-    ) { paddingValues ->
-        var selectedPlugin: PluginInfo? by remember { mutableStateOf(null) }
-        val entityProfile = viewModel.entityProfile ?: return@AppScaffold
-
-
-        if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
-            // Horizontal
-            Row(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(300.dp)
-                        .padding(horizontal = 8.dp),
-                ) {
-                    CurrentPluginPanel(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F),
-                        entityName = entityName,
-                        pluginInfo = entityProfile.plugin,
-                        entityPath = entityProfile.path,
-                        onIntent = viewModel::onIntent,
-                    )
-                    HorizontalDivider()
-                    SelectedPluginPanel(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F),
-                        pluginInfo = selectedPlugin,
-                        entityPath = entityProfile.path,
-                        onIntent = viewModel::onIntent,
-                    )
-                }
-                VerticalDivider()
-                PluginSelectPanel(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1F),
-                    viewModel = viewModel,
-                    onPluginSelected = { selectedPlugin = it },
-                )
-            }
-        } else {
-            // Vertical
-            Column(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp),
-                ) {
-                    CurrentPluginPanel(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F)
-                            .padding(horizontal = 8.dp),
-                        entityName = entityName,
-                        pluginInfo = entityProfile.plugin,
-                        entityPath = entityProfile.path,
-                        onIntent = viewModel::onIntent,
-                    )
-                    VerticalDivider()
-                    SelectedPluginPanel(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F)
-                            .padding(horizontal = 8.dp),
-                        pluginInfo = selectedPlugin,
-                        entityPath = entityProfile.path,
-                        onIntent = viewModel::onIntent,
-                    )
-                }
-                HorizontalDivider()
-                PluginSelectPanel(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1F),
-                    viewModel = viewModel,
-                    onPluginSelected = { selectedPlugin = it },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CurrentPluginPanel(
-    modifier: Modifier = Modifier,
-    entityName: String,
-    pluginInfo: PluginInfo?,
-    entityPath: EntityPath,
-    onIntent: (BaseIntent) -> Unit,
-) {
-    var isShowUninstallWarning: Boolean by remember { mutableStateOf(false) }
-    if (isShowUninstallWarning) {
-        AppAlertDialog(
-            title = stringResource(Res.string.game_plugin_uninstall),
-            text = stringResource(Res.string.game_plugin_select_uninstall_warn),
-            onDismiss = { isShowUninstallWarning = false },
-            onConfirmed = {
-                isShowUninstallWarning = false
-                onIntent(EntityDetailsIntent.UninstallPlugin)
-            }
-        )
-    }
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(
-                resource = Res.string.game_plugin_select_current,
-                /* entityName = */ entityName,
-            ),
-            style = MaterialTheme.typography.bodySmall,
-        )
-        if (pluginInfo == null) {
-            Text(stringResource(Res.string.component_extra_empty))
-        } else {
+        },
+        paneContent = {
+            val entityProfile = viewModel.entityProfile ?: return@AppAdaptiveScaffold
+            val pluginInfo = selectedPlugin ?: return@AppAdaptiveScaffold
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1F)
+                modifier = Modifier,
             ) {
+                // Plugin display
                 item {
                     EntityPluginDisplay(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = 4.dp),
                         plugin = pluginInfo,
-                        entityPath = entityPath,
+                        entityPath = entityProfile.path,
                     )
                 }
-            }
-            Row {
-                TextButton(onClick = { isShowUninstallWarning = true }) {
-                    Text(stringResource(Res.string.game_plugin_uninstall))
+                item {
+                    val isInstalled = pluginInfo.id == entityProfile.plugin?.id
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        // Install
+                        AppFilledTonalButton(
+                            modifier = Modifier.animateContentSize(),
+                            enabled = !isInstalled,
+                            iconRes = if (isInstalled) {
+                                Res.drawable.ic_outline_check_24
+                            } else {
+                                Res.drawable.ic_outline_extension_24
+                            },
+                            text = stringResource(
+                                resource = if (isInstalled) {
+                                    Res.string.game_plugin_installed
+                                } else {
+                                    Res.string.game_plugin_install
+                                }
+                            ),
+                            onClick = {
+                                when {
+                                    pluginInfo.installedBy != null ->
+                                        isShowInstalledWarning = true
+
+                                    pluginInfo.data.path != entityProfile.path ->
+                                        isShowDifferentWarning = true
+
+                                    else -> viewModel.onIntent(
+                                        EntityDetailsIntent.InstallPlugin(pluginInfo.id)
+                                    )
+                                }
+                            }
+                        )
+                        // Uninstall
+                        AnimatedVisibility(visible = isInstalled) {
+                            AppFilledTonalButton(
+                                modifier = Modifier.padding(start = 4.dp),
+                                iconRes = Res.drawable.ic_outline_extension_off_24,
+                                text = stringResource(Res.string.game_plugin_uninstall),
+                                onClick = { isShowUninstallWarning = true },
+                            )
+                        }
+                    }
+                }
+                // Current
+                if (entityProfile.plugin != null) {
+                    stickyHeader {
+                        val animatedRotate: Float by animateFloatAsState(
+                            targetValue = if (isShowCurrent) 0f else -90f,
+                            label = "DropdownMenuTrailer",
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable { isShowCurrent = !isShowCurrent },
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .rotate(animatedRotate),
+                                painter = painterResource(Res.drawable.ic_baseline_arrow_drop_down_24),
+                                contentDescription = null,
+                            )
+                            Text(
+                                text = stringResource(
+                                    resource = Res.string.game_plugin_select_current,
+                                    /* entityName = */ entityName,
+                                ),
+                            )
+                        }
+                    }
+                    item {
+                        AnimatedVisibility(
+                            modifier = Modifier.fillMaxWidth(),
+                            visible = isShowCurrent,
+                        ) {
+                            EntityPluginDisplay(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = 4.dp),
+                                plugin = entityProfile.plugin,
+                                entityPath = entityProfile.path,
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun SelectedPluginPanel(
-    modifier: Modifier = Modifier,
-    pluginInfo: PluginInfo?,
-    entityPath: EntityPath,
-    onIntent: (BaseIntent) -> Unit,
-) {
-    var isShowInstalledWarning: Boolean by remember { mutableStateOf(false) }
-    var isShowDifferentWarning: Boolean by remember { mutableStateOf(false) }
+    )
     if (isShowInstalledWarning) {
         AppAlertDialog(
             title = stringResource(Res.string.game_plugin_install),
             text = stringResource(
                 resource = Res.string.game_plugin_select_installed_by_warn,
-                /* installedBy = */ pluginInfo?.installedBy.toString(),
+                /* installedBy = */ selectedPlugin?.installedBy.toString(),
             ),
             onDismiss = { isShowInstalledWarning = false },
             onConfirmed = {
                 isShowInstalledWarning = false
-                pluginInfo?.id?.let { onIntent(EntityDetailsIntent.InstallPlugin(it)) }
+                selectedPlugin?.id?.let {
+                    viewModel.onIntent(EntityDetailsIntent.InstallPlugin(it))
+                }
             }
         )
     }
@@ -280,79 +282,21 @@ private fun SelectedPluginPanel(
             onDismiss = { isShowDifferentWarning = false },
             onConfirmed = {
                 isShowDifferentWarning = false
-                pluginInfo?.id?.let { onIntent(EntityDetailsIntent.InstallPlugin(it)) }
+                selectedPlugin?.id?.let {
+                    viewModel.onIntent(EntityDetailsIntent.InstallPlugin(it))
+                }
             }
         )
     }
-
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(Res.string.game_plugin_select_selected),
-            style = MaterialTheme.typography.bodySmall,
-        )
-        if (pluginInfo == null) {
-            Text(stringResource(Res.string.component_extra_empty))
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1F)
-            ) {
-                item {
-                    EntityPluginDisplay(
-                        modifier = Modifier.fillMaxWidth(),
-                        plugin = pluginInfo,
-                        entityPath = entityPath,
-                    )
-                }
+    if (isShowUninstallWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_plugin_uninstall),
+            text = stringResource(Res.string.game_plugin_select_uninstall_warn),
+            onDismiss = { isShowUninstallWarning = false },
+            onConfirmed = {
+                isShowUninstallWarning = false
+                viewModel.onIntent(EntityDetailsIntent.UninstallPlugin)
             }
-            Row {
-                TextButton(
-                    onClick = {
-                        when {
-                            pluginInfo.installedBy != null -> isShowInstalledWarning = true
-                            pluginInfo.data.path != entityPath -> isShowDifferentWarning = true
-                            else -> onIntent(EntityDetailsIntent.InstallPlugin(pluginInfo.id))
-                        }
-                    }
-                ) {
-                    Text(stringResource(Res.string.game_plugin_install))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun PluginSelectPanel(
-    modifier: Modifier = Modifier,
-    viewModel: EntityDetailsViewModel,
-    onPluginSelected: (PluginInfo) -> Unit,
-) {
-    Column(modifier = modifier) {
-        PluginDisplayList(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F),
-            pluginMap = viewModel.pluginMap
-                .asSequence()
-                .map { it.toPair() }
-                .sortedByDescending { it.second.tier }
-                .sortedBy {
-                    if (
-                        viewModel.entityProfile != null
-                        && viewModel.entityProfile?.path != it.second.data.path
-                    ) {
-                        1
-                    } else {
-                        0
-                    }
-                }
-                .toList()
-                .toMap(),
-            entityProfile = viewModel.entityProfile,
-            onPluginSelected = onPluginSelected,
         )
     }
 }
@@ -378,14 +322,14 @@ private fun PluginDisplayList(
                         horizontal = 10.dp,
                         vertical = 4.dp,
                     )
-                    .animateItem()
-                    .clickable { onPluginSelected(it.second) },
+                    .animateItem(),
                 pluginName = it.second.name,
                 pluginPath = it.second.data.path,
                 pluginInstalledBy = it.second.installedBy,
                 pluginIsLocked = it.second.isLocked,
                 entityPath = entityProfile?.path,
                 isInstalled = entityProfile?.plugin?.id == it.second.id,
+                onClick = { onPluginSelected(it.second) },
             )
         }
     }
@@ -400,6 +344,7 @@ private fun PluginDisplayItem(
     pluginIsLocked: Boolean,
     entityPath: EntityPath?,
     isInstalled: Boolean,
+    onClick: () -> Unit,
 ) {
     val isIdenticalPath = entityPath == null || entityPath == pluginPath
     val supportingText = buildString {
@@ -424,7 +369,8 @@ private fun PluginDisplayItem(
             } else {
                 MaterialTheme.colorScheme.surfaceDim
             },
-        )
+        ),
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier
@@ -472,6 +418,7 @@ private fun GeneralPluginItem() {
         pluginIsLocked = false,
         entityPath = EntityPath.HEAP,
         isInstalled = false,
+        onClick = {},
     )
 }
 
@@ -485,6 +432,7 @@ private fun InstalledPluginItem() {
         pluginIsLocked = false,
         entityPath = EntityPath.HEAP,
         isInstalled = true,
+        onClick = {},
     )
 }
 
@@ -498,6 +446,7 @@ private fun LockedPluginItem() {
         pluginIsLocked = true,
         entityPath = EntityPath.HEAP,
         isInstalled = false,
+        onClick = {},
     )
 }
 
@@ -511,6 +460,7 @@ private fun DifferentPluginItem() {
         pluginIsLocked = false,
         entityPath = EntityPath.PROTOCOL,
         isInstalled = false,
+        onClick = {},
     )
 }
 
@@ -524,5 +474,6 @@ private fun DifferentAndInstalledPluginItem() {
         pluginIsLocked = false,
         entityPath = EntityPath.PROTOCOL,
         isInstalled = false,
+        onClick = {},
     )
 }
