@@ -115,6 +115,10 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     )
     val effects = _effects.asSharedFlow()
 
+    // Current context
+    var currentContext: EventContext? = null
+        private set
+
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
@@ -188,28 +192,29 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
      */
     private suspend fun loadAllEvents() {
         _gameStateRepo.map.loadEvents().forEach {
-            val context = getEventContext(it)
-            if (it.enabled.calculatedIn(context)) {
-                // If the event is enabled
-                if (it.lineNumber == null) {
-                    // Handle events that doesn't have a line number.
-                    if (
-                        it.trigger != MapEvent.Trigger.OVERLAPPED &&
-                        it.trigger != MapEvent.Trigger.INTERACTED
-                    ) {
-                        _noLocationEvents.add(it)
-                    }
-                } else {
-                    // Add the event
-                    if (it.trigger != MapEvent.Trigger.ENTERED) {
-                        _mapRows[it.lineNumber - 1].events.add(it)
-                        if (it.trigger == MapEvent.Trigger.OVERLAPPED) {
-                            // Add overlap trigger.
-                            _overlapRows.add(it.lineNumber)
+            withContextOf(it) { context ->
+                if (it.enabled.calculatedIn(context)) {
+                    // If the event is enabled
+                    if (it.lineNumber == null) {
+                        // Handle events that doesn't have a line number.
+                        if (
+                            it.trigger != MapEvent.Trigger.OVERLAPPED &&
+                            it.trigger != MapEvent.Trigger.INTERACTED
+                        ) {
+                            _noLocationEvents.add(it)
                         }
-                        if (it.blocksUser.calculatedIn(context)) {
-                            // Lines blocked
-                            _blockedRows.add(it.lineNumber)
+                    } else {
+                        // Add the event
+                        if (it.trigger != MapEvent.Trigger.ENTERED) {
+                            _mapRows[it.lineNumber - 1].events.add(it)
+                            if (it.trigger == MapEvent.Trigger.OVERLAPPED) {
+                                // Add overlap trigger.
+                                _overlapRows.add(it.lineNumber)
+                            }
+                            if (it.blocksUser.calculatedIn(context)) {
+                                // Lines blocked
+                                _blockedRows.add(it.lineNumber)
+                            }
                         }
                     }
                 }
@@ -307,11 +312,16 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         }
     }
 
-    private fun getEventContext(event: MapEvent?): EventContext = EventContext(
-        key = event?.key,
-        location = event?.lineNumber?.let { current.name to it },
-        callback = this,
-    )
+    private inline fun withContextOf(event: MapEvent?, scope: (EventContext) -> Unit) {
+        val context = EventContext(
+            key = event?.key,
+            location = event?.lineNumber?.let { current.name to it },
+            callback = this,
+        )
+        currentContext = context
+        scope(context)
+        currentContext = null
+    }
 
     /**
      * The player is about to encounter the enemies
@@ -322,7 +332,9 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     private suspend fun executeEvent(vararg mapEvents: MapEvent) {
         mapEvents.forEach {
-            it.event.executedIn(getEventContext(it))
+            withContextOf(it) { context ->
+                it.event.executedIn(context)
+            }
         }
         // After execution finished, finish this event.
         _effects.emit(EventEffect.EventFinished)
@@ -330,11 +342,13 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
 
     private suspend fun encounteredCombat() {
         val entry = _gameStateRepo.map.current.buggyEntries.random()
-        Event.Combat(
-            config = Event.Combat.Config(
-                enemies = entry.enemies.map { it to entry.level }
-            ),
-        ).executedIn(getEventContext(event = null))
+        withContextOf(null) { context ->
+            Event.Combat(
+                config = Event.Combat.Config(
+                    enemies = entry.enemies.map { it to entry.level }
+                ),
+            ).executedIn(context)
+        }
     }
 
     private fun interruptMoving() {

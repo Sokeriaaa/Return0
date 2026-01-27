@@ -75,8 +75,10 @@ import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
+import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
+import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.ModalOverlay
@@ -172,6 +174,11 @@ fun GameScreen(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
+    // For shops
+    val shopViewModel: ShopViewModel = viewModel(
+        factory = koinInject(),
+        viewModelStoreOwner = koinInject(),
+    )
     // For entity selecting
     val teamsViewModel: TeamsViewModel = viewModel(
         factory = koinInject(),
@@ -236,7 +243,10 @@ fun GameScreen(
                 }
 
                 is EventEffect.ShowShop -> {
-                    TODO()
+                    viewModel.currentContext?.let {
+                        shopViewModel.onIntent(ShopIntent.Initialize(it, effect.shop))
+                    }
+                    mainNavHostController.navigateSingleTop(Scene.Shop.route)
                 }
 
                 is EventEffect.ShowWorkbench -> {
