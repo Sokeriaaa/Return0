@@ -43,6 +43,15 @@ or functions.
 A balanced 12-category effectiveness system is implemented in this game. Damage will be multiplied
 by 80%~120% based on the categories of function and target entity.
 
+## Screenshots
+
+![Game field](screenshots/game_field.gif)
+![Buggy range](screenshots/buggy_range.gif)
+![Combat animations](screenshots/animations.gif)
+![Game field mini quizzes](screenshots/mini_quiz.gif)
+![Install plugin](screenshots/install_plugin.gif)
+![Emulator setup](screenshots/emulator_setup.gif)
+
 ## Architecture
 
 ### Summary
