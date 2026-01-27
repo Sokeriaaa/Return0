@@ -44,8 +44,8 @@ object CurrencyRes {
 
 @Composable
 fun CurrencyIcon(
-    modifier: Modifier = Modifier,
     currencyType: CurrencyType,
+    modifier: Modifier = Modifier,
     tint: Color = LocalContentColor.current,
 ) = Icon(
     modifier = modifier,

@@ -83,6 +83,12 @@
     <string name="game_plugin_special_defend_rate_offset">Defend rate offset: </string>
 
     <string name="game_shop">Shop</string>
+    <string name="game_shop_on_sale">On sale</string>
+    <string name="game_shop_available_count">Available: %1$s</string>
+    <string name="game_shop_restock_after">Restock after %1$s</string>
+    <string name="game_shop_sold_out">SOLD OUT</string>
+    <string name="game_shop_not_available">Not Available</string>
+
     <string name="game_workbench">Shop</string>
 
     <string name="game_complete_code">Complete Code</string>

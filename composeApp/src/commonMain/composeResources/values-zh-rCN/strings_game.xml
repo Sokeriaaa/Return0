@@ -83,6 +83,12 @@
     <string name="game_plugin_special_defend_rate_offset">防御偏移率：</string>
 
     <string name="game_shop">商店</string>
+    <string name="game_shop_on_sale">销售中</string>
+    <string name="game_shop_available_count">剩余：%1$s</string>
+    <string name="game_shop_restock_after">%1$s后补货</string>
+    <string name="game_shop_sold_out">已售罄</string>
+    <string name="game_shop_not_available">当前不可购买</string>
+
     <string name="game_workbench">工作台</string>
 
     <string name="game_complete_code">完成代码</string>
