@@ -81,6 +81,7 @@ import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
 import sokeriaaa.return0.ui.common.AppScaffold
+import sokeriaaa.return0.ui.common.BlockBackPressed
 import sokeriaaa.return0.ui.common.ModalOverlay
 import sokeriaaa.return0.ui.common.entity.EntitySelectionDialog
 import sokeriaaa.return0.ui.common.event.EventShowChoice
@@ -301,6 +302,7 @@ fun GameScreen(
         savedStateHandle?.remove<Boolean>("combat_result")
     }
 
+    BlockBackPressed()
     Box(modifier = Modifier.fillMaxSize()) {
         // Game content.
         GameContent(
