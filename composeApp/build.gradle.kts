@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.androidxRoom)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
@@ -15,9 +15,22 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
+    android {
+        // AGP 9.0: New DSL for host tests (Unit Tests)
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
+
+    androidLibrary {
+        namespace = "sokeriaaa.return0"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+        androidResources {
+            enable = true
         }
     }
 
@@ -54,7 +67,8 @@ kotlin {
 
         // Platforms
         val androidMain by getting { dependsOn(commonNativeMain) }
-        val androidUnitTest by getting { dependsOn(commonNativeTest) }
+        // AGP 9.0: Access the renamed source set
+        val androidHostTest by getting { dependsOn(commonNativeTest) }
         val jvmMain by getting { dependsOn(commonNativeMain) }
         val jvmTest by getting { dependsOn(commonNativeTest) }
 
@@ -131,7 +145,7 @@ kotlin {
             implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.2.1"))
             implementation(devNpm("copy-webpack-plugin", "9.1.0"))
         }
-        androidUnitTest.dependencies {
+        androidHostTest.dependencies {
             // For testing in Android Studio directly.
             // Solve the java.lang.UnsatisfiedLinkError: no sqliteJni in java.library.path
             implementation(libs.androidx.sqlite.bundled.jvm)
@@ -149,35 +163,12 @@ kotlin {
     }
 }
 
-android {
-    namespace = "sokeriaaa.return0"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
 room {
     schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    androidRuntimeClasspath(compose.uiTooling)
     // Room compiler
     listOf(
         "kspAndroid",
