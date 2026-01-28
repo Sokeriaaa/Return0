@@ -39,16 +39,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_inventory
-import return0.composeapp.generated.resources.ic_outline_code_blocks_24
-import return0.composeapp.generated.resources.ic_outline_deployed_code_24
-import return0.composeapp.generated.resources.ic_outline_more_horiz_24
-import return0.composeapp.generated.resources.ic_outline_terminal_24
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
-import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
+import sokeriaaa.return0.ui.common.res.InventoryRes
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,12 +119,7 @@ private fun InventoryItem(
         leadingContent = {
             Icon(
                 painter = painterResource(
-                    when (display.itemData.types.firstOrNull()) {
-                        ItemData.Type.CONSUMABLE -> Res.drawable.ic_outline_terminal_24
-                        ItemData.Type.MATERIAL -> Res.drawable.ic_outline_code_blocks_24
-                        ItemData.Type.QUEST -> Res.drawable.ic_outline_deployed_code_24
-                        ItemData.Type.OTHER, null -> Res.drawable.ic_outline_more_horiz_24
-                    }
+                    resource = InventoryRes.iconOfType(display.itemData.types.firstOrNull()),
                 ),
                 contentDescription = null,
             )
@@ -154,12 +145,7 @@ private fun InventoryDetail(
         leadingContent = {
             Icon(
                 painter = painterResource(
-                    when (display.itemData.types.firstOrNull()) {
-                        ItemData.Type.CONSUMABLE -> Res.drawable.ic_outline_terminal_24
-                        ItemData.Type.MATERIAL -> Res.drawable.ic_outline_code_blocks_24
-                        ItemData.Type.QUEST -> Res.drawable.ic_outline_deployed_code_24
-                        ItemData.Type.OTHER, null -> Res.drawable.ic_outline_more_horiz_24
-                    }
+                    resource = InventoryRes.iconOfType(display.itemData.types.firstOrNull()),
                 ),
                 contentDescription = null,
             )
