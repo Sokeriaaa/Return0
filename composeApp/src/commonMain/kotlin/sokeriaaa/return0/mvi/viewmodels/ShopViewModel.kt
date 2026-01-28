@@ -15,6 +15,7 @@
 package sokeriaaa.return0.mvi.viewmodels
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
@@ -33,6 +34,7 @@ import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
+import kotlin.random.Random
 
 class ShopViewModel : BaseViewModel() {
 
@@ -53,6 +55,10 @@ class ShopViewModel : BaseViewModel() {
     val tokenValue: Int get() = _gameStateRepo.currency[CurrencyType.TOKEN]
     val cryptoValue: Int get() = _gameStateRepo.currency[CurrencyType.CRYPTO]
 
+    // Cart
+    private val _cart: MutableMap<ShopItem, Int> = mutableStateMapOf()
+    val cart: Map<ShopItem, Int> = _cart
+
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
@@ -61,6 +67,30 @@ class ShopViewModel : BaseViewModel() {
                 context = intent.context
                 shopEvent = intent.shopEvent
                 viewModelScope.launch { refresh() }
+            }
+
+            is ShopIntent.AlterCart -> {
+                _cart[intent.item] = (_cart[intent.item] ?: 0) + intent.amountChange
+                if (_cart[intent.item] == 0) {
+                    _cart.remove(intent.item)
+                }
+            }
+
+            is ShopIntent.RemoveFromCart -> {
+                _cart.remove(intent.item)
+            }
+
+            ShopIntent.CheckOut -> viewModelScope.launch {
+                _cart.forEach { (item, amount) ->
+                    executePurchase(item, amount)
+                }
+                _cart.clear()
+                refresh()
+            }
+
+            is ShopIntent.Buy -> viewModelScope.launch {
+                executePurchase(intent.item, intent.amount)
+                refresh()
             }
 
             else -> {}
@@ -89,5 +119,35 @@ class ShopViewModel : BaseViewModel() {
                 )
             }.sortedBy { it.sorter }
         )
+    }
+
+    private suspend fun executePurchase(
+        item: ShopItem,
+        amount: Int,
+    ) {
+        // Currency change.
+        val finalPrice = item.price.first * amount
+        _gameStateRepo.currency[item.price.second] -= finalPrice
+        // Obtain items
+        when (item.item) {
+            is ItemEntry.Inventory -> {
+                _gameStateRepo.inventory[item.item.inventoryKey] += amount
+            }
+
+            is ItemEntry.Plugin -> {
+                repeat(amount) {
+                    val pluginID = _gameStateRepo.plugin.generateAndSavePlugin(
+                        // TODO generate a random plugin on null key.
+                        key = item.item.pluginKey ?: TODO(),
+                        tier = if (item.item.tier == 0) {
+                            Random.nextInt(1, 6)
+                        } else {
+                            item.item.tier
+                        }
+                    )
+                    _gameStateRepo.plugin.obtainedPlugin(pluginID)
+                }
+            }
+        }
     }
 }
