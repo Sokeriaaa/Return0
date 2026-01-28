@@ -79,7 +79,7 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
         // end - CommonValue
         // start - EventValue
         is EventValue.SavedVariable -> context.gameState.savedValues.getVariable("event:$key")
-        is EventValue.Currency -> context.gameState.currency[type]
+        is EventValue.Currency -> context.gameState.currency[currencyType]
         is EventValue.Inventory -> context.gameState.inventory[key]
         EventValue.TitleOrdinal -> context.gameState.player.title.ordinal
         is EventValue.EnemyLevel -> {

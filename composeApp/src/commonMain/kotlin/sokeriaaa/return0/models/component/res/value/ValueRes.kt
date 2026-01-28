@@ -365,7 +365,7 @@ fun valueResource(value: Value): AnnotatedString {
                 stringResource(Res.string.component_value_event_currency)
                     .replaceAnnotatedString(
                         oldValue = "{{slot0}}",
-                        newValue = AnnotatedString(value.type.name),
+                        newValue = AnnotatedString(value.currencyType.name),
                     )
             )
 
