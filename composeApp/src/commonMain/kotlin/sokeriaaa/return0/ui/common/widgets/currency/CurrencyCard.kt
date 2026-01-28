@@ -39,6 +39,7 @@ fun CurrencyCard(
     value: Int,
     currencyType: CurrencyType,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    onClick: () -> Unit,
 ) {
     val animatedValue by animateIntAsState(
         targetValue = value,
@@ -49,7 +50,8 @@ fun CurrencyCard(
         shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
-        )
+        ),
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier.padding(all = 12.dp),
@@ -72,9 +74,19 @@ fun CurrencyCard(
 // =========================================
 @Preview
 @Composable
-fun CurrencyCardPreview() {
+fun CurrencyCardPreview1() {
     CurrencyCard(
-        value = 100,
-        currencyType = CurrencyType.TOKEN
+        value = 100000,
+        currencyType = CurrencyType.TOKEN,
+        onClick = {},
+    )
+}
+@Preview
+@Composable
+fun CurrencyCardPreview2() {
+    CurrencyCard(
+        value = 200,
+        currencyType = CurrencyType.CRYPTO,
+        onClick = {},
     )
 }

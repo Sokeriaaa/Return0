@@ -45,6 +45,10 @@ class ShopViewModel : BaseViewModel() {
     private val _items: MutableList<ShopItem> = mutableStateListOf()
     val items: List<ShopItem> = _items
 
+    // Currency values
+    val tokenValue: Int get() = _gameStateRepo.currency[CurrencyType.TOKEN]
+    val cryptoValue: Int get() = _gameStateRepo.currency[CurrencyType.CRYPTO]
+
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
         when (intent) {
