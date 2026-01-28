@@ -3,7 +3,7 @@
 [plugins]
 
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 androidxRoom = { id = "androidx.room", version.ref = "androidx-room" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
