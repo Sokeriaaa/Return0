@@ -24,6 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +37,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop
+import sokeriaaa.return0.models.story.event.interactive.ShopItem
+import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
@@ -53,16 +59,22 @@ fun ShopScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
     val gameViewModel: GameViewModel = viewModel(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
     val onBack: () -> Unit = {
-        gameViewModel.onIntent(GameIntent.EventContinue)
-        mainNavHostController.navigateUp()
+        if (state.isWideScreen || !state.isShowingPane) {
+            gameViewModel.onIntent(GameIntent.EventContinue)
+            mainNavHostController.navigateUp()
+        } else {
+            state.hidePane()
+        }
     }
 
-    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
+    var selectedItem: ShopItem? by remember { mutableStateOf(null) }
+
     AppBackHandler(onBack = onBack)
     AppAdaptiveScaffold(
         viewModel = viewModel,
@@ -88,14 +100,30 @@ fun ShopScreen(
                                 vertical = 4.dp,
                             ),
                         item = it,
+                        onClick = { selectedItem = it }
                     )
                 }
             }
         },
         paneContent = {
-
+            selectedItem?.let {
+                ShopDetails(
+                    modifier = Modifier.fillMaxSize(),
+                    item = it,
+                    onIntent = viewModel::onIntent,
+                )
+            }
         },
     )
+}
+
+@Composable
+private fun ShopDetails(
+    modifier: Modifier = Modifier,
+    item: ShopItem,
+    onIntent: (BaseIntent) -> Unit,
+) {
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

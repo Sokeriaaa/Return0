@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.component.context.EventContext
@@ -30,10 +31,13 @@ import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
+import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 
 class ShopViewModel : BaseViewModel() {
 
     // Repo
+    private val _archiveRepo: ArchiveRepo by inject()
     private val _gameStateRepo: GameStateRepo by inject()
     private val _resourceRepo: ResourceRepo by inject()
 
@@ -70,6 +74,12 @@ class ShopViewModel : BaseViewModel() {
                 ShopItem(
                     key = it.item.key,
                     name = _resourceRepo.getString(it.item.resourceKey),
+                    itemType = when (val item = it.item) {
+                        is ItemEntry.Inventory -> _archiveRepo.getItemData(item.inventoryKey)
+                            ?.types?.firstOrNull() ?: ItemData.Type.OTHER
+
+                        is ItemEntry.Plugin -> ItemData.Type.PLUGIN
+                    },
                     price = (it.price?.calculatedIn(context) ?: 0) to
                             (it.currency ?: CurrencyType.TOKEN),
                     isAvailable = it.isAvailable.calculatedIn(context),

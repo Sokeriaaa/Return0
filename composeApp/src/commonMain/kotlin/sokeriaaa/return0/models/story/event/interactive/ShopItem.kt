@@ -16,10 +16,12 @@ package sokeriaaa.return0.models.story.event.interactive
 
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
+import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 
 data class ShopItem(
     override val key: String,
     override val name: String,
+    override val itemType: ItemData.Type,
     override val price: Pair<Int, CurrencyType>,
     override val isAvailable: Boolean,
     override val limit: Int?,

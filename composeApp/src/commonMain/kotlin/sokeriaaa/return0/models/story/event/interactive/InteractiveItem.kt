@@ -15,6 +15,7 @@
 package sokeriaaa.return0.models.story.event.interactive
 
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
+import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 
 /**
  * Super class of the interactive items.
@@ -29,6 +30,11 @@ interface InteractiveItem {
      * Display name.
      */
     val name: String
+
+    /**
+     * Item type
+     */
+    val itemType: ItemData.Type
 
     /**
      * Price.
