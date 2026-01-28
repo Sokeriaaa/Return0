@@ -23,7 +23,7 @@ kotlin {
     }
 
     androidLibrary {
-        namespace = "sokeriaaa.return0"
+        namespace = "sokeriaaa.return0.composeapp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
 
         compilerOptions {
