@@ -19,8 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ic_outline_check_24
 import sokeriaaa.return0.models.story.event.EventEffect

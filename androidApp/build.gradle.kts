@@ -14,12 +14,12 @@ kotlin {
     }
     dependencies {
         implementation(projects.composeApp)
-        implementation(compose.preview)
         implementation(libs.androidx.activity.compose)
         implementation(libs.androidx.room.runtime)
         implementation(libs.androidx.sqlite.bundled)
         implementation(libs.androidx.datastore)
         implementation(libs.androidx.datastore.preferences)
+        implementation(libs.compose.ui.tooling.preview)
         implementation(libs.koin.android)
     }
 }
