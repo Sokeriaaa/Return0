@@ -131,12 +131,6 @@ kotlin {
             implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.2.1"))
             implementation(devNpm("copy-webpack-plugin", "9.1.0"))
         }
-
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.koin.android)
-        }
         androidUnitTest.dependencies {
             // For testing in Android Studio directly.
             // Solve the java.lang.UnsatisfiedLinkError: no sqliteJni in java.library.path
