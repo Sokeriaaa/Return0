@@ -119,6 +119,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.materialKolor)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

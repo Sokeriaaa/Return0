@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.materialkolor.ktx.harmonizeWithPrimary
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
@@ -572,7 +573,7 @@ private fun EntityItem(
                             alpha = 1f - anim.value
                         },
                     text = text.text,
-                    color = text.color,
+                    color = MaterialTheme.colorScheme.harmonizeWithPrimary(text.color),
                     fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Medium,
                 )

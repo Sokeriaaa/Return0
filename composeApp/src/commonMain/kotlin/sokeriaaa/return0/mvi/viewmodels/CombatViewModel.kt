@@ -42,6 +42,7 @@ import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
+import sokeriaaa.return0.ui.theme.AppColor
 
 class CombatViewModel : BaseViewModel(), Arena.Callback {
 
@@ -253,7 +254,11 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "${result.finalDamage}",
-                            color = Color.Red,
+                            color = if (result.isCritical) {
+                                AppColor.Orange
+                            } else {
+                                AppColor.Red
+                            },
                             isCritical = result.isCritical,
                         ),
                     )
@@ -268,7 +273,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "+${result.finalHeal}",
-                            color = Color.Green,
+                            color = AppColor.LightGreen,
                         ),
                     )
                     _animatorManager.triggerAnimation(
@@ -282,7 +287,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "miss",
-                            color = Color.Black,
+                            color = AppColor.Grey,
                         ),
                     )
                 }
@@ -292,7 +297,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "null",
-                            color = Color.Black,
+                            color = AppColor.Grey,
                         ),
                     )
                 }
