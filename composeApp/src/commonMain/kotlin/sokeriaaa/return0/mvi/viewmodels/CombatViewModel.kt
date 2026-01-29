@@ -255,9 +255,9 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         animator = EntityAnimator.FloatingText(
                             text = "${result.finalDamage}",
                             color = if (result.isCritical) {
-                                AppColor.Orange
+                                AppColor.colorScheme.critical
                             } else {
-                                AppColor.Red
+                                AppColor.colorScheme.damage
                             },
                             isCritical = result.isCritical,
                         ),
@@ -273,7 +273,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "+${result.finalHeal}",
-                            color = AppColor.LightGreen,
+                            color = AppColor.colorScheme.heal,
                         ),
                     )
                     _animatorManager.triggerAnimation(
@@ -287,7 +287,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "miss",
-                            color = AppColor.Grey,
+                            color = AppColor.colorScheme.nullified,
                         ),
                     )
                 }
@@ -297,7 +297,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                         index = result.toIndex,
                         animator = EntityAnimator.FloatingText(
                             text = "null",
-                            color = AppColor.Grey,
+                            color = AppColor.colorScheme.nullified,
                         ),
                     )
                 }

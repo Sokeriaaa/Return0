@@ -52,7 +52,11 @@ object MapGenerator {
         // Force it to generate the brace.
         if (mapData.lines - index <= state.braceDepth) {
             state.braceDepth--
-            return MapRow(depth = state.braceDepth, text = "}", isInBuggyRange = isInBuggyRange)
+            return MapRow(
+                depth = state.braceDepth,
+                text = MapRowText.Close,
+                isInBuggyRange = isInBuggyRange,
+            )
         }
 
         // Generate row.
@@ -63,48 +67,55 @@ object MapGenerator {
             val shouldClose = random.nextInt(100) < 5 shl state.braceDepth
             if (shouldClose) {
                 state.braceDepth--
-                return MapRow(depth = state.braceDepth, text = "}", isInBuggyRange = isInBuggyRange)
+                return MapRow(
+                    depth = state.braceDepth,
+                    text = MapRowText.Close,
+                    isInBuggyRange = isInBuggyRange,
+                )
             }
         }
 
+        // Type
         val type = random.nextInt(22)
-        // Generate code
-        val text = when (type) {
-            // braceDepth++
-            0 -> "if (flag${random.nextInt(10)}) {"
-            1 -> "while (counter${random.nextInt(5)} < ${random.nextInt(10) + 1}) {"
-            2 -> "for (item${random.nextInt(10)} in list${random.nextInt(100)}) {"
-            3 -> "repeat (${random.nextInt(10)}) {"
-            // common
-            4 -> "val rnd${random.nextInt(100)} = Random.nextInt()"
-            5 -> "val v${random.nextInt(100)} = ${random.nextInt(10)}"
-            6 -> "val v${random.nextInt(100) + 10000} = ${random.nextBoolean()}"
-            7 -> "var temp${random.nextInt(50)} = ${random.nextInt(5)}"
-            8 -> "var counter = ${random.nextInt(5)}"
-            9 -> "temp${random.nextInt(50)} -= ${random.nextInt(2)}"
-            10 -> "counter++"
-            11 -> "handle${random.nextInt(4)}(v${random.nextInt(100)})"
-            12 -> "println(\"state=${random.nextInt(100)}\")"
-            13 -> "debug(\"trace ${random.nextInt(1000)}\")"
-            14 -> "// TODO: refactor later"
-            15 -> "// TODO: review logic"
-            16 -> "// legacy code"
-            17 -> "// works for now"
-            18 -> "val _ = ${random.nextInt(10)}"
-            19 -> "check(flag${random.nextInt(10)})"
-            20 -> "cleanup()"
-            21 -> "syncCache()"
-            else -> "val nullable: Any? = null"
-        }
         if (type in 0..3) {
             state.braceDepth++
         }
+        // depth
+        val depth = if (type in 0..3) {
+            state.braceDepth - 1
+        } else {
+            state.braceDepth
+        }
+        // Generate code
+        val text = when (type) {
+            // braceDepth++
+            0 -> MapRowText.If(random.nextInt(10))
+            1 -> MapRowText.While(random.nextInt(5), random.nextInt(10) + 1)
+            2 -> MapRowText.For(random.nextInt(10), random.nextInt(100))
+            3 -> MapRowText.Repeat(random.nextInt(10))
+            // common
+            4 -> MapRowText.Random(random.nextInt(100))
+            5 -> MapRowText.Variable(random.nextInt(100), random.nextInt(10))
+            6 -> MapRowText.Flag(random.nextInt(100) + 10000, random.nextBoolean())
+            7 -> MapRowText.Temp(random.nextInt(50), random.nextInt(5))
+            8 -> MapRowText.Counter(random.nextInt(5))
+            9 -> MapRowText.TempMinus(random.nextInt(50), random.nextInt(2))
+            10 -> MapRowText.CounterPP
+            11 -> MapRowText.Handle(random.nextInt(4), random.nextInt(100))
+            12 -> MapRowText.PrintLn(random.nextInt(100))
+            13 -> MapRowText.Debug(random.nextInt(1000))
+            14 -> MapRowText.TodoRefactor
+            15 -> MapRowText.TodoReview
+            16 -> MapRowText.Legacy
+            17 -> MapRowText.Works
+            18 -> MapRowText.UnderscoreVariable(random.nextInt(10))
+            19 -> MapRowText.Check(random.nextInt(10))
+            20 -> MapRowText.Cleanup
+            21 -> MapRowText.SyncCache
+            else -> MapRowText.Default
+        }
         return MapRow(
-            depth = if (type in 0..3) {
-                state.braceDepth - 1
-            } else {
-                state.braceDepth
-            },
+            depth = depth,
             text = text,
             isInBuggyRange = isInBuggyRange,
         )

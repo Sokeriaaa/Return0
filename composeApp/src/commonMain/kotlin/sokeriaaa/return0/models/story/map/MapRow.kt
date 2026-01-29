@@ -26,7 +26,7 @@ import sokeriaaa.return0.shared.data.models.story.map.MapEvent
  */
 class MapRow(
     val depth: Int,
-    val text: String,
+    val text: MapRowText,
     val events: MutableList<MapEvent> = mutableStateListOf(),
     val isInBuggyRange: Boolean,
 )

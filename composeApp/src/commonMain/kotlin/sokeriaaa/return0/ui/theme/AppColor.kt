@@ -18,8 +18,32 @@ import androidx.compose.ui.graphics.Color
 
 object AppColor {
     val Red = Color(0xFFF44336)
+    val DeepOrange = Color(0xFFFF5722)
     val Orange = Color(0xFFFF9800)
     val LightGreen = Color(0xFF8BC34A)
     val Green = Color(0xFF4CAF50)
+    val LightBlue = Color(0xFF03A9F4)
+    val Blue = Color(0xFF2196F3)
+    val DeepPurple = Color(0xFF673AB7)
+    val Purple = Color(0xFF9C27B0)
     val Grey = Color(0xFF9E9E9E)
+
+    /**
+     * Default color scheme for the app.
+     */
+    val colorScheme: AppColorScheme = AppColorScheme(
+        damage = Red,
+        critical = Orange,
+        heal = LightGreen,
+        nullified = Grey,
+        keyword = DeepPurple,
+        number = DeepOrange,
+        operator = Purple,
+        string = Green,
+        comment = Grey,
+        variable = LightBlue,
+        function = Orange,
+        event = Blue,
+        blocked = Red,
+    )
 }

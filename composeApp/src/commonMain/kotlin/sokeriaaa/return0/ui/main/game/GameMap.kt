@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
@@ -51,6 +52,7 @@ import return0.composeapp.generated.resources.map_action_move
 import return0.composeapp.generated.resources.map_action_too_far_away
 import return0.composeapp.generated.resources.no_operation
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.models.story.map.MapRowText
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
@@ -74,7 +76,7 @@ fun GameMap(
         item {
             MapRow(
                 modifier = Modifier.fillMaxWidth(),
-                text = "fun ${viewModel.current.name}() {",
+                text = MapRowText.Fun(viewModel.current.name).assembleText(depth = -1),
             )
         }
         itemsIndexed(items = viewModel.mapRows) { index, item ->
@@ -83,11 +85,11 @@ fun GameMap(
                 modifier = Modifier.fillMaxWidth(),
                 lineNumber = index + 1,
                 currentLine = viewModel.lineNumber,
-                text = "    ".repeat(item.depth + 1) + if (eventDisplays.isEmpty()) {
+                text = if (eventDisplays.isEmpty()) {
                     item.text
                 } else {
-                    eventDisplays.joinToString(";") { it.display!! }
-                },
+                    MapRowText.Events(eventDisplays.joinToString(";") { it.display!! })
+                }.assembleText(item.depth),
                 events = item.events,
                 isInBuggyRange = item.isInBuggyRange,
                 onMoveClicked = {
@@ -101,7 +103,7 @@ fun GameMap(
         item {
             MapRow(
                 modifier = Modifier.fillMaxWidth(),
-                text = "}",
+                text = MapRowText.Close.assembleText(depth = -1),
             )
         }
         item {
@@ -125,7 +127,7 @@ private fun MapRow(
     modifier: Modifier = Modifier,
     lineNumber: Int? = null,
     currentLine: Int = -1,
-    text: String,
+    text: AnnotatedString,
     events: List<MapEvent> = emptyList(),
     isInBuggyRange: Boolean = false,
     onMoveClicked: () -> Unit = {},
@@ -169,11 +171,6 @@ private fun MapRow(
         isInBuggyRange -> MaterialTheme.colorScheme.errorContainer
         else -> MaterialTheme.colorScheme.surface
     }
-    val rowTextColor = when {
-        events.isNotEmpty() -> MaterialTheme.colorScheme.primary
-        isInBuggyRange -> MaterialTheme.colorScheme.onErrorContainer
-        else -> MaterialTheme.colorScheme.onSurface
-    }
 
     Row(
         modifier = modifier,
@@ -206,7 +203,6 @@ private fun MapRow(
                         isMenuExpanded = true
                     },
                 text = text,
-                color = rowTextColor,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
