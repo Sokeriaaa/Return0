@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_appearance">外观</string>
+    <string name="settings_appearance_dark_theme">深色模式</string>
+    <string name="settings_appearance_dark_theme_desc">使用深色模式</string>
+    <string name="settings_appearance_dark_theme_light">浅色模式</string>
+    <string name="settings_appearance_dark_theme_dark">深色模式</string>
+    <string name="settings_appearance_dark_theme_system">跟随系统</string>
+
     <string name="settings_gameplay">游戏</string>
     <string name="settings_gameplay_display_item_desc">显示物品描述</string>
     <string name="settings_gameplay_display_item_desc_desc">在背包页面显示物品描述</string>

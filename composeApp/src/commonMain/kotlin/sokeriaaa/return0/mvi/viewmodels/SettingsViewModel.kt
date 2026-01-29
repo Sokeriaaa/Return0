@@ -26,6 +26,7 @@ class SettingsViewModel(
     // Repo
     private val _settingsRepo: SettingsRepo by inject()
 
+    val appearanceDarkTheme: Entry<Int> = _settingsRepo.appearanceDarkTheme
     val gameplayDisplayItemDesc: Entry<Boolean> = _settingsRepo.gameplayDisplayItemDesc
     val combatAuto: Entry<Boolean> = _settingsRepo.combatAuto
 

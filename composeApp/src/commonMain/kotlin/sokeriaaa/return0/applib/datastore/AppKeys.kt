@@ -16,6 +16,12 @@ package sokeriaaa.return0.applib.datastore
 
 object AppKeys {
 
+    /**
+     * Dark theme: 0 - system, 1 - light, 2 - dark
+     * Default is 0.
+     */
+    val APPEARANCE_DARK_THEME = intPreferencesKey("APPEARANCE_DARK_THEME")
+
     val GAMEPLAY_DISPLAY_ITEM_DESC = booleanPreferencesKey("GAMEPLAY_DISPLAY_ITEM_DESC")
 
     val COMBAT_AUTO = booleanPreferencesKey("COMBAT_AUTO")

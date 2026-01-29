@@ -14,17 +14,30 @@
  */
 package sokeriaaa.return0.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import org.koin.compose.koinInject
+import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.ui.nav.AppNavHost
 import sokeriaaa.return0.ui.theme.Return0Theme
 
 @Composable
 @Preview
 fun App() {
-    Return0Theme {
+    val settingsRepo: SettingsRepo = koinInject()
+    val darkThemeValue by settingsRepo.appearanceDarkTheme.flow.collectAsState(0)
+    Return0Theme(
+        darkTheme = when (darkThemeValue) {
+            1 -> false
+            2 -> true
+            else -> isSystemInDarkTheme()
+        },
+    ) {
         AppNavHost(
             mainNavHostController = rememberNavController(),
             windowAdaptiveInfo = currentWindowAdaptiveInfo(),

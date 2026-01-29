@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_dark_theme">Dark theme</string>
+    <string name="settings_appearance_dark_theme_desc">Use dark theme.</string>
+    <string name="settings_appearance_dark_theme_light">Light theme</string>
+    <string name="settings_appearance_dark_theme_dark">Dark theme</string>
+    <string name="settings_appearance_dark_theme_system">Use system theme</string>
+
     <string name="settings_gameplay">Gameplay</string>
     <string name="settings_gameplay_display_item_desc">Display item descriptions</string>
     <string name="settings_gameplay_display_item_desc_desc">Display item descriptions in the inventory page.</string>

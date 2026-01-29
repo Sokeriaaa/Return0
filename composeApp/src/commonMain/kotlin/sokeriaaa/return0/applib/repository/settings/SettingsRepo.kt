@@ -22,6 +22,8 @@ import sokeriaaa.return0.applib.datastore.AppKeys
 class SettingsRepo(
     private val keyValues: AppKeyValues,
 ) {
+    val appearanceDarkTheme: Entry<Int> =
+        IntEntry(AppKeys.APPEARANCE_DARK_THEME, 0)
 
     val gameplayDisplayItemDesc: Entry<Boolean> =
         BooleanEntry(AppKeys.GAMEPLAY_DISPLAY_ITEM_DESC, true)
@@ -48,6 +50,18 @@ class SettingsRepo(
             get() = keyValues.getBooleanFlow(key, defaultValue)
 
         override suspend fun set(value: Boolean) {
+            keyValues[key] = value
+        }
+    }
+
+    private inner class IntEntry(
+        key: AppKey<Int>,
+        defaultValue: Int = 0,
+    ) : Entry<Int>(key, defaultValue) {
+        override val flow: Flow<Int>
+            get() = keyValues.getIntFlow(key, defaultValue)
+
+        override suspend fun set(value: Int) {
             keyValues[key] = value
         }
     }
