@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import com.materialkolor.ktx.harmonizeWithPrimary
 import sokeriaaa.return0.models.story.map.MapRowText
@@ -199,6 +200,7 @@ fun MapRowText.assembleText(depth: Int): AnnotatedString = buildAnnotatedString 
                     color = MaterialTheme.colorScheme.harmonizeWithPrimary(
                         color = AppColor.colorScheme.event,
                     ),
+                    textDecoration = TextDecoration.Underline,
                 ),
             ) {
                 append(a)
@@ -211,6 +213,7 @@ fun MapRowText.assembleText(depth: Int): AnnotatedString = buildAnnotatedString 
                     color = MaterialTheme.colorScheme.harmonizeWithPrimary(
                         color = AppColor.colorScheme.blocked,
                     ),
+                    textDecoration = TextDecoration.Underline,
                 ),
             ) {
                 append(a)

@@ -37,6 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -166,107 +169,118 @@ private fun MapRow(
             actions
         }
     // Colors
-    val rowBackgroundColor = when {
-        isMenuExpanded -> MaterialTheme.colorScheme.primaryContainer
-        isInBuggyRange -> MaterialTheme.colorScheme.errorContainer
-        else -> MaterialTheme.colorScheme.surface
+    val rowBackgroundColor = if (isMenuExpanded) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surface
     }
 
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Line number
-        Text(
-            modifier = Modifier
-                .width(48.dp)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(end = 12.dp),
-            text = if (lineNumber == currentLine) {
-                "⬤"
-            } else {
-                lineNumber?.toString() ?: ""
-            },
-            textAlign = TextAlign.End,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            style = MaterialTheme.typography.bodySmall,
-        )
-        Box(
-            modifier = Modifier.weight(1F)
+    Box {
+        Row(
+            modifier = modifier.clickable { isMenuExpanded = true },
+            verticalAlignment = Alignment.CenterVertically,
         ) {
+            // Line number
+            val errorColor = MaterialTheme.colorScheme.error
+            Text(
+                modifier = Modifier
+                    .width(48.dp)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(end = 12.dp),
+                text = if (lineNumber == currentLine) {
+                    "⬤"
+                } else {
+                    lineNumber?.toString() ?: ""
+                },
+                textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                style = MaterialTheme.typography.bodySmall,
+            )
             // Line text
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .background(rowBackgroundColor)
-                    .clickable {
-                        isMenuExpanded = true
+                    .drawBehind {
+                        if (isInBuggyRange) {
+                            // Draw error underline
+                            val pathEffect = PathEffect.dashPathEffect(
+                                intervals = floatArrayOf(8f, 4f),
+                                phase = 0f,
+                            )
+                            drawLine(
+                                color = errorColor,
+                                strokeWidth = 1.5.dp.toPx(),
+                                start = Offset(x = 2.dp.toPx(), y = size.height - 1.5.dp.toPx()),
+                                end = Offset(x = size.width, y = size.height - 1.5.dp.toPx()),
+                                pathEffect = pathEffect,
+                            )
+                        }
                     },
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            // Operations
-            DropdownMenu(
-                expanded = isMenuExpanded,
-                offset = DpOffset(x = 24.dp, y = 0.dp),
-                onDismissRequest = {
-                    isMenuExpanded = false
-                },
-            ) {
-                if (mapRowAction.isEmpty()) {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        text = stringResource(Res.string.no_operation),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-                mapRowAction.forEach {
-                    when (it) {
-                        is MapRowAction.Interact -> {
-                            AppDropdownMenuItem(
-                                iconRes = Res.drawable.ic_outline_left_click_24,
-                                text = stringResource(
-                                    resource = Res.string.map_action_interact_w_display,
-                                    /* display = */ it.event.display ?: "#${it.index}",
-                                ),
-                                onClick = {
-                                    isMenuExpanded = false
-                                    onInteractClicked(it.event)
-                                },
-                            )
-                        }
+        }
+        // Operations
+        DropdownMenu(
+            expanded = isMenuExpanded,
+            offset = DpOffset(x = 72.dp, y = 0.dp),
+            onDismissRequest = {
+                isMenuExpanded = false
+            },
+        ) {
+            if (mapRowAction.isEmpty()) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    text = stringResource(Res.string.no_operation),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            mapRowAction.forEach {
+                when (it) {
+                    is MapRowAction.Interact -> {
+                        AppDropdownMenuItem(
+                            iconRes = Res.drawable.ic_outline_left_click_24,
+                            text = stringResource(
+                                resource = Res.string.map_action_interact_w_display,
+                                /* display = */ it.event.display ?: "#${it.index}",
+                            ),
+                            onClick = {
+                                isMenuExpanded = false
+                                onInteractClicked(it.event)
+                            },
+                        )
+                    }
 
-                        MapRowAction.MoveDown -> {
-                            AppDropdownMenuItem(
-                                iconRes = Res.drawable.ic_outline_move_down_24,
-                                text = stringResource(Res.string.map_action_move),
-                                onClick = {
-                                    isMenuExpanded = false
-                                    onMoveClicked()
-                                },
-                            )
-                        }
+                    MapRowAction.MoveDown -> {
+                        AppDropdownMenuItem(
+                            iconRes = Res.drawable.ic_outline_move_down_24,
+                            text = stringResource(Res.string.map_action_move),
+                            onClick = {
+                                isMenuExpanded = false
+                                onMoveClicked()
+                            },
+                        )
+                    }
 
-                        MapRowAction.MoveUp -> {
-                            AppDropdownMenuItem(
-                                iconRes = Res.drawable.ic_outline_move_up_24,
-                                text = stringResource(Res.string.map_action_move),
-                                onClick = {
-                                    isMenuExpanded = false
-                                    onMoveClicked()
-                                },
-                            )
-                        }
+                    MapRowAction.MoveUp -> {
+                        AppDropdownMenuItem(
+                            iconRes = Res.drawable.ic_outline_move_up_24,
+                            text = stringResource(Res.string.map_action_move),
+                            onClick = {
+                                isMenuExpanded = false
+                                onMoveClicked()
+                            },
+                        )
+                    }
 
-                        MapRowAction.TooFarAway -> {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                                text = stringResource(Res.string.map_action_too_far_away),
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
+                    MapRowAction.TooFarAway -> {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            text = stringResource(Res.string.map_action_too_far_away),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
             }
