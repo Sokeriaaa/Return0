@@ -325,6 +325,7 @@ private fun EntityExpPart(
                 max = entity.maxHP,
                 valueStyle = EntityHPBar.ValueStyle.FULL,
                 style = MaterialTheme.typography.labelMedium,
+                errorBelow = 0.2F,
             )
             // SP
             EntityHPBar(

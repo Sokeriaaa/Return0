@@ -538,6 +538,7 @@ private fun EntityItem(
                     current = animatedHP,
                     secondary = animatedShield,
                     max = entity.maxhp,
+                    errorBelow = if (entity.isParty) 0.2F else null
                 )
                 EntityHPBar(
                     modifier = Modifier.fillMaxWidth(),

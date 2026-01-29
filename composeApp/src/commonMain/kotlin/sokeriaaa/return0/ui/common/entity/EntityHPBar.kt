@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.ui.common.entity
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.dp
  * @param secondary A secondary value. For example, the shield.
  * @param max Maximum value.
  * @param valueStyle the displaying style of value.
+ * @param errorBelow Change the color to error when the value is below the threshold.
  */
 @Composable
 fun EntityHPBar(
@@ -47,10 +50,25 @@ fun EntityHPBar(
     max: Int,
     valueStyle: EntityHPBar.ValueStyle = EntityHPBar.ValueStyle.CURRENT,
     color: Color = ProgressIndicatorDefaults.linearColor,
+    errorBelow: Float? = null,
     style: TextStyle = MaterialTheme.typography.bodySmall,
 ) {
     // Avoid divide by 0.
     val progress = (current * 1F / max.coerceAtLeast(1))
+    val animatedIndicatorColor by animateColorAsState(
+        targetValue = when {
+            errorBelow != null && progress < errorBelow -> MaterialTheme.colorScheme.error
+            else -> color
+        },
+        label = "animatedIndicatorColor",
+    )
+    val animatedTrackColor by animateColorAsState(
+        targetValue = when {
+            errorBelow != null && progress < errorBelow -> MaterialTheme.colorScheme.errorContainer
+            else -> ProgressIndicatorDefaults.linearTrackColor
+        },
+        label = "animatedTrackColor",
+    )
     Box(modifier = modifier) {
         // Primary
         LinearProgressIndicator(
@@ -58,7 +76,8 @@ fun EntityHPBar(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             progress = { progress },
-            color = color,
+            color = animatedIndicatorColor,
+            trackColor = animatedTrackColor,
         )
         // Secondary
         secondary?.takeIf { it > 0 }?.let { secondary ->
@@ -69,7 +88,7 @@ fun EntityHPBar(
                     .padding(bottom = 3.dp)
                     .alpha(0.5F),
                 progress = { secondary * 1F / max.coerceAtLeast(1) },
-                color = color,
+                color = animatedIndicatorColor,
                 trackColor = Color.Transparent,
             )
         }
