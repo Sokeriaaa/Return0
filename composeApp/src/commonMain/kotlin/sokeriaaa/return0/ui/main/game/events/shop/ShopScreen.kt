@@ -58,12 +58,16 @@ import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop
 import return0.composeapp.generated.resources.game_shop_buy
+import return0.composeapp.generated.resources.game_shop_cart
 import return0.composeapp.generated.resources.game_shop_cart_add
 import return0.composeapp.generated.resources.game_shop_qty
 import return0.composeapp.generated.resources.game_shop_qty_decrease
 import return0.composeapp.generated.resources.game_shop_qty_increase
 import return0.composeapp.generated.resources.ic_outline_add_circle_24
+import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
 import return0.composeapp.generated.resources.ic_outline_do_not_disturb_on_24
+import return0.composeapp.generated.resources.ic_outline_payments_24
+import return0.composeapp.generated.resources.ic_outline_shopping_cart_24
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
@@ -79,8 +83,8 @@ import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
+import sokeriaaa.return0.ui.common.widgets.AppFilledTonalIconButton
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
-import sokeriaaa.return0.ui.common.widgets.currency.CurrencyCard
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 
 @Composable
@@ -259,12 +263,14 @@ private fun ShopDetails(
             Row(modifier = Modifier.fillMaxWidth()) {
                 AppFilledTonalButton(
                     modifier = Modifier.weight(1F),
+                    iconRes = Res.drawable.ic_outline_add_shopping_cart_24,
                     text = stringResource(Res.string.game_shop_cart_add),
                     onClick = {},
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 AppButton(
                     modifier = Modifier.weight(1F),
+                    iconRes = Res.drawable.ic_outline_payments_24,
                     text = stringResource(Res.string.game_shop_buy),
                     onClick = {},
                 )
@@ -286,16 +292,26 @@ private fun ShopScreenTitle(
         title = { Text(stringResource(Res.string.game_shop)) },
         navigationIcon = { AppBackIconButton(onClick = onBack) },
         actions = {
-            CurrencyCard(
-                value = tokenValue,
-                currencyType = CurrencyType.TOKEN,
-                onClick = {},
-            )
-            CurrencyCard(
-                modifier = Modifier.padding(start = 4.dp),
-                value = cryptoValue,
-                currencyType = CurrencyType.CRYPTO,
-                onClick = {},
+            Column(
+                modifier = Modifier.padding(end = 4.dp),
+                horizontalAlignment = Alignment.End,
+            ) {
+                CurrencyRow(
+                    value = tokenValue,
+                    currencyType = CurrencyType.TOKEN,
+                )
+                CurrencyRow(
+                    value = cryptoValue,
+                    currencyType = CurrencyType.CRYPTO,
+                )
+            }
+            // TODO: Add badges
+            AppFilledTonalIconButton(
+                iconRes = Res.drawable.ic_outline_shopping_cart_24,
+                contentDescription = stringResource(Res.string.game_shop_cart),
+                onClick = {
+                    // TODO: Open cart screen.
+                }
             )
         }
     )
