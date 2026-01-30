@@ -51,10 +51,11 @@ import return0.composeapp.generated.resources.combat_log_welcome
 import sokeriaaa.return0.models.action.effect.CommonEffects
 import sokeriaaa.return0.models.action.function.CommonFunctions
 import sokeriaaa.return0.models.combat.ArenaLogV4
+import sokeriaaa.return0.models.common.LogLevel
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
-import sokeriaaa.return0.ui.common.text.CommonStrings
 import sokeriaaa.return0.ui.common.GameLog
+import sokeriaaa.return0.ui.common.text.CommonStrings
 import kotlin.jvm.JvmInline
 
 
@@ -101,18 +102,21 @@ private fun LogContext.ComposeArenaLog(
 ) {
     when (log) {
         is ArenaLogV4.General.Welcome -> GameLog(
-            stringResource(
+            text = stringResource(
                 resource = Res.string.combat_log_welcome,
                 /* version = */ log.version,
             ),
+            level = LogLevel.INFO,
         )
 
         ArenaLogV4.General.Lose -> GameLog(
-            stringResource(resource = Res.string.combat_log_end_lose),
+            text = stringResource(resource = Res.string.combat_log_end_lose),
+            level = LogLevel.FATAL,
         )
 
         ArenaLogV4.General.Win -> GameLog(
-            stringResource(resource = Res.string.combat_log_end_win),
+            text = stringResource(resource = Res.string.combat_log_end_win),
+            level = LogLevel.INFO,
         )
 
         is ArenaLogV4.Actions.EffectApplied -> {
@@ -150,6 +154,7 @@ private fun LogContext.ComposeArenaLog(
                 /* entity = */ this[log.entityIndex].name,
                 /* name = */ log.name,
             ),
+            level = if (this[log.entityIndex].isParty) LogLevel.WARN else LogLevel.INFO,
         )
 
         is ArenaLogV4.Actions.FunctionInvoked -> ComposeFunctionInvoked(log)
@@ -161,14 +166,16 @@ private fun LogContext.ComposeArenaLog(
                 resource = Res.string.combat_log_entity_defeated,
                 /* defeated = */ this[log.defeatedIndex].name,
                 /* defeatBy = */ this[log.defeatByIndex].name,
-            )
+            ),
+            level = if (this[log.defeatedIndex].isParty) LogLevel.ERROR else LogLevel.INFO,
         )
 
         is ArenaLogV4.Entities.Revived -> GameLog(
             stringResource(
                 resource = Res.string.combat_log_entity_defeated,
                 /* entity = */ this[log.entityIndex].name,
-            )
+            ),
+            level = if (this[log.entityIndex].isParty) LogLevel.INFO else LogLevel.WARN,
         )
     }
 }
@@ -231,7 +238,8 @@ private fun LogContext.ComposeActionResult(
             // Critical
             if (result.isCritical) {
                 GameLog(
-                    stringResource(Res.string.combat_log_result_critical)
+                    stringResource(Res.string.combat_log_result_critical),
+                    level = if (this[result.toIndex].isParty) LogLevel.WARN else LogLevel.INFO,
                 )
             }
             // Damage
@@ -240,7 +248,8 @@ private fun LogContext.ComposeActionResult(
                     resource = Res.string.combat_log_result_damage,
                     /* damage = */ result.finalDamage,
                     /* target = */ this[result.toIndex].name,
-                )
+                ),
+                level = if (this[result.toIndex].isParty) LogLevel.WARN else LogLevel.INFO,
             )
         }
 
@@ -250,7 +259,8 @@ private fun LogContext.ComposeActionResult(
                     resource = Res.string.combat_log_result_heal,
                     /* damage = */ result.finalHeal,
                     /* target = */ this[result.toIndex].name,
-                )
+                ),
+                level = if (this[result.toIndex].isParty) LogLevel.INFO else LogLevel.WARN,
             )
         }
 

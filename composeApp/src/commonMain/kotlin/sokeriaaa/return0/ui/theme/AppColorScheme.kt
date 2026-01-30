@@ -8,6 +8,12 @@ data class AppColorScheme(
     val critical: Color,
     val heal: Color,
     val nullified: Color,
+    // Log display
+    val debug: Color,
+    val info: Color,
+    val warn: Color,
+    val error: Color,
+    val fatal: Color,
     // Code display (Game field)
     val keyword: Color,
     val number: Color,

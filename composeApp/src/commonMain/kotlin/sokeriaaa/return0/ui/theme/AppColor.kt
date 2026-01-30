@@ -20,6 +20,7 @@ object AppColor {
     val Red = Color(0xFFF44336)
     val DeepOrange = Color(0xFFFF5722)
     val Orange = Color(0xFFFF9800)
+    val Yellow = Color(0xFFFFEB3B)
     val LightGreen = Color(0xFF8BC34A)
     val Green = Color(0xFF4CAF50)
     val LightBlue = Color(0xFF03A9F4)
@@ -27,6 +28,7 @@ object AppColor {
     val DeepPurple = Color(0xFF673AB7)
     val Purple = Color(0xFF9C27B0)
     val Grey = Color(0xFF9E9E9E)
+    val DeepGrey = Color(0xFF616161)
 
     /**
      * Default color scheme for the app.
@@ -36,6 +38,11 @@ object AppColor {
         critical = Orange,
         heal = LightGreen,
         nullified = Grey,
+        debug = DeepGrey,
+        info = LightGreen,
+        warn = Orange,
+        error = DeepOrange,
+        fatal = Red,
         keyword = DeepPurple,
         number = DeepOrange,
         operator = Purple,

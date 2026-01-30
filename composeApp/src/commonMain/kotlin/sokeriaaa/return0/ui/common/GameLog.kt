@@ -14,12 +14,17 @@
  */
 package sokeriaaa.return0.ui.common
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import com.materialkolor.ktx.harmonizeWithPrimary
 import sokeriaaa.return0.models.common.LogLevel
+import sokeriaaa.return0.ui.theme.AppColor
 
 /**
  * Display a console-styled log.
@@ -27,13 +32,40 @@ import sokeriaaa.return0.models.common.LogLevel
 @Composable
 fun GameLog(
     text: String,
-    level: LogLevel = LogLevel.INFO,
+    modifier: Modifier = Modifier,
+    level: LogLevel = LogLevel.DEBUG,
     style: TextStyle = MaterialTheme.typography.bodySmall,
 ) {
-    Text(
-        text = text,
-        style = style,
+    val color = MaterialTheme.colorScheme.harmonizeWithPrimary(
+        color = when (level) {
+            LogLevel.DEBUG -> AppColor.colorScheme.debug
+            LogLevel.INFO -> AppColor.colorScheme.info
+            LogLevel.WARN -> AppColor.colorScheme.warn
+            LogLevel.ERROR -> AppColor.colorScheme.error
+            LogLevel.FATAL -> AppColor.colorScheme.fatal
+        },
     )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(
+            text = when (level) {
+                LogLevel.DEBUG -> "[D] "
+                LogLevel.INFO -> "[I] "
+                LogLevel.WARN -> "[W] "
+                LogLevel.ERROR -> "[E] "
+                LogLevel.FATAL -> "[F] "
+            },
+            style = style,
+            color = color,
+        )
+        Text(
+            text = text,
+            style = style,
+            color = color,
+        )
+    }
 }
 
 /**
@@ -42,11 +74,38 @@ fun GameLog(
 @Composable
 fun GameLog(
     text: AnnotatedString,
-    level: LogLevel = LogLevel.INFO,
+    modifier: Modifier = Modifier,
+    level: LogLevel = LogLevel.DEBUG,
     style: TextStyle = MaterialTheme.typography.bodySmall,
 ) {
-    Text(
-        text = text,
-        style = style,
+    val color = MaterialTheme.colorScheme.harmonizeWithPrimary(
+        color = when (level) {
+            LogLevel.DEBUG -> AppColor.colorScheme.debug
+            LogLevel.INFO -> AppColor.colorScheme.info
+            LogLevel.WARN -> AppColor.colorScheme.warn
+            LogLevel.ERROR -> AppColor.colorScheme.error
+            LogLevel.FATAL -> AppColor.colorScheme.fatal
+        },
     )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(
+            text = when (level) {
+                LogLevel.DEBUG -> "[D] "
+                LogLevel.INFO -> "[I] "
+                LogLevel.WARN -> "[W] "
+                LogLevel.ERROR -> "[E] "
+                LogLevel.FATAL -> "[F] "
+            },
+            style = style,
+            color = color,
+        )
+        Text(
+            text = text,
+            style = style,
+            color = color,
+        )
+    }
 }
