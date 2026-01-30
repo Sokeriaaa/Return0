@@ -89,6 +89,16 @@
     <string name="game_shop_sold_out">SOLD OUT</string>
     <string name="game_shop_not_available">Not Available</string>
 
+    <string name="game_shop_cart">Cart</string>
+    <string name="game_shop_qty">Qty</string>
+    <string name="game_shop_qty_increase">Increase</string>
+    <string name="game_shop_qty_decrease">Decrease</string>
+    <string name="game_shop_cart_add">Add to Cart</string>
+    <string name="game_shop_buy">Buy</string>
+    <string name="game_shop_price_total">Total price:</string>
+    <string name="game_shop_checkout">Checkout</string>
+    <string name="game_shop_warn_insufficient">Insufficient currency.</string>
+
     <string name="game_workbench">Shop</string>
 
     <string name="game_complete_code">Complete Code</string>

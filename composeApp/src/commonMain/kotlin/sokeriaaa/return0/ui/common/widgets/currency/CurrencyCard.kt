@@ -53,19 +53,32 @@ fun CurrencyCard(
         ),
         onClick = onClick,
     ) {
-        Row(
+        CurrencyRow(
             modifier = Modifier.padding(all = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = animatedValue.toString(),
-                style = MaterialTheme.typography.titleMedium
-            )
-            CurrencyIcon(
-                modifier = Modifier.padding(start = 4.dp),
-                currencyType = currencyType
-            )
-        }
+            value = animatedValue,
+            currencyType = currencyType,
+        )
+    }
+}
+
+@Composable
+fun CurrencyRow(
+    modifier: Modifier = Modifier,
+    value: Int,
+    currencyType: CurrencyType,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = value.toString(),
+            style = MaterialTheme.typography.titleMedium
+        )
+        CurrencyIcon(
+            modifier = Modifier.padding(start = 4.dp),
+            currencyType = currencyType
+        )
     }
 }
 
@@ -88,5 +101,23 @@ fun CurrencyCardPreview2() {
         value = 200,
         currencyType = CurrencyType.CRYPTO,
         onClick = {},
+    )
+}
+
+@Preview
+@Composable
+fun CurrencyRowPreview1() {
+    CurrencyRow(
+        value = 100000,
+        currencyType = CurrencyType.TOKEN,
+    )
+}
+
+@Preview
+@Composable
+fun CurrencyRowPreview2() {
+    CurrencyRow(
+        value = 200,
+        currencyType = CurrencyType.CRYPTO,
     )
 }

@@ -21,6 +21,7 @@ import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 data class WorkbenchItem(
     override val key: String,
     override val name: String,
+    override val description: String,
     override val itemType: ItemData.Type,
     override val rarity: ItemData.Rarity,
     override val price: Pair<Int, CurrencyType>?,

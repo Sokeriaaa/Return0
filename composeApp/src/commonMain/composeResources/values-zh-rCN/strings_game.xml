@@ -89,6 +89,16 @@
     <string name="game_shop_sold_out">已售罄</string>
     <string name="game_shop_not_available">当前不可购买</string>
 
+    <string name="game_shop_cart">购物车</string>
+    <string name="game_shop_qty">数量</string>
+    <string name="game_shop_qty_increase">增加</string>
+    <string name="game_shop_qty_decrease">减少</string>
+    <string name="game_shop_cart_add">加入购物车</string>
+    <string name="game_shop_buy">购买</string>
+    <string name="game_shop_price_total">总价：</string>
+    <string name="game_shop_checkout">结账</string>
+    <string name="game_shop_warn_insufficient">货币不足。</string>
+
     <string name="game_workbench">工作台</string>
 
     <string name="game_complete_code">完成代码</string>

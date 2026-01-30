@@ -149,6 +149,7 @@ private fun ShopDisplayItemExample1() {
         item = ShopItem(
             key = "awesome_item",
             name = "Awesome Item",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             itemType = ItemData.Type.CONSUMABLE,
             rarity = ItemData.Rarity.UNCOMMON,
             price = 100 to CurrencyType.TOKEN,
@@ -168,6 +169,7 @@ private fun ShopDisplayItemExample2() {
         item = ShopItem(
             key = "limited_item",
             name = "Limited Item",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             itemType = ItemData.Type.CONSUMABLE,
             rarity = ItemData.Rarity.LEGENDARY,
             price = 200 to CurrencyType.TOKEN,
@@ -187,6 +189,7 @@ private fun ShopDisplayItemExample3() {
         item = ShopItem(
             key = "sold_out",
             name = "Sold Out",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             itemType = ItemData.Type.CONSUMABLE,
             rarity = ItemData.Rarity.COMMON,
             price = 500 to CurrencyType.TOKEN,
@@ -206,6 +209,7 @@ private fun ShopDisplayItemExample4() {
         item = ShopItem(
             key = "restock_later",
             name = "Restock Later",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             itemType = ItemData.Type.CONSUMABLE,
             rarity = ItemData.Rarity.COMMON,
             price = 100 to CurrencyType.TOKEN,
@@ -225,6 +229,7 @@ private fun ShopDisplayItemExample5() {
         item = ShopItem(
             key = "future_item",
             name = "Future Item",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             itemType = ItemData.Type.CONSUMABLE,
             rarity = ItemData.Rarity.COMMON,
             price = 5 to CurrencyType.CRYPTO,

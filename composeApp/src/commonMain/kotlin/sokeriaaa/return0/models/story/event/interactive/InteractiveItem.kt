@@ -32,6 +32,11 @@ interface InteractiveItem {
     val name: String
 
     /**
+     * Display description
+     */
+    val description: String
+
+    /**
      * Item type
      */
     val itemType: ItemData.Type

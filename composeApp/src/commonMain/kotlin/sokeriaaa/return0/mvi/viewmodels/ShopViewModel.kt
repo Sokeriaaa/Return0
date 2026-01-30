@@ -104,6 +104,7 @@ class ShopViewModel : BaseViewModel() {
                 ShopItem(
                     key = it.item.key,
                     name = _resourceRepo.getString(it.item.resourceKey),
+                    description = _resourceRepo.getString(it.item.resourceDescKey),
                     itemType = when (val item = it.item) {
                         is ItemEntry.Inventory -> _archiveRepo.getItemData(item.inventoryKey)
                             ?.types?.firstOrNull() ?: ItemData.Type.OTHER
