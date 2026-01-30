@@ -37,6 +37,11 @@ interface InteractiveItem {
     val itemType: ItemData.Type
 
     /**
+     * Item rarity
+     */
+    val rarity: ItemData.Rarity
+
+    /**
      * Price.
      */
     val price: Pair<Int, CurrencyType>?

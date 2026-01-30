@@ -14,7 +14,11 @@
  */
 package sokeriaaa.return0.ui.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import com.materialkolor.hct.Hct
+import com.materialkolor.ktx.harmonize
 
 object AppColor {
     val Red = Color(0xFFF44336)
@@ -52,5 +56,28 @@ object AppColor {
         function = Orange,
         event = Blue,
         blocked = Red,
+        common = Color.White,
+        uncommon = LightGreen,
+        rare = LightBlue,
+        epic = Purple,
+        legendary = Yellow,
     )
+
+    @Composable
+    fun alignColor(
+        source: Color,
+        target: Color,
+    ): Color {
+        val harmonizedColor = source.harmonize(target)
+        // Convert target to HCT to find its "Tone" (brightness)
+        val targetHct = Hct.fromInt(target.toArgb())
+        val targetTone = targetHct.tone
+
+        // Convert source to HCT and apply the target tone
+        val customHct = Hct.fromInt(harmonizedColor.toArgb())
+        val alignedHct = Hct.from(customHct.hue, customHct.chroma, targetTone)
+
+        // Return as a standard Compose Color
+        return Color(alignedHct.toInt())
+    }
 }

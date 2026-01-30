@@ -110,6 +110,13 @@ class ShopViewModel : BaseViewModel() {
 
                         is ItemEntry.Plugin -> ItemData.Type.PLUGIN
                     },
+                    rarity = when (val item = it.item) {
+                        is ItemEntry.Inventory -> _archiveRepo.getItemData(item.inventoryKey)
+                            ?.rarity ?: ItemData.Rarity.COMMON
+
+                        is ItemEntry.Plugin ->
+                            ItemData.Rarity.entries[(item.tier - 1.coerceAtLeast(0))]
+                    },
                     price = (it.price?.calculatedIn(context) ?: 0) to
                             (it.currency ?: CurrencyType.TOKEN),
                     isAvailable = it.isAvailable.calculatedIn(context),

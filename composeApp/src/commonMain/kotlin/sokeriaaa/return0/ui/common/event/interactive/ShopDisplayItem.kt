@@ -46,6 +46,7 @@ import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.ui.common.res.CurrencyIcon
 import sokeriaaa.return0.ui.common.res.InventoryRes
+import sokeriaaa.return0.ui.theme.AppColor
 
 @Composable
 fun ShopDisplayItem(
@@ -58,7 +59,16 @@ fun ShopDisplayItem(
         shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (item.sorter == 0) {
-                MaterialTheme.colorScheme.primaryContainer
+                AppColor.alignColor(
+                    source = when (item.rarity) {
+                        ItemData.Rarity.COMMON -> AppColor.colorScheme.common
+                        ItemData.Rarity.UNCOMMON -> AppColor.colorScheme.uncommon
+                        ItemData.Rarity.RARE -> AppColor.colorScheme.rare
+                        ItemData.Rarity.EPIC -> AppColor.colorScheme.epic
+                        ItemData.Rarity.LEGENDARY -> AppColor.colorScheme.legendary
+                    },
+                    target = MaterialTheme.colorScheme.primaryContainer
+                )
             } else {
                 MaterialTheme.colorScheme.surfaceDim
             },
@@ -140,6 +150,7 @@ private fun ShopDisplayItemExample1() {
             key = "awesome_item",
             name = "Awesome Item",
             itemType = ItemData.Type.CONSUMABLE,
+            rarity = ItemData.Rarity.UNCOMMON,
             price = 100 to CurrencyType.TOKEN,
             isAvailable = true,
             limit = null,
@@ -158,6 +169,7 @@ private fun ShopDisplayItemExample2() {
             key = "limited_item",
             name = "Limited Item",
             itemType = ItemData.Type.CONSUMABLE,
+            rarity = ItemData.Rarity.LEGENDARY,
             price = 200 to CurrencyType.TOKEN,
             isAvailable = true,
             limit = 5,
@@ -176,6 +188,7 @@ private fun ShopDisplayItemExample3() {
             key = "sold_out",
             name = "Sold Out",
             itemType = ItemData.Type.CONSUMABLE,
+            rarity = ItemData.Rarity.COMMON,
             price = 500 to CurrencyType.TOKEN,
             isAvailable = true,
             limit = 0,
@@ -194,6 +207,7 @@ private fun ShopDisplayItemExample4() {
             key = "restock_later",
             name = "Restock Later",
             itemType = ItemData.Type.CONSUMABLE,
+            rarity = ItemData.Rarity.COMMON,
             price = 100 to CurrencyType.TOKEN,
             isAvailable = true,
             limit = 0,
@@ -212,6 +226,7 @@ private fun ShopDisplayItemExample5() {
             key = "future_item",
             name = "Future Item",
             itemType = ItemData.Type.CONSUMABLE,
+            rarity = ItemData.Rarity.COMMON,
             price = 5 to CurrencyType.CRYPTO,
             isAvailable = false,
             limit = null,

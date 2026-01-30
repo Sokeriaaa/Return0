@@ -24,4 +24,10 @@ data class AppColorScheme(
     val function: Color,
     val event: Color,
     val blocked: Color,
+    // Rarity
+    val common: Color,
+    val uncommon: Color,
+    val rare: Color,
+    val epic: Color,
+    val legendary: Color,
 )

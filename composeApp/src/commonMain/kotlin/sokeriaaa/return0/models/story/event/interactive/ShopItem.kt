@@ -22,6 +22,7 @@ data class ShopItem(
     override val key: String,
     override val name: String,
     override val itemType: ItemData.Type,
+    override val rarity: ItemData.Rarity,
     override val price: Pair<Int, CurrencyType>,
     override val isAvailable: Boolean,
     override val limit: Int?,
