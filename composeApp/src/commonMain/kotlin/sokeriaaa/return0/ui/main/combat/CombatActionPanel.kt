@@ -105,7 +105,9 @@ fun CombatActionPanel(
                     modifier = Modifier.weight(1F),
                     text = stringResource(Res.string.combat_choose_action_attack),
                     onClick = {
-                        viewModel.onIntent(CombatIntent.ChooseAction(entitySelecting!!.attackAction))
+                        entitySelecting?.attackAction?.let {
+                            viewModel.onIntent(CombatIntent.ChooseAction(it))
+                        }
                     },
                 )
                 AppTextButton(
@@ -124,14 +126,18 @@ fun CombatActionPanel(
                     modifier = Modifier.weight(1F),
                     text = stringResource(Res.string.combat_choose_action_defend),
                     onClick = {
-                        viewModel.onIntent(CombatIntent.ChooseAction(entitySelecting!!.defendAction))
+                        entitySelecting?.defendAction?.let {
+                            viewModel.onIntent(CombatIntent.ChooseAction(it))
+                        }
                     },
                 )
                 AppTextButton(
                     modifier = Modifier.weight(1F),
                     text = stringResource(Res.string.combat_choose_action_relax),
                     onClick = {
-                        viewModel.onIntent(CombatIntent.ChooseAction(entitySelecting!!.relaxAction))
+                        entitySelecting?.relaxAction?.let {
+                            viewModel.onIntent(CombatIntent.ChooseAction(it))
+                        }
                     },
                 )
                 AppTextButton(
