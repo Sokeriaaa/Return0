@@ -29,6 +29,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -120,6 +122,7 @@ fun ShopScreen(
                 modifier = Modifier.fillMaxWidth(),
                 tokenValue = viewModel.tokenValue,
                 cryptoValue = viewModel.cryptoValue,
+                itemCount = viewModel.cart.values.sum(),
                 onBack = onBack,
             )
         },
@@ -285,6 +288,7 @@ private fun ShopScreenTitle(
     modifier: Modifier = Modifier,
     tokenValue: Int,
     cryptoValue: Int,
+    itemCount: Int,
     onBack: () -> Unit,
 ) {
     TopAppBar(
@@ -305,14 +309,22 @@ private fun ShopScreenTitle(
                     currencyType = CurrencyType.CRYPTO,
                 )
             }
-            // TODO: Add badges
-            AppFilledTonalIconButton(
-                iconRes = Res.drawable.ic_outline_shopping_cart_24,
-                contentDescription = stringResource(Res.string.game_shop_cart),
-                onClick = {
-                    // TODO: Open cart screen.
+            BadgedBox(
+                badge = {
+                    when {
+                        itemCount > 99 -> Badge { Text("99+") }
+                        itemCount > 0 -> Badge { Text("$itemCount") }
+                    }
                 }
-            )
+            ) {
+                AppFilledTonalIconButton(
+                    iconRes = Res.drawable.ic_outline_shopping_cart_24,
+                    contentDescription = stringResource(Res.string.game_shop_cart),
+                    onClick = {
+                        // TODO: Open cart screen.
+                    }
+                )
+            }
         }
     )
 }
@@ -323,7 +335,12 @@ private fun ShopScreenTitle(
 @Preview
 @Composable
 private fun ShopScreenTitlePreview() {
-    ShopScreenTitle(tokenValue = 123456, cryptoValue = 123, onBack = {})
+    ShopScreenTitle(
+        tokenValue = 123456,
+        cryptoValue = 123,
+        itemCount = 42,
+        onBack = {},
+    )
 }
 
 @Preview
