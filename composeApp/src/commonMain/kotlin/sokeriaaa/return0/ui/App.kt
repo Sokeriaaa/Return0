@@ -15,6 +15,7 @@
 package sokeriaaa.return0.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,9 +39,11 @@ fun App() {
             else -> isSystemInDarkTheme()
         },
     ) {
-        AppNavHost(
-            mainNavHostController = rememberNavController(),
-            windowAdaptiveInfo = currentWindowAdaptiveInfo(),
-        )
+        Surface {
+            AppNavHost(
+                mainNavHostController = rememberNavController(),
+                windowAdaptiveInfo = currentWindowAdaptiveInfo(),
+            )
+        }
     }
 }
