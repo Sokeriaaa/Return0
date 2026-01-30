@@ -14,16 +14,15 @@
  */
 package sokeriaaa.return0.ui.main.game
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import com.materialkolor.ktx.harmonizeWithPrimary
 import sokeriaaa.return0.models.story.map.MapRowText
 import sokeriaaa.return0.ui.theme.AppColor
+import sokeriaaa.return0.ui.theme.AppColor.alignedToPrimary
 
 
 @Composable
@@ -197,9 +196,7 @@ fun MapRowText.assembleText(depth: Int): AnnotatedString = buildAnnotatedString 
         is MapRowText.Events -> {
             withStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                        color = AppColor.colorScheme.event,
-                    ),
+                    color = AppColor.colorScheme.event.alignedToPrimary(),
                     textDecoration = TextDecoration.Underline,
                 ),
             ) {
@@ -210,9 +207,7 @@ fun MapRowText.assembleText(depth: Int): AnnotatedString = buildAnnotatedString 
         is MapRowText.BlockedRow -> {
             withStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                        color = AppColor.colorScheme.blocked,
-                    ),
+                    color = AppColor.colorScheme.blocked.alignedToPrimary(),
                     textDecoration = TextDecoration.Underline,
                 ),
             ) {
@@ -227,9 +222,7 @@ fun MapRowText.assembleText(depth: Int): AnnotatedString = buildAnnotatedString 
 private fun AnnotatedString.Builder.keyword(keyword: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.keyword,
-            ),
+            color = AppColor.colorScheme.keyword.alignedToPrimary(),
         ),
     ) {
         append(keyword)
@@ -240,9 +233,7 @@ private fun AnnotatedString.Builder.keyword(keyword: String) {
 private fun AnnotatedString.Builder.number(number: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.number,
-            ),
+            color = AppColor.colorScheme.number.alignedToPrimary(),
         ),
     ) {
         append(number)
@@ -253,9 +244,7 @@ private fun AnnotatedString.Builder.number(number: String) {
 private fun AnnotatedString.Builder.operator(operator: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.operator,
-            ),
+            color = AppColor.colorScheme.operator.alignedToPrimary(),
         ),
     ) {
         append(operator)
@@ -266,9 +255,7 @@ private fun AnnotatedString.Builder.operator(operator: String) {
 private fun AnnotatedString.Builder.string(string: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.string,
-            ),
+            color = AppColor.colorScheme.string.alignedToPrimary(),
         ),
     ) {
         append(string)
@@ -279,9 +266,7 @@ private fun AnnotatedString.Builder.string(string: String) {
 private fun AnnotatedString.Builder.comment(comment: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.comment,
-            ),
+            color = AppColor.colorScheme.comment.alignedToPrimary(),
         ),
     ) {
         append(comment)
@@ -292,9 +277,7 @@ private fun AnnotatedString.Builder.comment(comment: String) {
 private fun AnnotatedString.Builder.variable(variable: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.variable,
-            ),
+            color = AppColor.colorScheme.variable.alignedToPrimary(),
         ),
     ) {
         append(variable)
@@ -305,9 +288,7 @@ private fun AnnotatedString.Builder.variable(variable: String) {
 private fun AnnotatedString.Builder.function(function: String) {
     withStyle(
         style = SpanStyle(
-            color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-                color = AppColor.colorScheme.function,
-            ),
+            color = AppColor.colorScheme.function.alignedToPrimary(),
         ),
     ) {
         append(function)

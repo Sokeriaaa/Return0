@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -80,4 +81,13 @@ object AppColor {
         // Return as a standard Compose Color
         return Color(alignedHct.toInt())
     }
+
+    @Composable
+    fun alignToPrimary(source: Color): Color = alignColor(
+        source = source,
+        target = MaterialTheme.colorScheme.primary,
+    )
+
+    @Composable
+    fun Color.alignedToPrimary(): Color = alignToPrimary(this)
 }

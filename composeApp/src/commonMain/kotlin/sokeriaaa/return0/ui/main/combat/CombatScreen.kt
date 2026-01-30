@@ -107,6 +107,7 @@ import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
+import sokeriaaa.return0.ui.theme.AppColor.alignedToPrimary
 
 /**
  * The combat screen, for where the user to combat with bugs.

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import com.materialkolor.ktx.harmonizeWithPrimary
 import sokeriaaa.return0.models.common.LogLevel
 import sokeriaaa.return0.ui.theme.AppColor
+import sokeriaaa.return0.ui.theme.AppColor.alignedToPrimary
 
 /**
  * Display a console-styled log.
@@ -36,15 +37,13 @@ fun GameLog(
     level: LogLevel = LogLevel.DEBUG,
     style: TextStyle = MaterialTheme.typography.bodySmall,
 ) {
-    val color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-        color = when (level) {
-            LogLevel.DEBUG -> AppColor.colorScheme.debug
-            LogLevel.INFO -> AppColor.colorScheme.info
-            LogLevel.WARN -> AppColor.colorScheme.warn
-            LogLevel.ERROR -> AppColor.colorScheme.error
-            LogLevel.FATAL -> AppColor.colorScheme.fatal
-        },
-    )
+    val color = when (level) {
+        LogLevel.DEBUG -> AppColor.colorScheme.debug
+        LogLevel.INFO -> AppColor.colorScheme.info
+        LogLevel.WARN -> AppColor.colorScheme.warn
+        LogLevel.ERROR -> AppColor.colorScheme.error
+        LogLevel.FATAL -> AppColor.colorScheme.fatal
+    }.alignedToPrimary()
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.Top,
@@ -78,15 +77,13 @@ fun GameLog(
     level: LogLevel = LogLevel.DEBUG,
     style: TextStyle = MaterialTheme.typography.bodySmall,
 ) {
-    val color = MaterialTheme.colorScheme.harmonizeWithPrimary(
-        color = when (level) {
-            LogLevel.DEBUG -> AppColor.colorScheme.debug
-            LogLevel.INFO -> AppColor.colorScheme.info
-            LogLevel.WARN -> AppColor.colorScheme.warn
-            LogLevel.ERROR -> AppColor.colorScheme.error
-            LogLevel.FATAL -> AppColor.colorScheme.fatal
-        },
-    )
+    val color = when (level) {
+        LogLevel.DEBUG -> AppColor.colorScheme.debug
+        LogLevel.INFO -> AppColor.colorScheme.info
+        LogLevel.WARN -> AppColor.colorScheme.warn
+        LogLevel.ERROR -> AppColor.colorScheme.error
+        LogLevel.FATAL -> AppColor.colorScheme.fatal
+    }.alignedToPrimary()
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.Top,
