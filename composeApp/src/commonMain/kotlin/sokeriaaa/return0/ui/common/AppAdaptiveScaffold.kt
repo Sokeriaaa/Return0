@@ -54,7 +54,7 @@ fun <VM : BaseViewModel> AppAdaptiveScaffold(
     viewModel: VM,
     state: AppAdaptiveScaffoldState,
     topBar: @Composable () -> Unit = {},
-    mainContentWidth: Dp = 300.dp,
+    mainContentWidth: Dp = 360.dp,
     mainContent: @Composable (BoxScope) -> Unit,
     paneContent: @Composable (BoxScope) -> Unit,
     panePlaceholder: @Composable (BoxScope) -> Unit = {},
