@@ -64,6 +64,7 @@ class ShopViewModel : BaseViewModel() {
         when (intent) {
             CommonIntent.Refresh -> viewModelScope.launch { refresh() }
             is ShopIntent.Initialize -> {
+                _cart.clear()
                 context = intent.context
                 shopEvent = intent.shopEvent
                 viewModelScope.launch { refresh() }

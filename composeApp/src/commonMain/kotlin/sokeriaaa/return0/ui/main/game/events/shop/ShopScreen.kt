@@ -65,6 +65,8 @@ import return0.composeapp.generated.resources.game_shop_cart_add
 import return0.composeapp.generated.resources.game_shop_qty
 import return0.composeapp.generated.resources.game_shop_qty_decrease
 import return0.composeapp.generated.resources.game_shop_qty_increase
+import return0.composeapp.generated.resources.game_shop_warn_cart_lost
+import return0.composeapp.generated.resources.game_shop_warn_leave
 import return0.composeapp.generated.resources.ic_outline_add_circle_24
 import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
 import return0.composeapp.generated.resources.ic_outline_do_not_disturb_on_24
@@ -73,6 +75,7 @@ import return0.composeapp.generated.resources.ic_outline_shopping_cart_24
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
+import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
@@ -82,6 +85,7 @@ import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.event.interactive.ShopDisplayItem
 import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
+import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
@@ -103,10 +107,18 @@ fun ShopScreen(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
+    var isShowingLeaveWarning: Boolean by remember { mutableStateOf(false) }
+    val navigateUp: () -> Unit = {
+        gameViewModel.onIntent(GameIntent.EventContinue)
+        mainNavHostController.navigateUp()
+    }
     val onBack: () -> Unit = {
         if (state.isWideScreen || !state.isShowingPane) {
-            gameViewModel.onIntent(GameIntent.EventContinue)
-            mainNavHostController.navigateUp()
+            if (viewModel.cart.isEmpty()) {
+                navigateUp()
+            } else {
+                isShowingLeaveWarning = true
+            }
         } else {
             state.hidePane()
         }
@@ -160,6 +172,17 @@ fun ShopScreen(
             }
         },
     )
+    if (isShowingLeaveWarning) {
+        AppAlertDialog(
+            title = stringResource(Res.string.game_shop_warn_leave),
+            text = stringResource(Res.string.game_shop_warn_cart_lost),
+            onDismiss = { isShowingLeaveWarning = false },
+            onConfirmed = {
+                isShowingLeaveWarning = false
+                navigateUp()
+            }
+        )
+    }
 }
 
 @Composable
@@ -268,7 +291,19 @@ private fun ShopDetails(
                     modifier = Modifier.weight(1F),
                     iconRes = Res.drawable.ic_outline_add_shopping_cart_24,
                     text = stringResource(Res.string.game_shop_cart_add),
-                    onClick = {},
+                    onClick = {
+                        onIntent(
+                            ShopIntent.AlterCart(
+                                item = item,
+                                // We use text here scene the user may click the button
+                                // before "done".
+                                amountChange = amountText.toIntOrNull() ?: 1
+                            ),
+                        )
+                        // Reset amount after adding to cart.
+                        amount = 1
+                        amountText = amount.toString()
+                    },
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 AppButton(
