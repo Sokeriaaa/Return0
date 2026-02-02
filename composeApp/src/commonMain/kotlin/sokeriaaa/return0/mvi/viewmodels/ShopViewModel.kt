@@ -91,7 +91,7 @@ class ShopViewModel : BaseViewModel() {
                 refreshCartItems()
             }
 
-            ShopIntent.CheckOut -> viewModelScope.launch {
+            is ShopIntent.CheckOut -> viewModelScope.launch {
                 val prices = cartItems
                     .groupingBy { it.first.price.second }
                     .fold(initialValue = 0) { acc, entry ->
@@ -109,6 +109,7 @@ class ShopViewModel : BaseViewModel() {
                             message = getString(Res.string.game_shop_purchase_successful),
                         ),
                     )
+                    intent.onPurchased()
                 } else {
                     onIntent(
                         intent = CommonIntent.ShowSnackBar(
@@ -128,6 +129,7 @@ class ShopViewModel : BaseViewModel() {
                             message = getString(Res.string.game_shop_purchase_successful),
                         ),
                     )
+                    intent.onPurchased()
                 } else {
                     onIntent(
                         intent = CommonIntent.ShowSnackBar(

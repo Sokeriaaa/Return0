@@ -32,10 +32,13 @@ sealed class ShopIntent : BaseIntent {
         val key: String,
     ) : ShopIntent()
 
-    data object CheckOut : ShopIntent()
+    data class CheckOut(
+        val onPurchased: () -> Unit,
+    ) : ShopIntent()
 
     data class Buy(
         val key: String,
         val amount: Int,
+        val onPurchased: () -> Unit,
     ) : ShopIntent()
 }

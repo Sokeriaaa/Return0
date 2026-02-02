@@ -55,7 +55,10 @@ import return0.composeapp.generated.resources.game_shop
 import return0.composeapp.generated.resources.game_shop_buy
 import return0.composeapp.generated.resources.game_shop_cart
 import return0.composeapp.generated.resources.game_shop_cart_add
+import return0.composeapp.generated.resources.game_shop_not_available
 import return0.composeapp.generated.resources.game_shop_qty
+import return0.composeapp.generated.resources.game_shop_restock_after
+import return0.composeapp.generated.resources.game_shop_sold_out
 import return0.composeapp.generated.resources.game_shop_warn_cart_lost
 import return0.composeapp.generated.resources.game_shop_warn_leave
 import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
@@ -160,6 +163,10 @@ fun ShopScreen(
                         .padding(horizontal = 10.dp),
                     item = it,
                     onIntent = viewModel::onIntent,
+                    onPurchased = {
+                        // Refresh item.
+                        selectedItem = viewModel.items[it.key]
+                    }
                 )
             }
         },
@@ -182,6 +189,7 @@ private fun ShopDetails(
     modifier: Modifier = Modifier,
     item: ShopItem,
     onIntent: (BaseIntent) -> Unit,
+    onPurchased: () -> Unit,
 ) {
     var amount: Int by remember { mutableIntStateOf(1) }
     val animatedTotalPrice by animateIntAsState(
@@ -217,53 +225,85 @@ private fun ShopDetails(
             Text(item.description)
         }
         // Buy panel
-        Column {
-            val focusManager = LocalFocusManager.current
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            if (!item.isAvailable) {
                 Text(
-                    text = stringResource(Res.string.game_shop_qty),
-                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    text = stringResource(Res.string.game_shop_not_available),
                 )
-                AmountSelectorContent(
-                    amount = amount,
-                    maximum = item.limit ?: Int.MAX_VALUE,
-                    focusManager = focusManager,
-                    onAmountChange = { amount = it },
-                )
-                Spacer(modifier = Modifier.weight(1F))
-                // Total
-                CurrencyRow(
-                    value = animatedTotalPrice,
-                    currencyType = item.price.second,
-                )
-            }
-            Row(modifier = Modifier.fillMaxWidth()) {
-                AppFilledTonalButton(
-                    modifier = Modifier.weight(1F),
-                    iconRes = Res.drawable.ic_outline_add_shopping_cart_24,
-                    text = stringResource(Res.string.game_shop_cart_add),
-                    onClick = {
-                        // Clear focus before sending intent.
-                        focusManager.clearFocus()
-                        onIntent(
-                            ShopIntent.AlterCart(
-                                key = item.key,
-                                amountChange = amount
-                            ),
+            } else if (item.limit == null || item.limit > 0) {
+                val focusManager = LocalFocusManager.current
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(Res.string.game_shop_qty),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    AmountSelectorContent(
+                        amount = amount,
+                        maximum = item.limit ?: Int.MAX_VALUE,
+                        focusManager = focusManager,
+                        onAmountChange = { amount = it },
+                    )
+                    Spacer(modifier = Modifier.weight(1F))
+                    // Total
+                    CurrencyRow(
+                        value = animatedTotalPrice,
+                        currencyType = item.price.second,
+                    )
+                }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    AppFilledTonalButton(
+                        modifier = Modifier.weight(1F),
+                        iconRes = Res.drawable.ic_outline_add_shopping_cart_24,
+                        text = stringResource(Res.string.game_shop_cart_add),
+                        onClick = {
+                            // Clear focus before sending intent.
+                            focusManager.clearFocus()
+                            onIntent(
+                                ShopIntent.AlterCart(
+                                    key = item.key,
+                                    amountChange = amount
+                                ),
+                            )
+                            // Reset amount after adding to cart.
+                            amount = 1
+                        },
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    AppButton(
+                        modifier = Modifier.weight(1F),
+                        iconRes = Res.drawable.ic_outline_payments_24,
+                        text = stringResource(Res.string.game_shop_buy),
+                        onClick = {
+                            onIntent(
+                                ShopIntent.Buy(
+                                    key = item.key,
+                                    amount = amount,
+                                    onPurchased = onPurchased,
+                                )
+                            )
+                            // Reset amount after purchasing.
+                            amount = 1
+                        },
+                    )
+                }
+            } else {
+                Text(
+                    modifier = Modifier.padding(vertical = 24.dp),
+                    text = if (item.refreshAfter == null) {
+                        stringResource(Res.string.game_shop_sold_out)
+                    } else {
+                        stringResource(
+                            resource = Res.string.game_shop_restock_after,
+                            /* restockAfter = */ item.refreshAfter,
                         )
-                        // Reset amount after adding to cart.
-                        amount = 1
-                    },
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                AppButton(
-                    modifier = Modifier.weight(1F),
-                    iconRes = Res.drawable.ic_outline_payments_24,
-                    text = stringResource(Res.string.game_shop_buy),
-                    onClick = { onIntent(ShopIntent.Buy(item.key, amount)) },
+                    }
                 )
             }
         }
@@ -349,6 +389,7 @@ private fun ShopDetailsPreview() {
                 inventoryKey = "example_item",
             ),
         ),
-        onIntent = {}
+        onIntent = {},
+        onPurchased = {},
     )
 }

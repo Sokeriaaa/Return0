@@ -136,7 +136,11 @@ fun ShoppingCartScreen(
                     modifier = Modifier.weight(1F),
                     iconRes = Res.drawable.ic_outline_shopping_cart_checkout_24,
                     text = stringResource(Res.string.game_shop_checkout),
-                    onClick = { viewModel.onIntent(ShopIntent.CheckOut) },
+                    onClick = {
+                        viewModel.onIntent(
+                            ShopIntent.CheckOut(onPurchased = {})
+                        )
+                    },
                 )
             }
         }
