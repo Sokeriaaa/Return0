@@ -108,7 +108,7 @@ fun ShopScreen(
     }
     val onBack: () -> Unit = {
         if (state.isWideScreen || !state.isShowingPane) {
-            if (viewModel.cart.isEmpty()) {
+            if (viewModel.cartItems.isEmpty()) {
                 navigateUp()
             } else {
                 isShowingLeaveWarning = true
@@ -128,7 +128,7 @@ fun ShopScreen(
                 modifier = Modifier.fillMaxWidth(),
                 tokenValue = viewModel.tokenValue,
                 cryptoValue = viewModel.cryptoValue,
-                itemCount = viewModel.cart.values.sum(),
+                itemCount = viewModel.cartItems.sumOf { it.second },
                 onOpenCart = { mainNavHostController.navigateSingleTop(Scene.ShoppingCart.route) },
                 onBack = onBack,
             )
