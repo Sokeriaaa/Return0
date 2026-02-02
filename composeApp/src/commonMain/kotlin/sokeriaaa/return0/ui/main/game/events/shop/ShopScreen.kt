@@ -25,9 +25,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -46,11 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -63,13 +56,9 @@ import return0.composeapp.generated.resources.game_shop_buy
 import return0.composeapp.generated.resources.game_shop_cart
 import return0.composeapp.generated.resources.game_shop_cart_add
 import return0.composeapp.generated.resources.game_shop_qty
-import return0.composeapp.generated.resources.game_shop_qty_decrease
-import return0.composeapp.generated.resources.game_shop_qty_increase
 import return0.composeapp.generated.resources.game_shop_warn_cart_lost
 import return0.composeapp.generated.resources.game_shop_warn_leave
-import return0.composeapp.generated.resources.ic_outline_add_circle_24
 import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
-import return0.composeapp.generated.resources.ic_outline_do_not_disturb_on_24
 import return0.composeapp.generated.resources.ic_outline_payments_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_24
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
@@ -85,13 +74,15 @@ import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.event.interactive.ShopDisplayItem
 import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
+import sokeriaaa.return0.ui.common.widgets.AmountSelectorContent
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalIconButton
-import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
+import sokeriaaa.return0.ui.nav.Scene
+import sokeriaaa.return0.ui.nav.navigateSingleTop
 
 @Composable
 fun ShopScreen(
@@ -135,6 +126,7 @@ fun ShopScreen(
                 tokenValue = viewModel.tokenValue,
                 cryptoValue = viewModel.cryptoValue,
                 itemCount = viewModel.cart.values.sum(),
+                onOpenCart = { mainNavHostController.navigateSingleTop(Scene.ShoppingCart.route) },
                 onBack = onBack,
             )
         },
@@ -192,7 +184,6 @@ private fun ShopDetails(
     onIntent: (BaseIntent) -> Unit,
 ) {
     var amount: Int by remember { mutableIntStateOf(1) }
-    var amountText: String by remember { mutableStateOf("1") }
     val animatedTotalPrice by animateIntAsState(
         targetValue = item.price.first * amount,
         label = "AnimatedTotalPrice",
@@ -200,7 +191,6 @@ private fun ShopDetails(
     // Reset amount when item is changed.
     LaunchedEffect(item.name) {
         amount = 1
-        amountText = "1"
     }
     Column(modifier = modifier) {
         // Display
@@ -237,47 +227,10 @@ private fun ShopDetails(
                     text = stringResource(Res.string.game_shop_qty),
                     style = MaterialTheme.typography.titleMedium,
                 )
-                // -
-                AppIconButton(
-                    iconRes = Res.drawable.ic_outline_do_not_disturb_on_24,
-                    contentDescription = stringResource(Res.string.game_shop_qty_decrease),
-                    onClick = {
-                        amount--
-                        if (amount < 1) amount = 1
-                        amountText = amount.toString()
-                    },
-                )
-                // Amount
-                BasicTextField(
-                    modifier = Modifier
-                        .width(48.dp)
-                        .onFocusChanged {
-                            if (!it.isFocused) {
-                                amount = amountText.toIntOrNull() ?: 1
-                                amountText = amount.toString()
-                            }
-                        },
-                    value = amountText,
-                    onValueChange = { amountText = it },
-                    singleLine = true,
-                    textStyle = MaterialTheme.typography.titleLarge
-                        .copy(textAlign = TextAlign.Center),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                )
-                // +
-                AppIconButton(
-                    iconRes = Res.drawable.ic_outline_add_circle_24,
-                    contentDescription = stringResource(Res.string.game_shop_qty_increase),
-                    onClick = {
-                        amount++
-                        amountText = amount.toString()
-                    },
+                AmountSelectorContent(
+                    amount = amount,
+                    focusManager = focusManager,
+                    onAmountChange = { amount = it },
                 )
                 Spacer(modifier = Modifier.weight(1F))
                 // Total
@@ -292,17 +245,16 @@ private fun ShopDetails(
                     iconRes = Res.drawable.ic_outline_add_shopping_cart_24,
                     text = stringResource(Res.string.game_shop_cart_add),
                     onClick = {
+                        // Clear focus before sending intent.
+                        focusManager.clearFocus()
                         onIntent(
                             ShopIntent.AlterCart(
                                 item = item,
-                                // We use text here scene the user may click the button
-                                // before "done".
-                                amountChange = amountText.toIntOrNull() ?: 1
+                                amountChange = amount
                             ),
                         )
                         // Reset amount after adding to cart.
                         amount = 1
-                        amountText = amount.toString()
                     },
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -324,6 +276,7 @@ private fun ShopScreenTitle(
     tokenValue: Int,
     cryptoValue: Int,
     itemCount: Int,
+    onOpenCart: () -> Unit,
     onBack: () -> Unit,
 ) {
     TopAppBar(
@@ -355,9 +308,7 @@ private fun ShopScreenTitle(
                 AppFilledTonalIconButton(
                     iconRes = Res.drawable.ic_outline_shopping_cart_24,
                     contentDescription = stringResource(Res.string.game_shop_cart),
-                    onClick = {
-                        // TODO: Open cart screen.
-                    }
+                    onClick = onOpenCart,
                 )
             }
         }
@@ -374,6 +325,7 @@ private fun ShopScreenTitlePreview() {
         tokenValue = 123456,
         cryptoValue = 123,
         itemCount = 42,
+        onOpenCart = {},
         onBack = {},
     )
 }
