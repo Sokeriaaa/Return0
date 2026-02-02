@@ -41,6 +41,7 @@ import sokeriaaa.return0.ui.main.game.entities.EntitiesScreen
 import sokeriaaa.return0.ui.main.game.entities.details.EntityDetailsScreen
 import sokeriaaa.return0.ui.main.game.entities.plugin.EntityPluginSelectionScreen
 import sokeriaaa.return0.ui.main.game.events.shop.ShopScreen
+import sokeriaaa.return0.ui.main.game.events.shop.ShoppingCartScreen
 import sokeriaaa.return0.ui.main.game.events.workbench.WorkbenchScreen
 import sokeriaaa.return0.ui.main.game.inventory.InventoryScreen
 import sokeriaaa.return0.ui.main.game.quests.QuestsScreen
@@ -139,6 +140,12 @@ fun AppNavHost(
         }
         myComposable(Scene.Shop) {
             ShopScreen(
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
+        myComposable(Scene.ShoppingCart) {
+            ShoppingCartScreen(
                 mainNavHostController = mainNavHostController,
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
@@ -265,6 +272,7 @@ sealed class Scene(val route: String) {
     data object Teams : Scene(route = "r0_teams")
     data object Inventory : Scene(route = "r0_inventory")
     data object Shop : Scene(route = "r0_shop")
+    data object ShoppingCart : Scene(route = "r0_shopping_cart")
     data object Workbench : Scene(route = "r0_workbench")
 
     data object Combat : Scene(route = "r0_combat")
