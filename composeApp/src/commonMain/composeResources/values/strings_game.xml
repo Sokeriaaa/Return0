@@ -97,6 +97,7 @@
     <string name="game_shop_buy">Buy</string>
     <string name="game_shop_price_total">Total price:</string>
     <string name="game_shop_checkout">Checkout</string>
+    <string name="game_shop_purchase_successful">Purchased successfully.</string>
     <string name="game_shop_warn_insufficient">Insufficient currency.</string>
     <string name="game_shop_warn_leave">Leave shop?</string>
     <string name="game_shop_warn_cart_lost">Goods not checked out in the cart will be lost.</string>

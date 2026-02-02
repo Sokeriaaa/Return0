@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.game_shop_purchase_successful
 import return0.composeapp.generated.resources.game_shop_warn_insufficient
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
@@ -102,6 +103,11 @@ class ShopViewModel : BaseViewModel() {
                     _cart.clear()
                     _cartItems.clear()
                     refresh()
+                    onIntent(
+                        intent = CommonIntent.ShowSnackBar(
+                            message = getString(Res.string.game_shop_purchase_successful),
+                        ),
+                    )
                 } else {
                     onIntent(
                         intent = CommonIntent.ShowSnackBar(
@@ -116,6 +122,11 @@ class ShopViewModel : BaseViewModel() {
                 if (checkBalance(item.price, intent.amount)) {
                     executePurchase(item, intent.amount)
                     refresh()
+                    onIntent(
+                        intent = CommonIntent.ShowSnackBar(
+                            message = getString(Res.string.game_shop_purchase_successful),
+                        ),
+                    )
                 } else {
                     onIntent(
                         intent = CommonIntent.ShowSnackBar(
