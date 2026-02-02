@@ -51,16 +51,19 @@ class ShopViewModel : BaseViewModel() {
     private lateinit var shopEvent: Event.Shop
 
     // Items
-    private val _items: MutableList<ShopItem> = mutableStateListOf()
-    val items: List<ShopItem> = _items
+    private val _items: MutableMap<String, ShopItem> = mutableStateMapOf()
+    val items: Map<String, ShopItem> = _items
 
     // Currency values
     val tokenValue: Int get() = _gameStateRepo.currency[CurrencyType.TOKEN]
     val cryptoValue: Int get() = _gameStateRepo.currency[CurrencyType.CRYPTO]
 
     // Cart
-    private val _cart: MutableMap<ShopItem, Int> = mutableStateMapOf()
-    val cart: Map<ShopItem, Int> = _cart
+    private val _cart: MutableMap<String, Int> = mutableStateMapOf()
+    val cart: Map<String, Int> = _cart
+
+    private val _cartItems: MutableList<Pair<ShopItem, Int>> = mutableStateListOf()
+    val cartItems: List<Pair<ShopItem, Int>> = _cartItems
 
     override fun onIntent(intent: BaseIntent) {
         super.onIntent(intent)
@@ -74,27 +77,30 @@ class ShopViewModel : BaseViewModel() {
             }
 
             is ShopIntent.AlterCart -> {
-                _cart[intent.item] = (_cart[intent.item] ?: 0) + intent.amountChange
-                if (_cart[intent.item] == 0) {
-                    _cart.remove(intent.item)
+                _cart[intent.key] = (_cart[intent.key] ?: 0) + intent.amountChange
+                if (_cart[intent.key] == 0) {
+                    _cart.remove(intent.key)
                 }
+                refreshCartItems()
             }
 
             is ShopIntent.RemoveFromCart -> {
-                _cart.remove(intent.item)
+                _cart.remove(intent.key)
+                refreshCartItems()
             }
 
             ShopIntent.CheckOut -> viewModelScope.launch {
-                val prices = cart.entries
-                    .groupingBy { it.key.price.second }
+                val prices = cartItems
+                    .groupingBy { it.first.price.second }
                     .fold(initialValue = 0) { acc, entry ->
-                        acc + (entry.key.price.first * entry.value)
+                        acc + (entry.first.price.first * entry.second)
                     }
                 if (checkBalance(prices)) {
-                    _cart.forEach { (item, amount) ->
+                    cartItems.forEach { (item, amount) ->
                         executePurchase(item, amount)
                     }
                     _cart.clear()
+                    _cartItems.clear()
                     refresh()
                 } else {
                     onIntent(
@@ -106,8 +112,9 @@ class ShopViewModel : BaseViewModel() {
             }
 
             is ShopIntent.Buy -> viewModelScope.launch {
-                if (checkBalance(intent.item.price, intent.amount)) {
-                    executePurchase(intent.item, intent.amount)
+                val item = items[intent.key] ?: return@launch
+                if (checkBalance(item.price, intent.amount)) {
+                    executePurchase(item, intent.amount)
                     refresh()
                 } else {
                     onIntent(
@@ -124,7 +131,7 @@ class ShopViewModel : BaseViewModel() {
 
     private suspend fun refresh() {
         _items.clear()
-        _items.addAll(
+        _items.putAll(
             shopEvent.entries.map {
                 ShopItem(
                     key = it.item.key,
@@ -150,7 +157,21 @@ class ShopViewModel : BaseViewModel() {
                     refreshAfter = it.refreshAfter?.calculateTime(context),
                     item = it.item,
                 )
-            }.sortedBy { it.sorter }
+            }.sortedBy { it.sorter }.associateBy { it.key }
+        )
+        refreshCartItems()
+    }
+
+    private fun refreshCartItems() {
+        _cartItems.clear()
+        _cartItems.addAll(
+            cart.entries.mapNotNull {
+                val item = items[it.key] ?: return@mapNotNull null
+                // Trim the cart item amount to the new upper limit.
+                val updatedAmount = it.value.coerceAtMost(item.limit ?: Int.MAX_VALUE)
+                if (updatedAmount <= 0) return@mapNotNull null
+                item to updatedAmount
+            }
         )
     }
 

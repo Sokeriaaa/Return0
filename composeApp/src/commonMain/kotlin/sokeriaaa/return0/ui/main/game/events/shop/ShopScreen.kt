@@ -135,7 +135,7 @@ fun ShopScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(items = viewModel.items) {
+                items(items = viewModel.items.values.toList()) {
                     ShopDisplayItem(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -249,7 +249,7 @@ private fun ShopDetails(
                         focusManager.clearFocus()
                         onIntent(
                             ShopIntent.AlterCart(
-                                item = item,
+                                key = item.key,
                                 amountChange = amount
                             ),
                         )
@@ -262,7 +262,7 @@ private fun ShopDetails(
                     modifier = Modifier.weight(1F),
                     iconRes = Res.drawable.ic_outline_payments_24,
                     text = stringResource(Res.string.game_shop_buy),
-                    onClick = { onIntent(ShopIntent.Buy(item, amount)) },
+                    onClick = { onIntent(ShopIntent.Buy(item.key, amount)) },
                 )
             }
         }

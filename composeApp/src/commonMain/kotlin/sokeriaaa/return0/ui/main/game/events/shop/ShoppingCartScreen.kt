@@ -85,7 +85,7 @@ fun ShoppingCartScreen(
                 modifier = Modifier.weight(1F),
             ) {
                 items(
-                    items = viewModel.cart.entries.toList()
+                    items = viewModel.cartItems
                 ) {
                     ShoppingCartItem(
                         modifier = Modifier
@@ -94,8 +94,8 @@ fun ShoppingCartScreen(
                                 horizontal = 10.dp,
                                 vertical = 4.dp,
                             ),
-                        item = it.key,
-                        amount = it.value,
+                        item = it.first,
+                        amount = it.second,
                         onIntent = viewModel::onIntent,
                     )
                 }
@@ -111,10 +111,10 @@ fun ShoppingCartScreen(
                     modifier = Modifier.weight(1F),
                     horizontalAlignment = Alignment.End,
                 ) {
-                    viewModel.cart.entries
-                        .groupingBy { it.key.price.second }
+                    viewModel.cartItems
+                        .groupingBy { it.first.price.second }
                         .fold(initialValue = 0) { acc, entry ->
-                            acc + (entry.key.price.first * entry.value)
+                            acc + (entry.first.price.first * entry.second)
                         }
                         .forEach {
                             CurrencyRow(

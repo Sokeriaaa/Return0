@@ -15,7 +15,6 @@
 package sokeriaaa.return0.mvi.intents
 
 import sokeriaaa.return0.models.component.context.EventContext
-import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.shared.data.models.story.event.Event
 
 sealed class ShopIntent : BaseIntent {
@@ -25,18 +24,18 @@ sealed class ShopIntent : BaseIntent {
     ) : ShopIntent()
 
     data class AlterCart(
-        val item: ShopItem,
+        val key: String,
         val amountChange: Int,
     ) : ShopIntent()
 
     data class RemoveFromCart(
-        val item: ShopItem,
+        val key: String,
     ) : ShopIntent()
 
     data object CheckOut : ShopIntent()
 
     data class Buy(
-        val item: ShopItem,
+        val key: String,
         val amount: Int,
     ) : ShopIntent()
 }
