@@ -62,47 +62,105 @@ fun CommonItemCard(
         shape = shape,
         colors = colors,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Icon
-            iconRes?.let {
-                Icon(
-                    modifier = Modifier.size(36.dp),
-                    painter = painterResource(it),
-                    contentDescription = iconContentDescription,
-                )
-            }
-            // Text
-            Column(
-                modifier = Modifier
-                    .weight(1F)
-                    .padding(horizontal = 8.dp),
-            ) {
-                // Label
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee(iterations = Int.MAX_VALUE),
-                    text = label,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = labelColor,
-                    maxLines = 1,
-                )
-                // Supporting text
-                supportingText?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = supportingTextColor,
-                    )
-                }
-            }
-            trailingContent()
+        CardContent(
+            iconRes = iconRes,
+            iconContentDescription = iconContentDescription,
+            label = label,
+            supportingText = supportingText,
+            labelColor = labelColor,
+            supportingTextColor = supportingTextColor,
+            trailingContent = trailingContent,
+        )
+    }
+}
+
+/**
+ * A universal clickable item card framework used in the project.
+ */
+@Composable
+fun ClickableCommonItemCard(
+    modifier: Modifier = Modifier,
+    iconRes: DrawableResource? = null,
+    iconContentDescription: String? = null,
+    label: String,
+    supportingText: String? = null,
+    enabled: Boolean = true,
+    shape: Shape = RoundedCornerShape(32.dp),
+    colors: CardColors = CardDefaults.cardColors(),
+    labelColor: Color = colors.contentColor,
+    supportingTextColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    trailingContent: @Composable RowScope.() -> Unit = {},
+    onClick: () -> Unit,
+) {
+    Card(
+        modifier = modifier,
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        onClick = onClick,
+    ) {
+        CardContent(
+            iconRes = iconRes,
+            iconContentDescription = iconContentDescription,
+            label = label,
+            supportingText = supportingText,
+            labelColor = labelColor,
+            supportingTextColor = supportingTextColor,
+            trailingContent = trailingContent,
+        )
+    }
+}
+
+@Composable
+private fun CardContent(
+    iconRes: DrawableResource?,
+    iconContentDescription: String?,
+    label: String,
+    supportingText: String?,
+    labelColor: Color,
+    supportingTextColor: Color,
+    trailingContent: @Composable RowScope.() -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        // Icon
+        iconRes?.let {
+            Icon(
+                modifier = Modifier.size(36.dp),
+                painter = painterResource(it),
+                contentDescription = iconContentDescription,
+            )
         }
+        // Text
+        Column(
+            modifier = Modifier
+                .weight(1F)
+                .padding(horizontal = 8.dp),
+        ) {
+            // Label
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .basicMarquee(iterations = Int.MAX_VALUE),
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                color = labelColor,
+                maxLines = 1,
+            )
+            // Supporting text
+            supportingText?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = supportingTextColor,
+                )
+            }
+        }
+        trailingContent()
     }
 }
 

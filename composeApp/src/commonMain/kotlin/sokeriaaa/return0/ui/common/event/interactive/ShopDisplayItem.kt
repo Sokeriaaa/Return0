@@ -14,24 +14,13 @@
  */
 package sokeriaaa.return0.ui.common.event.interactive
 
-import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop_available_count
@@ -44,8 +33,9 @@ import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
-import sokeriaaa.return0.ui.common.res.CurrencyIcon
 import sokeriaaa.return0.ui.common.res.InventoryRes
+import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
+import sokeriaaa.return0.ui.common.widgets.item.ClickableCommonItemCard
 import sokeriaaa.return0.ui.theme.AppColor
 
 @Composable
@@ -54,9 +44,31 @@ fun ShopDisplayItem(
     item: ShopItem,
     onClick: () -> Unit,
 ) {
-    Card(
+    ClickableCommonItemCard(
         modifier = modifier,
-        shape = RoundedCornerShape(32.dp),
+        iconRes = InventoryRes.iconOfType(item.itemType),
+        iconContentDescription = null,
+        label = item.name,
+        supportingText = when {
+            // Not available
+            !item.isAvailable -> stringResource(Res.string.game_shop_not_available)
+            // No limit
+            item.limit == null -> stringResource(Res.string.game_shop_on_sale)
+            // Has limit
+            item.limit > 0 -> stringResource(
+                resource = Res.string.game_shop_available_count,
+                /* count = */ item.limit,
+            )
+            // Sold out
+            else -> if (item.refreshAfter == null) {
+                stringResource(Res.string.game_shop_sold_out)
+            } else {
+                stringResource(
+                    resource = Res.string.game_shop_restock_after,
+                    /* restockAfter = */ item.refreshAfter,
+                )
+            }
+        },
         colors = CardDefaults.cardColors(
             containerColor = if (item.sorter == 0) {
                 AppColor.alignColor(
@@ -73,70 +85,16 @@ fun ShopDisplayItem(
                 MaterialTheme.colorScheme.surfaceDim
             },
         ),
-        onClick = onClick,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Icon
-            Icon(
-                modifier = Modifier.size(36.dp),
-                painter = painterResource(InventoryRes.iconOfType(item.itemType)),
-                contentDescription = null,
-            )
-            // Name
-            Column(
-                modifier = Modifier
-                    .weight(1F)
-                    .padding(horizontal = 8.dp),
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee(iterations = Int.MAX_VALUE),
-                    text = item.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                )
-                Text(
-                    text = when {
-                        // Not available
-                        !item.isAvailable -> stringResource(Res.string.game_shop_not_available)
-                        // No limit
-                        item.limit == null -> stringResource(Res.string.game_shop_on_sale)
-                        // Has limit
-                        item.limit > 0 -> stringResource(
-                            resource = Res.string.game_shop_available_count,
-                            /* count = */ item.limit,
-                        )
-                        // Sold out
-                        else -> if (item.refreshAfter == null) {
-                            stringResource(Res.string.game_shop_sold_out)
-                        } else {
-                            stringResource(
-                                resource = Res.string.game_shop_restock_after,
-                                /* restockAfter = */ item.refreshAfter,
-                            )
-                        }
-                    },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            // Price,
-            Row(
+        trailingContent = {
+            // Price
+            CurrencyRow(
                 modifier = Modifier.padding(start = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(item.price.first.toString())
-                CurrencyIcon(item.price.second)
-            }
-        }
-    }
+                value = item.price.first,
+                currencyType = item.price.second,
+            )
+        },
+        onClick = onClick,
+    )
 }
 
 // =========================================
