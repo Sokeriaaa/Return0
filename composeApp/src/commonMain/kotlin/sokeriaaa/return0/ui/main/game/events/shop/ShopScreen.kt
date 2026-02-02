@@ -229,6 +229,7 @@ private fun ShopDetails(
                 )
                 AmountSelectorContent(
                     amount = amount,
+                    maximum = item.limit ?: Int.MAX_VALUE,
                     focusManager = focusManager,
                     onAmountChange = { amount = it },
                 )

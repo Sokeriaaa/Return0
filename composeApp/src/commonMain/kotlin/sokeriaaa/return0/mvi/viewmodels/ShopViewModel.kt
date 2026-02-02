@@ -34,6 +34,7 @@ import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
@@ -144,6 +145,17 @@ class ShopViewModel : BaseViewModel() {
         _items.clear()
         _items.putAll(
             shopEvent.entries.map {
+                // Check refresh time.
+                val refreshAfter = getRefreshTime(it.item.key)
+                if (refreshAfter <= context.now) {
+                    // Reset purchased count.
+                    setAlreadyPurchasedCount(it.item.key, 0)
+                }
+                // Refresh limit.
+                val alreadyPurchasedCount = getAlreadyPurchasedCount(it.item.key)
+                val canPurchase = it.limit?.calculatedIn(context)?.minus(alreadyPurchasedCount)
+
+                // Assemble item.
                 ShopItem(
                     key = it.item.key,
                     name = _resourceRepo.getString(it.item.resourceKey),
@@ -164,7 +176,7 @@ class ShopViewModel : BaseViewModel() {
                     price = (it.price?.calculatedIn(context) ?: 0) to
                             (it.currency ?: CurrencyType.TOKEN),
                     isAvailable = it.isAvailable.calculatedIn(context),
-                    limit = it.limit?.calculatedIn(context),
+                    limit = canPurchase,
                     refreshAfter = it.refreshAfter?.calculateTime(context),
                     item = it.item,
                 )
@@ -197,6 +209,20 @@ class ShopViewModel : BaseViewModel() {
         _gameStateRepo.currency[it.key] >= it.value
     }
 
+    private suspend fun getAlreadyPurchasedCount(key: String): Int =
+        _gameStateRepo.savedValues.getVariable("shop:${shopEvent.key}:$key")
+
+    private fun setAlreadyPurchasedCount(key: String, value: Int) {
+        _gameStateRepo.savedValues.setVariable("shop:${shopEvent.key}:$key", value)
+    }
+
+    private suspend fun getRefreshTime(key: String?): Long =
+        _gameStateRepo.savedValues.getTimeStamp("shop:${shopEvent.key}:$key")
+
+    private fun setRefreshTime(key: String, refreshAfter: Long) {
+        _gameStateRepo.savedValues.setTimestamp("shop:${shopEvent.key}:$key", refreshAfter)
+    }
+
     private suspend fun executePurchase(
         item: ShopItem,
         amount: Int,
@@ -224,6 +250,15 @@ class ShopViewModel : BaseViewModel() {
                     _gameStateRepo.plugin.obtainedPlugin(pluginID)
                 }
             }
+        }
+        val alreadyPurchasedCount = getAlreadyPurchasedCount(item.key)
+        // Update refresh time.
+        if (item.refreshAfter != null && alreadyPurchasedCount <= 0) {
+            setRefreshTime(item.key, TimeHelper.currentTimeMillis() + item.refreshAfter)
+        }
+        // Update purchased count.
+        if (item.limit != null) {
+            setAlreadyPurchasedCount(item.key, alreadyPurchasedCount + amount)
         }
     }
 }
