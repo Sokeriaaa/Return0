@@ -15,6 +15,7 @@
 package sokeriaaa.return0.test.models.story.map
 
 import sokeriaaa.return0.models.story.map.MapGenerator
+import sokeriaaa.return0.models.story.map.MapRowText
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import kotlin.random.Random
 import kotlin.test.Test
@@ -90,27 +91,19 @@ class MapGeneratorTest {
 
         var depth = 0
         rows.forEach { row ->
-            if (row.text.endsWith("{")) depth++
-            if (row.text == "}") depth--
+            when (row.text) {
+                is MapRowText.Fun,
+                is MapRowText.If,
+                is MapRowText.While,
+                is MapRowText.For,
+                is MapRowText.Repeat -> depth++
+
+                is MapRowText.Close -> depth--
+
+                else -> Unit
+            }
         }
 
         assertEquals(0, depth)
     }
-
-    @Test
-    fun `generated text is never blank`() {
-        val mapData = MapData(
-            name = "generated_${Random.nextInt(10000)}",
-            lines = Random.nextInt(100) + 100,
-            buggyRange = emptyList(),
-            buggyEntries = emptyList(),
-            events = emptyList(),
-        )
-        val rows = MapGenerator.generateCode(mapData)
-
-        rows.forEach {
-            assertTrue(it.text.isNotBlank())
-        }
-    }
-
 }
