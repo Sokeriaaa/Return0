@@ -45,6 +45,7 @@ import return0.composeapp.generated.resources.game_shop_price_total
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_checkout_24
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
+import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
@@ -135,7 +136,7 @@ fun ShoppingCartScreen(
                     modifier = Modifier.weight(1F),
                     iconRes = Res.drawable.ic_outline_shopping_cart_checkout_24,
                     text = stringResource(Res.string.game_shop_checkout),
-                    onClick = {},
+                    onClick = { viewModel.onIntent(ShopIntent.CheckOut) },
                 )
             }
         }

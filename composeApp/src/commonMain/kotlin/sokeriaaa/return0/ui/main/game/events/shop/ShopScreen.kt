@@ -262,7 +262,7 @@ private fun ShopDetails(
                     modifier = Modifier.weight(1F),
                     iconRes = Res.drawable.ic_outline_payments_24,
                     text = stringResource(Res.string.game_shop_buy),
-                    onClick = {},
+                    onClick = { onIntent(ShopIntent.Buy(item, amount)) },
                 )
             }
         }

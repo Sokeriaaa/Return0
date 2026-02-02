@@ -18,7 +18,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
+import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.game_shop_warn_insufficient
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
@@ -82,16 +85,37 @@ class ShopViewModel : BaseViewModel() {
             }
 
             ShopIntent.CheckOut -> viewModelScope.launch {
-                _cart.forEach { (item, amount) ->
-                    executePurchase(item, amount)
+                val prices = cart.entries
+                    .groupingBy { it.key.price.second }
+                    .fold(initialValue = 0) { acc, entry ->
+                        acc + (entry.key.price.first * entry.value)
+                    }
+                if (checkBalance(prices)) {
+                    _cart.forEach { (item, amount) ->
+                        executePurchase(item, amount)
+                    }
+                    _cart.clear()
+                    refresh()
+                } else {
+                    onIntent(
+                        intent = CommonIntent.ShowSnackBar(
+                            message = getString(Res.string.game_shop_warn_insufficient),
+                        ),
+                    )
                 }
-                _cart.clear()
-                refresh()
             }
 
             is ShopIntent.Buy -> viewModelScope.launch {
-                executePurchase(intent.item, intent.amount)
-                refresh()
+                if (checkBalance(intent.item.price, intent.amount)) {
+                    executePurchase(intent.item, intent.amount)
+                    refresh()
+                } else {
+                    onIntent(
+                        intent = CommonIntent.ShowSnackBar(
+                            message = getString(Res.string.game_shop_warn_insufficient),
+                        ),
+                    )
+                }
             }
 
             else -> {}
@@ -128,6 +152,17 @@ class ShopViewModel : BaseViewModel() {
                 )
             }.sortedBy { it.sorter }
         )
+    }
+
+    private fun checkBalance(
+        price: Pair<Int, CurrencyType>,
+        amount: Int,
+    ): Boolean = _gameStateRepo.currency[price.second] >= price.first * amount
+
+    private fun checkBalance(
+        prices: Map<CurrencyType, Int>,
+    ): Boolean = prices.all {
+        _gameStateRepo.currency[it.key] >= it.value
     }
 
     private suspend fun executePurchase(
