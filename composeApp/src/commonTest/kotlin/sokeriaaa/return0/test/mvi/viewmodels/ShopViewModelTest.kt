@@ -37,10 +37,10 @@ class ShopViewModelTest : BaseEventTest() {
 
     @Test
     fun `Initialize executes correctly`() {
-        withViewModel {
+        withViewModel { context ->
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -62,11 +62,11 @@ class ShopViewModelTest : BaseEventTest() {
 
     @Test
     fun `AlterCart executes correctly - Normal`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -90,11 +90,11 @@ class ShopViewModelTest : BaseEventTest() {
 
     @Test
     fun `AlterCart executes correctly - Upper limit`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token limitFor 10
                         inventory("epic_item") soldFor 5.crypto
@@ -112,11 +112,11 @@ class ShopViewModelTest : BaseEventTest() {
 
     @Test
     fun `RemoveFromCart executes correctly`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -137,13 +137,13 @@ class ShopViewModelTest : BaseEventTest() {
 
     @Test
     fun `Buy executes correctly - Normal`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize currency
-            it.gameState.currency[CurrencyType.TOKEN] += 5000
+            context.gameState.currency[CurrencyType.TOKEN] += 5000
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -159,20 +159,20 @@ class ShopViewModelTest : BaseEventTest() {
                 )
             )
             // Asserts
-            assertEquals(4900, it.gameState.currency[CurrencyType.TOKEN])
-            assertEquals(1, it.gameState.inventory["awesome_item"])
+            assertEquals(4900, context.gameState.currency[CurrencyType.TOKEN])
+            assertEquals(1, context.gameState.inventory["awesome_item"])
         }
     }
 
     @Test
     fun `Buy executes correctly - Insufficient balance`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize currency
-            it.gameState.currency[CurrencyType.TOKEN] += 5000
+            context.gameState.currency[CurrencyType.TOKEN] += 5000
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -188,22 +188,22 @@ class ShopViewModelTest : BaseEventTest() {
                 ),
             )
             // Purchase failed
-            assertEquals(5000, it.gameState.currency[CurrencyType.TOKEN])
-            assertEquals(0, it.gameState.inventory["awesome_item"])
+            assertEquals(5000, context.gameState.currency[CurrencyType.TOKEN])
+            assertEquals(0, context.gameState.inventory["awesome_item"])
 
         }
     }
 
     @Test
     fun `Checkout executes correctly - Normal`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize currency
-            it.gameState.currency[CurrencyType.TOKEN] += 5000
-            it.gameState.currency[CurrencyType.CRYPTO] += 10
+            context.gameState.currency[CurrencyType.TOKEN] += 5000
+            context.gameState.currency[CurrencyType.CRYPTO] += 10
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -215,23 +215,23 @@ class ShopViewModelTest : BaseEventTest() {
             onIntent(ShopIntent.AlterCart("inventory:epic_item", 1))
             onIntent(ShopIntent.CheckOut {})
             // Asserts
-            assertEquals(4700, it.gameState.currency[CurrencyType.TOKEN])
-            assertEquals(5, it.gameState.currency[CurrencyType.CRYPTO])
-            assertEquals(3, it.gameState.inventory["awesome_item"])
-            assertEquals(1, it.gameState.inventory["epic_item"])
+            assertEquals(4700, context.gameState.currency[CurrencyType.TOKEN])
+            assertEquals(5, context.gameState.currency[CurrencyType.CRYPTO])
+            assertEquals(3, context.gameState.inventory["awesome_item"])
+            assertEquals(1, context.gameState.inventory["epic_item"])
         }
     }
 
     @Test
     fun `Checkout executes correctly - Insufficient balance`() {
-        withViewModel {
+        withViewModel { context ->
             // Initialize currency
-            it.gameState.currency[CurrencyType.TOKEN] += 5000
-            it.gameState.currency[CurrencyType.CRYPTO] += 10
+            context.gameState.currency[CurrencyType.TOKEN] += 5000
+            context.gameState.currency[CurrencyType.CRYPTO] += 10
             // Initialize shop
             onIntent(
                 ShopIntent.Initialize(
-                    context = it,
+                    context = context,
                     shopEvent = buildShop("testing_shop") {
                         inventory("awesome_item") soldFor 100.token
                         inventory("epic_item") soldFor 5.crypto
@@ -243,10 +243,10 @@ class ShopViewModelTest : BaseEventTest() {
             onIntent(ShopIntent.AlterCart("inventory:epic_item", 10))
             onIntent(ShopIntent.CheckOut {})
             // Purchase failed
-            assertEquals(5000, it.gameState.currency[CurrencyType.TOKEN])
-            assertEquals(10, it.gameState.currency[CurrencyType.CRYPTO])
-            assertEquals(0, it.gameState.inventory["awesome_item"])
-            assertEquals(0, it.gameState.inventory["epic_item"])
+            assertEquals(5000, context.gameState.currency[CurrencyType.TOKEN])
+            assertEquals(10, context.gameState.currency[CurrencyType.CRYPTO])
+            assertEquals(0, context.gameState.inventory["awesome_item"])
+            assertEquals(0, context.gameState.inventory["epic_item"])
         }
     }
 
