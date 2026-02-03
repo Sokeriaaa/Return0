@@ -177,7 +177,9 @@ private fun MapRow(
 
     Box {
         Row(
-            modifier = modifier.clickable { isMenuExpanded = true },
+            modifier = modifier
+                .background(rowBackgroundColor)
+                .clickable { isMenuExpanded = true },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Line number
@@ -198,24 +200,22 @@ private fun MapRow(
             )
             // Line text
             Text(
-                modifier = Modifier
-                    .background(rowBackgroundColor)
-                    .drawBehind {
-                        if (isInBuggyRange) {
-                            // Draw error underline
-                            val pathEffect = PathEffect.dashPathEffect(
-                                intervals = floatArrayOf(8f, 4f),
-                                phase = 0f,
-                            )
-                            drawLine(
-                                color = errorColor,
-                                strokeWidth = 1.5.dp.toPx(),
-                                start = Offset(x = 2.dp.toPx(), y = size.height - 1.5.dp.toPx()),
-                                end = Offset(x = size.width, y = size.height - 1.5.dp.toPx()),
-                                pathEffect = pathEffect,
-                            )
-                        }
-                    },
+                modifier = Modifier.drawBehind {
+                    if (isInBuggyRange) {
+                        // Draw error underline
+                        val pathEffect = PathEffect.dashPathEffect(
+                            intervals = floatArrayOf(8f, 4f),
+                            phase = 0f,
+                        )
+                        drawLine(
+                            color = errorColor,
+                            strokeWidth = 1.5.dp.toPx(),
+                            start = Offset(x = 2.dp.toPx(), y = size.height - 1.5.dp.toPx()),
+                            end = Offset(x = size.width, y = size.height - 1.5.dp.toPx()),
+                            pathEffect = pathEffect,
+                        )
+                    }
+                },
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
