@@ -148,7 +148,8 @@ fun ShopScreen(
                             .padding(
                                 horizontal = 10.dp,
                                 vertical = 4.dp,
-                            ),
+                            )
+                            .animateItem(),
                         item = it,
                         onClick = {
                             selectedItem = it

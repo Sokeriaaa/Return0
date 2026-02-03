@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.ui.common.widgets.item
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -131,7 +132,8 @@ private fun CardContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 12.dp),
+            .padding(all = 12.dp)
+            .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Icon

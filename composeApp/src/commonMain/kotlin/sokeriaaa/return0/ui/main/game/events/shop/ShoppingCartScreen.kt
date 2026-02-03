@@ -30,6 +30,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +47,9 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop
 import return0.composeapp.generated.resources.game_shop_checkout
 import return0.composeapp.generated.resources.game_shop_price_total
+import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_checkout_24
+import return0.composeapp.generated.resources.ok
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
@@ -52,8 +59,10 @@ import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.res.InventoryRes
+import sokeriaaa.return0.ui.common.widgets.AmountSelector
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
+import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 import sokeriaaa.return0.ui.common.widgets.item.CommonItemCard
 import sokeriaaa.return0.ui.theme.AppColor
@@ -94,7 +103,8 @@ fun ShoppingCartScreen(
                             .padding(
                                 horizontal = 10.dp,
                                 vertical = 4.dp,
-                            ),
+                            )
+                            .animateItem(),
                         item = it.first,
                         amount = it.second,
                         onIntent = viewModel::onIntent,
@@ -207,25 +217,56 @@ private fun ShoppingCartItem(
             },
         ),
         trailingContent = {
-            // Amount & Price
-            Column(
-                horizontalAlignment = Alignment.End
-            ) {
-                OutlinedCard(
-                    onClick = {
-                        // TODO Modify
-                    },
+            var isAlteringAmount by remember { mutableStateOf(false) }
+            var selectedAmount by remember { mutableStateOf(0) }
+            LaunchedEffect(isAlteringAmount) {
+                if (isAlteringAmount) {
+                    selectedAmount = amount
+                }
+            }
+            if (isAlteringAmount) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        text = "x$amount",
+                    AmountSelector(
+                        amount = selectedAmount,
+                        minimum = 0,
+                        maximum = item.limit ?: Int.MAX_VALUE,
+                        onAmountChange = { selectedAmount = it },
+                    )
+                    AppIconButton(
+                        iconRes = Res.drawable.ic_outline_check_24,
+                        contentDescription = stringResource(Res.string.ok),
+                        onClick = {
+                            onIntent(
+                                ShopIntent.AlterCart(
+                                    key = item.key,
+                                    amountChange = selectedAmount - amount,
+                                ),
+                            )
+                            isAlteringAmount = false
+                        }
                     )
                 }
-                // Total
-                CurrencyRow(
-                    value = item.price.first * amount,
-                    currencyType = item.price.second,
-                )
+            } else {
+                // Amount & Price
+                Column(
+                    horizontalAlignment = Alignment.End
+                ) {
+                    OutlinedCard(
+                        onClick = { isAlteringAmount = true },
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            text = "x$amount",
+                        )
+                    }
+                    // Total
+                    CurrencyRow(
+                        value = item.price.first * amount,
+                        currencyType = item.price.second,
+                    )
+                }
             }
         }
     )
