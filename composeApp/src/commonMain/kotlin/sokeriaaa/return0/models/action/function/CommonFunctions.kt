@@ -79,7 +79,7 @@ object CommonFunctions {
     )
 
     /**
-     * Take a relax, largely recovers SP. (20% of MaxSP + 40% of consumed SP)
+     * Take a relax, largely recovers SP. (15% of MaxSP + 40% of consumed SP)
      */
     val relax = FunctionData(
         name = Keys.RELAX,
@@ -91,7 +91,7 @@ object CommonFunctions {
         baseSPCost = 0,
         growth = emptyList(),
         extra = CombatExtra.SPChange(
-            spChange = (EntityValue.MAXSP * 0.2F) + ((EntityValue.MAXSP - EntityValue.SP) * 0.4F),
+            spChange = (EntityValue.MAXSP * 0.15F) + ((EntityValue.MAXSP - EntityValue.SP) * 0.4F),
         ),
     )
 
