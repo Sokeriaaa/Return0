@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
@@ -51,6 +53,7 @@ fun CommonItemCard(
     iconContentDescription: String? = null,
     label: String,
     supportingText: String? = null,
+    supportingTextMaxLines: Int = 2,
     shape: Shape = RoundedCornerShape(32.dp),
     colors: CardColors = CardDefaults.cardColors(),
     labelColor: Color = colors.contentColor,
@@ -67,6 +70,7 @@ fun CommonItemCard(
             iconContentDescription = iconContentDescription,
             label = label,
             supportingText = supportingText,
+            supportingTextMaxLines = supportingTextMaxLines,
             labelColor = labelColor,
             supportingTextColor = supportingTextColor,
             trailingContent = trailingContent,
@@ -84,6 +88,7 @@ fun ClickableCommonItemCard(
     iconContentDescription: String? = null,
     label: String,
     supportingText: String? = null,
+    supportingTextMaxLines: Int = 2,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(32.dp),
     colors: CardColors = CardDefaults.cardColors(),
@@ -104,6 +109,7 @@ fun ClickableCommonItemCard(
             iconContentDescription = iconContentDescription,
             label = label,
             supportingText = supportingText,
+            supportingTextMaxLines = supportingTextMaxLines,
             labelColor = labelColor,
             supportingTextColor = supportingTextColor,
             trailingContent = trailingContent,
@@ -117,6 +123,7 @@ private fun CardContent(
     iconContentDescription: String?,
     label: String,
     supportingText: String?,
+    supportingTextMaxLines: Int = 2,
     labelColor: Color,
     supportingTextColor: Color,
     trailingContent: @Composable RowScope.() -> Unit,
@@ -157,6 +164,8 @@ private fun CardContent(
                     text = it,
                     style = MaterialTheme.typography.labelSmall,
                     color = supportingTextColor,
+                    maxLines = supportingTextMaxLines,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -195,6 +204,19 @@ private fun CommonItemCardExample3() {
         supportingText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         trailingContent = {
             Switch(checked = true, onCheckedChange = {})
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun CommonItemCardExample4() {
+    CommonItemCard(
+        iconRes = Res.drawable.ic_outline_payments_24,
+        label = "Example Item4",
+        supportingText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam interdum purus eu lectus aliquam, at tristique elit consectetur. In finibus eu ipsum in tincidunt. Quisque vitae lacus nunc. Etiam sed cursus ante. Nunc sed mi vitae velit viverra imperdiet. Praesent auctor id nisi vitae placerat. Proin auctor lobortis lacus, porta facilisis leo vehicula et. Phasellus lacus felis, malesuada ut vulputate at, mattis nec nibh. Donec euismod lacinia ipsum, sit amet molestie orci finibus a. Maecenas ac ullamcorper quam, sit amet porttitor dolor. Nullam ornare urna lorem, et ultricies arcu vestibulum vel. Sed eget magna ex.",
+        trailingContent = {
+            Checkbox(checked = true, onCheckedChange = {})
         }
     )
 }
