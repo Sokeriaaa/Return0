@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.test.models.story.event
 
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.shared.data.models.entity.EntityData
@@ -184,7 +185,7 @@ abstract class BaseEventTest {
         override suspend fun waitForUserContinue() {}
         override suspend fun waitForChoice(): Int = 0
         override suspend fun waitForMoveFinished() {}
-        override suspend fun waitForCombatResult(): Boolean = true
+        override suspend fun waitForCombatResult(): CombatResult = CombatResult.SUCCESS
         override suspend fun waitForRouteHubSelection(): Pair<String, Int>? = null
         override suspend fun onEffect(effect: EventEffect) {
             _collectedEffects.add(effect)

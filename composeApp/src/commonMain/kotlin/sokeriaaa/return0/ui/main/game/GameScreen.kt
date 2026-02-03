@@ -71,6 +71,7 @@ import return0.composeapp.generated.resources.ic_outline_logout_24
 import return0.composeapp.generated.resources.ic_outline_menu_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.ic_outline_settings_24
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
@@ -294,12 +295,12 @@ fun GameScreen(
     }
     // Combat finished
     val combatResult by savedStateHandle
-        ?.getStateFlow("combat_result", false)
-        ?.collectAsState() ?: remember { mutableStateOf(false) }
+        ?.getStateFlow("combat_result", CombatResult.ESCAPED)
+        ?.collectAsState() ?: remember { mutableStateOf(CombatResult.ESCAPED) }
     LaunchedEffect(combatResult) {
         viewModel.onIntent(GameIntent.EventCombatResult(combatResult))
         // Consume result
-        savedStateHandle?.remove<Boolean>("combat_result")
+        savedStateHandle?.remove<CombatResult>("combat_result")
     }
 
     BlockBackPressed()

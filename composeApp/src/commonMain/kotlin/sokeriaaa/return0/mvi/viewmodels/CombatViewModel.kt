@@ -29,6 +29,7 @@ import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.combat.Arena
 import sokeriaaa.return0.models.combat.ArenaLogV4
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.combat.affectedTargetsFor
 import sokeriaaa.return0.models.combat.availableTargetsFor
 import sokeriaaa.return0.models.combat.selectableCount
@@ -52,12 +53,9 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
     private val _settingRepo: SettingsRepo by inject()
 
     /**
-     * The combat status.
-     * `null` - Combating
-     * `false` - Defeat
-     * `true` - Victory
+     * The combat status. `null` is combating
      */
-    var combatStatus: Boolean? by mutableStateOf(null)
+    var combatStatus: CombatResult? by mutableStateOf(null)
         private set
 
     /**
@@ -307,7 +305,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
         }
     }
 
-    override fun onCombatEnd(result: Boolean) {
+    override fun onCombatEnd(result: CombatResult) {
         viewModelScope.launch {
             // Save state if the flag is `true`.
             if (arenaConfig?.saveStatus == true) {
@@ -318,7 +316,7 @@ class CombatViewModel : BaseViewModel(), Arena.Callback {
                 // Save state.
                 _gameStateRepo.entity.saveEntityState(partiesForSaving)
                 // If it's victory
-                if (result) {
+                if (result == CombatResult.SUCCESS) {
                     // Obtain exp.
                     val entityExp = HashMap<String, EntityEntry>()
                     partiesForSaving.forEach { entity ->

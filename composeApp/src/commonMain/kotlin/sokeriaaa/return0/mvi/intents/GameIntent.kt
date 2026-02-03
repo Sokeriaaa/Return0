@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
 
 sealed class GameIntent : BaseIntent {
@@ -46,6 +47,6 @@ sealed class GameIntent : BaseIntent {
     data class ExecuteEvent(val mapEvent: MapEvent) : GameIntent()
     data object EventContinue : GameIntent()
     data class EventChoice(val index: Int) : GameIntent()
-    data class EventCombatResult(val result: Boolean) : GameIntent()
+    data class EventCombatResult(val result: CombatResult) : GameIntent()
     data class EventRouteHub(val destination: Pair<String, Int>?) : GameIntent()
 }

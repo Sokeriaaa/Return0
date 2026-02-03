@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.story.event.EventEffect
@@ -105,7 +106,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
     private var _continueDeferred: CompletableDeferred<Unit>? = null
     private var _choiceDeferred: CompletableDeferred<Int>? = null
     private var _moveDeferred: CompletableDeferred<Unit>? = null
-    private var _combatDeferred: CompletableDeferred<Boolean>? = null
+    private var _combatDeferred: CompletableDeferred<CombatResult>? = null
     private var _teleportDeferred: CompletableDeferred<Pair<String, Int>?>? = null
 
     // Current event effects
@@ -374,8 +375,8 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         deferred.await()
     }
 
-    override suspend fun waitForCombatResult(): Boolean {
-        val deferred = CompletableDeferred<Boolean>()
+    override suspend fun waitForCombatResult(): CombatResult {
+        val deferred = CompletableDeferred<CombatResult>()
         _combatDeferred = deferred
         return deferred.await()
     }
@@ -398,7 +399,7 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
         _choiceDeferred?.complete(index)
     }
 
-    private fun onCombatFinished(result: Boolean) {
+    private fun onCombatFinished(result: CombatResult) {
         _combatDeferred?.complete(result)
     }
 

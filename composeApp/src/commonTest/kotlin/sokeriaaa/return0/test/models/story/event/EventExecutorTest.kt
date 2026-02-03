@@ -15,6 +15,7 @@
 package sokeriaaa.return0.test.models.story.event
 
 import kotlinx.coroutines.test.runTest
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.shared.data.api.component.value.Value
@@ -103,9 +104,9 @@ class EventExecutorTest : BaseEventTest() {
     @Test
     fun `Combat executes correctly`() = runTest {
         val callback = object : TestingCallback() {
-            override suspend fun waitForCombatResult(): Boolean {
+            override suspend fun waitForCombatResult(): CombatResult {
                 // The combat is always victory.
-                return true
+                return CombatResult.SUCCESS
             }
         }
         withContext(callback = callback) { context ->

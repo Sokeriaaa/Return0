@@ -86,6 +86,7 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.close
 import return0.composeapp.generated.resources.combat
 import return0.composeapp.generated.resources.combat_defeat
+import return0.composeapp.generated.resources.combat_escaped
 import return0.composeapp.generated.resources.combat_leave
 import return0.composeapp.generated.resources.combat_rewards
 import return0.composeapp.generated.resources.combat_rewards_exp
@@ -97,6 +98,7 @@ import return0.composeapp.generated.resources.ic_outline_autopause_24
 import return0.composeapp.generated.resources.ic_outline_autoplay_24
 import return0.composeapp.generated.resources.ic_outline_logout_24
 import sokeriaaa.return0.models.action.effect.Effect
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
@@ -107,7 +109,6 @@ import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
-import sokeriaaa.return0.ui.theme.AppColor.alignedToPrimary
 
 /**
  * The combat screen, for where the user to combat with bugs.
@@ -137,8 +138,9 @@ fun CombatScreen(
                     Text(
                         stringResource(
                             when (viewModel.combatStatus) {
-                                true -> Res.string.combat_victory
-                                false -> Res.string.combat_defeat
+                                CombatResult.SUCCESS -> Res.string.combat_victory
+                                CombatResult.FAILURE -> Res.string.combat_defeat
+                                CombatResult.ESCAPED -> Res.string.combat_escaped
                                 null -> Res.string.combat
                             }
                         )

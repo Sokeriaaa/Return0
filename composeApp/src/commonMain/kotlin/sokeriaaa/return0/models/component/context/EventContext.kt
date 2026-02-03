@@ -19,6 +19,7 @@ import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
+import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import kotlin.random.Random
@@ -41,7 +42,7 @@ class EventContext(
         suspend fun waitForUserContinue()
         suspend fun waitForChoice(): Int
         suspend fun waitForMoveFinished()
-        suspend fun waitForCombatResult(): Boolean
+        suspend fun waitForCombatResult(): CombatResult
 
         /**
          * Selected a destination in the route hub panel.

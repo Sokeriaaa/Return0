@@ -19,6 +19,9 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_hub_denied
 import return0.composeapp.generated.resources.game_hub_denied_but_indexed
 import sokeriaaa.return0.applib.common.AppConstants
+import sokeriaaa.return0.models.combat.CombatResult.ESCAPED
+import sokeriaaa.return0.models.combat.CombatResult.FAILURE
+import sokeriaaa.return0.models.combat.CombatResult.SUCCESS
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.component.context.ItemContext
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
@@ -137,10 +140,10 @@ suspend fun Event.executedIn(context: EventContext) {
             )
 
             context.callback.onEffect(EventEffect.StartCombat(config = arenaConfig))
-            if (context.callback.waitForCombatResult()) {
-                success.executedIn(context)
-            } else {
-                failure.executedIn(context)
+            when (context.callback.waitForCombatResult()) {
+                SUCCESS -> success.executedIn(context)
+                FAILURE -> failure.executedIn(context)
+                ESCAPED -> escaped.executedIn(context)
             }
         }
 
