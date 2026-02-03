@@ -85,7 +85,8 @@ fun ShoppingCartScreen(
                 modifier = Modifier.weight(1F),
             ) {
                 items(
-                    items = viewModel.cartItems
+                    items = viewModel.cartItems,
+                    key = { it.first.key },
                 ) {
                     ShoppingCartItem(
                         modifier = Modifier

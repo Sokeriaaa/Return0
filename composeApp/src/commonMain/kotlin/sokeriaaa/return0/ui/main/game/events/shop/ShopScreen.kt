@@ -138,7 +138,10 @@ fun ShopScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(items = viewModel.items.values.toList()) {
+                items(
+                    items = viewModel.items.values.toList(),
+                    key = { it.key },
+                ) {
                     ShopDisplayItem(
                         modifier = Modifier
                             .fillMaxWidth()
