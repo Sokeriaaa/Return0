@@ -77,11 +77,17 @@ class ShopViewModel : BaseViewModel() {
             }
 
             is ShopIntent.AlterCart -> {
-                _cartKeyAmountMap[intent.key] =
-                    (_cartKeyAmountMap[intent.key] ?: 0) + intent.amountChange
-                if (_cartKeyAmountMap[intent.key] == 0) {
+                // Calculate new amount.
+                val newAmount = ((_cartKeyAmountMap[intent.key] ?: 0) + intent.amountChange)
+                    .coerceAtMost(items[intent.key]?.limit ?: Int.MAX_VALUE)
+                if (newAmount > 0) {
+                    // Update new amount.
+                    _cartKeyAmountMap[intent.key] = newAmount
+                } else {
+                    // Remove when amount less than or equals 0.
                     _cartKeyAmountMap.remove(intent.key)
                 }
+                // Refresh.
                 refreshCartItems()
             }
 
