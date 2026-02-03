@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -169,7 +170,7 @@ fun ShoppingCartScreen(
                             },
                         )
                     }
-            }
+                }
             }
         }
     }
@@ -236,6 +237,7 @@ private fun ShoppingCartItem(
         trailingContent = {
             var isAlteringAmount by remember { mutableStateOf(false) }
             var selectedAmount by remember { mutableStateOf(0) }
+            val focusManager = LocalFocusManager.current
             LaunchedEffect(isAlteringAmount) {
                 if (isAlteringAmount) {
                     selectedAmount = amount
@@ -250,11 +252,14 @@ private fun ShoppingCartItem(
                         minimum = 0,
                         maximum = item.limit ?: Int.MAX_VALUE,
                         onAmountChange = { selectedAmount = it },
+                        focusManager = focusManager,
                     )
                     AppIconButton(
                         iconRes = Res.drawable.ic_outline_check_24,
                         contentDescription = stringResource(Res.string.ok),
                         onClick = {
+                            // Clear focus before sending intent.
+                            focusManager.clearFocus()
                             onIntent(
                                 ShopIntent.AlterCart(
                                     key = item.key,
