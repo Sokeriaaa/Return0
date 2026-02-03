@@ -14,9 +14,11 @@
  */
 package sokeriaaa.return0.ui.main.game.events.shop
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -45,10 +47,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop
+import return0.composeapp.generated.resources.game_shop_cart_empty
 import return0.composeapp.generated.resources.game_shop_checkout
 import return0.composeapp.generated.resources.game_shop_price_total
 import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_checkout_24
+import return0.composeapp.generated.resources.ic_outline_upcoming_24
 import return0.composeapp.generated.resources.ok
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.BaseIntent
@@ -59,6 +63,7 @@ import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.res.InventoryRes
+import sokeriaaa.return0.ui.common.screen.EmptyScreen
 import sokeriaaa.return0.ui.common.widgets.AmountSelector
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
@@ -87,72 +92,84 @@ fun ShoppingCartScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        Crossfade(
             modifier = Modifier.padding(paddingValues = paddingValues),
-        ) {
-            LazyColumn(
-                modifier = Modifier.weight(1F),
-            ) {
-                items(
-                    items = viewModel.cartItems,
-                    key = { it.first.key },
-                ) {
-                    ShoppingCartItem(
+            targetState = viewModel.cartItems.isEmpty(),
+            label = "ShoppingCartScreen",
+        ) { isEmpty ->
+            if (isEmpty) {
+                EmptyScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    iconRes = Res.drawable.ic_outline_upcoming_24,
+                    label = stringResource(Res.string.game_shop_cart_empty),
+                )
+            } else {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    LazyColumn(
+                        modifier = Modifier.weight(1F),
+                    ) {
+                        items(
+                            items = viewModel.cartItems,
+                            key = { it.first.key },
+                        ) {
+                            ShoppingCartItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = 10.dp,
+                                        vertical = 4.dp,
+                                    )
+                                    .animateItem(),
+                                item = it.first,
+                                amount = it.second,
+                                onIntent = viewModel::onIntent,
+                            )
+                        }
+                    }
+                    // Total
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                horizontal = 10.dp,
-                                vertical = 4.dp,
-                            )
-                            .animateItem(),
-                        item = it.first,
-                        amount = it.second,
-                        onIntent = viewModel::onIntent,
-                    )
-                }
-            }
-            // Total
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 4.dp),
-            ) {
-                Text(stringResource(Res.string.game_shop_price_total))
-                Column(
-                    modifier = Modifier.weight(1F),
-                    horizontalAlignment = Alignment.End,
-                ) {
-                    viewModel.cartItems
-                        .groupingBy { it.first.price.second }
-                        .fold(initialValue = 0) { acc, entry ->
-                            acc + (entry.first.price.first * entry.second)
+                            .padding(horizontal = 10.dp, vertical = 4.dp),
+                    ) {
+                        Text(stringResource(Res.string.game_shop_price_total))
+                        Column(
+                            modifier = Modifier.weight(1F),
+                            horizontalAlignment = Alignment.End,
+                        ) {
+                            viewModel.cartItems
+                                .groupingBy { it.first.price.second }
+                                .fold(initialValue = 0) { acc, entry ->
+                                    acc + (entry.first.price.first * entry.second)
+                                }
+                                .forEach {
+                                    CurrencyRow(
+                                        value = it.value,
+                                        currencyType = it.key,
+                                    )
+                                }
                         }
-                        .forEach {
-                            CurrencyRow(
-                                value = it.value,
-                                currencyType = it.key,
-                            )
-                        }
-                }
-            }
-            // Actions
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
-            ) {
-                Spacer(modifier = Modifier.weight(1F))
-                Spacer(modifier = Modifier.width(4.dp))
-                AppButton(
-                    modifier = Modifier.weight(1F),
-                    iconRes = Res.drawable.ic_outline_shopping_cart_checkout_24,
-                    text = stringResource(Res.string.game_shop_checkout),
-                    onClick = {
-                        viewModel.onIntent(
-                            ShopIntent.CheckOut(onPurchased = {})
+                    }
+                    // Actions
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                    ) {
+                        Spacer(modifier = Modifier.weight(1F))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        AppButton(
+                            modifier = Modifier.weight(1F),
+                            iconRes = Res.drawable.ic_outline_shopping_cart_checkout_24,
+                            text = stringResource(Res.string.game_shop_checkout),
+                            onClick = {
+                                viewModel.onIntent(
+                                    ShopIntent.CheckOut(onPurchased = {})
+                                )
+                            },
                         )
-                    },
-                )
+                    }
+            }
             }
         }
     }

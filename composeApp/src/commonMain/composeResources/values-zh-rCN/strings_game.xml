@@ -94,6 +94,7 @@
     <string name="game_shop_qty_increase">增加</string>
     <string name="game_shop_qty_decrease">减少</string>
     <string name="game_shop_cart_add">加入购物车</string>
+    <string name="game_shop_cart_empty">购物车是空的。要不要买点什么？</string>
     <string name="game_shop_buy">购买</string>
     <string name="game_shop_price_total">总价：</string>
     <string name="game_shop_checkout">结账</string>

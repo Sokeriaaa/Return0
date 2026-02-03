@@ -94,6 +94,7 @@
     <string name="game_shop_qty_increase">Increase</string>
     <string name="game_shop_qty_decrease">Decrease</string>
     <string name="game_shop_cart_add">Add to Cart</string>
+    <string name="game_shop_cart_empty">Cart is empty. Buy something?</string>
     <string name="game_shop_buy">Buy</string>
     <string name="game_shop_price_total">Total price:</string>
     <string name="game_shop_checkout">Checkout</string>
