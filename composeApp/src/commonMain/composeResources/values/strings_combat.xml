@@ -15,7 +15,7 @@
     <string name="combat_choose_action_function">FUNCTION</string>
     <string name="combat_choose_action_relax">RELAX</string>
     <string name="combat_choose_action_item">ITEM</string>
-    <string name="combat_choose_action_back">&lt;- BACK</string>
+    <string name="combat_choose_action_escape">ESCAPE</string>
     <string name="combat_choose_action_target_selected_count">%1$s / %2$s SELECTED</string>
     <string name="combat_choose_action_execute">EXECUTE</string>
     <string name="combat_choose_action_auto_combat">Auto-combat</string>

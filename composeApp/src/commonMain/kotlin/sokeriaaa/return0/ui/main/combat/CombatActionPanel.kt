@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,6 +40,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
@@ -50,21 +50,30 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.back
 import return0.composeapp.generated.resources.combat_choose_action
 import return0.composeapp.generated.resources.combat_choose_action_attack
-import return0.composeapp.generated.resources.combat_choose_action_back
 import return0.composeapp.generated.resources.combat_choose_action_defend
+import return0.composeapp.generated.resources.combat_choose_action_escape
 import return0.composeapp.generated.resources.combat_choose_action_execute
 import return0.composeapp.generated.resources.combat_choose_action_function
 import return0.composeapp.generated.resources.combat_choose_action_item
 import return0.composeapp.generated.resources.combat_choose_action_relax
 import return0.composeapp.generated.resources.combat_choose_action_target_selected_count
+import return0.composeapp.generated.resources.ic_outline_arrow_back_24
 import return0.composeapp.generated.resources.ic_outline_check_24
+import return0.composeapp.generated.resources.ic_outline_code_24
+import return0.composeapp.generated.resources.ic_outline_door_open_24
+import return0.composeapp.generated.resources.ic_outline_relax_24
+import return0.composeapp.generated.resources.ic_outline_security_24
+import return0.composeapp.generated.resources.ic_outline_swords_24
+import return0.composeapp.generated.resources.ic_outline_terminal_24
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.ui.common.entity.function.EntityFunctionCard
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
+import sokeriaaa.return0.ui.common.widgets.AppOutlinedButton
 
 
 /**
@@ -91,7 +100,7 @@ fun CombatActionPanel(
         visible = status == ActionPanelStatus.ACTION,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 stringResource(
@@ -99,76 +108,60 @@ fun CombatActionPanel(
                     /* entity = */ entitySelecting?.name ?: ""
                 )
             )
-            @Composable
-            fun RowScope.Part1() {
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                AppFilledTonalButton(
                     text = stringResource(Res.string.combat_choose_action_attack),
+                    iconRes = Res.drawable.ic_outline_swords_24,
                     onClick = {
                         entitySelecting?.attackAction?.let {
                             viewModel.onIntent(CombatIntent.ChooseAction(it))
                         }
                     },
                 )
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
-                    text = stringResource(Res.string.combat_choose_action_function),
-                    enabled = !entitySelecting?.functions.isNullOrEmpty(),
-                    onClick = {
-                        isSelectingFunction = true
-                    },
-                )
-            }
-
-            @Composable
-            fun RowScope.Part2() {
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
+                AppFilledTonalButton(
                     text = stringResource(Res.string.combat_choose_action_defend),
+                    iconRes = Res.drawable.ic_outline_security_24,
                     onClick = {
                         entitySelecting?.defendAction?.let {
                             viewModel.onIntent(CombatIntent.ChooseAction(it))
                         }
                     },
                 )
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
+                AppFilledTonalButton(
                     text = stringResource(Res.string.combat_choose_action_relax),
+                    iconRes = Res.drawable.ic_outline_relax_24,
                     onClick = {
                         entitySelecting?.relaxAction?.let {
                             viewModel.onIntent(CombatIntent.ChooseAction(it))
                         }
                     },
                 )
-                AppTextButton(
-                    modifier = Modifier.weight(1F),
-                    text = stringResource(Res.string.combat_choose_action_item),
+                AppFilledTonalButton(
+                    text = stringResource(Res.string.combat_choose_action_function),
+                    iconRes = Res.drawable.ic_outline_code_24,
+                    enabled = !entitySelecting?.functions.isNullOrEmpty(),
                     onClick = {
-                        // TODO Not implemented yet.
+                        isSelectingFunction = true
                     },
                 )
-            }
-            if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Part1()
-                    Part2()
-                }
-            } else {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Part1()
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Part2()
-                }
+                AppFilledTonalButton(
+                    text = stringResource(Res.string.combat_choose_action_item),
+                    iconRes = Res.drawable.ic_outline_terminal_24,
+                    // TODO Not implemented yet.
+                    enabled = false,
+                    onClick = {},
+                )
+                AppFilledTonalButton(
+                    text = stringResource(Res.string.combat_choose_action_escape),
+                    iconRes = Res.drawable.ic_outline_door_open_24,
+                    // TODO Not implemented yet.
+                    enabled = false,
+                    onClick = {},
+                )
             }
         }
     }
@@ -206,9 +199,10 @@ fun CombatActionPanel(
                             .padding(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        AppTextButton(
+                        AppOutlinedButton(
                             modifier = Modifier.weight(1F),
-                            text = stringResource(Res.string.combat_choose_action_back),
+                            iconRes = Res.drawable.ic_outline_arrow_back_24,
+                            text = stringResource(Res.string.back),
                             onClick = {
                                 isSelectingFunction = false
                             }
@@ -303,10 +297,11 @@ private fun TargetSelection(
                 .padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            AppTextButton(
+            AppOutlinedButton(
                 modifier = Modifier.weight(1F),
-                text = stringResource(Res.string.combat_choose_action_back),
-                onClick = onBack
+                iconRes = Res.drawable.ic_outline_arrow_back_24,
+                text = stringResource(Res.string.back),
+                onClick = onBack,
             )
             if (isSingleTarget) {
                 // When the function only require a single target,
@@ -315,7 +310,7 @@ private fun TargetSelection(
                 Spacer(modifier = Modifier.weight(1F))
             } else {
                 // Execute button.
-                AppTextButton(
+                AppFilledTonalButton(
                     modifier = Modifier.weight(1F),
                     text = if (isReady) {
                         stringResource(Res.string.combat_choose_action_execute)
@@ -326,6 +321,7 @@ private fun TargetSelection(
                             selectableCount,
                         )
                     },
+                    iconRes = Res.drawable.ic_outline_code_24,
                     onClick = {
                         onSubmit(selectedEntities)
                         selectedEntities.clear()

@@ -14,7 +14,7 @@
     <string name="combat_choose_action_function">函数</string>
     <string name="combat_choose_action_relax">休息</string>
     <string name="combat_choose_action_item">道具</string>
-    <string name="combat_choose_action_back">&lt;- 返回</string>
+    <string name="combat_choose_action_escape">逃跑</string>
     <string name="combat_choose_action_target_selected_count">已选择 %1$s / %2$s 个目标</string>
     <string name="combat_choose_action_execute">执行</string>
     <string name="combat_choose_action_auto_combat">自动战斗</string>

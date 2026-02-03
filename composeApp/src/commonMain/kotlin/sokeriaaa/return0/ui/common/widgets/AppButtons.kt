@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -108,6 +109,51 @@ fun AppFilledTonalButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     FilledTonalButton(
+        modifier = modifier,
+        onClick = onClick,
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+    ) {
+        iconRes?.let {
+            Icon(
+                painter = painterResource(it),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(
+                modifier = Modifier.size(ButtonDefaults.IconSpacing),
+            )
+        }
+        Text(text)
+    }
+}
+
+/**
+ * Simplified for default buttons to avoid nesting.
+ *
+ * @see OutlinedButton
+ */
+@Composable
+fun AppOutlinedButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    iconRes: DrawableResource? = null,
+    contentDescription: String? = null,
+    text: String,
+    shape: Shape = ButtonDefaults.outlinedShape,
+    colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
+    elevation: ButtonElevation? = null,
+    border: BorderStroke? = ButtonDefaults.outlinedButtonBorder(enabled),
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource? = null,
+) {
+    OutlinedButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
