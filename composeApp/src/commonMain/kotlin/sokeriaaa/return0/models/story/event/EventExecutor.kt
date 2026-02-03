@@ -16,6 +16,8 @@ package sokeriaaa.return0.models.story.event
 
 import org.jetbrains.compose.resources.getString
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.combat_log_end_lose
+import return0.composeapp.generated.resources.game_combat_recovery
 import return0.composeapp.generated.resources.game_hub_denied
 import return0.composeapp.generated.resources.game_hub_denied_but_indexed
 import sokeriaaa.return0.applib.common.AppConstants
@@ -314,8 +316,29 @@ suspend fun Event.executedIn(context: EventContext) {
         }
 
         Event.Failed -> {
-            // TODO Teleport the player to last teleport point,
-            //  with all entities slightly recovered.
+            // Hide map
+            Event.HideMap.executedIn(context)
+            // Heal entities
+            context.gameState.team.partiallyRecover()
+            // Show narrator
+            context.callback.onEffect(
+                EventEffect.ShowText(
+                    type = EventEffect.ShowText.Type.Narrator,
+                    text = getString(Res.string.combat_log_end_lose)
+                )
+            )
+            context.callback.waitForUserContinue()
+            context.callback.onEffect(
+                EventEffect.ShowText(
+                    type = EventEffect.ShowText.Type.Narrator,
+                    text = getString(Res.string.game_combat_recovery)
+                )
+            )
+            context.callback.waitForUserContinue()
+            // Teleport to anchor
+            Event.ShowMap.executedIn(context)
+            val anchor = context.gameState.map.current.failedAnchor
+            Event.TeleportUserTo(anchor.first, Value(anchor.second)).executedIn(context)
         }
 
         Event.TypeReturn0 -> {
