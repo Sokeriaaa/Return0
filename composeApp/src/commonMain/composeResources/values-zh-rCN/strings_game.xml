@@ -101,7 +101,7 @@
     <string name="game_shop_purchase_successful">购买成功。</string>
     <string name="game_shop_warn_insufficient">货币不足。</string>
     <string name="game_shop_warn_leave">退出商店？</string>
-    <string name="game_shop_warn_cart_lost">购物车中未结算的商品将被清空。</string>
+    <string name="game_shop_warn_cart_lost">如果进入另一个商店或退出游戏，购物车中未结算的商品将被清空。</string>
 
     <string name="game_workbench">工作台</string>
 

@@ -70,7 +70,11 @@ class ShopViewModel : BaseViewModel() {
         when (intent) {
             CommonIntent.Refresh -> viewModelScope.launch { refresh() }
             is ShopIntent.Initialize -> {
-                _cartKeyAmountMap.clear()
+                if (shopEvent != intent.shopEvent) {
+                    // When the user opened a different shop, clear the cart.
+                    _cartKeyAmountMap.clear()
+                    _cartItems.clear()
+                }
                 context = intent.context
                 shopEvent = intent.shopEvent
                 viewModelScope.launch { refresh() }
