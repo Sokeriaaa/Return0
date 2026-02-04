@@ -55,6 +55,7 @@ import sokeriaaa.return0.applib.room.table.SaveMetaTable
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.res.TitleRes
@@ -209,7 +210,7 @@ private fun SaveCard(
     ) {
         // Saved time.
         Text(
-            text = saveMetaTable?.savedTime?.toString() ?: "",
+            text = saveMetaTable?.savedTime?.let { TimeHelper.millisToString(it) } ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(

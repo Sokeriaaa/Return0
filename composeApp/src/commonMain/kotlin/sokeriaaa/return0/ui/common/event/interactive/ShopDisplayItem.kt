@@ -65,7 +65,7 @@ fun ShopDisplayItem(
             } else {
                 stringResource(
                     resource = Res.string.game_shop_restock_after,
-                    /* restockAfter = */ item.refreshAfter,
+                    /* restockAfter = */ TimeHelper.millisToString(item.refreshAfter),
                 )
             }
         },

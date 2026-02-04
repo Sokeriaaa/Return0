@@ -76,6 +76,7 @@ import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_sp_rate
 import return0.composeapp.generated.resources.status_spd
 import sokeriaaa.return0.models.component.res.condition.conditionResource
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue
 import sokeriaaa.return0.shared.data.models.component.values.CombatValue
@@ -384,13 +385,12 @@ fun valueResource(value: Value): AnnotatedString {
                 append(stringResource(Res.string.component_value_event_enemy_level))
             // end - EventValue
             // start - TimeValue
-            // TODO Time strings
             TimeValue.Now -> append(stringResource(Res.string.component_value_time_now))
             is TimeValue.After -> append(
                 stringResource(Res.string.component_value_time_after)
                     .replaceAnnotatedString(
                         oldValue = "{{slot0}}",
-                        newValue = AnnotatedString(value.millis.toString()),
+                        newValue = AnnotatedString(TimeHelper.millisToString(value.millis)),
                     )
             )
 
@@ -398,7 +398,7 @@ fun valueResource(value: Value): AnnotatedString {
                 stringResource(Res.string.component_value_time_next_day)
                     .replaceAnnotatedString(
                         oldValue = "{{slot0}}",
-                        newValue = AnnotatedString(value.offsetMillis.toString()),
+                        newValue = AnnotatedString(TimeHelper.millisToString(value.offsetMillis)),
                     )
             )
 
@@ -406,7 +406,7 @@ fun valueResource(value: Value): AnnotatedString {
                 stringResource(Res.string.component_value_time_next_week)
                     .replaceAnnotatedString(
                         oldValue = "{{slot0}}",
-                        newValue = AnnotatedString(value.offsetMillis.toString()),
+                        newValue = AnnotatedString(TimeHelper.millisToString(value.offsetMillis)),
                     )
             )
 
@@ -418,7 +418,7 @@ fun valueResource(value: Value): AnnotatedString {
                     )
             )
 
-            is TimeValue.Custom -> append(value.timeInMillis.toString())
+            is TimeValue.Custom -> append(TimeHelper.millisToString(value.timeInMillis))
             // end - TimeValue
         }
     }
