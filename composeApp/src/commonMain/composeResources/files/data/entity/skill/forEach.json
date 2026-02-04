@@ -1,0 +1,1 @@
+{"name":"forEach","category":"str","target":{"type":"SingleEnemy"},"bullseye":false,"basePower":5,"powerBonus":2,"baseSPCost":150,"growth":[0,10,20,35,50,70],"attackModifier":{"attackTimes":{"type":"Common.Math.RandomInt","start":8,"endInclusive":12}}}

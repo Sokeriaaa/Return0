@@ -1,0 +1,1 @@
+{"name":"delete","category":"int","target":{"type":"SingleEnemy"},"bullseye":false,"basePower":120,"powerBonus":20,"baseSPCost":150,"growth":[25,55,80],"extra":{"type":"Common.Conditioned","condition":{"type":"Common.Chance","success":{"type":"Entity.HPRate"}},"ifTrue":{"type":"Combat.RemoveAllShields"}}}

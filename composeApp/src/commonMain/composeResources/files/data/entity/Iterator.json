@@ -1,0 +1,1 @@
+{"name":"Iterator","path":"THREAD","category":"str","baseATK":73,"baseDEF":20,"baseSPD":48,"baseHP":227,"baseSP":500,"baseAP":110,"functions":["forEach","next","remove"],"attackModifier":{"power":10,"attackTimes":3}}

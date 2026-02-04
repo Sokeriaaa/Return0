@@ -1,0 +1,1 @@
+{"name":"Object","path":"HEAP","category":"cls","baseATK":56,"baseDEF":27,"baseSPD":28,"baseHP":314,"baseSP":500,"baseAP":120,"functions":["notify","wait","hashCode"]}

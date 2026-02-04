@@ -1,0 +1,1 @@
+{"name":"StringBuilder","path":"OVERCLOCK","category":"str","baseATK":64,"baseDEF":22,"baseSPD":33,"baseHP":275,"baseSP":500,"baseAP":110,"functions":["append","toString","delete"],"attackModifier":{"power":10,"attackTimes":3}}

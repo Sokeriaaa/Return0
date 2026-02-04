@@ -1,0 +1,1 @@
+{"name":"bug_infested","abbr":"BUG","isDebuff":true,"extra":{"type":"Combat.HPChange","hpChange":{"type":"Common.Math.Times","value1":{"type":"Common.Math.TimesConst","value1":{"type":"Entity.MAXHP"},"value2":-0.03125},"value2":{"type":"Action.Tier"}},"ignoresShield":{"type":"Common.True"}}}

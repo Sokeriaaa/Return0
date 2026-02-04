@@ -1,0 +1,1 @@
+{"name":"Validator","path":"RUNTIME","category":"sec","baseATK":58,"baseDEF":29,"baseSPD":41,"baseHP":286,"baseSP":500,"baseAP":120,"functions":["setResourceResolver","setErrorHandler","validate"]}

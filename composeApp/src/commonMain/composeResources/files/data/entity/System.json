@@ -1,0 +1,1 @@
+{"name":"System","path":"KERNEL","category":"mem","baseATK":50,"baseDEF":34,"baseSPD":24,"baseHP":368,"baseSP":500,"baseAP":130,"functions":["getProperty","gc","arraycopy"]}

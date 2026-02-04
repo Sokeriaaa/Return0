@@ -1,0 +1,1 @@
+{"name":"raiseException","category":"exc","target":{"type":"SingleEnemy"},"bullseye":false,"basePower":100,"powerBonus":50,"baseSPCost":150,"growth":[20,35,50,70]}
