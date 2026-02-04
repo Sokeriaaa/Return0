@@ -285,6 +285,8 @@ private fun ShopDetails(
                         iconRes = Res.drawable.ic_outline_payments_24,
                         text = stringResource(Res.string.game_shop_buy),
                         onClick = {
+                            // Clear focus before sending intent.
+                            focusManager.clearFocus()
                             onIntent(
                                 ShopIntent.Buy(
                                     key = item.key,
