@@ -53,8 +53,10 @@ class ShopViewModel : BaseViewModel() {
     private lateinit var shopEvent: Event.Shop
 
     // Items
-    private val _items: MutableMap<String, ShopItem> = mutableStateMapOf()
-    val items: Map<String, ShopItem> = _items
+    private val _itemKeyMap: MutableMap<String, ShopItem> = mutableStateMapOf()
+    val itemKeyMap: Map<String, ShopItem> = _itemKeyMap
+    private val _items: MutableList<ShopItem> = mutableStateListOf()
+    val items: List<ShopItem> = _items
 
     // Currency values
     val tokenValue: Int get() = _gameStateRepo.currency[CurrencyType.TOKEN]
@@ -83,7 +85,7 @@ class ShopViewModel : BaseViewModel() {
             is ShopIntent.AlterCart -> {
                 // Calculate new amount.
                 val newAmount = ((_cartKeyAmountMap[intent.key] ?: 0) + intent.amountChange)
-                    .coerceAtMost(items[intent.key]?.limit ?: Int.MAX_VALUE)
+                    .coerceAtMost(_itemKeyMap[intent.key]?.limit ?: Int.MAX_VALUE)
                 if (newAmount > 0) {
                     // Update new amount.
                     _cartKeyAmountMap[intent.key] = newAmount
@@ -129,7 +131,7 @@ class ShopViewModel : BaseViewModel() {
             }
 
             is ShopIntent.Buy -> viewModelScope.launch {
-                val item = items[intent.key] ?: return@launch
+                val item = _itemKeyMap[intent.key] ?: return@launch
                 if (checkBalance(item.price, intent.amount)) {
                     executePurchase(item, intent.amount)
                     refresh()
@@ -153,8 +155,8 @@ class ShopViewModel : BaseViewModel() {
     }
 
     private suspend fun refresh() {
-        _items.clear()
-        _items.putAll(
+        _itemKeyMap.clear()
+        _itemKeyMap.putAll(
             shopEvent.entries.map {
                 // Check refresh time.
                 val refreshAfter = getRefreshTime(it.item.key)
@@ -191,8 +193,12 @@ class ShopViewModel : BaseViewModel() {
                     refreshAfter = it.refreshAfter?.calculateTime(context),
                     item = it.item,
                 )
-            }.sortedBy { it.sorter }.associateBy { it.key }
+            }.associateBy { it.key }
         )
+        // Refresh list
+        _items.clear()
+        _items.addAll(_itemKeyMap.values.sortedBy { it.sorter })
+        // Refresh cart items.
         refreshCartItems()
     }
 
@@ -200,7 +206,7 @@ class ShopViewModel : BaseViewModel() {
         _cartItems.clear()
         _cartItems.addAll(
             _cartKeyAmountMap.entries.mapNotNull {
-                val item = items[it.key] ?: return@mapNotNull null
+                val item = _itemKeyMap[it.key] ?: return@mapNotNull null
                 // Trim the cart item amount to the new upper limit.
                 val updatedAmount = it.value.coerceAtMost(item.limit ?: Int.MAX_VALUE)
                 if (updatedAmount <= 0) return@mapNotNull null

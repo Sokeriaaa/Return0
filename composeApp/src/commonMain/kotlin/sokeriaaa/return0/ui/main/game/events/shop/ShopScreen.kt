@@ -70,6 +70,7 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
+import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
@@ -139,7 +140,7 @@ fun ShopScreen(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 items(
-                    items = viewModel.items.values.toList(),
+                    items = viewModel.items,
                     key = { it.key },
                 ) {
                     ShopDisplayItem(
@@ -169,7 +170,7 @@ fun ShopScreen(
                     onIntent = viewModel::onIntent,
                     onPurchased = {
                         // Refresh item.
-                        selectedItem = viewModel.items[it.key]
+                        selectedItem = viewModel.itemKeyMap[it.key]
                     }
                 )
             }
@@ -307,7 +308,7 @@ private fun ShopDetails(
                     } else {
                         stringResource(
                             resource = Res.string.game_shop_restock_after,
-                            /* restockAfter = */ item.refreshAfter,
+                            /* restockAfter = */ TimeHelper.millisToString(item.refreshAfter),
                         )
                     }
                 )
