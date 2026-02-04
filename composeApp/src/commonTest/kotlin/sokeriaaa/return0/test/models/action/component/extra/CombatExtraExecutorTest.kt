@@ -26,6 +26,8 @@ import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
@@ -35,6 +37,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
+@RunWith(AppRunner::class)
 class CombatExtraExecutorTest : KoinComponent {
 
     private fun createTestingContext(
@@ -65,85 +68,93 @@ class CombatExtraExecutorTest : KoinComponent {
 
     @Test
     fun `Combat_HPChange executes correctly`() {
-        val context = createTestingContext()
-        context.target.hp = 1000
-        // Damage 100
-        CombatExtra.HPChange(Value(-100)).executedIn(context)
-        assertEquals(900, context.target.hp)
-        // Heal 150
-        CombatExtra.HPChange(Value(150)).executedIn(context)
-        assertEquals(1050, context.target.hp)
-        // HP Coerced
-        CombatExtra.HPChange(Value(Int.MIN_VALUE)).executedIn(context)
-        assertEquals(0, context.target.hp)
-        CombatExtra.HPChange(Value(Int.MAX_VALUE)).executedIn(context)
-        assertEquals(context.target.maxhp, context.target.hp)
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.hp = 1000
+            // Damage 100
+            CombatExtra.HPChange(Value(-100)).executedIn(context)
+            assertEquals(900, context.target.hp)
+            // Heal 150
+            CombatExtra.HPChange(Value(150)).executedIn(context)
+            assertEquals(1050, context.target.hp)
+            // HP Coerced
+            CombatExtra.HPChange(Value(Int.MIN_VALUE)).executedIn(context)
+            assertEquals(0, context.target.hp)
+            CombatExtra.HPChange(Value(Int.MAX_VALUE)).executedIn(context)
+            assertEquals(context.target.maxhp, context.target.hp)
+        }
     }
 
     @Test
     fun `Combat_HPChange integrates with shields correctly`() {
-        val context = createTestingContext()
-        context.target.hp = 1000
-        // Shield 150
-        context.target.attachShield("shield", 150)
-        // Damage 100
-        CombatExtra.HPChange(Value(-100)).executedIn(context)
-        assertEquals(1000, context.target.hp)
-        assertEquals(50, context.target.shields["shield"]?.value)
-        // Damage 100 that ignores shields
-        CombatExtra.HPChange(
-            hpChange = Value(-100),
-            ignoresShield = CommonCondition.True,
-        ).executedIn(context)
-        assertEquals(900, context.target.hp)
-        assertEquals(50, context.target.shields["shield"]?.value)
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.hp = 1000
+            // Shield 150
+            context.target.attachShield("shield", 150)
+            // Damage 100
+            CombatExtra.HPChange(Value(-100)).executedIn(context)
+            assertEquals(1000, context.target.hp)
+            assertEquals(50, context.target.shields["shield"]?.value)
+            // Damage 100 that ignores shields
+            CombatExtra.HPChange(
+                hpChange = Value(-100),
+                ignoresShield = CommonCondition.True,
+            ).executedIn(context)
+            assertEquals(900, context.target.hp)
+            assertEquals(50, context.target.shields["shield"]?.value)
+        }
     }
 
     @Test
     fun `Combat_SPChange executes correctly`() {
-        val context = createTestingContext()
-        context.target.sp = 100
-        // SP -10
-        CombatExtra.SPChange(Value(-10)).executedIn(context)
-        assertEquals(90, context.target.sp)
-        // SP +15
-        CombatExtra.SPChange(Value(15)).executedIn(context)
-        assertEquals(105, context.target.sp)
-        // SP Coerced
-        CombatExtra.SPChange(Value(Int.MIN_VALUE)).executedIn(context)
-        assertEquals(0, context.target.sp)
-        CombatExtra.SPChange(Value(Int.MAX_VALUE)).executedIn(context)
-        assertEquals(context.target.maxsp, context.target.sp)
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.sp = 100
+            // SP -10
+            CombatExtra.SPChange(Value(-10)).executedIn(context)
+            assertEquals(90, context.target.sp)
+            // SP +15
+            CombatExtra.SPChange(Value(15)).executedIn(context)
+            assertEquals(105, context.target.sp)
+            // SP Coerced
+            CombatExtra.SPChange(Value(Int.MIN_VALUE)).executedIn(context)
+            assertEquals(0, context.target.sp)
+            CombatExtra.SPChange(Value(Int.MAX_VALUE)).executedIn(context)
+            assertEquals(context.target.maxsp, context.target.sp)
+        }
     }
 
     @Test
     fun `Combat_APChange executes correctly`() {
-        val context = createTestingContext()
-        context.target.ap = 50F
-        // AP -10
-        CombatExtra.APChange(Value(-10)).executedIn(context)
-        assertFloatEquals(40F, context.target.ap)
-        // AP +15
-        CombatExtra.APChange(Value(15)).executedIn(context)
-        assertFloatEquals(55F, context.target.ap)
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.ap = 50F
+            // AP -10
+            CombatExtra.APChange(Value(-10)).executedIn(context)
+            assertFloatEquals(40F, context.target.ap)
+            // AP +15
+            CombatExtra.APChange(Value(15)).executedIn(context)
+            assertFloatEquals(55F, context.target.ap)
 
-        // AP can break the upper and lower limits by the extras.
-        CombatExtra.APChange(Value(-100)).executedIn(context)
-        assertFloatEquals(-45F, context.target.ap)
-        CombatExtra.APChange(Value(1000)).executedIn(context)
-        assertFloatEquals(955F, context.target.ap)
+            // AP can break the upper and lower limits by the extras.
+            CombatExtra.APChange(Value(-100)).executedIn(context)
+            assertFloatEquals(-45F, context.target.ap)
+            CombatExtra.APChange(Value(1000)).executedIn(context)
+            assertFloatEquals(955F, context.target.ap)
+        }
     }
 
     @Test
     fun `Combat_Effects executes correctly`() {
-        val context = createTestingContext()
-        val foo = DummyEffects.generateEffectData(name = "foo", isDebuff = true)
-        val bar = DummyEffects.generateEffectData(name = "bar", isDebuff = false)
-        val baz = DummyEffects.generateEffectData(name = "baz", isDebuff = false)
         TestKoinModules.withModules {
+            val context = createTestingContext()
+            val foo = DummyEffects.generateEffectData(name = "foo", isDebuff = true)
+            val bar = DummyEffects.generateEffectData(name = "bar", isDebuff = false)
+            val baz = DummyEffects.generateEffectData(name = "baz", isDebuff = false)
             // Register effects
             val archiveRepo: ArchiveRepo by inject()
-            archiveRepo.registerEffects(listOf(foo, bar, baz))
+            archiveRepo.entities.effects.addAll(foo, bar, baz)
 
             // Attach effects
             CombatExtra.AttachEffect(name = foo.name, tier = Value(1), turns = Value(1))
@@ -218,26 +229,28 @@ class CombatExtraExecutorTest : KoinComponent {
 
     @Test
     fun `Combat_Shields executes correctly`() {
-        val context = createTestingContext()
+        TestKoinModules.withModules {
+            val context = createTestingContext()
 
-        // Attach shields
-        CombatExtra.AttachShield(key = "foo", value = Value(111)).executedIn(context)
-        CombatExtra.AttachShield(key = "bar", value = Value(222)).executedIn(context)
-        CombatExtra.AttachShield(key = "baz", value = Value(333)).executedIn(context)
-        assertEquals(111, context.target.shields["foo"]?.value)
-        assertEquals(222, context.target.shields["bar"]?.value)
-        assertEquals(333, context.target.shields["baz"]?.value)
+            // Attach shields
+            CombatExtra.AttachShield(key = "foo", value = Value(111)).executedIn(context)
+            CombatExtra.AttachShield(key = "bar", value = Value(222)).executedIn(context)
+            CombatExtra.AttachShield(key = "baz", value = Value(333)).executedIn(context)
+            assertEquals(111, context.target.shields["foo"]?.value)
+            assertEquals(222, context.target.shields["bar"]?.value)
+            assertEquals(333, context.target.shields["baz"]?.value)
 
-        // Remove one shield
-        CombatExtra.RemoveShield("bar").executedIn(context)
-        assertEquals(111, context.target.shields["foo"]?.value)
-        assertFalse(context.target.shields.containsKey("bar"))
-        assertEquals(333, context.target.shields["baz"]?.value)
+            // Remove one shield
+            CombatExtra.RemoveShield("bar").executedIn(context)
+            assertEquals(111, context.target.shields["foo"]?.value)
+            assertFalse(context.target.shields.containsKey("bar"))
+            assertEquals(333, context.target.shields["baz"]?.value)
 
-        // Remove all shields
-        CombatExtra.RemoveAllShields.executedIn(context)
-        assertFalse(context.target.shields.containsKey("foo"))
-        assertFalse(context.target.shields.containsKey("bar"))
-        assertFalse(context.target.shields.containsKey("baz"))
+            // Remove all shields
+            CombatExtra.RemoveAllShields.executedIn(context)
+            assertFalse(context.target.shields.containsKey("foo"))
+            assertFalse(context.target.shields.containsKey("bar"))
+            assertFalse(context.target.shields.containsKey("baz"))
+        }
     }
 }

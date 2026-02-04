@@ -77,7 +77,7 @@ class EmulatorPresetViewModel : BaseViewModel() {
         val parties = ArrayList<PartyState>()
         val enemies = ArrayList<EnemyState>()
         selectedEntries?.forEach {
-            val entityData = _archiveRepo.getEntityData(it.entityName) ?: return@forEach
+            val entityData = _archiveRepo.entities[it.entityName] ?: return@forEach
             if (it.isParty) {
                 parties.add(PartyState(entityData, it.level))
             } else {

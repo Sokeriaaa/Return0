@@ -25,6 +25,9 @@ import sokeriaaa.return0.shared.data.models.component.common.Comparator
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
@@ -32,6 +35,7 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@RunWith(AppRunner::class)
 class EntityConditionExecutorTest {
 
     private fun createTestingContext(
@@ -50,239 +54,249 @@ class EntityConditionExecutorTest {
 
     @Test
     fun `Entity_Categories calculated correctly`() {
-        val context = createTestingContext(
-            target = DummyEntities.generateEntity(
-                index = 1,
-                name = "bar",
-                category = Category.CLASS,
-                category2 = Category.INTERFACE,
+        TestKoinModules.withModules {
+            val context = createTestingContext(
+                target = DummyEntities.generateEntity(
+                    index = 1,
+                    name = "bar",
+                    category = Category.CLASS,
+                    category2 = Category.INTERFACE,
+                )
             )
-        )
 
-        assertTrue(EntityCondition.Categories.Has(Category.CLASS).calculatedIn(context))
-        assertTrue(EntityCondition.Categories.Has(Category.INTERFACE).calculatedIn(context))
-        assertFalse(EntityCondition.Categories.Has(Category.REFLECT).calculatedIn(context))
+            assertTrue(EntityCondition.Categories.Has(Category.CLASS).calculatedIn(context))
+            assertTrue(EntityCondition.Categories.Has(Category.INTERFACE).calculatedIn(context))
+            assertFalse(EntityCondition.Categories.Has(Category.REFLECT).calculatedIn(context))
 
-        assertTrue(
-            EntityCondition.Categories.HasOneOf(
-                Category.CLASS,
-                Category.CONCURRENT,
-                Category.MEMORY
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Categories.HasOneOf(
-                Category.INTERFACE,
-                Category.CONCURRENT,
-                Category.MEMORY
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Categories.HasOneOf(
-                Category.REFLECT,
-                Category.CONCURRENT,
-                Category.MEMORY
-            ).calculatedIn(context)
-        )
+            assertTrue(
+                EntityCondition.Categories.HasOneOf(
+                    Category.CLASS,
+                    Category.CONCURRENT,
+                    Category.MEMORY
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Categories.HasOneOf(
+                    Category.INTERFACE,
+                    Category.CONCURRENT,
+                    Category.MEMORY
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Categories.HasOneOf(
+                    Category.REFLECT,
+                    Category.CONCURRENT,
+                    Category.MEMORY
+                ).calculatedIn(context)
+            )
+        }
     }
 
     @Test
     fun `Entity_Effects calculated correctly`() {
-        val context = createTestingContext()
-        val effect = context.user.generateEffectFor(
-            effectData = DummyEffects.generateEffectData(name = "effect"),
-            tier = 1,
-            turns = 1,
-        )
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            val effect = context.user.generateEffectFor(
+                effectData = DummyEffects.generateEffectData(name = "effect"),
+                tier = 1,
+                turns = 1,
+            )
 
-        // No effect
-        assertFalse(EntityCondition.Effects.Has("effect").calculatedIn(context))
-        assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
-        assertFalse(EntityCondition.Effects.HasAny.calculatedIn(context))
+            // No effect
+            assertFalse(EntityCondition.Effects.Has("effect").calculatedIn(context))
+            assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
+            assertFalse(EntityCondition.Effects.HasAny.calculatedIn(context))
 
-        // Effect attached
-        context.target.attachEffect(effect)
-        assertTrue(EntityCondition.Effects.Has("effect").calculatedIn(context))
-        assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
-        assertTrue(EntityCondition.Effects.HasAny.calculatedIn(context))
+            // Effect attached
+            context.target.attachEffect(effect)
+            assertTrue(EntityCondition.Effects.Has("effect").calculatedIn(context))
+            assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
+            assertTrue(EntityCondition.Effects.HasAny.calculatedIn(context))
+        }
     }
 
     @Test
     fun `Entity_Shields calculated correctly`() {
-        val context = createTestingContext()
+        TestKoinModules.withModules {
+            val context = createTestingContext()
 
-        // No shields
-        assertFalse(EntityCondition.Shields.Has("shield").calculatedIn(context))
-        assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
-        assertFalse(EntityCondition.Shields.HasAny.calculatedIn(context))
+            // No shields
+            assertFalse(EntityCondition.Shields.Has("shield").calculatedIn(context))
+            assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
+            assertFalse(EntityCondition.Shields.HasAny.calculatedIn(context))
 
-        // Shield attached
-        context.target.attachShield("shield", 123)
-        assertTrue(EntityCondition.Shields.Has("shield").calculatedIn(context))
-        assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
-        assertTrue(EntityCondition.Shields.HasAny.calculatedIn(context))
+            // Shield attached
+            context.target.attachShield("shield", 123)
+            assertTrue(EntityCondition.Shields.Has("shield").calculatedIn(context))
+            assertFalse(EntityCondition.Shields.Has("another_shield").calculatedIn(context))
+            assertTrue(EntityCondition.Shields.HasAny.calculatedIn(context))
+        }
     }
 
     @Test
     fun `Entity_Status_HP calculated correctly`() {
-        val context = createTestingContext()
-        context.target.hp = 42
-        val rate = context.target.hp.toFloat() / context.target.maxhp
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.hp = 42
+            val rate = context.target.hp.toFloat() / context.target.maxhp
 
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
 
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.HPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+        }
     }
 
     @Test
     fun `Entity_Status_SP calculated correctly`() {
-        val context = createTestingContext()
-        context.target.sp = 42
-        val rate = context.target.sp.toFloat() / context.target.maxsp
+        TestKoinModules.withModules {
+            val context = createTestingContext()
+            context.target.sp = 42
+            val rate = context.target.sp.toFloat() / context.target.maxsp
 
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LT,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.LTEQ,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
 
 
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertTrue(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate - 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
-        assertFalse(
-            EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
-                rate = Value(rate + 0.1F),
-            ).calculatedIn(context)
-        )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertTrue(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate - 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GT,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+            assertFalse(
+                EntityCondition.Status.SPRate(
+                    comparator = Comparator.GTEQ,
+                    rate = Value(rate + 0.1F),
+                ).calculatedIn(context)
+            )
+        }
     }
 }

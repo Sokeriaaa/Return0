@@ -31,8 +31,6 @@ import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
 import sokeriaaa.return0.shared.common.helpers.JsonHelper
-import sokeriaaa.return0.shared.data.models.action.effect.EffectData
-import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
@@ -47,6 +45,9 @@ class MainViewModel : BaseViewModel() {
 
     // Data loading
     var loadingProgress by mutableIntStateOf(0)
+        private set
+
+    var totalProgress by mutableIntStateOf(1)
         private set
 
     var isLoadingFinished by mutableStateOf(false)
@@ -88,37 +89,26 @@ class MainViewModel : BaseViewModel() {
     private suspend fun loadArchives() {
         try {
             resetProgress()
-            // Entities
-            JsonHelper.decodeFromString<List<EntityData>>(
-                string = Res.readBytes("files/data/entity.json").decodeToString(),
-            ).let {
-                _archiveRepo.registerEntities(it)
-            }
-            updateProgress(1)
-            // Effects
-            JsonHelper.decodeFromString<List<EffectData>>(
-                string = Res.readBytes("files/data/effect.json").decodeToString(),
-            ).let {
-                _archiveRepo.registerEffects(it)
-            }
-            updateProgress(2)
+            _archiveRepo.loadAll(
+                onProgress = { current, max ->
+                    totalProgress = max
+                    loadingProgress = current
+                }
+            )
             // Category: Entity growth
             JsonHelper.decodeFromString<Map<Category, EntityGrowth>>(
                 string = Res.readBytes("files/data/category_entity_growth.json").decodeToString()
             ).let {
                 _archiveRepo.registerEntityGrowths(it)
             }
-            updateProgress(3)
             // Category: Effectiveness
             JsonHelper.decodeFromString<Map<Category, CategoryEffectiveness>>(
                 string = Res.readBytes("files/data/category_effectiveness.json").decodeToString()
             ).let {
                 _archiveRepo.registerCategoryEffectiveness(it)
             }
-            updateProgress(4)
             // TODO System language.
             _resourceRepo.load("en-us")
-            updateProgress(5)
             delay(1000)
             isLoadingFinished = true
         } catch (e: Exception) {
@@ -130,13 +120,5 @@ class MainViewModel : BaseViewModel() {
         loadingProgress = 0
         isLoadingFinished = false
         loadingError = null
-    }
-
-    private fun updateProgress(tasksCompleted: Int) {
-        loadingProgress = tasksCompleted * 100 / TOTAL_PROGRESS
-    }
-
-    companion object {
-        private const val TOTAL_PROGRESS = 5
     }
 }

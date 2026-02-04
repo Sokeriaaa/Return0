@@ -439,7 +439,7 @@ private suspend fun buildParties(
 ): List<PartyState> {
 
     return partyLevels.mapNotNull { (id, level) ->
-        val entityData = context.archive.getEntityData(id) ?: return@mapNotNull null
+        val entityData = context.archive.entities[id] ?: return@mapNotNull null
         val table = context.gameState.entity.getEntityTable(id)
         val plugin = context.gameState.plugin.getPluginStateByID(table?.pluginID)
         val override = statusOverride?.get(id)
@@ -460,7 +460,7 @@ private suspend fun buildEnemies(
 ): List<EnemyState> {
     return enemies.mapNotNull { (id, levelValue) ->
         EnemyState(
-            entityData = context.archive.getEntityData(id) ?: return@mapNotNull null,
+            entityData = context.archive.entities[id] ?: return@mapNotNull null,
             level = levelValue.calculatedIn(context)
         )
     }

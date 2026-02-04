@@ -25,15 +25,17 @@ import sokeriaaa.return0.models.action.removeEffect
 import sokeriaaa.return0.models.action.singleExecute
 import sokeriaaa.return0.models.combat.CombatCalculator
 import sokeriaaa.return0.models.component.context.createExtraContextFor
-import sokeriaaa.return0.models.entity.plugin.generatePlugin
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
+import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
@@ -47,6 +49,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@RunWith(AppRunner::class)
 class ActionExecutorTest {
 
     @Test
@@ -119,14 +122,15 @@ class ActionExecutorTest {
             repeat(10) {
                 val attackOffset = Random.nextFloat() * 0.2F - 0.1F
                 val defendOffset = Random.nextFloat() * 0.2F - 0.1F
-                val plugin = PluginData(
-                    key = "foo",
-                    nameRes = "plugin.foo",
-                    descriptionRes = "plugin.foo.desc",
-                    path = EntityPath.HEAP,
-                    attackRateOffset = Value(attackOffset),
-                    defendRateOffset = Value(defendOffset),
-                ).generatePlugin(
+                val plugin = EntityState.Plugin(
+                    pluginData = PluginData(
+                        key = "foo",
+                        nameRes = "plugin.foo",
+                        descriptionRes = "plugin.foo.desc",
+                        path = EntityPath.HEAP,
+                        attackRateOffset = Value(attackOffset),
+                        defendRateOffset = Value(defendOffset),
+                    ),
                     tier = 1,
                     constMap = emptyMap(),
                 )
@@ -180,14 +184,15 @@ class ActionExecutorTest {
             repeat(10) {
                 val extraDamage = Random.nextInt(100)
                 val extraHeal = Random.nextInt(100)
-                val plugin = PluginData(
-                    key = "foo",
-                    nameRes = "plugin.foo",
-                    descriptionRes = "plugin.foo.desc",
-                    path = EntityPath.HEAP,
-                    onAttack = CombatExtra.HPChange(Value(-extraDamage)),
-                    onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(extraHeal)))
-                ).generatePlugin(
+                val plugin = EntityState.Plugin(
+                    pluginData = PluginData(
+                        key = "foo",
+                        nameRes = "plugin.foo",
+                        descriptionRes = "plugin.foo.desc",
+                        path = EntityPath.HEAP,
+                        onAttack = CombatExtra.HPChange(Value(-extraDamage)),
+                        onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(extraHeal)))
+                    ),
                     tier = 1,
                     constMap = emptyMap(),
                 )

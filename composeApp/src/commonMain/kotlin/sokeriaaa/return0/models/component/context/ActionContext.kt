@@ -17,6 +17,7 @@ package sokeriaaa.return0.models.component.context
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
+import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
@@ -42,6 +43,7 @@ open class ActionContext(
      * Maybe there's a better way.
      */
     val archiveRepo: ArchiveRepo by inject()
+    val entityRepo: GameEntityRepo by inject()
 
     var attackDamageResult: ActionResult.Damage? = attackDamageResult
         protected set

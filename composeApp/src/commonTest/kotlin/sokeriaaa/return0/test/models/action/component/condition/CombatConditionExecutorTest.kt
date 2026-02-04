@@ -21,6 +21,9 @@ import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.conditions.CombatCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import kotlin.random.Random
@@ -28,6 +31,7 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@RunWith(AppRunner::class)
 class CombatConditionExecutorTest {
     /**
      * Create a context with a random damage result.,
@@ -62,46 +66,49 @@ class CombatConditionExecutorTest {
 
     @Test
     fun `Combat_IfCritical calculated correctly`() {
-        val user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseHP = 99999)
-        val target: Entity = DummyEntities.generateEntity(index = 1, name = "bar", baseHP = 99999)
-        val action: Action = user.generateFunctionFor(DummyFunction.generateFunctionData())!!
-        val nonCritical = ActionResult.Damage(
-            fromIndex = user.index,
-            toIndex = target.index,
-            finalDamage = 42,
-            shieldedDamage = 0,
-            damageCoerced = 42,
-            effectiveness = 0,
-            isCritical = false,
-        )
-        assertFalse(
-            CombatCondition.Critical.calculatedIn(
-                context = ActionExtraContext(
-                    fromAction = action,
-                    user = user,
-                    target = target,
-                    attackDamageResult = nonCritical,
+        TestKoinModules.withModules {
+            val user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseHP = 99999)
+            val target: Entity =
+                DummyEntities.generateEntity(index = 1, name = "bar", baseHP = 99999)
+            val action: Action = user.generateFunctionFor(DummyFunction.generateFunctionData())!!
+            val nonCritical = ActionResult.Damage(
+                fromIndex = user.index,
+                toIndex = target.index,
+                finalDamage = 42,
+                shieldedDamage = 0,
+                damageCoerced = 42,
+                effectiveness = 0,
+                isCritical = false,
+            )
+            assertFalse(
+                CombatCondition.Critical.calculatedIn(
+                    context = ActionExtraContext(
+                        fromAction = action,
+                        user = user,
+                        target = target,
+                        attackDamageResult = nonCritical,
+                    )
                 )
             )
-        )
-        val critical = ActionResult.Damage(
-            fromIndex = user.index,
-            toIndex = target.index,
-            finalDamage = 42,
-            shieldedDamage = 0,
-            damageCoerced = 42,
-            effectiveness = 0,
-            isCritical = true,
-        )
-        assertTrue(
-            CombatCondition.Critical.calculatedIn(
-                context = ActionExtraContext(
-                    fromAction = action,
-                    user = user,
-                    target = target,
-                    attackDamageResult = critical,
+            val critical = ActionResult.Damage(
+                fromIndex = user.index,
+                toIndex = target.index,
+                finalDamage = 42,
+                shieldedDamage = 0,
+                damageCoerced = 42,
+                effectiveness = 0,
+                isCritical = true,
+            )
+            assertTrue(
+                CombatCondition.Critical.calculatedIn(
+                    context = ActionExtraContext(
+                        fromAction = action,
+                        user = user,
+                        target = target,
+                        attackDamageResult = critical,
+                    )
                 )
             )
-        )
+        }
     }
 }

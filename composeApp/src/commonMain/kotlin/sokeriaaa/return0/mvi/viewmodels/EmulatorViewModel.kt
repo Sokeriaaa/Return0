@@ -40,7 +40,7 @@ class EmulatorViewModel : BaseViewModel() {
     private val _archiveRepo: ArchiveRepo by inject()
     private val _emulatorRepo: EmulatorRepo by inject()
 
-    val availableEntities: List<EntityData> = _archiveRepo.availableEntities()
+    val availableEntities: List<EntityData> = _archiveRepo.entities.toList()
 
     private val _parties: MutableList<PartyState> = mutableStateListOf()
     val parties: List<PartyState> = _parties

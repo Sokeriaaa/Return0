@@ -78,7 +78,7 @@ fun Extra.executedIn(context: ActionExtraContext) {
         }
 
         is CombatExtra.AttachEffect -> {
-            val effectData = context.archiveRepo.getEffectData(name) ?: return
+            val effectData = context.archiveRepo.entities.effects[name] ?: return
             context.attachEffect(
                 context.user.generateEffectFor(
                     effectData = effectData,

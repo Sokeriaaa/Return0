@@ -47,7 +47,7 @@ abstract class BaseEventTest {
      * Register entity data for testing.
      */
     protected fun registerTestingEntities(context: EventContext) {
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "foo",
                 path = EntityPath.RUNTIME,
@@ -61,7 +61,7 @@ abstract class BaseEventTest {
                 functions = emptyList(),
             )
         )
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "bar",
                 path = EntityPath.RUNTIME,
@@ -75,7 +75,7 @@ abstract class BaseEventTest {
                 functions = emptyList(),
             )
         )
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "baz",
                 path = EntityPath.RUNTIME,
@@ -89,7 +89,7 @@ abstract class BaseEventTest {
                 functions = emptyList(),
             )
         )
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "qux",
                 path = EntityPath.RUNTIME,
@@ -103,7 +103,7 @@ abstract class BaseEventTest {
                 functions = emptyList(),
             )
         )
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "quux",
                 path = EntityPath.RUNTIME,
@@ -117,7 +117,7 @@ abstract class BaseEventTest {
                 functions = emptyList(),
             )
         )
-        context.archive.registerEntity(
+        context.archive.entities.add(
             EntityData(
                 name = "corge",
                 path = EntityPath.RUNTIME,

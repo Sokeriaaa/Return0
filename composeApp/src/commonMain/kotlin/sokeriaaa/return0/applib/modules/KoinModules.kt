@@ -22,6 +22,9 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
+import sokeriaaa.return0.applib.repository.data.archive.entity.ArchiveEntityRepo
+import sokeriaaa.return0.applib.repository.data.archive.entity.effect.ArchiveEffectRepo
+import sokeriaaa.return0.applib.repository.data.archive.entity.function.ArchiveFunctionRepo
 import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.game.currency.GameCurrencyRepo
@@ -96,9 +99,14 @@ object KoinModules {
         }
         // Entity animator manager
         single { EntityAnimatorManager() }
-        // Repo
-        single { ArchiveRepo() }
+        // Repo - Archive
+        single { ArchiveRepo(get()) }
+        single { ArchiveEntityRepo(get(), get()) }
+        single { ArchiveEffectRepo() }
+        single { ArchiveFunctionRepo() }
+        // Repo - Emulator
         single { EmulatorRepo(get(), get(), get()) }
+        // Repo - Game
         single { GameCurrencyRepo(get()) }
         single { GameEntityRepo(get(), get(), get(), get()) }
         single { GameInventoryRepo(get()) }

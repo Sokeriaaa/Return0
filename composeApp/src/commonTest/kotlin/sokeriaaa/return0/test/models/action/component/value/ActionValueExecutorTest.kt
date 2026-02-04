@@ -22,6 +22,9 @@ import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
@@ -29,6 +32,7 @@ import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.random.Random
 import kotlin.test.Test
 
+@RunWith(AppRunner::class)
 class ActionValueExecutorTest {
 
     /**
@@ -93,85 +97,97 @@ class ActionValueExecutorTest {
 
     @Test
     fun `Action_Tier calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = contextFunction.fromAction.tier.toFloat(),
-            actual = ActionValue.Tier.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = contextEffect.fromAction.tier.toFloat(),
-            actual = ActionValue.Tier.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = contextFunction.fromAction.tier.toFloat(),
+                actual = ActionValue.Tier.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = contextEffect.fromAction.tier.toFloat(),
+                actual = ActionValue.Tier.calculatedIn(contextEffect),
+            )
+        }
     }
 
     @Test
     fun `Action_TimesUsed calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = contextFunction.fromAction.timesUsed.toFloat(),
-            actual = ActionValue.TimesUsed.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = contextEffect.fromAction.timesUsed.toFloat(),
-            actual = ActionValue.TimesUsed.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = contextFunction.fromAction.timesUsed.toFloat(),
+                actual = ActionValue.TimesUsed.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = contextEffect.fromAction.timesUsed.toFloat(),
+                actual = ActionValue.TimesUsed.calculatedIn(contextEffect),
+            )
+        }
     }
 
     @Test
     fun `Action_TimesRepeated calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = contextFunction.fromAction.timesRepeated.toFloat(),
-            actual = ActionValue.TimesRepeated.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = contextEffect.fromAction.timesRepeated.toFloat(),
-            actual = ActionValue.TimesRepeated.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = contextFunction.fromAction.timesRepeated.toFloat(),
+                actual = ActionValue.TimesRepeated.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = contextEffect.fromAction.timesRepeated.toFloat(),
+                actual = ActionValue.TimesRepeated.calculatedIn(contextEffect),
+            )
+        }
     }
 
     @Test
     fun `Action_EffectTurnsLeft calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = (contextFunction.fromAction as? Effect)?.turnsLeft?.toFloat() ?: 0F,
-            actual = ActionValue.Effects.TurnsLeft.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = (contextEffect.fromAction as? Effect)?.turnsLeft?.toFloat() ?: 0F,
-            actual = ActionValue.Effects.TurnsLeft.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = (contextFunction.fromAction as? Effect)?.turnsLeft?.toFloat() ?: 0F,
+                actual = ActionValue.Effects.TurnsLeft.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = (contextEffect.fromAction as? Effect)?.turnsLeft?.toFloat() ?: 0F,
+                actual = ActionValue.Effects.TurnsLeft.calculatedIn(contextEffect),
+            )
+        }
     }
 
     @Test
     fun `Action_SkillPower calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = (contextFunction.fromAction as? Skill)?.power?.toFloat() ?: 0F,
-            actual = ActionValue.Skills.Power.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = (contextEffect.fromAction as? Skill)?.power?.toFloat() ?: 0F,
-            actual = ActionValue.Skills.Power.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = (contextFunction.fromAction as? Skill)?.power?.toFloat() ?: 0F,
+                actual = ActionValue.Skills.Power.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = (contextEffect.fromAction as? Skill)?.power?.toFloat() ?: 0F,
+                actual = ActionValue.Skills.Power.calculatedIn(contextEffect),
+            )
+        }
     }
 
     @Test
     fun `Action_SkillBasePower calculates correctly`() {
-        val contextFunction = createTestingContextWithRandomFunction()
-        val contextEffect = createTestingContextWithRandomEffect()
-        assertFloatEquals(
-            expected = (contextFunction.fromAction as? Skill)?.basePower?.toFloat() ?: 0F,
-            actual = ActionValue.Skills.BasePower.calculatedIn(contextFunction),
-        )
-        assertFloatEquals(
-            expected = (contextEffect.fromAction as? Skill)?.basePower?.toFloat() ?: 0F,
-            actual = ActionValue.Skills.BasePower.calculatedIn(contextEffect),
-        )
+        TestKoinModules.withModules {
+            val contextFunction = createTestingContextWithRandomFunction()
+            val contextEffect = createTestingContextWithRandomEffect()
+            assertFloatEquals(
+                expected = (contextFunction.fromAction as? Skill)?.basePower?.toFloat() ?: 0F,
+                actual = ActionValue.Skills.BasePower.calculatedIn(contextFunction),
+            )
+            assertFloatEquals(
+                expected = (contextEffect.fromAction as? Skill)?.basePower?.toFloat() ?: 0F,
+                actual = ActionValue.Skills.BasePower.calculatedIn(contextEffect),
+            )
+        }
     }
 }

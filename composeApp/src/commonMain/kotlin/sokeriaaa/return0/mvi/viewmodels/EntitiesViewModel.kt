@@ -55,8 +55,9 @@ class EntitiesViewModel : BaseViewModel() {
     private suspend fun refresh() {
         _entities.clear()
         _entities.addAll(
-            _entityRepo.queryAll().asSequence()
-                .mapNotNull { _entityRepo.getEntityProfileByTable(it) }
+            _entityRepo.queryAll().mapNotNull {
+                _entityRepo.getEntityProfileByTable(it)
+            }
         )
 
     }

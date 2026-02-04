@@ -50,12 +50,12 @@ class ShopViewModelTest : BaseEventTest() {
             // Keys
             assertEquals(
                 expected = listOf("inventory:awesome_item", "inventory:epic_item"),
-                actual = items.keys.toList(),
+                actual = items.map { it.key }.toList(),
             )
             // Prices
             assertEquals(
                 expected = listOf(100 to CurrencyType.TOKEN, 5 to CurrencyType.CRYPTO),
-                actual = items.values.map { it.price },
+                actual = items.map { it.price },
             )
         }
     }

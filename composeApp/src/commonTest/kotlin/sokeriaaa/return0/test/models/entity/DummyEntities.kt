@@ -14,10 +14,11 @@
  */
 package sokeriaaa.return0.test.models.entity
 
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.models.entity.Entity
-import sokeriaaa.return0.models.entity.generate
-import sokeriaaa.return0.models.entity.plugin.EntityPlugin
-import sokeriaaa.return0.shared.data.models.action.function.FunctionData
+import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityData.GeneralAttackModifier
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
@@ -27,7 +28,7 @@ import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 /**
  * Dummy entities for testing.
  */
-object DummyEntities {
+object DummyEntities : KoinComponent {
 
     /**
      * Generate a dummy entity data with the specified params.
@@ -43,7 +44,7 @@ object DummyEntities {
         baseHP: Int = 300,
         baseSP: Int = 200,
         baseAP: Int = 100,
-        functions: List<FunctionData> = emptyList(),
+        functionNames: List<String> = emptyList(),
         attackModifier: GeneralAttackModifier? = null
     ): EntityData = EntityData(
         name = name,
@@ -56,7 +57,7 @@ object DummyEntities {
         baseHP = baseHP,
         baseSP = baseSP,
         baseAP = baseAP,
-        functions = functions,
+        functions = functionNames,
         attackModifier = attackModifier,
     )
 
@@ -78,29 +79,33 @@ object DummyEntities {
         baseHP: Int = 300,
         baseSP: Int = 200,
         baseAP: Int = 100,
-        functions: List<FunctionData> = emptyList(),
+        functionNames: List<String> = emptyList(),
         attackModifier: GeneralAttackModifier? = null,
-        plugin: EntityPlugin? = null,
-    ): Entity = generateEntityData(
-        name = name,
-        path = path,
-        category = category,
-        category2 = category2,
-        baseATK = baseATK,
-        baseDEF = baseDEF,
-        baseSPD = baseSPD,
-        baseHP = baseHP,
-        baseSP = baseSP,
-        baseAP = baseAP,
-        functions = functions,
-        attackModifier = attackModifier,
-    ).generate(
-        index = index,
-        level = level,
-        growth = growth,
-        isParty = isParty,
-        plugin = plugin,
-    )
+        plugin: EntityState.Plugin? = null,
+    ): Entity {
+        val entityRepo: GameEntityRepo by inject()
+        return entityRepo.generateEntityInstance(
+            entityData = generateEntityData(
+                name = name,
+                path = path,
+                category = category,
+                category2 = category2,
+                baseATK = baseATK,
+                baseDEF = baseDEF,
+                baseSPD = baseSPD,
+                baseHP = baseHP,
+                baseSP = baseSP,
+                baseAP = baseAP,
+                functionNames = functionNames,
+                attackModifier = attackModifier,
+            ),
+            index = index,
+            level = level,
+            growth = growth,
+            isParty = isParty,
+            plugin = plugin,
+        )
+    }
 
     val defaultEntityGrowth = EntityGrowth(
         atkGrowth = 0.25F,

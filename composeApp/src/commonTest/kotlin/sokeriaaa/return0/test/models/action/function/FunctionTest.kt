@@ -17,40 +17,44 @@ package sokeriaaa.return0.test.models.action.function
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
+import sokeriaaa.return0.test.annotations.AppRunner
+import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@RunWith(AppRunner::class)
 class FunctionTest {
 
     @Test
     fun `functions cost SP`() {
-        val entity = DummyEntities.generateEntity(baseSP = 99999)
-        entity.sp = 200
-        entity.generateFunctionFor(
-            DummyFunction.generateFunctionData(baseSPCost = 40)
-        )?.invokeOn(listOf())
-        assertEquals(160, entity.sp)
+        TestKoinModules.withModules {
+            val entity = DummyEntities.generateEntity(baseSP = 99999)
+            entity.sp = 200
+            entity.generateFunctionFor(
+                DummyFunction.generateFunctionData(baseSPCost = 40)
+            )?.invokeOn(listOf())
+            assertEquals(160, entity.sp)
+        }
     }
 
     @Test
     fun `function times used`() {
-        val entity1 = DummyEntities.generateEntity(name = "foo", level = 100, baseHP = 99999)
-        val entity2 = DummyEntities.generateEntity(name = "bar", level = 100, baseHP = 99999)
-        entity1.hp = entity1.maxhp
-        entity2.hp = entity2.maxhp
-
-        val skill = entity1.generateFunctionFor(
-            DummyFunction.generateFunctionData(
-                basePower = 1,
-                attackModifier = FunctionData.AttackModifier(
-                    attackTimes = Value(3)
-                )
-            )
-        )!!
-
         TestKoinModules.withModules {
+            val entity1 = DummyEntities.generateEntity(name = "foo", level = 100, baseHP = 99999)
+            val entity2 = DummyEntities.generateEntity(name = "bar", level = 100, baseHP = 99999)
+            entity1.hp = entity1.maxhp
+            entity2.hp = entity2.maxhp
+
+            val skill = entity1.generateFunctionFor(
+                DummyFunction.generateFunctionData(
+                    basePower = 1,
+                    attackModifier = FunctionData.AttackModifier(
+                        attackTimes = Value(3)
+                    )
+                )
+            )!!
             skill.invokeOn(listOf(entity2))
             assertEquals(1, skill.timesUsed)
             skill.invokeOn(listOf(entity2))
