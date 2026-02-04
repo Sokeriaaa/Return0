@@ -16,8 +16,8 @@ package sokeriaaa.return0.applib.repository.game.entity
 
 import androidx.compose.runtime.mutableStateMapOf
 import sokeriaaa.return0.applib.common.AppConstants
-import sokeriaaa.return0.applib.repository.data.ArchiveRepo
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
+import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.PluginConstDao
 import sokeriaaa.return0.applib.room.dao.PluginInventoryDao
