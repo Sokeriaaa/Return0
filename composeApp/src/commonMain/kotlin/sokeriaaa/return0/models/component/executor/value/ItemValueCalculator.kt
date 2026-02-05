@@ -71,6 +71,14 @@ fun Value.calculatedIn(context: ItemContext): Float {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0F
         }
+        is CommonValue.Cased -> {
+            for (entry in cases) {
+                if (entry.key.calculatedIn(context)) {
+                    return entry.value?.calculatedIn(context) ?: 0F
+                }
+            }
+            return defaultValue?.calculatedIn(context) ?: 0F
+        }
         // end - CommonValue
         // start - EntityValue
         EntityValue.ATK -> context.target.atk.toFloat()

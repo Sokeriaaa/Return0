@@ -19,6 +19,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.component_cased_entry
 import return0.composeapp.generated.resources.component_condition_if
 import return0.composeapp.generated.resources.component_condition_if_else
 import return0.composeapp.generated.resources.component_condition_unless
@@ -91,6 +92,32 @@ fun extraResource(extra: Extra): AnnotatedString = buildAnnotatedString {
                 else -> stringResource(Res.string.component_extra_empty)
             }
         )
+
+        is CommonExtra.Cased -> {
+            append('(')
+            extra.cases.toList().forEachIndexed { index, c ->
+                if (index > 0) {
+                    append(", ")
+                }
+                append(
+                    stringResource(Res.string.component_cased_entry)
+                        .replaceAnnotatedString(
+                            oldValue = "{{slot0}}",
+                            newValue = conditionResource(c.first),
+                        )
+                        .replaceAnnotatedString(
+                            oldValue = "{{slot1}}",
+                            newValue = extraResource(c.second ?: CommonExtra.Empty),
+                        )
+                )
+            }
+            extra.defaultExtra?.let {
+                if (extra.cases.isNotEmpty()) {
+                    append(", ")
+                }
+                append(extraResource(it))
+            }
+        }
 
         is CommonExtra.Grouped -> {
             extra.extras.forEachIndexed { index, e ->

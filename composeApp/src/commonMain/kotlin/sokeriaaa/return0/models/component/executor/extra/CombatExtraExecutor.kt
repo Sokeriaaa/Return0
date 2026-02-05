@@ -45,6 +45,16 @@ fun Extra.executedIn(context: ActionExtraContext) {
             }
         }
 
+        is CommonExtra.Cased -> {
+            for (entry in cases) {
+                if (entry.key.calculatedIn(context)) {
+                    entry.value?.executedIn(context)
+                    return
+                }
+            }
+            defaultExtra?.executedIn(context)
+        }
+
         is CommonExtra.Grouped -> {
             extras.forEach { it.executedIn(context) }
         }

@@ -19,6 +19,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.combat_effect_buff
+import return0.composeapp.generated.resources.combat_effect_debuff
 import return0.composeapp.generated.resources.component_condition_and
 import return0.composeapp.generated.resources.component_condition_chance
 import return0.composeapp.generated.resources.component_condition_combat_critical
@@ -137,8 +139,22 @@ fun conditionResource(condition: Condition): AnnotatedString {
                     )
             )
 
-            EntityCondition.Effects.HasAny ->
-                append(stringResource(Res.string.component_condition_entity_has_any_effect))
+            is EntityCondition.Effects.HasAny -> append(
+                stringResource(
+                    resource = Res.string.component_condition_entity_has_any_effect,
+                    /* effectTypes = */ buildString {
+                        if (condition.buff) {
+                            append(stringResource(Res.string.combat_effect_buff))
+                        }
+                        if (isNotEmpty()) {
+                            append(", ")
+                        }
+                        if (condition.debuff) {
+                            append(stringResource(Res.string.combat_effect_debuff))
+                        }
+                    }
+                )
+            )
 
             is EntityCondition.Shields.Has -> append(
                 stringResource(Res.string.component_condition_entity_has_shield)

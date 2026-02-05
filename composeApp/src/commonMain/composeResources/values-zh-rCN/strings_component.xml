@@ -39,6 +39,8 @@
     <string name="component_condition_if">如果{{slot0}}，则{{slot1}}</string>
     <string name="component_condition_unless">{{slot1}}，除非{{slot0}}</string>
     <string name="component_condition_if_else">如果{{slot0}}，则{{slot1}}，否则{{slot2}}</string>
+    <string name="component_cased_entry">当{{slot0}}时则{{slot1}}</string>
+    <string name="component_cased_default">其他情况下则{{slot0}}</string>
 
     <string name="component_condition_and">且</string>
     <string name="component_condition_or">或</string>
@@ -49,7 +51,7 @@
     <string name="component_condition_entity_has_category">是{{slot0}}</string>
     <string name="component_condition_entity_has_one_of_category">是{{slot0}}之一</string>
     <string name="component_condition_entity_has_effect">存在“{{slot0}}”状态</string>
-    <string name="component_condition_entity_has_any_effect">存在任何状态</string>
+    <string name="component_condition_entity_has_any_effect">存在任何%1$s</string>
     <string name="component_condition_entity_has_shield">拥有护盾“{{slot0}}”</string>
     <string name="component_condition_entity_has_any_shield">拥有任何护盾</string>
     <string name="component_condition_entity_is_failed">被击败</string>

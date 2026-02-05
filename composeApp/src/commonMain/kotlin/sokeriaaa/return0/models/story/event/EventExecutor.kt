@@ -52,6 +52,16 @@ suspend fun Event.executedIn(context: EventContext) {
             }
         }
 
+        is Event.Cased -> {
+            for (entry in cases) {
+                if (entry.key.calculatedIn(context)) {
+                    entry.value?.executedIn(context)
+                    return
+                }
+            }
+            defaultEvent?.executedIn(context)
+        }
+
         is Event.Text.Narrator -> {
             context.callback.onEffect(
                 EventEffect.ShowText(

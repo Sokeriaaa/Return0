@@ -76,6 +76,14 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0
         }
+        is CommonValue.Cased -> {
+            for (entry in cases) {
+                if (entry.key.calculatedIn(context)) {
+                    return entry.value?.calculatedIn(context) ?: 0
+                }
+            }
+            return defaultValue?.calculatedIn(context) ?: 0
+        }
         // end - CommonValue
         // start - EventValue
         is EventValue.SavedVariable -> context.gameState.savedValues.getVariable("event:$key")

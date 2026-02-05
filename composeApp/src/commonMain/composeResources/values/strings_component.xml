@@ -39,6 +39,8 @@
     <string name="component_condition_if">If {{slot0}} {{slot1}}</string>
     <string name="component_condition_unless">{{slot1}} unless {{slot0}}</string>
     <string name="component_condition_if_else">If {{slot0}} {{slot1}}, otherwise {{slot2}}</string>
+    <string name="component_cased_entry">When {{slot0}} {{slot1}}</string>
+    <string name="component_cased_default">Otherwise {{slot0}}</string>
 
     <string name="component_condition_and"> and </string>
     <string name="component_condition_or"> or </string>
@@ -49,7 +51,7 @@
     <string name="component_condition_entity_has_category">Is {{slot0}}</string>
     <string name="component_condition_entity_has_one_of_category">Is one of: {{slot0}}</string>
     <string name="component_condition_entity_has_effect">Has effect "{{slot0}}"</string>
-    <string name="component_condition_entity_has_any_effect">Has any effect</string>
+    <string name="component_condition_entity_has_any_effect">Has any %1$s</string>
     <string name="component_condition_entity_has_shield">Has shield "{{slot0}}"</string>
     <string name="component_condition_entity_has_any_shield">Has any shield</string>
     <string name="component_condition_entity_is_failed">Is failed</string>

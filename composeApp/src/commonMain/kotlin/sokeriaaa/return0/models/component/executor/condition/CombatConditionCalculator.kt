@@ -81,8 +81,8 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
             context.target.effects.any { it.name == effectName }
         }
 
-        EntityCondition.Effects.HasAny -> {
-            context.target.effects.any()
+        is EntityCondition.Effects.HasAny -> {
+            context.target.effects.any { if (it.isDebuff) debuff else buff }
         }
 
         is EntityCondition.Shields.Has -> {
@@ -106,6 +106,7 @@ fun Condition.calculatedIn(context: ActionContext): Boolean {
                 value2 = context.target.maxsp * rate.calculatedIn(context),
             )
         }
+
         EntityCondition.Status.IsFailed -> context.target.hp <= 0
         // end - EntityCondition
     }

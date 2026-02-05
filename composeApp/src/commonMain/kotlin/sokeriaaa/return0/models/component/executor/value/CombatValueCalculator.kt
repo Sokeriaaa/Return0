@@ -83,6 +83,14 @@ fun Value.calculatedIn(context: ActionContext): Float {
                 ?: defaultValue?.calculatedIn(context)
                 ?: 0F
         }
+        is CommonValue.Cased -> {
+            for (entry in cases) {
+                if (entry.key.calculatedIn(context)) {
+                    return entry.value?.calculatedIn(context) ?: 0F
+                }
+            }
+            return defaultValue?.calculatedIn(context) ?: 0F
+        }
         // end - CommonValue
         // start - ActionValue
         ActionValue.Tier -> context.fromAction.tier.toFloat()

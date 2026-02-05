@@ -20,6 +20,9 @@
     <string name="combat_choose_action_execute">执行</string>
     <string name="combat_choose_action_auto_combat">自动战斗</string>
 
+    <string name="combat_effect_buff">增益效果</string>
+    <string name="combat_effect_debuff">减益效果</string>
+
     <string name="combat_log_welcome">欢迎访问战斗系统v%1$s！！！</string>
 
     <string name="combat_log_action_attack">%1$s攻击了%2$s！！！</string>

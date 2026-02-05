@@ -21,6 +21,9 @@
     <string name="combat_choose_action_execute">EXECUTE</string>
     <string name="combat_choose_action_auto_combat">Auto-combat</string>
 
+    <string name="combat_effect_buff">Buff</string>
+    <string name="combat_effect_debuff">Debuff</string>
+
     <string name="combat_log_welcome">Welcome to Combat System v%1$s!!!</string>
 
     <string name="combat_log_action_attack">%1$s attacks %2$s!!!</string>

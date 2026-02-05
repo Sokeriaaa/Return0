@@ -19,6 +19,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.component_cased_entry
 import return0.composeapp.generated.resources.component_condition_if_else
 import return0.composeapp.generated.resources.component_value_action_tier
 import return0.composeapp.generated.resources.component_value_action_times_repeated
@@ -248,6 +249,32 @@ fun valueResource(value: Value): AnnotatedString {
                         newValue = valueResource(value.ifFalse ?: Value(0)),
                     )
             )
+
+            is CommonValue.Cased -> {
+                append('(')
+                value.cases.toList().forEachIndexed { index, c ->
+                    if (index > 0) {
+                        append(", ")
+                    }
+                    append(
+                        stringResource(Res.string.component_cased_entry)
+                            .replaceAnnotatedString(
+                                oldValue = "{{slot0}}",
+                                newValue = conditionResource(c.first),
+                            )
+                            .replaceAnnotatedString(
+                                oldValue = "{{slot1}}",
+                                newValue = valueResource(c.second ?: Value(0)),
+                            )
+                    )
+                }
+                value.defaultValue?.let {
+                    if (value.cases.isNotEmpty()) {
+                        append(", ")
+                    }
+                    append(valueResource(it))
+                }
+            }
             // end - CommonValue
             // start - ActionValue
             ActionValue.Tier ->
