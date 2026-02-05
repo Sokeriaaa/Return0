@@ -22,6 +22,7 @@ import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 import sokeriaaa.return0.shared.data.models.component.extras.Extra
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import kotlin.math.roundToInt
 
@@ -45,6 +46,7 @@ fun Entity.generateFunctionFor(functionData: FunctionData): Skill? {
         basePower = functionData.basePower + functionData.powerBonus * (skillTier - 1),
         baseSPCost = functionData.baseSPCost,
         bullseye = functionData.bullseye,
+        priority = functionData.priority,
         attackModifier = functionData.attackModifier,
         extra = functionData.extra,
     )
@@ -59,6 +61,7 @@ internal class SkillImpl(
     override val basePower: Int,
     override val baseSPCost: Int,
     override val bullseye: Boolean,
+    override val priority: Value?,
     override val attackModifier: FunctionData.AttackModifier?,
     override val extra: Extra?,
 ) : Skill {

@@ -261,19 +261,14 @@ class Arena(
      * Create a random action.
      */
     fun randomSkillExecutionFor(entity: Entity): SkillExecution {
-        // Firstly choose a random function that is sufficient for current SP.
-        val selectedFunction = entity.functions.filter { it.spCost <= entity.sp }.randomOrNull()
-        return if (selectedFunction != null) {
-            // Select random targets and execute
-            randomExecutionFor(selectedFunction)
-        } else {
-            // If no functions are available, execute a random common action.
-            when (Random.nextInt(0, 3)) {
-                0 -> randomExecutionFor(entity.attackAction)
-                1 -> randomExecutionFor(entity.defendAction)
-                2 -> randomExecutionFor(entity.relaxAction)
-                else -> error("This will not happen.")
-            }
+        // Firstly, try to choose a best execution.
+        val bestAction = entity.chooseBestExecution(entities.asList())
+        // If no actions are available, execute a random common action.
+        return bestAction ?: when (Random.nextInt(0, 3)) {
+            0 -> randomExecutionFor(entity.attackAction)
+            1 -> randomExecutionFor(entity.defendAction)
+            2 -> randomExecutionFor(entity.relaxAction)
+            else -> error("This will not happen.")
         }
     }
 

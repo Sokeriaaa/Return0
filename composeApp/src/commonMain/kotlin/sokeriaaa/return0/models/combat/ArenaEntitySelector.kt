@@ -15,6 +15,8 @@
 package sokeriaaa.return0.models.combat
 
 import sokeriaaa.return0.models.action.function.Skill
+import sokeriaaa.return0.models.component.context.createExtraContextFor
+import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 
@@ -122,4 +124,59 @@ fun Skill.randomlyChooseTargets(targets: List<Entity>): List<Entity> {
 
         else -> error("This will not happen.")
     }
+}
+
+/**
+ * Calculate priority.
+ */
+fun Skill.calculatePriorityFor(target: Entity): Float {
+    return priority?.calculatedIn(createExtraContextFor(target)) ?: 0F
+}
+
+/**
+ * Choose a best execution based on priority.
+ */
+fun Entity.chooseBestExecution(entities: List<Entity>): Arena.SkillExecution? {
+    // Skill, Targets, Priority
+    val allOptions = ArrayList<Triple<Skill, List<Entity>, Float>>()
+    functions.asSequence()
+        // Filter functions with enough SP.
+        .filter { it.spCost <= sp }
+        // Calculate all priorities.
+        .forEach { function ->
+            val selectableCount = function.selectableCount()
+            val selectedEntities: List<Entity>
+            val priority: Float
+            if (selectableCount == 0) {
+                // Not selectable.
+                // Calculate the avenge priority.
+                val availableTargets = function.availableTargetsFor(entities)
+                selectedEntities = function.randomlyChooseTargets(availableTargets)
+                priority = if (availableTargets.isEmpty()) {
+                    Float.NEGATIVE_INFINITY
+                } else {
+                    availableTargets.sumOf { entity ->
+                        function.calculatePriorityFor(entity).toDouble()
+                    }.toFloat() / availableTargets.size
+                }
+            } else {
+                // Selectable.
+                // Calculate the highest priority.
+                val availableTargets = function.availableTargetsFor(entities)
+                val selectedEntityPriorityMap = availableTargets.asSequence()
+                    .map { entity -> entity to function.calculatePriorityFor(entity) }
+                    .sortedByDescending { it.second }
+                    .take(selectableCount)
+                    .toList()
+                selectedEntities = selectedEntityPriorityMap.map { it.first }
+                priority = selectedEntityPriorityMap.firstOrNull()?.second ?: 0F
+            }
+            allOptions.add(Triple(function, selectedEntities, priority))
+        }
+    return allOptions
+        // Shuffled before choosing the best one.
+        .shuffled()
+        // Choosing the best one
+        .maxByOrNull { it.third }
+        ?.let { (skill, targets, _) -> Arena.SkillExecution(skill, targets) }
 }

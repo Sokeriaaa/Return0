@@ -19,6 +19,7 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.action.function.FunctionData
 import sokeriaaa.return0.shared.data.models.action.function.FunctionTarget
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.component.values.Value
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 
 /**
@@ -62,6 +63,14 @@ interface Skill : Action {
      * Base SP cost with tier bonus included, but without any effects.
      */
     val baseSPCost: Int
+
+    /**
+     * The priority of this function when auto-combat is enabled. Each available
+     *  target is calculated independently. The arena will choose the function and target with
+     *  the highest priority. This value is recommended to set in 0..1. For some emergency
+     *  functions (for example, healing a party with low HP), can be set above 1. Default is 0.
+     */
+    val priority: Value?
 
     /**
      * Attack modifier for this function.
