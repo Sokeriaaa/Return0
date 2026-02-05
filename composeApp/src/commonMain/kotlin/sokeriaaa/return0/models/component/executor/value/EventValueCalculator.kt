@@ -78,8 +78,8 @@ suspend fun Value.calculatedIn(context: EventContext): Int {
         }
         is CommonValue.Cased -> {
             for (entry in cases) {
-                if (entry.key.calculatedIn(context)) {
-                    return entry.value?.calculatedIn(context) ?: 0
+                if (entry.first.calculatedIn(context)) {
+                    return entry.second?.calculatedIn(context) ?: 0
                 }
             }
             return defaultValue?.calculatedIn(context) ?: 0

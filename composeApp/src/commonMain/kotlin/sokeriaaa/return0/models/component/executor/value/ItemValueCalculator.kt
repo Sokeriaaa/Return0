@@ -73,8 +73,8 @@ fun Value.calculatedIn(context: ItemContext): Float {
         }
         is CommonValue.Cased -> {
             for (entry in cases) {
-                if (entry.key.calculatedIn(context)) {
-                    return entry.value?.calculatedIn(context) ?: 0F
+                if (entry.first.calculatedIn(context)) {
+                    return entry.second?.calculatedIn(context) ?: 0F
                 }
             }
             return defaultValue?.calculatedIn(context) ?: 0F
