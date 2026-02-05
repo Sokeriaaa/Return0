@@ -26,7 +26,10 @@ import sokeriaaa.return0.shared.data.api.story.event.interactive.buildShop
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -34,6 +37,16 @@ import kotlin.test.assertFalse
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AppRunner::class)
 class ShopViewModelTest : BaseEventTest() {
+
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
 
     @Test
     fun `Initialize executes correctly`() {

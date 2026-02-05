@@ -44,6 +44,8 @@ import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.math.abs
 import kotlin.random.Random
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -52,608 +54,580 @@ import kotlin.test.assertTrue
 @RunWith(AppRunner::class)
 class ActionExecutorTest {
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `damage calculated correctly`() {
-        TestKoinModules.withModules {
-            repeat(10) {
-                val entity1 = DummyEntities.generateEntity(
-                    index = 0,
-                    category = Category.NORMAL,
-                    name = "foo",
-                    baseATK = Random.nextInt(40, 80),
-                    baseHP = 99999,
-                )
-                val entity2 = DummyEntities.generateEntity(
-                    index = 1,
-                    category = Category.NORMAL,
-                    name = "bar",
-                    baseDEF = Random.nextInt(15, 30),
-                    baseHP = 99999,
-                )
-                val power = Random.nextInt(20, 50)
-                val damagingFunctionData = DummyFunction.generateFunctionData(
-                    name = "damaging",
-                    category = Category.NORMAL,
-                    basePower = power,
-                    powerBonus = 0,
-                )
-                val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-                entity1.hp = 10000
-                entity2.hp = 10000
+        repeat(10) {
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = Random.nextInt(40, 80),
+                baseHP = 99999,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = Random.nextInt(15, 30),
+                baseHP = 99999,
+            )
+            val power = Random.nextInt(20, 50)
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = power,
+                powerBonus = 0,
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            entity1.hp = 10000
+            entity2.hp = 10000
 
-                // No missed, non-critical
-                val random1 = FakeRandom(1, 1)
-                // Execute
-                damaging.createExtraContextFor(entity2).singleExecute(random = random1)
-                // Calculate expected damage
-                val exceptedDamage1 = CombatCalculator.baseDamage(
-                    power = power,
-                    atk = entity1.atk.toFloat(),
-                    def = entity2.def.toFloat(),
-                ).toInt()
-                assertEquals((10000 - exceptedDamage1).coerceAtLeast(0), entity2.hp)
+            // No missed, non-critical
+            val random1 = FakeRandom(1, 1)
+            // Execute
+            damaging.createExtraContextFor(entity2).singleExecute(random = random1)
+            // Calculate expected damage
+            val exceptedDamage1 = CombatCalculator.baseDamage(
+                power = power,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ).toInt()
+            assertEquals((10000 - exceptedDamage1).coerceAtLeast(0), entity2.hp)
 
-                entity2.hp = 10000
-                // Missed
-                val random2 = FakeRandom(0, 1)
-                // Execute
-                damaging.createExtraContextFor(entity2).singleExecute(random = random2)
-                assertEquals(10000, entity2.hp)
+            entity2.hp = 10000
+            // Missed
+            val random2 = FakeRandom(0, 1)
+            // Execute
+            damaging.createExtraContextFor(entity2).singleExecute(random = random2)
+            assertEquals(10000, entity2.hp)
 
-                entity2.hp = 10000
-                // Critical
-                val random3 = FakeRandom(1, 0)
-                // Execute
-                damaging.createExtraContextFor(entity2).singleExecute(random = random3)
-                // Calculate expected damage
-                val exceptedDamage3 = (CombatCalculator.baseDamage(
-                    power = power,
-                    atk = entity1.atk.toFloat(),
-                    def = entity2.def.toFloat(),
-                ) * (1 + AppConstants.BASE_CRITICAL_DMG)).toInt()
-                assertEquals((10000 - exceptedDamage3).coerceAtLeast(0), entity2.hp)
-            }
+            entity2.hp = 10000
+            // Critical
+            val random3 = FakeRandom(1, 0)
+            // Execute
+            damaging.createExtraContextFor(entity2).singleExecute(random = random3)
+            // Calculate expected damage
+            val exceptedDamage3 = (CombatCalculator.baseDamage(
+                power = power,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ) * (1 + AppConstants.BASE_CRITICAL_DMG)).toInt()
+            assertEquals((10000 - exceptedDamage3).coerceAtLeast(0), entity2.hp)
         }
     }
 
     @Test
     fun `damage calculated correctly with plugin offsets`() {
-        TestKoinModules.withModules {
-            repeat(10) {
-                val attackOffset = Random.nextFloat() * 0.2F - 0.1F
-                val defendOffset = Random.nextFloat() * 0.2F - 0.1F
-                val plugin = EntityState.Plugin(
-                    pluginData = PluginData(
-                        key = "foo",
-                        nameRes = "plugin.foo",
-                        descriptionRes = "plugin.foo.desc",
-                        path = EntityPath.HEAP,
-                        attackRateOffset = Value(attackOffset),
-                        defendRateOffset = Value(defendOffset),
-                    ),
-                    tier = 1,
-                    constMap = emptyMap(),
-                )
-                val entity1 = DummyEntities.generateEntity(
-                    index = 0,
+        repeat(10) {
+            val attackOffset = Random.nextFloat() * 0.2F - 0.1F
+            val defendOffset = Random.nextFloat() * 0.2F - 0.1F
+            val plugin = EntityState.Plugin(
+                pluginData = PluginData(
+                    key = "foo",
+                    nameRes = "plugin.foo",
+                    descriptionRes = "plugin.foo.desc",
                     path = EntityPath.HEAP,
-                    category = Category.NORMAL,
-                    name = "foo",
-                    baseATK = Random.nextInt(40, 80),
-                    baseHP = 99999,
-                    plugin = plugin,
-                )
-                val entity2 = DummyEntities.generateEntity(
-                    index = 1,
-                    path = EntityPath.HEAP,
-                    category = Category.NORMAL,
-                    name = "bar",
-                    baseDEF = Random.nextInt(15, 30),
-                    baseHP = 99999,
-                    plugin = plugin,
-                )
-                val power = Random.nextInt(20, 50)
-                val damagingFunctionData = DummyFunction.generateFunctionData(
-                    name = "damaging",
-                    category = Category.NORMAL,
-                    basePower = power,
-                    powerBonus = 0,
-                )
-                val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-                entity1.hp = 10000
-                entity2.hp = 10000
+                    attackRateOffset = Value(attackOffset),
+                    defendRateOffset = Value(defendOffset),
+                ),
+                tier = 1,
+                constMap = emptyMap(),
+            )
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                path = EntityPath.HEAP,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = Random.nextInt(40, 80),
+                baseHP = 99999,
+                plugin = plugin,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                path = EntityPath.HEAP,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = Random.nextInt(15, 30),
+                baseHP = 99999,
+                plugin = plugin,
+            )
+            val power = Random.nextInt(20, 50)
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = power,
+                powerBonus = 0,
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            entity1.hp = 10000
+            entity2.hp = 10000
 
-                // No missed, non-critical
-                val random1 = FakeRandom(1, 1)
-                // Execute
-                damaging.createExtraContextFor(entity2).singleExecute(random = random1)
-                // Calculate expected damage
-                val exceptedDamage1 = (CombatCalculator.baseDamage(
-                    power = power,
-                    atk = entity1.atk.toFloat(),
-                    def = entity2.def.toFloat(),
-                ) * (1 + attackOffset) / (1 + defendOffset)).toInt()
-                assertEquals((10000 - exceptedDamage1).coerceAtLeast(0), entity2.hp)
-            }
+            // No missed, non-critical
+            val random1 = FakeRandom(1, 1)
+            // Execute
+            damaging.createExtraContextFor(entity2).singleExecute(random = random1)
+            // Calculate expected damage
+            val exceptedDamage1 = (CombatCalculator.baseDamage(
+                power = power,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ) * (1 + attackOffset) / (1 + defendOffset)).toInt()
+            assertEquals((10000 - exceptedDamage1).coerceAtLeast(0), entity2.hp)
         }
     }
 
     @Test
     fun `damage calculated correctly with plugin effects`() {
-        TestKoinModules.withModules {
-            repeat(10) {
-                val extraDamage = Random.nextInt(100)
-                val extraHeal = Random.nextInt(100)
-                val plugin = EntityState.Plugin(
-                    pluginData = PluginData(
-                        key = "foo",
-                        nameRes = "plugin.foo",
-                        descriptionRes = "plugin.foo.desc",
-                        path = EntityPath.HEAP,
-                        onAttack = CombatExtra.HPChange(Value(-extraDamage)),
-                        onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(extraHeal)))
-                    ),
-                    tier = 1,
-                    constMap = emptyMap(),
-                )
-                val entity1 = DummyEntities.generateEntity(
-                    index = 0,
+        repeat(10) {
+            val extraDamage = Random.nextInt(100)
+            val extraHeal = Random.nextInt(100)
+            val plugin = EntityState.Plugin(
+                pluginData = PluginData(
+                    key = "foo",
+                    nameRes = "plugin.foo",
+                    descriptionRes = "plugin.foo.desc",
                     path = EntityPath.HEAP,
-                    category = Category.NORMAL,
-                    name = "foo",
-                    baseATK = Random.nextInt(40, 80),
-                    baseHP = 99999,
-                    plugin = plugin,
-                )
-                val entity2 = DummyEntities.generateEntity(
-                    index = 1,
-                    path = EntityPath.HEAP,
-                    category = Category.NORMAL,
-                    name = "bar",
-                    baseDEF = Random.nextInt(15, 30),
-                    baseHP = 99999,
-                    plugin = plugin,
-                )
-                val power = Random.nextInt(20, 50)
-                val damagingFunctionData = DummyFunction.generateFunctionData(
-                    name = "damaging",
-                    category = Category.NORMAL,
-                    basePower = power,
-                    powerBonus = 0,
-                )
-                val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-                entity1.hp = 10000
-                entity2.hp = 10000
+                    onAttack = CombatExtra.HPChange(Value(-extraDamage)),
+                    onDefend = CommonExtra.ForUser(CombatExtra.HPChange(Value(extraHeal)))
+                ),
+                tier = 1,
+                constMap = emptyMap(),
+            )
+            val entity1 = DummyEntities.generateEntity(
+                index = 0,
+                path = EntityPath.HEAP,
+                category = Category.NORMAL,
+                name = "foo",
+                baseATK = Random.nextInt(40, 80),
+                baseHP = 99999,
+                plugin = plugin,
+            )
+            val entity2 = DummyEntities.generateEntity(
+                index = 1,
+                path = EntityPath.HEAP,
+                category = Category.NORMAL,
+                name = "bar",
+                baseDEF = Random.nextInt(15, 30),
+                baseHP = 99999,
+                plugin = plugin,
+            )
+            val power = Random.nextInt(20, 50)
+            val damagingFunctionData = DummyFunction.generateFunctionData(
+                name = "damaging",
+                category = Category.NORMAL,
+                basePower = power,
+                powerBonus = 0,
+            )
+            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+            entity1.hp = 10000
+            entity2.hp = 10000
 
-                // No missed, non-critical
-                val random1 = FakeRandom(1, 1)
-                // Execute
-                damaging.createExtraContextFor(entity2).singleExecute(random = random1)
-                // Calculate expected damage
-                val exceptedDamage1 = CombatCalculator.baseDamage(
-                    power = power,
-                    atk = entity1.atk.toFloat(),
-                    def = entity2.def.toFloat(),
-                ).toInt()
-                assertEquals(
-                    expected = (10000 - exceptedDamage1 - extraDamage + extraHeal).coerceAtLeast(0),
-                    actual = entity2.hp,
-                )
-            }
+            // No missed, non-critical
+            val random1 = FakeRandom(1, 1)
+            // Execute
+            damaging.createExtraContextFor(entity2).singleExecute(random = random1)
+            // Calculate expected damage
+            val exceptedDamage1 = CombatCalculator.baseDamage(
+                power = power,
+                atk = entity1.atk.toFloat(),
+                def = entity2.def.toFloat(),
+            ).toInt()
+            assertEquals(
+                expected = (10000 - exceptedDamage1 - extraDamage + extraHeal).coerceAtLeast(0),
+                actual = entity2.hp,
+            )
         }
     }
 
     @Test
     fun `shields nullified full attacking damage correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(
-                index = 0,
-                category = Category.NORMAL,
-                name = "foo",
-                baseATK = 100,
-                baseHP = 99999,
-            )
-            val entity2 = DummyEntities.generateEntity(
-                index = 1,
-                category = Category.NORMAL,
-                name = "bar",
-                baseDEF = 50,
-                baseHP = 99999,
-            )
-            val damagingFunctionData = DummyFunction.generateFunctionData(
-                name = "damaging",
-                category = Category.NORMAL,
-                basePower = 20,
-                powerBonus = 0,
-            )
-            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-            // Calculate expected damage
-            val exceptedDamage = CombatCalculator.baseDamage(
-                power = 20,
-                atk = entity1.atk.toFloat(),
-                def = entity2.def.toFloat(),
-            ).toInt()
-            // Init HP
-            entity2.hp = exceptedDamage + 50
-            // Attach shield
-            entity2.attachShield("dummy", exceptedDamage + 50)
-            // Execute
-            // No missed, non-critical
-            val random = FakeRandom(1, 1)
-            damaging.createExtraContextFor(entity2).singleExecute(random)
+        val entity1 = DummyEntities.generateEntity(
+            index = 0,
+            category = Category.NORMAL,
+            name = "foo",
+            baseATK = 100,
+            baseHP = 99999,
+        )
+        val entity2 = DummyEntities.generateEntity(
+            index = 1,
+            category = Category.NORMAL,
+            name = "bar",
+            baseDEF = 50,
+            baseHP = 99999,
+        )
+        val damagingFunctionData = DummyFunction.generateFunctionData(
+            name = "damaging",
+            category = Category.NORMAL,
+            basePower = 20,
+            powerBonus = 0,
+        )
+        val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+        // Calculate expected damage
+        val exceptedDamage = CombatCalculator.baseDamage(
+            power = 20,
+            atk = entity1.atk.toFloat(),
+            def = entity2.def.toFloat(),
+        ).toInt()
+        // Init HP
+        entity2.hp = exceptedDamage + 50
+        // Attach shield
+        entity2.attachShield("dummy", exceptedDamage + 50)
+        // Execute
+        // No missed, non-critical
+        val random = FakeRandom(1, 1)
+        damaging.createExtraContextFor(entity2).singleExecute(random)
 
-            // Assert...
-            assertEquals(exceptedDamage + 50, entity2.hp)
-            assertEquals(50, entity2.shields["dummy"]?.value)
-        }
+        // Assert...
+        assertEquals(exceptedDamage + 50, entity2.hp)
+        assertEquals(50, entity2.shields["dummy"]?.value)
     }
 
     @Test
     fun `shields nullified part of attacking damage correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(
-                index = 0,
-                category = Category.NORMAL,
-                name = "foo",
-                baseATK = 100,
-                baseHP = 99999,
-            )
-            val entity2 = DummyEntities.generateEntity(
-                index = 1,
-                category = Category.NORMAL,
-                name = "bar",
-                baseDEF = 50,
-                baseHP = 99999,
-            )
-            val damagingFunctionData = DummyFunction.generateFunctionData(
-                name = "damaging",
-                category = Category.NORMAL,
-                basePower = 20,
-                powerBonus = 0,
-            )
-            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-            // Calculate expected damage
-            val exceptedDamage = CombatCalculator.baseDamage(
-                power = 20,
-                atk = entity1.atk.toFloat(),
-                def = entity2.def.toFloat(),
-            ).toInt()
-            // Init HP
-            entity2.hp = exceptedDamage + 50
-            // Attach shield that can shield only 1 damage.
-            entity2.attachShield("dummy", 1)
-            // Execute
-            // No missed, non-critical
-            val random = FakeRandom(1, 1)
-            damaging.createExtraContextFor(entity2).singleExecute(random)
+        val entity1 = DummyEntities.generateEntity(
+            index = 0,
+            category = Category.NORMAL,
+            name = "foo",
+            baseATK = 100,
+            baseHP = 99999,
+        )
+        val entity2 = DummyEntities.generateEntity(
+            index = 1,
+            category = Category.NORMAL,
+            name = "bar",
+            baseDEF = 50,
+            baseHP = 99999,
+        )
+        val damagingFunctionData = DummyFunction.generateFunctionData(
+            name = "damaging",
+            category = Category.NORMAL,
+            basePower = 20,
+            powerBonus = 0,
+        )
+        val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+        // Calculate expected damage
+        val exceptedDamage = CombatCalculator.baseDamage(
+            power = 20,
+            atk = entity1.atk.toFloat(),
+            def = entity2.def.toFloat(),
+        ).toInt()
+        // Init HP
+        entity2.hp = exceptedDamage + 50
+        // Attach shield that can shield only 1 damage.
+        entity2.attachShield("dummy", 1)
+        // Execute
+        // No missed, non-critical
+        val random = FakeRandom(1, 1)
+        damaging.createExtraContextFor(entity2).singleExecute(random)
 
-            // Assert...
-            assertEquals(51, entity2.hp)
-            assertFalse(entity2.shields.containsKey("dummy"))
-        }
+        // Assert...
+        assertEquals(51, entity2.hp)
+        assertFalse(entity2.shields.containsKey("dummy"))
     }
 
     @Test
     fun `shields is ignored by functions correctly`() {
-        TestKoinModules.withModules {
+        val entity1 = DummyEntities.generateEntity(
+            index = 0,
+            category = Category.NORMAL,
+            name = "foo",
+            baseATK = 100,
+            baseHP = 99999,
+        )
+        val entity2 = DummyEntities.generateEntity(
+            index = 1,
+            category = Category.NORMAL,
+            name = "bar",
+            baseDEF = 50,
+            baseHP = 99999,
+        )
+        val damagingFunctionData = DummyFunction.generateFunctionData(
+            name = "damaging",
+            category = Category.NORMAL,
+            basePower = 20,
+            powerBonus = 0,
+            attackModifier = FunctionData.AttackModifier(
+                // This function will ignore the shields and directly damage the entity.
+                ignoresShields = CommonCondition.True,
+            )
+        )
+        val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
+        // Calculate expected damage
+        val exceptedDamage = CombatCalculator.baseDamage(
+            power = 20,
+            atk = entity1.atk.toFloat(),
+            def = entity2.def.toFloat(),
+        ).toInt()
+        // Init HP
+        entity2.hp = exceptedDamage + 50
+        // Attach shield
+        entity2.attachShield("dummy", 999999)
+        // Execute
+        // No missed, non-critical
+        val random = FakeRandom(1, 1)
+        damaging.createExtraContextFor(entity2).singleExecute(random)
+
+        // Assert...
+        assertEquals(50, entity2.hp)
+        assertEquals(999999, entity2.shields["dummy"]?.value)
+    }
+
+    @Test
+    fun `heal calculated correctly`() {
+        repeat(10) {
             val entity1 = DummyEntities.generateEntity(
                 index = 0,
                 category = Category.NORMAL,
                 name = "foo",
-                baseATK = 100,
+                baseATK = Random.nextInt(40, 80),
                 baseHP = 99999,
             )
             val entity2 = DummyEntities.generateEntity(
                 index = 1,
                 category = Category.NORMAL,
                 name = "bar",
-                baseDEF = 50,
                 baseHP = 99999,
             )
-            val damagingFunctionData = DummyFunction.generateFunctionData(
-                name = "damaging",
+            val power = Random.nextInt(-50, -10)
+            val healingFunctionData = DummyFunction.generateFunctionData(
+                name = "healing",
                 category = Category.NORMAL,
-                basePower = 20,
+                basePower = power,
                 powerBonus = 0,
-                attackModifier = FunctionData.AttackModifier(
-                    // This function will ignore the shields and directly damage the entity.
-                    ignoresShields = CommonCondition.True,
-                )
             )
-            val damaging = entity1.generateFunctionFor(damagingFunctionData)!!
-            // Calculate expected damage
-            val exceptedDamage = CombatCalculator.baseDamage(
-                power = 20,
-                atk = entity1.atk.toFloat(),
-                def = entity2.def.toFloat(),
-            ).toInt()
-            // Init HP
-            entity2.hp = exceptedDamage + 50
-            // Attach shield
-            entity2.attachShield("dummy", 999999)
+            val healing = entity1.generateFunctionFor(healingFunctionData)!!
+            entity1.hp = 1
+            entity2.hp = 1
+
             // Execute
-            // No missed, non-critical
-            val random = FakeRandom(1, 1)
-            damaging.createExtraContextFor(entity2).singleExecute(random)
-
-            // Assert...
-            assertEquals(50, entity2.hp)
-            assertEquals(999999, entity2.shields["dummy"]?.value)
-        }
-    }
-
-    @Test
-    fun `heal calculated correctly`() {
-        TestKoinModules.withModules {
-            repeat(10) {
-                val entity1 = DummyEntities.generateEntity(
-                    index = 0,
-                    category = Category.NORMAL,
-                    name = "foo",
-                    baseATK = Random.nextInt(40, 80),
-                    baseHP = 99999,
-                )
-                val entity2 = DummyEntities.generateEntity(
-                    index = 1,
-                    category = Category.NORMAL,
-                    name = "bar",
-                    baseHP = 99999,
-                )
-                val power = Random.nextInt(-50, -10)
-                val healingFunctionData = DummyFunction.generateFunctionData(
-                    name = "healing",
-                    category = Category.NORMAL,
-                    basePower = power,
-                    powerBonus = 0,
-                )
-                val healing = entity1.generateFunctionFor(healingFunctionData)!!
-                entity1.hp = 1
-                entity2.hp = 1
-
-                // Execute
-                healing.createExtraContextFor(entity2).singleExecute()
-                // Calculate excepted heal
-                val exceptedHeal = CombatCalculator.baseHeal(
-                    powerAbs = abs(power),
-                    atk = entity1.atk.toFloat(),
-                ).toInt()
-                assertEquals(1 + exceptedHeal, entity2.hp)
-            }
+            healing.createExtraContextFor(entity2).singleExecute()
+            // Calculate excepted heal
+            val exceptedHeal = CombatCalculator.baseHeal(
+                powerAbs = abs(power),
+                atk = entity1.atk.toFloat(),
+            ).toInt()
+            assertEquals(1 + exceptedHeal, entity2.hp)
         }
     }
 
     @Test
     fun `instant HP change executed correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
 
-            // execute 10 random hp changes.
-            repeat(10) {
-                entity2.hp = 500
-                val hpChange = Random.nextInt(-2000, 2000)
-                skill.createExtraContextFor(entity2).instantHPChange(hpChange)
-                assertEquals((500 + hpChange).coerceIn(0, entity2.maxhp), entity2.hp)
-            }
+        // execute 10 random hp changes.
+        repeat(10) {
+            entity2.hp = 500
+            val hpChange = Random.nextInt(-2000, 2000)
+            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+            assertEquals((500 + hpChange).coerceIn(0, entity2.maxhp), entity2.hp)
         }
     }
 
     @Test
     fun `instant HP change fully blocked by shields correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
-            entity2.attachShield("dummy", 300)
-            val hpChange = -100
-            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
-            assertEquals(500, entity2.hp)
-            assertEquals(200, entity2.shields["dummy"]?.value)
-        }
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
+        entity2.attachShield("dummy", 300)
+        val hpChange = -100
+        skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+        assertEquals(500, entity2.hp)
+        assertEquals(200, entity2.shields["dummy"]?.value)
     }
 
     @Test
     fun `instant HP change partially blocked by shields correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
-            entity2.attachShield("dummy", 300)
-            val hpChange = -400
-            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
-            assertEquals(400, entity2.hp)
-            assertFalse(entity2.shields.containsKey("dummy"))
-        }
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
+        entity2.attachShield("dummy", 300)
+        val hpChange = -400
+        skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+        assertEquals(400, entity2.hp)
+        assertFalse(entity2.shields.containsKey("dummy"))
     }
 
     @Test
     fun `instant HP change ignores shields correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
-            entity2.attachShield("dummy", 999999)
-            val hpChange = -300
-            skill.createExtraContextFor(entity2).instantHPChange(hpChange, ignoresShield = true)
-            assertEquals(200, entity2.hp)
-            assertEquals(999999, entity2.shields["dummy"]?.value)
-        }
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
+        entity2.attachShield("dummy", 999999)
+        val hpChange = -300
+        skill.createExtraContextFor(entity2).instantHPChange(hpChange, ignoresShield = true)
+        assertEquals(200, entity2.hp)
+        assertEquals(999999, entity2.shields["dummy"]?.value)
     }
 
     @Test
     fun `instant healing is not affected by shields`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
-            entity2.attachShield("dummy", 999999)
-            val hpChange = 300
-            skill.createExtraContextFor(entity2).instantHPChange(hpChange)
-            assertEquals(800, entity2.hp)
-            assertEquals(999999, entity2.shields["dummy"]?.value)
-        }
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
+        entity2.attachShield("dummy", 999999)
+        val hpChange = 300
+        skill.createExtraContextFor(entity2).instantHPChange(hpChange)
+        assertEquals(800, entity2.hp)
+        assertEquals(999999, entity2.shields["dummy"]?.value)
     }
 
     @Test
     fun `instant SP change executed correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            // execute 10 random sp changes.
-            repeat(10) {
-                entity2.sp = 500
-                val spChange = Random.nextInt(-2000, 2000)
-                skill.createExtraContextFor(entity2).instantSPChange(spChange)
-                assertEquals((500 + spChange).coerceIn(0, entity2.maxsp), entity2.sp)
-            }
+        // execute 10 random sp changes.
+        repeat(10) {
+            entity2.sp = 500
+            val spChange = Random.nextInt(-2000, 2000)
+            skill.createExtraContextFor(entity2).instantSPChange(spChange)
+            assertEquals((500 + spChange).coerceIn(0, entity2.maxsp), entity2.sp)
         }
     }
 
     @Test
     fun `instant AP change executed correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            // execute 10 random ap changes.
-            repeat(10) {
-                entity2.ap = 50F
-                val apChange = Random.nextFloat() * 200F - 100F
-                skill.createExtraContextFor(entity2).instantAPChange(apChange)
-                // AP can exceed the upper and lower limit by functions/effects.
-                assertFloatEquals(50F + apChange, entity2.ap)
-            }
+        // execute 10 random ap changes.
+        repeat(10) {
+            entity2.ap = 50F
+            val apChange = Random.nextFloat() * 200F - 100F
+            skill.createExtraContextFor(entity2).instantAPChange(apChange)
+            // AP can exceed the upper and lower limit by functions/effects.
+            assertFloatEquals(50F + apChange, entity2.ap)
         }
     }
 
     @Test
     fun `common effects attached successfully`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            val effect = entity1.generateEffectFor(
-                effectData = DummyEffects.generateEffectData(),
-                tier = 1,
-                turns = 1,
-            )
+        val effect = entity1.generateEffectFor(
+            effectData = DummyEffects.generateEffectData(),
+            tier = 1,
+            turns = 1,
+        )
 
-            // Execute
-            skill.createExtraContextFor(entity2).attachEffect(effect)
-            assertTrue(effect in entity2.effects)
-        }
+        // Execute
+        skill.createExtraContextFor(entity2).attachEffect(effect)
+        assertTrue(effect in entity2.effects)
     }
 
     @Test
     fun `stackable effects attached successfully`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val entity3 = DummyEntities.generateEntity(name = "baz", baseHP = 99999)
-            val skill1 = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            val skill2 = entity2.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
-            entity3.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val entity3 = DummyEntities.generateEntity(name = "baz", baseHP = 99999)
+        val skill1 = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        val skill2 = entity2.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
+        entity3.hp = 500
 
-            val stackable = DummyEffects.generateEffectData(name = "stackable", isStackable = true)
+        val stackable = DummyEffects.generateEffectData(name = "stackable", isStackable = true)
 
-            val effect1 = entity1.generateEffectFor(effectData = stackable, tier = 1, turns = 1)
-            val effect2 = entity2.generateEffectFor(effectData = stackable, tier = 2, turns = 2)
+        val effect1 = entity1.generateEffectFor(effectData = stackable, tier = 1, turns = 1)
+        val effect2 = entity2.generateEffectFor(effectData = stackable, tier = 2, turns = 2)
 
-            // Execute
-            skill1.createExtraContextFor(entity3).attachEffect(effect1)
-            skill2.createExtraContextFor(entity3).attachEffect(effect2)
-            assertTrue(effect1 in entity3.effects)
-            assertTrue(effect2 in entity3.effects)
-        }
+        // Execute
+        skill1.createExtraContextFor(entity3).attachEffect(effect1)
+        skill2.createExtraContextFor(entity3).attachEffect(effect2)
+        assertTrue(effect1 in entity3.effects)
+        assertTrue(effect2 in entity3.effects)
     }
 
     @Test
     fun `stackable effects still be replaced when the user is identical`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            val stackable = DummyEffects.generateEffectData(name = "stackable", isStackable = true)
+        val stackable = DummyEffects.generateEffectData(name = "stackable", isStackable = true)
 
-            val effect1 = entity1.generateEffectFor(effectData = stackable, tier = 1, turns = 1)
-            val effect2 = entity1.generateEffectFor(effectData = stackable, tier = 2, turns = 2)
+        val effect1 = entity1.generateEffectFor(effectData = stackable, tier = 1, turns = 1)
+        val effect2 = entity1.generateEffectFor(effectData = stackable, tier = 2, turns = 2)
 
-            // Execute
-            skill.createExtraContextFor(entity2).attachEffect(effect1)
-            skill.createExtraContextFor(entity2).attachEffect(effect2)
-            assertFalse(effect1 in entity2.effects)
-            assertTrue(effect2 in entity2.effects)
-        }
+        // Execute
+        skill.createExtraContextFor(entity2).attachEffect(effect1)
+        skill.createExtraContextFor(entity2).attachEffect(effect2)
+        assertFalse(effect1 in entity2.effects)
+        assertTrue(effect2 in entity2.effects)
     }
 
     @Test
     fun `non-stackable effects replaces successfully`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            val nonStackable = DummyEffects.generateEffectData(name = "non-stackable")
+        val nonStackable = DummyEffects.generateEffectData(name = "non-stackable")
 
-            val effect1 = entity1.generateEffectFor(effectData = nonStackable, tier = 1, turns = 2)
-            val effect2 = entity1.generateEffectFor(effectData = nonStackable, tier = 2, turns = 1)
+        val effect1 = entity1.generateEffectFor(effectData = nonStackable, tier = 1, turns = 2)
+        val effect2 = entity1.generateEffectFor(effectData = nonStackable, tier = 2, turns = 1)
 
-            // Execute
-            skill.createExtraContextFor(entity2).attachEffect(effect1)
-            skill.createExtraContextFor(entity2).attachEffect(effect2)
-            // effect1 is replaced by effect2
-            assertFalse(effect1 in entity2.effects)
-            assertTrue(effect2 in entity2.effects)
-        }
+        // Execute
+        skill.createExtraContextFor(entity2).attachEffect(effect1)
+        skill.createExtraContextFor(entity2).attachEffect(effect2)
+        // effect1 is replaced by effect2
+        assertFalse(effect1 in entity2.effects)
+        assertTrue(effect2 in entity2.effects)
     }
 
     @Test
     fun `effects removed correctly`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
-            val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            entity1.hp = 500
-            entity2.hp = 500
+        val entity1 = DummyEntities.generateEntity(name = "foo", baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", baseHP = 99999)
+        val skill = entity1.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        entity1.hp = 500
+        entity2.hp = 500
 
-            val effect = entity1.generateEffectFor(
-                effectData = DummyEffects.generateEffectData(),
-                tier = 1,
-                turns = 1,
-            )
+        val effect = entity1.generateEffectFor(
+            effectData = DummyEffects.generateEffectData(),
+            tier = 1,
+            turns = 1,
+        )
 
-            // Execute
-            skill.createExtraContextFor(entity2).attachEffect(effect)
-            skill.createExtraContextFor(entity2).removeEffect(effect)
+        // Execute
+        skill.createExtraContextFor(entity2).attachEffect(effect)
+        skill.createExtraContextFor(entity2).removeEffect(effect)
 
-            assertFalse(effect in entity2.effects)
-        }
+        assertFalse(effect in entity2.effects)
     }
 }

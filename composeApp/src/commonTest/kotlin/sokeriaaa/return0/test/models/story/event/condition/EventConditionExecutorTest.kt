@@ -32,14 +32,28 @@ import sokeriaaa.return0.shared.data.models.component.conditions.EventCondition
 import sokeriaaa.return0.shared.data.models.title.Title
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
+import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
 import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunWith(AppRunner::class)
 class EventConditionExecutorTest : BaseEventTest() {
+
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     // Common
     @Test
     fun `Common_True calculates correctly`() = runTest {

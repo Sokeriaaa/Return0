@@ -27,6 +27,8 @@ import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import kotlin.random.Random
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -64,51 +66,59 @@ class CombatConditionExecutorTest {
         )
     }
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `Combat_IfCritical calculated correctly`() {
-        TestKoinModules.withModules {
-            val user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseHP = 99999)
-            val target: Entity =
-                DummyEntities.generateEntity(index = 1, name = "bar", baseHP = 99999)
-            val action: Action = user.generateFunctionFor(DummyFunction.generateFunctionData())!!
-            val nonCritical = ActionResult.Damage(
-                fromIndex = user.index,
-                toIndex = target.index,
-                finalDamage = 42,
-                shieldedDamage = 0,
-                damageCoerced = 42,
-                effectiveness = 0,
-                isCritical = false,
-            )
-            assertFalse(
-                CombatCondition.Critical.calculatedIn(
-                    context = ActionExtraContext(
-                        fromAction = action,
-                        user = user,
-                        target = target,
-                        attackDamageResult = nonCritical,
-                    )
+        val user: Entity = DummyEntities.generateEntity(index = 0, name = "foo", baseHP = 99999)
+        val target: Entity =
+            DummyEntities.generateEntity(index = 1, name = "bar", baseHP = 99999)
+        val action: Action = user.generateFunctionFor(DummyFunction.generateFunctionData())!!
+        val nonCritical = ActionResult.Damage(
+            fromIndex = user.index,
+            toIndex = target.index,
+            finalDamage = 42,
+            shieldedDamage = 0,
+            damageCoerced = 42,
+            effectiveness = 0,
+            isCritical = false,
+        )
+        assertFalse(
+            CombatCondition.Critical.calculatedIn(
+                context = ActionExtraContext(
+                    fromAction = action,
+                    user = user,
+                    target = target,
+                    attackDamageResult = nonCritical,
                 )
             )
-            val critical = ActionResult.Damage(
-                fromIndex = user.index,
-                toIndex = target.index,
-                finalDamage = 42,
-                shieldedDamage = 0,
-                damageCoerced = 42,
-                effectiveness = 0,
-                isCritical = true,
-            )
-            assertTrue(
-                CombatCondition.Critical.calculatedIn(
-                    context = ActionExtraContext(
-                        fromAction = action,
-                        user = user,
-                        target = target,
-                        attackDamageResult = critical,
-                    )
+        )
+        val critical = ActionResult.Damage(
+            fromIndex = user.index,
+            toIndex = target.index,
+            finalDamage = 42,
+            shieldedDamage = 0,
+            damageCoerced = 42,
+            effectiveness = 0,
+            isCritical = true,
+        )
+        assertTrue(
+            CombatCondition.Critical.calculatedIn(
+                context = ActionExtraContext(
+                    fromAction = action,
+                    user = user,
+                    target = target,
+                    attackDamageResult = critical,
                 )
             )
-        }
+        )
     }
 }

@@ -28,6 +28,8 @@ import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.random.Random
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 @RunWith(AppRunner::class)
@@ -59,54 +61,56 @@ class CombatValueExecutorTest {
         )
     }
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `Combat_LoadValue calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomDamageResult()
-            context.fromAction.values["test"] = 42F
-            val loadValue = CombatValue.LoadValue("test")
-            assertFloatEquals(42F, loadValue.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomDamageResult()
+        context.fromAction.values["test"] = 42F
+        val loadValue = CombatValue.LoadValue("test")
+        assertFloatEquals(42F, loadValue.calculatedIn(context))
     }
 
     @Test
     fun `Combat_ForUser calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomDamageResult()
-            assertFloatEquals(
-                context.user.baseATK.toFloat(),
-                CombatValue.ForUser(EntityValue.BaseATK).calculatedIn(context)
-            )
-        }
+        val context = createTestingContextWithRandomDamageResult()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CombatValue.ForUser(EntityValue.BaseATK).calculatedIn(context)
+        )
     }
 
     @Test
     fun `Combat_Swapped calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomDamageResult()
-            assertFloatEquals(
-                context.user.baseATK.toFloat(),
-                CombatValue.Swapped(EntityValue.BaseATK).calculatedIn(context)
-            )
-        }
+        val context = createTestingContextWithRandomDamageResult()
+        assertFloatEquals(
+            context.user.baseATK.toFloat(),
+            CombatValue.Swapped(EntityValue.BaseATK).calculatedIn(context)
+        )
     }
 
     @Test
     fun `Combat_Damage calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomDamageResult()
-            assertFloatEquals(
-                expected = context.attackDamageResult?.finalDamage?.toFloat() ?: 0F,
-                actual = CombatValue.Damage.calculatedIn(context),
-            )
-            assertFloatEquals(
-                expected = context.attackDamageResult?.damageCoerced?.toFloat() ?: 0F,
-                actual = CombatValue.DamageCoerced.calculatedIn(context),
-            )
-            assertFloatEquals(
-                expected = context.attackDamageResult?.shieldedDamage?.toFloat() ?: 0F,
-                actual = CombatValue.ShieldedDamage.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomDamageResult()
+        assertFloatEquals(
+            expected = context.attackDamageResult?.finalDamage?.toFloat() ?: 0F,
+            actual = CombatValue.Damage.calculatedIn(context),
+        )
+        assertFloatEquals(
+            expected = context.attackDamageResult?.damageCoerced?.toFloat() ?: 0F,
+            actual = CombatValue.DamageCoerced.calculatedIn(context),
+        )
+        assertFloatEquals(
+            expected = context.attackDamageResult?.shieldedDamage?.toFloat() ?: 0F,
+            actual = CombatValue.ShieldedDamage.calculatedIn(context),
+        )
     }
 }

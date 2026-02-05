@@ -21,47 +21,55 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @RunWith(AppRunner::class)
 class FunctionTest {
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `functions cost SP`() {
-        TestKoinModules.withModules {
-            val entity = DummyEntities.generateEntity(baseSP = 99999)
-            entity.sp = 200
-            entity.generateFunctionFor(
-                DummyFunction.generateFunctionData(baseSPCost = 40)
-            )?.invokeOn(listOf())
-            assertEquals(160, entity.sp)
-        }
+        val entity = DummyEntities.generateEntity(baseSP = 99999)
+        entity.sp = 200
+        entity.generateFunctionFor(
+            DummyFunction.generateFunctionData(baseSPCost = 40)
+        )?.invokeOn(listOf())
+        assertEquals(160, entity.sp)
     }
 
     @Test
     fun `function times used`() {
-        TestKoinModules.withModules {
-            val entity1 = DummyEntities.generateEntity(name = "foo", level = 100, baseHP = 99999)
-            val entity2 = DummyEntities.generateEntity(name = "bar", level = 100, baseHP = 99999)
-            entity1.hp = entity1.maxhp
-            entity2.hp = entity2.maxhp
+        val entity1 = DummyEntities.generateEntity(name = "foo", level = 100, baseHP = 99999)
+        val entity2 = DummyEntities.generateEntity(name = "bar", level = 100, baseHP = 99999)
+        entity1.hp = entity1.maxhp
+        entity2.hp = entity2.maxhp
 
-            val skill = entity1.generateFunctionFor(
-                DummyFunction.generateFunctionData(
-                    basePower = 1,
-                    attackModifier = FunctionData.AttackModifier(
-                        attackTimes = Value(3)
-                    )
+        val skill = entity1.generateFunctionFor(
+            DummyFunction.generateFunctionData(
+                basePower = 1,
+                attackModifier = FunctionData.AttackModifier(
+                    attackTimes = Value(3)
                 )
-            )!!
-            skill.invokeOn(listOf(entity2))
-            assertEquals(1, skill.timesUsed)
-            skill.invokeOn(listOf(entity2))
-            assertEquals(2, skill.timesUsed)
-            // Reset after entity is defeated or combat is ended.
-            skill.reset()
-            assertEquals(0, skill.timesUsed)
-        }
+            )
+        )!!
+        skill.invokeOn(listOf(entity2))
+        assertEquals(1, skill.timesUsed)
+        skill.invokeOn(listOf(entity2))
+        assertEquals(2, skill.timesUsed)
+        // Reset after entity is defeated or combat is ended.
+        skill.reset()
+        assertEquals(0, skill.timesUsed)
     }
 }

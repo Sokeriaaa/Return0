@@ -33,6 +33,8 @@ import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.random.Random
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 @RunWith(AppRunner::class)
@@ -80,239 +82,205 @@ class EntityValueExecutorTest : KoinComponent {
         )
     }
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `Entity_ATK calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.atk.toFloat(), EntityValue.ATK.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.atk.toFloat(), EntityValue.ATK.calculatedIn(context))
     }
 
     @Test
     fun `Entity_DEF calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.def.toFloat(), EntityValue.DEF.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.def.toFloat(), EntityValue.DEF.calculatedIn(context))
     }
 
     @Test
     fun `Entity_SPD calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.spd.toFloat(), EntityValue.SPD.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.spd.toFloat(), EntityValue.SPD.calculatedIn(context))
     }
 
     @Test
     fun `Entity_HP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.hp.toFloat(), EntityValue.HP.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.hp.toFloat(), EntityValue.HP.calculatedIn(context))
     }
 
     @Test
     fun `Entity_SP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.sp.toFloat(), EntityValue.SP.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.sp.toFloat(), EntityValue.SP.calculatedIn(context))
     }
 
     @Test
     fun `Entity_AP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(context.target.ap, EntityValue.AP.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(context.target.ap, EntityValue.AP.calculatedIn(context))
     }
 
     @Test
     fun `Entity_HPRate calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.hp.toFloat() / context.target.maxhp,
-                actual = EntityValue.HPRate.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.hp.toFloat() / context.target.maxhp,
+            actual = EntityValue.HPRate.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_SPRate calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.sp.toFloat() / context.target.maxsp,
-                actual = EntityValue.SPRate.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.sp.toFloat() / context.target.maxsp,
+            actual = EntityValue.SPRate.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_APRate calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.ap / context.target.maxap,
-                actual = EntityValue.APRate.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.ap / context.target.maxap,
+            actual = EntityValue.APRate.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_MAXHP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.maxhp.toFloat(),
-                actual = EntityValue.MAXHP.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.maxhp.toFloat(),
+            actual = EntityValue.MAXHP.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_MAXSP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.maxsp.toFloat(),
-                actual = EntityValue.MAXSP.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.maxsp.toFloat(),
+            actual = EntityValue.MAXSP.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_MAXAP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.maxap.toFloat(),
-                actual = EntityValue.MAXAP.calculatedIn(context)
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.maxap.toFloat(),
+            actual = EntityValue.MAXAP.calculatedIn(context)
+        )
     }
 
     @Test
     fun `Entity_BaseATK calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseATK.toFloat(),
-                actual = EntityValue.BaseATK.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseATK.toFloat(),
+            actual = EntityValue.BaseATK.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_BaseDEF calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseDEF.toFloat(),
-                actual = EntityValue.BaseDEF.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseDEF.toFloat(),
+            actual = EntityValue.BaseDEF.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_BaseSPD calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseSPD.toFloat(),
-                actual = EntityValue.BaseSPD.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseSPD.toFloat(),
+            actual = EntityValue.BaseSPD.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_BaseHP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseHP.toFloat(),
-                actual = EntityValue.BaseHP.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseHP.toFloat(),
+            actual = EntityValue.BaseHP.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_BaseSP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseSP.toFloat(),
-                actual = EntityValue.BaseSP.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseSP.toFloat(),
+            actual = EntityValue.BaseSP.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_BaseAP calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.baseAP.toFloat(),
-                actual = EntityValue.BaseAP.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.baseAP.toFloat(),
+            actual = EntityValue.BaseAP.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_CriticalRate calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.critRate,
-                actual = EntityValue.CriticalRate.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.critRate,
+            actual = EntityValue.CriticalRate.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_CriticalDMG calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            assertFloatEquals(
-                expected = context.target.critDMG,
-                actual = EntityValue.CriticalDMG.calculatedIn(context),
-            )
-        }
+        val context = createTestingContextWithRandomTarget()
+        assertFloatEquals(
+            expected = context.target.critDMG,
+            actual = EntityValue.CriticalDMG.calculatedIn(context),
+        )
     }
 
     @Test
     fun `Entity_EffectTurns calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            val foo = context.user.generateEffectFor(
-                effectData = DummyEffects.generateEffectData(name = "foo"),
-                tier = 1,
-                turns = 1,
-            )
-            val bar = context.user.generateEffectFor(
-                effectData = DummyEffects.generateEffectData(name = "bar"),
-                tier = 2,
-                turns = 2,
-            )
-            context.target.attachEffect(foo)
-            context.target.attachEffect(bar)
-            assertFloatEquals(1F, EntityValue.TurnsLeftOf("foo").calculatedIn(context))
-            assertFloatEquals(2F, EntityValue.TurnsLeftOf("bar").calculatedIn(context))
-            assertFloatEquals(3F, EntityValue.TurnsLeftOfAllEffects.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        val foo = context.user.generateEffectFor(
+            effectData = DummyEffects.generateEffectData(name = "foo"),
+            tier = 1,
+            turns = 1,
+        )
+        val bar = context.user.generateEffectFor(
+            effectData = DummyEffects.generateEffectData(name = "bar"),
+            tier = 2,
+            turns = 2,
+        )
+        context.target.attachEffect(foo)
+        context.target.attachEffect(bar)
+        assertFloatEquals(1F, EntityValue.TurnsLeftOf("foo").calculatedIn(context))
+        assertFloatEquals(2F, EntityValue.TurnsLeftOf("bar").calculatedIn(context))
+        assertFloatEquals(3F, EntityValue.TurnsLeftOfAllEffects.calculatedIn(context))
     }
 
     @Test
     fun `Entity_ShieldValue calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContextWithRandomTarget()
-            context.attachShield("foo", 111)
-            context.attachShield("bar", 222)
-            assertFloatEquals(111F, EntityValue.ShieldValueOf("foo").calculatedIn(context))
-            assertFloatEquals(222F, EntityValue.ShieldValueOf("bar").calculatedIn(context))
-            assertFloatEquals(333F, EntityValue.SumOfShieldValue.calculatedIn(context))
-        }
+        val context = createTestingContextWithRandomTarget()
+        context.attachShield("foo", 111)
+        context.attachShield("bar", 222)
+        assertFloatEquals(111F, EntityValue.ShieldValueOf("foo").calculatedIn(context))
+        assertFloatEquals(222F, EntityValue.ShieldValueOf("bar").calculatedIn(context))
+        assertFloatEquals(333F, EntityValue.SumOfShieldValue.calculatedIn(context))
     }
 }

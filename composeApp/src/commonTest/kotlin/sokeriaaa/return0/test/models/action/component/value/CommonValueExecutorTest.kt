@@ -48,6 +48,8 @@ import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.random.Random
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 /**
@@ -72,213 +74,191 @@ class CommonValueExecutorTest {
         attackDamageResult = attackDamageResult,
     )
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `Common_Constant calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            // Int
-            val constant1 = Value(42)
-            assertFloatEquals(42F, constant1.calculatedIn(context))
-            // Float
-            val constant2 = Value(42F)
-            assertFloatEquals(42F, constant2.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        // Int
+        val constant1 = Value(42)
+        assertFloatEquals(42F, constant1.calculatedIn(context))
+        // Float
+        val constant2 = Value(42F)
+        assertFloatEquals(42F, constant2.calculatedIn(context))
     }
 
     @Test
     fun `Common_Sum calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val sum = sumOf(Value(1F), Value(2), Value(3F))
-            assertFloatEquals(6F, sum.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val sum = sumOf(Value(1F), Value(2), Value(3F))
+        assertFloatEquals(6F, sum.calculatedIn(context))
     }
 
     @Test
     fun `Common_Times calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val times = Value(4) * Value(2F)
-            assertFloatEquals(8F, times.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val times = Value(4) * Value(2F)
+        assertFloatEquals(8F, times.calculatedIn(context))
     }
 
     @Test
     fun `Common_TimesConst calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            // Int
-            val times1 = Value(4) * 2
-            assertFloatEquals(8F, times1.calculatedIn(context))
-            // Float
-            val times2 = Value(4) * 3F
-            assertFloatEquals(12F, times2.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        // Int
+        val times1 = Value(4) * 2
+        assertFloatEquals(8F, times1.calculatedIn(context))
+        // Float
+        val times2 = Value(4) * 3F
+        assertFloatEquals(12F, times2.calculatedIn(context))
     }
 
     @Test
     fun `Common_Div calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val div = Value(42F) / Value(7)
-            assertFloatEquals(6F, div.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val div = Value(42F) / Value(7)
+        assertFloatEquals(6F, div.calculatedIn(context))
     }
 
     @Test
     fun `Common_UnaryMinus calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val unaryMinus1 = -Value(42F)
-            assertFloatEquals(-42F, unaryMinus1.calculatedIn(context))
-            val unaryMinus2 = -(-Value(42F))
-            assertFloatEquals(42F, unaryMinus2.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val unaryMinus1 = -Value(42F)
+        assertFloatEquals(-42F, unaryMinus1.calculatedIn(context))
+        val unaryMinus2 = -(-Value(42F))
+        assertFloatEquals(42F, unaryMinus2.calculatedIn(context))
     }
 
     @Test
     fun `Common_Shift calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val shift1 = Value(8) shr Value(2F)
-            assertFloatEquals(2F, shift1.calculatedIn(context))
-            val shift2 = Value(5) shl Value(2F)
-            assertFloatEquals(20F, shift2.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val shift1 = Value(8) shr Value(2F)
+        assertFloatEquals(2F, shift1.calculatedIn(context))
+        val shift2 = Value(5) shl Value(2F)
+        assertFloatEquals(20F, shift2.calculatedIn(context))
     }
 
     @Test
     fun `Common_Power calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val power1 = Value(8) pow Value(2F)
-            assertFloatEquals(64F, power1.calculatedIn(context))
-            val power2 = Value(3) pow 3
-            assertFloatEquals(27F, power2.calculatedIn(context))
-            val power3 = Value(16) pow 0.5F
-            assertFloatEquals(4F, power3.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val power1 = Value(8) pow Value(2F)
+        assertFloatEquals(64F, power1.calculatedIn(context))
+        val power2 = Value(3) pow 3
+        assertFloatEquals(27F, power2.calculatedIn(context))
+        val power3 = Value(16) pow 0.5F
+        assertFloatEquals(4F, power3.calculatedIn(context))
     }
 
     @Test
     fun `Common_AbsoluteValue calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val abs1 = abs(Value(42))
-            assertFloatEquals(42F, abs1.calculatedIn(context))
-            val abs2 = abs(Value(-42))
-            assertFloatEquals(42F, abs2.calculatedIn(context))
-            val abs3 = Value(42).absoluteValue
-            assertFloatEquals(42F, abs3.calculatedIn(context))
-            val abs4 = Value(-42).absoluteValue
-            assertFloatEquals(42F, abs4.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val abs1 = abs(Value(42))
+        assertFloatEquals(42F, abs1.calculatedIn(context))
+        val abs2 = abs(Value(-42))
+        assertFloatEquals(42F, abs2.calculatedIn(context))
+        val abs3 = Value(42).absoluteValue
+        assertFloatEquals(42F, abs3.calculatedIn(context))
+        val abs4 = Value(-42).absoluteValue
+        assertFloatEquals(42F, abs4.calculatedIn(context))
     }
 
     @Test
     fun `Common_Coerced at least or most calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            // Coerce at least / Constant
-            val coerced1 = Value(1).coerceAtLeast(0)
-            assertFloatEquals(1F, coerced1.calculatedIn(context))
-            val coerced2 = Value(1).coerceAtLeast(2)
-            assertFloatEquals(2F, coerced2.calculatedIn(context))
-            // Coerce at most / Constant
-            val coerced3 = Value(1).coerceAtMost(0)
-            assertFloatEquals(0F, coerced3.calculatedIn(context))
-            val coerced4 = Value(1).coerceAtMost(2)
-            assertFloatEquals(1F, coerced4.calculatedIn(context))
-            // Coerce at least / Variable
-            val coerced5 = Value(1).coerceAtLeast(Value(0))
-            assertFloatEquals(1F, coerced5.calculatedIn(context))
-            val coerced6 = Value(1).coerceAtLeast(Value(2))
-            assertFloatEquals(2F, coerced6.calculatedIn(context))
-            // Coerce at most / Variable
-            val coerced7 = Value(1).coerceAtMost(Value(0))
-            assertFloatEquals(0F, coerced7.calculatedIn(context))
-            val coerced8 = Value(1).coerceAtMost(Value(2))
-            assertFloatEquals(1F, coerced8.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        // Coerce at least / Constant
+        val coerced1 = Value(1).coerceAtLeast(0)
+        assertFloatEquals(1F, coerced1.calculatedIn(context))
+        val coerced2 = Value(1).coerceAtLeast(2)
+        assertFloatEquals(2F, coerced2.calculatedIn(context))
+        // Coerce at most / Constant
+        val coerced3 = Value(1).coerceAtMost(0)
+        assertFloatEquals(0F, coerced3.calculatedIn(context))
+        val coerced4 = Value(1).coerceAtMost(2)
+        assertFloatEquals(1F, coerced4.calculatedIn(context))
+        // Coerce at least / Variable
+        val coerced5 = Value(1).coerceAtLeast(Value(0))
+        assertFloatEquals(1F, coerced5.calculatedIn(context))
+        val coerced6 = Value(1).coerceAtLeast(Value(2))
+        assertFloatEquals(2F, coerced6.calculatedIn(context))
+        // Coerce at most / Variable
+        val coerced7 = Value(1).coerceAtMost(Value(0))
+        assertFloatEquals(0F, coerced7.calculatedIn(context))
+        val coerced8 = Value(1).coerceAtMost(Value(2))
+        assertFloatEquals(1F, coerced8.calculatedIn(context))
     }
 
     @Test
     fun `Common_Coerced in calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val coerced1 = Value(1).coerceIn(0..2)
-            assertFloatEquals(1F, coerced1.calculatedIn(context))
-            val coerced2 = Value(3).coerceIn(0..2)
-            assertFloatEquals(2F, coerced2.calculatedIn(context))
-            val coerced3 = Value(-1).coerceIn(0..2)
-            assertFloatEquals(0F, coerced3.calculatedIn(context))
-            val coerced4 = Value(1).coerceIn(0F..2F)
-            assertFloatEquals(1F, coerced4.calculatedIn(context))
-            val coerced5 = Value(3).coerceIn(0F..2F)
-            assertFloatEquals(2F, coerced5.calculatedIn(context))
-            val coerced6 = Value(-1).coerceIn(0F..2F)
-            assertFloatEquals(0F, coerced6.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val coerced1 = Value(1).coerceIn(0..2)
+        assertFloatEquals(1F, coerced1.calculatedIn(context))
+        val coerced2 = Value(3).coerceIn(0..2)
+        assertFloatEquals(2F, coerced2.calculatedIn(context))
+        val coerced3 = Value(-1).coerceIn(0..2)
+        assertFloatEquals(0F, coerced3.calculatedIn(context))
+        val coerced4 = Value(1).coerceIn(0F..2F)
+        assertFloatEquals(1F, coerced4.calculatedIn(context))
+        val coerced5 = Value(3).coerceIn(0F..2F)
+        assertFloatEquals(2F, coerced5.calculatedIn(context))
+        val coerced6 = Value(-1).coerceIn(0F..2F)
+        assertFloatEquals(0F, coerced6.calculatedIn(context))
     }
 
     @Test
     fun `Common_MinOf calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val minOf = minOf(Value(1), Value(2F), Value(3))
-            assertFloatEquals(1F, minOf.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val minOf = minOf(Value(1), Value(2F), Value(3))
+        assertFloatEquals(1F, minOf.calculatedIn(context))
     }
 
     @Test
     fun `Common_MaxOf calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val maxOf = maxOf(Value(1), Value(2F), Value(3))
-            assertFloatEquals(3F, maxOf.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val maxOf = maxOf(Value(1), Value(2F), Value(3))
+        assertFloatEquals(3F, maxOf.calculatedIn(context))
     }
 
     @Test
     fun `Common_RandomInt calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext(random = FakeRandom(7))
-            assertFloatEquals(7F, CommonValue.Math.RandomInt(5, 10).calculatedIn(context))
-        }
+        val context = createTestingContext(random = FakeRandom(7))
+        assertFloatEquals(7F, CommonValue.Math.RandomInt(5, 10).calculatedIn(context))
     }
 
     @Test
     fun `Common_RandomFloat calculates correctly`() = runTest {
-        TestKoinModules.withModules {
-            val context = createTestingContext(random = FakeRandom(0.4F))
-            assertFloatEquals(
-                expected = 7F,
-                actual = CommonValue.Math.RandomFloat(
-                    start = 5F,
-                    end = 10F,
-                    formatter = Formatter.Integer,
-                ).calculatedIn(context),
-            )
-        }
+        val context = createTestingContext(random = FakeRandom(0.4F))
+        assertFloatEquals(
+            expected = 7F,
+            actual = CommonValue.Math.RandomFloat(
+                start = 5F,
+                end = 10F,
+                formatter = Formatter.Integer,
+            ).calculatedIn(context),
+        )
     }
 
     @Test
     fun `Common_Conditioned calculates correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            val conditioned1 = IF(CommonCondition.True)
-                .then(ifTrue = Value(4), ifFalse = Value(2F))
-            assertFloatEquals(4F, conditioned1.calculatedIn(context))
-            val conditioned2 = IF(CommonCondition.False)
-                .then(ifTrue = Value(4), ifFalse = Value(2F))
-            assertFloatEquals(2F, conditioned2.calculatedIn(context))
-            // Test default value
-            val conditioned3 = IF(CommonCondition.False)
-                .then(ifTrue = Value(4), defaultValue = Value(3F))
-            assertFloatEquals(3F, conditioned3.calculatedIn(context))
-            // returns 0 when a default value is not exists.
-            val conditioned4 = IF(CommonCondition.False).then(ifTrue = Value(4))
-            assertFloatEquals(0F, conditioned4.calculatedIn(context))
-        }
+        val context = createTestingContext()
+        val conditioned1 = IF(CommonCondition.True)
+            .then(ifTrue = Value(4), ifFalse = Value(2F))
+        assertFloatEquals(4F, conditioned1.calculatedIn(context))
+        val conditioned2 = IF(CommonCondition.False)
+            .then(ifTrue = Value(4), ifFalse = Value(2F))
+        assertFloatEquals(2F, conditioned2.calculatedIn(context))
+        // Test default value
+        val conditioned3 = IF(CommonCondition.False)
+            .then(ifTrue = Value(4), defaultValue = Value(3F))
+        assertFloatEquals(3F, conditioned3.calculatedIn(context))
+        // returns 0 when a default value is not exists.
+        val conditioned4 = IF(CommonCondition.False).then(ifTrue = Value(4))
+        assertFloatEquals(0F, conditioned4.calculatedIn(context))
     }
 }

@@ -21,7 +21,6 @@ import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
-import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import kotlin.random.Random
 
 abstract class BaseEventTest {
@@ -32,15 +31,13 @@ abstract class BaseEventTest {
         callback: EventContext.Callback,
         action: (EventContext) -> Unit
     ) {
-        TestKoinModules.withModules {
-            action(
-                EventContext(
-                    key = key,
-                    random = random,
-                    callback = callback,
-                )
+        action(
+            EventContext(
+                key = key,
+                random = random,
+                callback = callback,
             )
-        }
+        )
     }
 
     /**

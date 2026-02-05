@@ -32,6 +32,8 @@ import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
 import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -61,69 +63,69 @@ class CommonExtraExecutorTest {
     // An extra that damage 300 to the target.
     private val damage300 = CombatExtra.HPChange(Value(-300))
 
+    @BeforeTest
+    fun beforeTest() {
+        TestKoinModules.start()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        TestKoinModules.stop()
+    }
+
     @Test
     fun `Common_Conditioned executes correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
+        val context = createTestingContext()
 
-            // True
-            context.target.hp = 500
-            IF(CommonCondition.True)
-                .then(ifTrue = damage200, ifFalse = damage100)
-                .executedIn(context)
-            assertEquals(300, context.target.hp)
+        // True
+        context.target.hp = 500
+        IF(CommonCondition.True)
+            .then(ifTrue = damage200, ifFalse = damage100)
+            .executedIn(context)
+        assertEquals(300, context.target.hp)
 
-            // False
-            context.target.hp = 500
-            IF(CommonCondition.False)
-                .then(ifTrue = damage200, ifFalse = damage100)
-                .executedIn(context)
-            assertEquals(400, context.target.hp)
-        }
+        // False
+        context.target.hp = 500
+        IF(CommonCondition.False)
+            .then(ifTrue = damage200, ifFalse = damage100)
+            .executedIn(context)
+        assertEquals(400, context.target.hp)
     }
 
     @Test
     fun `Common_Grouped executes correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            context.target.hp = 1000
+        val context = createTestingContext()
+        context.target.hp = 1000
 
-            // Execute damage100, damage200, damage300 one by one.
-            extrasGroupOf(damage100, damage200, damage300).executedIn(context)
-            assertEquals(400, context.target.hp)
-        }
+        // Execute damage100, damage200, damage300 one by one.
+        extrasGroupOf(damage100, damage200, damage300).executedIn(context)
+        assertEquals(400, context.target.hp)
     }
 
     @Test
     fun `Common_SaveValue executes correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            CommonExtra.SaveValue(key = "key", value = Value(42)).executedIn(context)
-            assertFloatEquals(42F, context.fromAction.values["key"] ?: 0F)
-        }
+        val context = createTestingContext()
+        CommonExtra.SaveValue(key = "key", value = Value(42)).executedIn(context)
+        assertFloatEquals(42F, context.fromAction.values["key"] ?: 0F)
     }
 
     @Test
     fun `Common_ForUser executes correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            context.user.hp = 1000
-            context.target.hp = 1000
-            CommonExtra.ForUser(damage100).executedIn(context)
-            assertEquals(900, context.user.hp)
-            assertEquals(1000, context.target.hp)
-        }
+        val context = createTestingContext()
+        context.user.hp = 1000
+        context.target.hp = 1000
+        CommonExtra.ForUser(damage100).executedIn(context)
+        assertEquals(900, context.user.hp)
+        assertEquals(1000, context.target.hp)
     }
 
     @Test
     fun `Common_Swapped executes correctly`() {
-        TestKoinModules.withModules {
-            val context = createTestingContext()
-            context.user.hp = 1000
-            context.target.hp = 1000
-            CommonExtra.Swapped(damage100).executedIn(context)
-            assertEquals(900, context.user.hp)
-            assertEquals(1000, context.target.hp)
-        }
+        val context = createTestingContext()
+        context.user.hp = 1000
+        context.target.hp = 1000
+        CommonExtra.Swapped(damage100).executedIn(context)
+        assertEquals(900, context.user.hp)
+        assertEquals(1000, context.target.hp)
     }
 }
