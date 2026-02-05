@@ -114,13 +114,15 @@ class EntityConditionExecutorTest {
         // No effect
         assertFalse(EntityCondition.Effects.Has("effect").calculatedIn(context))
         assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
-        assertFalse(EntityCondition.Effects.HasAny.calculatedIn(context))
+        assertFalse(EntityCondition.Effects.HasAny(buff = true).calculatedIn(context))
+        assertFalse(EntityCondition.Effects.HasAny(debuff = true).calculatedIn(context))
 
         // Effect attached
         context.target.attachEffect(effect)
         assertTrue(EntityCondition.Effects.Has("effect").calculatedIn(context))
         assertFalse(EntityCondition.Effects.Has("another_effect").calculatedIn(context))
-        assertTrue(EntityCondition.Effects.HasAny.calculatedIn(context))
+        assertTrue(EntityCondition.Effects.HasAny(buff = true).calculatedIn(context))
+        assertFalse(EntityCondition.Effects.HasAny(debuff = true).calculatedIn(context))
     }
 
     @Test

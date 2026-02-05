@@ -21,6 +21,8 @@ import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.condition.IF
+import sokeriaaa.return0.shared.data.api.component.condition.gt
+import sokeriaaa.return0.shared.data.api.component.condition.valueCases
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.api.component.value.abs
 import sokeriaaa.return0.shared.data.api.component.value.absoluteValue
@@ -40,6 +42,7 @@ import sokeriaaa.return0.shared.data.models.component.common.Formatter
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
+import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
@@ -260,5 +263,25 @@ class CommonValueExecutorTest {
         // returns 0 when a default value is not exists.
         val conditioned4 = IF(CommonCondition.False).then(ifTrue = Value(4))
         assertFloatEquals(0F, conditioned4.calculatedIn(context))
+    }
+
+    @Test
+    fun `Common_Cased calculates correctly`() {
+        val context = createTestingContext()
+        context.target.hp = 500
+        // Entry
+        val cased1 = valueCases {
+            EntityValue.HP gt 600 then Value(300)
+            EntityValue.HP gt 400 then Value(200)
+            onDefault(Value(100))
+        }
+        assertFloatEquals(200F, cased1.calculatedIn(context))
+        // Default
+        val cased2 = valueCases {
+            EntityValue.HP gt 1000 then Value(300)
+            EntityValue.HP gt 800 then Value(200)
+            onDefault(Value(100))
+        }
+        assertFloatEquals(100F, cased2.calculatedIn(context))
     }
 }

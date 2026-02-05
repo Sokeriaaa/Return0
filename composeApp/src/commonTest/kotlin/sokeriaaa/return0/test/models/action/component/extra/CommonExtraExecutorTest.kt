@@ -20,12 +20,15 @@ import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.component.executor.extra.executedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.condition.IF
+import sokeriaaa.return0.shared.data.api.component.condition.extraCases
+import sokeriaaa.return0.shared.data.api.component.condition.gt
 import sokeriaaa.return0.shared.data.api.component.extra.extrasGroupOf
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
+import sokeriaaa.return0.shared.data.models.component.values.EntityValue
 import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
@@ -89,6 +92,29 @@ class CommonExtraExecutorTest {
         IF(CommonCondition.False)
             .then(ifTrue = damage200, ifFalse = damage100)
             .executedIn(context)
+        assertEquals(400, context.target.hp)
+    }
+
+    @Test
+    fun `Common_Cased executes correctly`() {
+        val context = createTestingContext()
+
+        // Entry
+        context.target.hp = 500
+        extraCases {
+            EntityValue.HP gt 600 then damage300
+            EntityValue.HP gt 400 then damage200
+            onDefault(damage100)
+        }.executedIn(context)
+        assertEquals(300, context.target.hp)
+
+        // Default
+        context.target.hp = 500
+        extraCases {
+            EntityValue.HP gt 1000 then damage300
+            EntityValue.HP gt 800 then damage200
+            onDefault(damage100)
+        }.executedIn(context)
         assertEquals(400, context.target.hp)
     }
 
