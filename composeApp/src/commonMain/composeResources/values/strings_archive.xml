@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="archive_category_effectiveness">Category effectiveness</string>
+    <string name="archive_category_attack">Attack</string>
+    <string name="archive_category_attack_desc">When attacking following entities with a/an %1$s function:</string>
+    <string name="archive_category_defend">Defend</string>
+    <string name="archive_category_defend_desc">When a/an %1$s entity is attacked by following functions:</string>
+</resources>

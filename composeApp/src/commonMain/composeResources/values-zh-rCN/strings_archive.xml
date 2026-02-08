@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="archive_category_effectiveness">类别有效性</string>
+    <string name="archive_category_attack">进攻</string>
+    <string name="archive_category_attack_desc">当使用类别为%1$s的函数攻击以下类别的对象时：</string>
+    <string name="archive_category_defend">防守</string>
+    <string name="archive_category_defend_desc">当类别为%1$s的对象被以下类别的函数攻击时：</string>
+</resources>

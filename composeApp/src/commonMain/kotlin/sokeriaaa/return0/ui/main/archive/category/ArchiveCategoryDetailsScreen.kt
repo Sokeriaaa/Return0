@@ -20,6 +20,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,6 +32,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -46,9 +51,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.window.core.layout.WindowSizeClass
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
+import return0.composeapp.generated.resources.archive_category_attack
+import return0.composeapp.generated.resources.archive_category_attack_desc
+import return0.composeapp.generated.resources.archive_category_defend
+import return0.composeapp.generated.resources.archive_category_defend_desc
+import return0.composeapp.generated.resources.archive_category_effectiveness
 import return0.composeapp.generated.resources.meta_category
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.shared.common.helpers.toPrecision
@@ -70,6 +81,9 @@ fun ArchiveCategoryDetailsScreen(
     var selectedCategory: Category by remember { mutableStateOf(initialCategory) }
     var effectiveness: CategoryEffectiveness? by remember { mutableStateOf(null) }
     var isDefend: Boolean by remember { mutableStateOf(false) }
+    // Wide screen
+    val isWideScreen = windowAdaptiveInfo.windowSizeClass
+        .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
     // Refresh data
     LaunchedEffect(selectedCategory) {
         effectiveness = archiveRepo.getCategoryEffectiveness(selectedCategory)
@@ -84,13 +98,129 @@ fun ArchiveCategoryDetailsScreen(
             )
         }
     ) { paddingValues ->
-        // TODO Category display and switching.
-        CategoryList(
+        Column(
             modifier = Modifier.padding(paddingValues = paddingValues),
-            effectiveMap = effectiveness?.let {
-                if (isDefend) it.defend else it.attack
-            } ?: emptyMap(),
-            onCategorySelected = { selectedCategory = it },
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            if (isWideScreen) {
+                Row(
+                    modifier = Modifier.padding(top = 24.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Category
+                    CategoryHeader(selectedCategory = selectedCategory)
+                    // Switcher
+                    DefendSwitcher(
+                        modifier = Modifier.padding(start = 12.dp),
+                        isDefend = isDefend,
+                        onDefendChanged = { isDefend = it },
+                    )
+                }
+            } else {
+                // Category
+                CategoryHeader(
+                    modifier = Modifier.padding(top = 24.dp),
+                    selectedCategory = selectedCategory,
+                )
+                // Switcher
+                DefendSwitcher(
+                    modifier = Modifier.padding(top = 12.dp),
+                    isDefend = isDefend,
+                    onDefendChanged = { isDefend = it },
+                )
+            }
+            // Text
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 16.dp,
+                    ),
+                text = stringResource(
+                    resource = if (isDefend) {
+                        Res.string.archive_category_defend_desc
+                    } else {
+                        Res.string.archive_category_attack_desc
+                    },
+                    /* category = */ selectedCategory,
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            // Category list
+            CategoryList(
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 12.dp,
+                    ),
+                effectiveMap = effectiveness?.let {
+                    if (isDefend) it.defend else it.attack
+                } ?: emptyMap(),
+                onCategorySelected = { selectedCategory = it },
+            )
+        }
+    }
+}
+
+@Composable
+private fun CategoryHeader(
+    modifier: Modifier = Modifier,
+    selectedCategory: Category,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Icon
+            OutlinedEmojiCard(
+                modifier = Modifier.size(42.dp),
+                emoji = selectedCategory.icon,
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            // Text
+            Text(
+                modifier = Modifier.padding(start = 8.dp),
+                text = selectedCategory.name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+        }
+        Text(
+            modifier = Modifier.padding(top = 8.dp),
+            text = stringResource(Res.string.archive_category_effectiveness)
+        )
+    }
+}
+
+@Composable
+private fun DefendSwitcher(
+    modifier: Modifier = Modifier,
+    isDefend: Boolean,
+    onDefendChanged: (Boolean) -> Unit,
+) {
+    SingleChoiceSegmentedButtonRow(
+        modifier = modifier,
+    ) {
+        SegmentedButton(
+            selected = !isDefend,
+            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+            label = { Text(stringResource(Res.string.archive_category_attack)) },
+            onClick = { onDefendChanged(false) },
+        )
+        SegmentedButton(
+            selected = isDefend,
+            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+            label = { Text(stringResource(Res.string.archive_category_defend)) },
+            onClick = { onDefendChanged(true) },
         )
     }
 }
@@ -202,6 +332,23 @@ private fun CategoryItem(
 // =========================================
 // Previews
 // =========================================
+@Preview
+@Composable
+private fun CategoryHeaderPreview() {
+    CategoryHeader(
+        selectedCategory = Category.CLASS,
+    )
+}
+
+@Preview
+@Composable
+private fun DefendSwitcherPreview() {
+    DefendSwitcher(
+        isDefend = false,
+        onDefendChanged = {},
+    )
+}
+
 @Preview
 @Composable
 private fun CategoryItemPreview1() {
