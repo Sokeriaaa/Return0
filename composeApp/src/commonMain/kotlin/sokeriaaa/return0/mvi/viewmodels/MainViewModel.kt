@@ -118,6 +118,7 @@ class MainViewModel : BaseViewModel() {
 
     private fun resetProgress() {
         loadingProgress = 0
+        totalProgress = 1
         isLoadingFinished = false
         loadingError = null
     }

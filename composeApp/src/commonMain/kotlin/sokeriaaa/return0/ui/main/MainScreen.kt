@@ -84,7 +84,7 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface),
-            progress = viewModel.loadingProgress,
+            progress = viewModel.loadingProgress * 100 / viewModel.totalProgress,
             error = viewModel.loadingError,
             onRetry = { viewModel.onIntent(MainIntent.LoadArchives) }
         )
