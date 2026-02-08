@@ -49,15 +49,49 @@ fun OutlinedEmojiCard(
         modifier = modifier,
         shape = shape,
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(all = 4.dp),
-                text = emoji,
-                style = style,
-            )
-        }
+        OutlinedEmojiCardContent(
+            modifier = Modifier.fillMaxSize(),
+            emoji = emoji,
+            style = style,
+        )
+    }
+}
+
+@Composable
+fun ClickableOutlinedEmojiCard(
+    modifier: Modifier = Modifier,
+    emoji: String,
+    shape: Shape = CircleShape,
+    style: TextStyle = MaterialTheme.typography.bodyLarge,
+    onClick: () -> Unit,
+) {
+    OutlinedCard(
+        modifier = modifier,
+        shape = shape,
+        onClick = onClick,
+    ) {
+        OutlinedEmojiCardContent(
+            modifier = Modifier.fillMaxSize(),
+            emoji = emoji,
+            style = style,
+        )
+    }
+}
+
+@Composable
+private fun OutlinedEmojiCardContent(
+    modifier: Modifier = Modifier,
+    emoji: String,
+    style: TextStyle = MaterialTheme.typography.bodyLarge,
+) {
+    Box(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(all = 4.dp),
+            text = emoji,
+            style = style,
+        )
     }
 }
 

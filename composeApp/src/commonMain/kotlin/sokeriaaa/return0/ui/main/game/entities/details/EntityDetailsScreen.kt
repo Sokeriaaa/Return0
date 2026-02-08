@@ -81,11 +81,13 @@ import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.return0.ui.common.widgets.ClickableOutlinedEmojiCard
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
@@ -148,6 +150,11 @@ fun EntityDetailsScreen(
                             EntityPathCategoryPart(
                                 modifier = Modifier.padding(start = 4.dp),
                                 entity = entity,
+                                onCategoryClicked = {
+                                    mainNavHostController.navigateSingleTop(
+                                        Scene.ArchiveCategoryDetails.route + "/${it.name}"
+                                    )
+                                },
                             )
                         }
                     }
@@ -202,6 +209,11 @@ fun EntityDetailsScreen(
                         EntityPathCategoryPart(
                             modifier = Modifier.fillMaxWidth(),
                             entity = entity,
+                            onCategoryClicked = {
+                                mainNavHostController.navigateSingleTop(
+                                    Scene.ArchiveCategoryDetails.route + "/${it.name}"
+                                )
+                            },
                         )
                         EntityExpPart(
                             modifier = Modifier
@@ -247,19 +259,22 @@ private fun EntityNamePart(
 private fun EntityPathCategoryPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
+    onCategoryClicked: (Category) -> Unit,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        OutlinedEmojiCard(
+        ClickableOutlinedEmojiCard(
             modifier = Modifier.size(32.dp),
             emoji = entity.category.icon,
+            onClick = { onCategoryClicked(entity.category) }
         )
         entity.category2?.let {
-            OutlinedEmojiCard(
+            ClickableOutlinedEmojiCard(
                 modifier = Modifier.size(32.dp).padding(start = 4.dp),
                 emoji = it.icon,
+                onClick = { onCategoryClicked(it) },
             )
         }
         VerticalDivider(modifier = Modifier.height(32.dp).padding(horizontal = 4.dp))

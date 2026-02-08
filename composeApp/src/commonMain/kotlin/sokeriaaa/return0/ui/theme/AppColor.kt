@@ -62,6 +62,10 @@ object AppColor {
         rare = LightBlue,
         epic = Purple,
         legendary = Yellow,
+        extremelyPowerful = Red,
+        powerful = Orange,
+        weak = LightBlue,
+        extremelyWeak = Blue,
     )
 
     @Composable

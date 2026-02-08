@@ -30,4 +30,9 @@ data class AppColorScheme(
     val rare: Color,
     val epic: Color,
     val legendary: Color,
+    // Category effectiveness
+    val extremelyPowerful: Color,
+    val powerful: Color,
+    val weak: Color,
+    val extremelyWeak: Color,
 )

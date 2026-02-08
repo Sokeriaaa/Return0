@@ -32,7 +32,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.savedstate.read
+import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.ui.main.MainScreen
+import sokeriaaa.return0.ui.main.archive.category.ArchiveCategoryDetailsScreen
 import sokeriaaa.return0.ui.main.combat.CombatScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorPresetScreen
 import sokeriaaa.return0.ui.main.emulator.EmulatorScreen
@@ -207,6 +209,23 @@ fun AppNavHost(
                 windowAdaptiveInfo = windowAdaptiveInfo,
             )
         }
+
+        myComposable(
+            scene = Scene.ArchiveCategoryDetails,
+            arguments = listOf(
+                myNavArgument(
+                    name = "category",
+                    type = NavType.StringType,
+                ),
+            ),
+        ) {
+            val argument = it.arguments!!
+            ArchiveCategoryDetailsScreen(
+                initialCategory = Category.valueOf(argument.read { getString("category") }),
+                mainNavHostController = mainNavHostController,
+                windowAdaptiveInfo = windowAdaptiveInfo,
+            )
+        }
     }
 }
 
@@ -280,4 +299,7 @@ sealed class Scene(val route: String) {
     data object Settings : Scene(route = "r0_settings")
     data object Emulator : Scene(route = "r0_emulator")
     data object EmulatorPreset : Scene(route = "r0_emulator_preset")
+
+    data object Archive : Scene(route = "r0_archive")
+    data object ArchiveCategoryDetails : Scene(route = "r0_archive_category_details")
 }

@@ -22,6 +22,8 @@
     <string name="meta_grand_compiler_info">解析一切代码，将无穷指令淬炼为真理。</string>
     <string name="meta_the_source_info">逻辑之本源，万般算法自此苏醒。</string>
 
+    <string name="meta_category">类别</string>
+
     <string name="meta_token">令牌</string>
     <string name="meta_crypto">加密币</string>
 </resources>
