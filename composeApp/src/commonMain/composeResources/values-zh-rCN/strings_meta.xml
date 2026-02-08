@@ -24,6 +24,44 @@
 
     <string name="meta_category">类别</string>
 
+    <string name="meta_path">对象定位</string>
+
+    <string name="meta_path_heap">堆</string>
+    <string name="meta_path_thread">线程</string>
+    <string name="meta_path_overclock">超频</string>
+    <string name="meta_path_sandbox">沙盒</string>
+    <string name="meta_path_protocol">协议</string>
+    <string name="meta_path_daemon">守护</string>
+    <string name="meta_path_kernel">内核</string>
+    <string name="meta_path_runtime">运行时</string>
+
+    <string name="meta_path_heap_tags">持续自强化 · 渐进之力</string>
+    <string name="meta_path_thread_tags">凌厉单体 · 疾速连击</string>
+    <string name="meta_path_overclock_tags">爆发式辅助 · 回合操控</string>
+    <string name="meta_path_sandbox_tags">控场与群体压制</string>
+    <string name="meta_path_protocol_tags">支援增益 · 协同作战</string>
+    <string name="meta_path_daemon_tags">疗愈再生 · 持续维系</string>
+    <string name="meta_path_kernel_tags">坚韧护卫 · 屏障守护</string>
+    <string name="meta_path_runtime_tags">持续伤害 · 侵蚀与衰退</string>
+
+    <string name="meta_path_heap_desc">堆之使徒随存在时间愈久愈强，通过持久存在与记忆积累力量。</string>
+    <string name="meta_path_thread_desc">线程对象疾速连击，以快速的执行碾碎单一目标。</string>
+    <string name="meta_path_overclock_desc">超频对象以稳定性为代价，扭曲回合秩序、释放爆发力量。</string>
+    <string name="meta_path_sandbox_desc">沙盒对象能限制、隔离与压制敌人，掌控战局中允许发生的一切行动。</string>
+    <string name="meta_path_protocol_desc">协议对象通过共享规则、同步行动与结构化增益强化盟友。</string>
+    <string name="meta_path_daemon_desc">守护对象提供持续治疗与恢复，在幕后维系队伍存续。</string>
+    <string name="meta_path_kernel_desc">内核对象吸收伤害、实施防护，屹立于系统与崩溃之间。</string>
+    <string name="meta_path_runtime_desc">运行时对象随时间削弱敌人，施加持续伤害与不可逆的衰退。</string>
+
+    <string name="meta_path_heap_lore">堆是对象存续、生长与驻留之地。与此道相契者不急于求胜——他们持久、扩张，让时间完成工作。每次分配皆留痕迹，每道痕迹皆铸就力量。</string>
+    <string name="meta_path_thread_lore">线程生为运行，而非等待。它们抢占CPU时间，执行任务，毫不犹豫地前行。停滞的线程即是消亡的线程。</string>
+    <string name="meta_path_overclock_lore">超频打破了运行时赖以构建的规则。这些对象迫使系统以超乎设计的速度运转——刹那辉煌，危如累卵。</string>
+    <string name="meta_path_sandbox_lore">沙盒乃封闭之境。其内万物，无许不可运行。执掌此道者并非击溃敌人——而是剥夺其行动的权力。</string>
+    <string name="meta_path_protocol_lore">协议是以逻辑写就的契约。它们定义对象如何通信、协作与互信。孤立时它们僵硬如铁——汇聚时坚不可摧。</string>
+    <string name="meta_path_daemon_lore">守护进程永不休眠。它们静默运行于后台，于损伤被察觉前已将其修复。唯当它们停转时，你方知其重要。</string>
+    <string name="meta_path_kernel_lore">内核是权柄的具现。它裁定何者可存、何者当阻、何者不容染指。内核若溃，万物皆随。</string>
+    <string name="meta_path_runtime_lore">运行时是执行与现实交汇之处。错误积累，资源泄露，无物可保永恒完美。循此道而战者，必令敌自内而外朽坏。</string>
+
     <string name="meta_token">令牌</string>
     <string name="meta_crypto">加密币</string>
 </resources>

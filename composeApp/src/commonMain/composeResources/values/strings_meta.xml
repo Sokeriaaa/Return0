@@ -24,6 +24,44 @@
 
     <string name="meta_category">Category</string>
 
+    <string name="meta_path">Entity Path</string>
+
+    <string name="meta_path_heap">Heap</string>
+    <string name="meta_path_thread">Thread</string>
+    <string name="meta_path_overclock">Overclock</string>
+    <string name="meta_path_sandbox">Sandbox</string>
+    <string name="meta_path_protocol">Protocol</string>
+    <string name="meta_path_daemon">Daemon</string>
+    <string name="meta_path_kernel">Kernel</string>
+    <string name="meta_path_runtime">Runtime</string>
+
+    <string name="meta_path_heap_tags">Sustained &amp; Self-Boost · Gradual Power</string>
+    <string name="meta_path_thread_tags">Aggressive Single-Target · Rapid Actions</string>
+    <string name="meta_path_overclock_tags">Burst Utility · Turn Manipulation</string>
+    <string name="meta_path_sandbox_tags">Control &amp; Crowd Manipulation</string>
+    <string name="meta_path_protocol_tags">Support &amp; Buffing · Coordination</string>
+    <string name="meta_path_daemon_tags">Healing &amp; Regeneration · Passive Sustain</string>
+    <string name="meta_path_kernel_tags">Tank &amp; Defender · Shielding</string>
+    <string name="meta_path_runtime_tags">Sustained Damage · Degradation &amp; DoT</string>
+
+    <string name="meta_path_heap_desc">Entities of the Heap grow stronger the longer they remain active, accumulating power through persistence and memory.</string>
+    <string name="meta_path_thread_desc">Thread entities strike fast and repeatedly, overwhelming a single target through relentless execution.</string>
+    <string name="meta_path_overclock_desc">Overclock entities bend turn order and unleash explosive power at the cost of stability.</string>
+    <string name="meta_path_sandbox_desc">Sandbox entities restrict, isolate, and suppress enemies, controlling what actions are allowed to occur.</string>
+    <string name="meta_path_protocol_desc">Protocol entities enhance allies through shared rules, synchronized actions, and structured buffs.</string>
+    <string name="meta_path_daemon_desc">Daemon entities provide continuous healing and recovery, sustaining the party from behind the scenes.</string>
+    <string name="meta_path_kernel_desc">Kernel entities absorb damage and enforce protection, standing between the system and collapse.</string>
+    <string name="meta_path_runtime_desc">Runtime entities weaken enemies over time, applying persistent damage and irreversible decay.</string>
+
+    <string name="meta_path_heap_lore">The Heap is where objects live, grow, and linger. Those bound to it do not rush victory—they endure, expand, and let time do the work. Every allocation leaves a trace, and every trace becomes strength.</string>
+    <string name="meta_path_thread_lore">Threads exist to run, not to wait. They seize CPU time, execute their task, and move on without hesitation. A Thread that stalls is a Thread that dies.</string>
+    <string name="meta_path_overclock_lore">Overclocking breaks the rules the runtime was built upon. These entities force the system to move faster than intended—briefly brilliant, dangerously unstable.</string>
+    <string name="meta_path_sandbox_lore">The Sandbox is a sealed environment. Inside it, nothing runs without permission. Those who wield it do not defeat their enemies—they deny them the right to act.</string>
+    <string name="meta_path_protocol_lore">Protocols are agreements written in logic. They define how entities communicate, cooperate, and trust one another. Alone they are rigid—together they are unbreakable.</string>
+    <string name="meta_path_daemon_lore">Daemons never sleep. They run silently in the background, repairing damage before it is noticed. You only realize their importance when they stop.</string>
+    <string name="meta_path_kernel_lore">The Kernel is authority made manifest. It decides what is allowed to live, what must be blocked, and what cannot be touched. When the Kernel fails, everything follows.</string>
+    <string name="meta_path_runtime_lore">The Runtime is where execution meets reality. Bugs accumulate, resources leak, and nothing remains perfect forever. Those who fight through Runtime ensure enemies rot from the inside out.</string>
+
     <string name="meta_token">Token</string>
     <string name="meta_crypto">Crypto</string>
 </resources>
