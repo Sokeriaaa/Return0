@@ -82,13 +82,14 @@ import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.category.Category
+import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
+import sokeriaaa.return0.ui.common.entity.path.EntityPathDialog
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.ClickableOutlinedEmojiCard
-import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
 import sokeriaaa.return0.ui.nav.Scene
@@ -109,6 +110,9 @@ fun EntityDetailsScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
+    // Dialogs
+    var showingEntityPath: EntityPath? by remember { mutableStateOf(null) }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
@@ -150,6 +154,9 @@ fun EntityDetailsScreen(
                             EntityPathCategoryPart(
                                 modifier = Modifier.padding(start = 4.dp),
                                 entity = entity,
+                                onPathClicked = {
+                                    showingEntityPath = it
+                                },
                                 onCategoryClicked = {
                                     mainNavHostController.navigateSingleTop(
                                         Scene.ArchiveCategoryDetails.route + "/${it.name}"
@@ -209,6 +216,9 @@ fun EntityDetailsScreen(
                         EntityPathCategoryPart(
                             modifier = Modifier.fillMaxWidth(),
                             entity = entity,
+                            onPathClicked = {
+                                showingEntityPath = it
+                            },
                             onCategoryClicked = {
                                 mainNavHostController.navigateSingleTop(
                                     Scene.ArchiveCategoryDetails.route + "/${it.name}"
@@ -241,6 +251,13 @@ fun EntityDetailsScreen(
             }
         }
     }
+    // Dialogs
+    showingEntityPath?.let {
+        EntityPathDialog(
+            entityPath = it,
+            onDismiss = { showingEntityPath = null },
+        )
+    }
 }
 
 @Composable
@@ -259,6 +276,7 @@ private fun EntityNamePart(
 private fun EntityPathCategoryPart(
     modifier: Modifier = Modifier,
     entity: ExtendedEntityProfile,
+    onPathClicked: (EntityPath) -> Unit,
     onCategoryClicked: (Category) -> Unit,
 ) {
     Row(
@@ -278,9 +296,10 @@ private fun EntityPathCategoryPart(
             )
         }
         VerticalDivider(modifier = Modifier.height(32.dp).padding(horizontal = 4.dp))
-        OutlinedEmojiCard(
+        ClickableOutlinedEmojiCard(
             modifier = Modifier.size(32.dp),
             emoji = entity.path.icon,
+            onClick = { onPathClicked(entity.path) }
         )
     }
 }

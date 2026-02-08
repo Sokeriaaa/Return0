@@ -20,27 +20,35 @@ import return0.composeapp.generated.resources.empty_slot
 import return0.composeapp.generated.resources.meta_path_daemon
 import return0.composeapp.generated.resources.meta_path_daemon_desc
 import return0.composeapp.generated.resources.meta_path_daemon_lore
+import return0.composeapp.generated.resources.meta_path_daemon_tags
 import return0.composeapp.generated.resources.meta_path_heap
 import return0.composeapp.generated.resources.meta_path_heap_desc
 import return0.composeapp.generated.resources.meta_path_heap_lore
+import return0.composeapp.generated.resources.meta_path_heap_tags
 import return0.composeapp.generated.resources.meta_path_kernel
 import return0.composeapp.generated.resources.meta_path_kernel_desc
 import return0.composeapp.generated.resources.meta_path_kernel_lore
+import return0.composeapp.generated.resources.meta_path_kernel_tags
 import return0.composeapp.generated.resources.meta_path_overclock
 import return0.composeapp.generated.resources.meta_path_overclock_desc
 import return0.composeapp.generated.resources.meta_path_overclock_lore
+import return0.composeapp.generated.resources.meta_path_overclock_tags
 import return0.composeapp.generated.resources.meta_path_protocol
 import return0.composeapp.generated.resources.meta_path_protocol_desc
 import return0.composeapp.generated.resources.meta_path_protocol_lore
+import return0.composeapp.generated.resources.meta_path_protocol_tags
 import return0.composeapp.generated.resources.meta_path_runtime
 import return0.composeapp.generated.resources.meta_path_runtime_desc
 import return0.composeapp.generated.resources.meta_path_runtime_lore
+import return0.composeapp.generated.resources.meta_path_runtime_tags
 import return0.composeapp.generated.resources.meta_path_sandbox
 import return0.composeapp.generated.resources.meta_path_sandbox_desc
 import return0.composeapp.generated.resources.meta_path_sandbox_lore
+import return0.composeapp.generated.resources.meta_path_sandbox_tags
 import return0.composeapp.generated.resources.meta_path_thread
 import return0.composeapp.generated.resources.meta_path_thread_desc
 import return0.composeapp.generated.resources.meta_path_thread_lore
+import return0.composeapp.generated.resources.meta_path_thread_tags
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 
 object EntityPathRes {
@@ -54,6 +62,18 @@ object EntityPathRes {
         EntityPath.DAEMON -> Res.string.meta_path_daemon
         EntityPath.KERNEL -> Res.string.meta_path_kernel
         EntityPath.RUNTIME -> Res.string.meta_path_runtime
+    }
+
+    fun tagsOf(entityPath: EntityPath): StringResource = when (entityPath) {
+        EntityPath.UNSPECIFIED -> Res.string.empty_slot
+        EntityPath.HEAP -> Res.string.meta_path_heap_tags
+        EntityPath.THREAD -> Res.string.meta_path_thread_tags
+        EntityPath.OVERCLOCK -> Res.string.meta_path_overclock_tags
+        EntityPath.SANDBOX -> Res.string.meta_path_sandbox_tags
+        EntityPath.PROTOCOL -> Res.string.meta_path_protocol_tags
+        EntityPath.DAEMON -> Res.string.meta_path_daemon_tags
+        EntityPath.KERNEL -> Res.string.meta_path_kernel_tags
+        EntityPath.RUNTIME -> Res.string.meta_path_runtime_tags
     }
 
     fun descriptionOf(entityPath: EntityPath): StringResource = when (entityPath) {
