@@ -23,6 +23,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
+import sokeriaaa.return0.applib.locale.LocaleHelper
+import sokeriaaa.return0.applib.locale.getSystemLanguage
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
@@ -108,7 +110,7 @@ class MainViewModel : BaseViewModel() {
                 _archiveRepo.registerCategoryEffectiveness(it)
             }
             // TODO System language.
-            _resourceRepo.load("en-us")
+            _resourceRepo.load(LocaleHelper.getSystemLanguage())
             delay(1000)
             isLoadingFinished = true
         } catch (e: Exception) {

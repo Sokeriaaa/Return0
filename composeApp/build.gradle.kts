@@ -116,6 +116,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
             implementation(libs.kotlinx.atomicfu)
+            implementation(libs.kotlinx.browser)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)

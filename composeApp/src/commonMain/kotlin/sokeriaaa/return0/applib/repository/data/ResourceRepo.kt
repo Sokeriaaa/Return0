@@ -35,7 +35,7 @@ class ResourceRepo {
     /**
      * Load the string resources of specified language.
      *
-     * @param language Format like "en-us"
+     * @param language Format like "en-US"
      */
     suspend fun load(language: String) {
         val strings = try {
