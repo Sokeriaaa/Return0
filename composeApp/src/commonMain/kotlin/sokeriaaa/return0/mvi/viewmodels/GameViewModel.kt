@@ -256,8 +256,8 @@ class GameViewModel : BaseViewModel(), EventContext.Callback {
                     interruptMoving()
                     break
                 }
-                // Move for every 200ms.
-                delay(200)
+                // Move for every 120ms.
+                delay(120)
                 current += direction
                 _gameStateRepo.map.updateLineNumber(current)
                 if (!isByEvent && current in _overlapRows) {
