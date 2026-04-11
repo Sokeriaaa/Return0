@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.applib.repository.emulator
 
-import sokeriaaa.kmpshared.helpers.TimeHelper
+import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager

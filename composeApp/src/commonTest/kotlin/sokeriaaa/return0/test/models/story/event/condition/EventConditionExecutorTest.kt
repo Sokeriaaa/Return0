@@ -15,7 +15,7 @@
 package sokeriaaa.return0.test.models.story.event.condition
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.kmpshared.test.helpers.FakeRandom
+import sokeriaaa.common.kmp.test.helpers.FakeRandom
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.shared.data.api.component.condition.and
 import sokeriaaa.return0.shared.data.api.component.condition.eq

@@ -15,7 +15,7 @@
 package sokeriaaa.return0.applib.repository.game.quest
 
 import androidx.compose.runtime.mutableStateMapOf
-import sokeriaaa.kmpshared.helpers.TimeHelper
+import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.QuestDao

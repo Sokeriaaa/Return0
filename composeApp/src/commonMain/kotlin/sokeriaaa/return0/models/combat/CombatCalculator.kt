@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.models.combat
 
-import sokeriaaa.kmpshared.helpers.RandomHelper.chance
+import sokeriaaa.common.kmp.helpers.RandomHelper.chance
 import kotlin.random.Random
 
 /**

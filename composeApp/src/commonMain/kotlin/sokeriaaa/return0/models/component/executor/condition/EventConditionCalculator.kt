@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.models.component.executor.condition
 
-import sokeriaaa.kmpshared.helpers.RandomHelper.chance
+import sokeriaaa.common.kmp.helpers.RandomHelper.chance
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.models.component.executor.value.calculateTime
 import sokeriaaa.return0.models.component.executor.value.calculatedToFloat

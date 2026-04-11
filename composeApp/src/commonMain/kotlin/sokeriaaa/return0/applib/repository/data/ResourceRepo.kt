@@ -16,7 +16,7 @@ package sokeriaaa.return0.applib.repository.data
 
 import org.jetbrains.compose.resources.MissingResourceException
 import return0.composeapp.generated.resources.Res
-import sokeriaaa.kmpshared.helpers.JsonHelper
+import sokeriaaa.common.kmp.helpers.JsonHelper
 
 /**
  * Managing resources such as i18n string.

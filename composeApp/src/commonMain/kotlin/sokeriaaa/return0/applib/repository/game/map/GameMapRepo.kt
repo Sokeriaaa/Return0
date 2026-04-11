@@ -20,7 +20,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import return0.composeapp.generated.resources.Res
-import sokeriaaa.kmpshared.helpers.JsonHelper
+import sokeriaaa.common.kmp.helpers.JsonHelper
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.base.BaseGameRepo
 import sokeriaaa.return0.applib.room.dao.EventRelocationDao

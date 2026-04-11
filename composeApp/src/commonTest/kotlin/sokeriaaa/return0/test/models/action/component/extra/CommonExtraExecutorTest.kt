@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.test.models.action.component.extra
 
-import sokeriaaa.kmpshared.test.helpers.TestingHelper.assertFloatEquals
+import sokeriaaa.common.kmp.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.component.context.ActionExtraContext

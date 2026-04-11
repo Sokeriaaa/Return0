@@ -15,7 +15,7 @@
 package sokeriaaa.return0.test.models.story.event
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.kmpshared.test.helpers.FakeRandom
+import sokeriaaa.common.kmp.test.helpers.FakeRandom
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn

@@ -28,7 +28,7 @@ import return0.composeapp.generated.resources.game_shop_not_available
 import return0.composeapp.generated.resources.game_shop_on_sale
 import return0.composeapp.generated.resources.game_shop_restock_after
 import return0.composeapp.generated.resources.game_shop_sold_out
-import sokeriaaa.kmpshared.helpers.TimeHelper
+import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry

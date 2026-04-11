@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.test.models.action
 
-import sokeriaaa.kmpshared.test.helpers.FakeRandom
-import sokeriaaa.kmpshared.test.helpers.TestingHelper.assertFloatEquals
+import sokeriaaa.common.kmp.test.helpers.FakeRandom
+import sokeriaaa.common.kmp.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.action.attachEffect
 import sokeriaaa.return0.models.action.effect.generateEffectFor

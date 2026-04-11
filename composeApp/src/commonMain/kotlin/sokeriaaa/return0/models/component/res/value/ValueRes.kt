@@ -76,7 +76,7 @@ import return0.composeapp.generated.resources.status_max_sp
 import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_sp_rate
 import return0.composeapp.generated.resources.status_spd
-import sokeriaaa.kmpshared.helpers.TimeHelper
+import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.models.component.res.condition.conditionResource
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.component.values.ActionValue

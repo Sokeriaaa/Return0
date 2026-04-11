@@ -15,8 +15,8 @@
 package sokeriaaa.return0.test.models.story.event.value
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.kmpshared.test.helpers.FakeRandom
-import sokeriaaa.kmpshared.test.helpers.TestingHelper.assertFloatEquals
+import sokeriaaa.common.kmp.test.helpers.FakeRandom
+import sokeriaaa.common.kmp.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.component.executor.value.calculatedToFloat
 import sokeriaaa.return0.shared.data.api.component.condition.IF

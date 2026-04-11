@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.test.models.action.component.condition
 
-import sokeriaaa.kmpshared.test.helpers.FakeRandom
+import sokeriaaa.common.kmp.test.helpers.FakeRandom
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.component.context.ActionExtraContext

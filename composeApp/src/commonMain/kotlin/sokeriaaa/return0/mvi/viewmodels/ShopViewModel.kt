@@ -23,7 +23,7 @@ import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop_purchase_successful
 import return0.composeapp.generated.resources.game_shop_warn_insufficient
-import sokeriaaa.kmpshared.helpers.TimeHelper
+import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
