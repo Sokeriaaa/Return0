@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.models.component.executor.value
 
+import sokeriaaa.kmpshared.helpers.TimeHelper
 import sokeriaaa.return0.models.component.context.EventContext
-import sokeriaaa.return0.shared.common.helpers.TimeHelper
 import sokeriaaa.return0.shared.data.models.component.values.TimeValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
 

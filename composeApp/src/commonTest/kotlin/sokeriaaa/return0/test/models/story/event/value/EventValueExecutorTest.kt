@@ -15,6 +15,8 @@
 package sokeriaaa.return0.test.models.story.event.value
 
 import kotlinx.coroutines.test.runTest
+import sokeriaaa.kmpshared.test.helpers.FakeRandom
+import sokeriaaa.kmpshared.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.component.executor.value.calculatedToFloat
 import sokeriaaa.return0.shared.data.api.component.condition.IF
@@ -43,8 +45,6 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
-import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
-import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -41,8 +41,8 @@ import org.jetbrains.compose.resources.stringResource
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ic_baseline_arrow_drop_down_24
 import return0.composeapp.generated.resources.player_name
+import sokeriaaa.kmpshared.helpers.TimeHelper
 import sokeriaaa.return0.models.story.event.EventEffect
-import sokeriaaa.return0.shared.common.helpers.TimeHelper
 
 /**
  * Show the dialogues.

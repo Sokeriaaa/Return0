@@ -15,6 +15,8 @@
 package sokeriaaa.return0.test.models.action.component.value
 
 import kotlinx.coroutines.test.runTest
+import sokeriaaa.kmpshared.test.helpers.FakeRandom
+import sokeriaaa.kmpshared.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.models.action.Action
 import sokeriaaa.return0.models.action.function.generateFunctionFor
 import sokeriaaa.return0.models.component.context.ActionExtraContext
@@ -48,8 +50,6 @@ import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
-import sokeriaaa.return0.test.shared.common.helpers.FakeRandom
-import sokeriaaa.return0.test.shared.common.helpers.assertFloatEquals
 import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

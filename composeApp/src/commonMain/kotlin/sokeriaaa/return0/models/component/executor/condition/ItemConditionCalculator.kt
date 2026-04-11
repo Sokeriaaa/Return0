@@ -14,9 +14,9 @@
  */
 package sokeriaaa.return0.models.component.executor.condition
 
+import sokeriaaa.kmpshared.helpers.RandomHelper.chance
 import sokeriaaa.return0.models.component.context.ItemContext
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
-import sokeriaaa.return0.shared.common.helpers.chance
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.Condition
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
