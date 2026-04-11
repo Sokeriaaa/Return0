@@ -71,13 +71,13 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_close_24
 import return0.composeapp.generated.resources.ic_outline_edit_square_24
 import return0.composeapp.generated.resources.ok
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.intents.EmulatorPresetIntent
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
@@ -121,7 +121,7 @@ fun EmulatorPresetScreen(
             }
         )
     }
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

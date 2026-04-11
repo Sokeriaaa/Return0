@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
@@ -35,7 +37,6 @@ import sokeriaaa.return0.models.combat.availableTargetsFor
 import sokeriaaa.return0.models.combat.selectableCount
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.models.entity.level.EntityLevelHelper
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel.RewardSummary.EntityEntry
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig

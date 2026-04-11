@@ -14,4 +14,6 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.common.compose.mvi.BaseIntent
+
 sealed class QuestsIntent : BaseIntent

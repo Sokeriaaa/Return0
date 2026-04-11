@@ -64,9 +64,9 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_extension_24
 import return0.composeapp.generated.resources.ic_outline_extension_off_24
 import return0.composeapp.generated.resources.ic_outline_lock_24
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath

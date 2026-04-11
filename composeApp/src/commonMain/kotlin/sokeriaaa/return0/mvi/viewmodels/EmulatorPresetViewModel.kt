@@ -21,11 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.EmulatorPresetIntent
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState

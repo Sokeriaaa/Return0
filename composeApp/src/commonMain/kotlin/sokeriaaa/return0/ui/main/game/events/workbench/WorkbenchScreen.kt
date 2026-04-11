@@ -25,11 +25,11 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_workbench
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.WorkbenchViewModel
 import sokeriaaa.return0.ui.common.AppBackHandler
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +51,7 @@ fun WorkbenchScreen(
         mainNavHostController.navigateUp()
     }
     AppBackHandler(onBack = onBack)
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

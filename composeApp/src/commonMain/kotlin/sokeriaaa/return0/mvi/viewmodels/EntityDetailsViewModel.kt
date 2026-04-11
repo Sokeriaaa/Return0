@@ -21,14 +21,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 
 class EntityDetailsViewModel(

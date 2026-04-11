@@ -55,14 +55,14 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_checkout_24
 import return0.composeapp.generated.resources.ic_outline_upcoming_24
 import return0.composeapp.generated.resources.ok
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.res.InventoryRes
 import sokeriaaa.return0.ui.common.screen.EmptyScreen
 import sokeriaaa.return0.ui.common.widgets.AmountSelector
@@ -82,7 +82,7 @@ fun ShoppingCartScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             ShoppingCartTitle(

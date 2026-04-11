@@ -21,10 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.models.entity.display.EntityProfile
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 
 class EntitiesViewModel : BaseViewModel() {
 

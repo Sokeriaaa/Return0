@@ -21,12 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 
 class InventoryViewModel : BaseViewModel() {

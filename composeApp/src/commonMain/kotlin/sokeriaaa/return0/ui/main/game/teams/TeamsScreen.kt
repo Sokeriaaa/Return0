@@ -60,13 +60,13 @@ import return0.composeapp.generated.resources.game_team_activate
 import return0.composeapp.generated.resources.game_team_activated
 import return0.composeapp.generated.resources.game_team_default
 import return0.composeapp.generated.resources.game_team_new
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.table.EntityTable
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.TeamsIntent
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityProfileItem
 import sokeriaaa.return0.ui.common.widgets.AddCard
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
@@ -87,7 +87,7 @@ fun TeamsScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

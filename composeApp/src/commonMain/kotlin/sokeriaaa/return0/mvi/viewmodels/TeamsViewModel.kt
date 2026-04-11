@@ -25,13 +25,14 @@ import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_team_warn_empty_team_exists
 import return0.composeapp.generated.resources.game_team_warn_limit
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.display.EntityProfile
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.TeamsIntent
 
 class TeamsViewModel : BaseViewModel() {

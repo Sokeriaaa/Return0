@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig

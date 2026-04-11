@@ -16,6 +16,7 @@ package sokeriaaa.return0.mvi.viewmodels
 
 import androidx.lifecycle.viewmodel.CreationExtras
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo.Entry
 

@@ -32,9 +32,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_entities
-import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.viewmodels.EntitiesViewModel
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityProfileItem
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.nav.Scene
@@ -53,7 +53,7 @@ fun EntitiesScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

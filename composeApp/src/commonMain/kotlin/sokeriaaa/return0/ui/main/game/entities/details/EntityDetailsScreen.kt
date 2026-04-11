@@ -75,15 +75,15 @@ import return0.composeapp.generated.resources.status_def
 import return0.composeapp.generated.resources.status_hp
 import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_spd
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.entity.path.EntityPathDialog
@@ -116,7 +116,7 @@ fun EntityDetailsScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(
@@ -131,7 +131,7 @@ fun EntityDetailsScreen(
             )
         }
     ) { paddingValues ->
-        val entity = viewModel.entityProfile ?: return@AppScaffold
+        val entity = viewModel.entityProfile ?: return@BaseScaffold
         if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
             Row(modifier = Modifier.padding(paddingValues = paddingValues)) {
                 LazyColumn(

@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.shared.data.models.story.event.Event
 

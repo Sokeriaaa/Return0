@@ -21,11 +21,12 @@ import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.emulator_preset_save_success
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState

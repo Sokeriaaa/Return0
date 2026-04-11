@@ -71,17 +71,17 @@ import return0.composeapp.generated.resources.ic_outline_logout_24
 import return0.composeapp.generated.resources.ic_outline_menu_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.ic_outline_settings_24
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.BlockBackPressed
 import sokeriaaa.return0.ui.common.ModalOverlay
 import sokeriaaa.return0.ui.common.entity.EntitySelectionDialog
@@ -498,7 +498,7 @@ private fun GameContent(
             )
         },
     ) {
-        AppScaffold(
+        BaseScaffold(
             viewModel = viewModel,
             topBar = {
                 CenterAlignedTopAppBar(

@@ -50,6 +50,7 @@ import return0.composeapp.generated.resources.saves_num
 import return0.composeapp.generated.resources.saves_overwrite_warn_text
 import return0.composeapp.generated.resources.saves_overwrite_warn_title
 import return0.composeapp.generated.resources.saves_select
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
@@ -57,7 +58,6 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.SaveViewModel
 import sokeriaaa.return0.ui.common.AppBackHandler
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.res.TitleRes
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
@@ -138,7 +138,7 @@ fun SaveScreen(
         viewModel.refresh()
     }
     AppBackHandler(onBack = onBack)
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

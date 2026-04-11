@@ -64,9 +64,9 @@ import return0.composeapp.generated.resources.game_shop_warn_leave
 import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
 import return0.composeapp.generated.resources.ic_outline_payments_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_24
+import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel

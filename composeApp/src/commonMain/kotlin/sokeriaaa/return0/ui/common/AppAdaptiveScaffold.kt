@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.window.core.layout.WindowSizeClass
-import sokeriaaa.return0.mvi.viewmodels.BaseViewModel
+import sokeriaaa.common.compose.mvi.BaseViewModel
 
 /**
  * Base adaptive Scaffold for the app.

@@ -36,10 +36,10 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_quests
 import return0.composeapp.generated.resources.general_location
 import return0.composeapp.generated.resources.ic_outline_assignment_24
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.story.quest.QuestDisplay
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.QuestsViewModel
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +55,7 @@ fun QuestsScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

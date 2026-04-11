@@ -21,10 +21,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
-import sokeriaaa.return0.mvi.intents.CommonIntent
 
 class SaveViewModel(
     private val isSaving: Boolean,

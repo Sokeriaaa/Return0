@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.combat.CombatResult
@@ -36,7 +38,6 @@ import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.models.story.event.executedIn
 import sokeriaaa.return0.models.story.map.MapGenerator
 import sokeriaaa.return0.models.story.map.MapRow
-import sokeriaaa.return0.mvi.intents.BaseIntent
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData

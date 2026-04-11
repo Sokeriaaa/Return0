@@ -23,6 +23,9 @@ import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop_purchase_successful
 import return0.composeapp.generated.resources.game_shop_warn_insufficient
+import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
@@ -32,8 +35,6 @@ import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.component.executor.value.calculateTime
 import sokeriaaa.return0.models.component.executor.value.calculatedIn
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
-import sokeriaaa.return0.mvi.intents.BaseIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event

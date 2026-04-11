@@ -39,7 +39,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_inventory
-import sokeriaaa.return0.mvi.intents.CommonIntent
+import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
 import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
 import sokeriaaa.return0.ui.common.AppBackHandler

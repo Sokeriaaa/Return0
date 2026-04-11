@@ -60,13 +60,13 @@ import return0.composeapp.generated.resources.ic_outline_lists_24
 import return0.composeapp.generated.resources.ic_outline_more_horiz_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.more_operations
+import sokeriaaa.common.compose.mvi.CommonIntent
+import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.intents.CombatIntent
-import sokeriaaa.return0.mvi.intents.CommonIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.return0.ui.common.AppScaffold
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppDropdownMenuItem
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
@@ -99,7 +99,7 @@ fun EmulatorScreen(
         viewModel.parties,
         viewModel.enemies,
     )
-    AppScaffold(
+    BaseScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

@@ -14,6 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
+import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.mvi.viewmodels.EntitiesViewModel
 
 sealed class EntitiesIntent : BaseIntent {
