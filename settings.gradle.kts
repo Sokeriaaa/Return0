@@ -25,6 +25,16 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Sokeriaaa/SugarkaneKMP")
+            credentials {
+                username = settings.extra["github.packages.username"] as? String
+                    ?: providers.gradleProperty("github.packages.username").getOrNull()
+                password = settings.extra["github.packages.password"] as? String
+                    ?: providers.gradleProperty("github.packages.password").getOrNull()
+            }
+        }
     }
 }
 

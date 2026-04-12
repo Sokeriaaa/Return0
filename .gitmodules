@@ -1,6 +1,3 @@
-[submodule "composeApp/src/commonMain/kotlin/sokeriaaa/common/compose"]
-	path = composeApp/src/commonMain/kotlin/sokeriaaa/common/compose
-	url = https://github.com/Sokeriaaa/ComposeShared.git
 [submodule "composeApp/src/commonMain/kotlin/sokeriaaa/common/kmp"]
 	path = composeApp/src/commonMain/kotlin/sokeriaaa/common/kmp
 	url = https://github.com/Sokeriaaa/KMPShared.git

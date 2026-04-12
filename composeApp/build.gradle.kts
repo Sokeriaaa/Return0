@@ -120,6 +120,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.materialKolor)
+            implementation(libs.sugarkane.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
