@@ -73,12 +73,8 @@ import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
-import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
-import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.event.interactive.ShopDisplayItem
-import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
 import sokeriaaa.return0.ui.common.widgets.AmountSelectorContent
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
@@ -87,6 +83,10 @@ import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
 import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
+import sokeriaaa.sugarkane.compose.widgets.nav.AppBackHandler
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AdaptiveScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.rememberAdaptiveScaffoldState
 
 @Composable
 fun ShopScreen(
@@ -97,7 +97,7 @@ fun ShopScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
-    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
+    val state = rememberAdaptiveScaffoldState(windowAdaptiveInfo)
     val gameViewModel: GameViewModel = viewModel(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
@@ -122,7 +122,7 @@ fun ShopScreen(
     var selectedItem: ShopItem? by remember { mutableStateOf(null) }
 
     AppBackHandler(onBack = onBack)
-    AppAdaptiveScaffold(
+    AdaptiveScaffold(
         viewModel = viewModel,
         topBar = {
             ShopScreenTitle(

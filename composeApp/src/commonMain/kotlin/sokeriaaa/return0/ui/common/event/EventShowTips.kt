@@ -21,7 +21,7 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ack
 import return0.composeapp.generated.resources.tips
 import sokeriaaa.return0.models.story.event.EventEffect
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 
 /**
  * Show the dialogues.

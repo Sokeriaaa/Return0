@@ -112,7 +112,7 @@ materialKolor = "4.1.1"
 robolectric = "4.16.1"
 russhwolf-multiplatformSettings = "1.3.0"
 sqldelight = "2.3.2"
-sugarkane-compose = "0.1.0-build02-SNAPSHOT"
+sugarkane-compose = "0.1.0-build03-SNAPSHOT"
 ##             ⬆ = "0.1.0-SNAPSHOT"
 
 [libraries]

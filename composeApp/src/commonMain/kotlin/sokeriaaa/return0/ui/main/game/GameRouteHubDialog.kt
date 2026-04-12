@@ -36,8 +36,8 @@ import return0.composeapp.generated.resources.game_hub_teleport
 import return0.composeapp.generated.resources.game_hub_teleport_warn
 import return0.composeapp.generated.resources.general_location
 import return0.composeapp.generated.resources.ic_outline_location_on_24
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppRadioGroup
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 
 @Composable
 fun GameRouteHubDialog(

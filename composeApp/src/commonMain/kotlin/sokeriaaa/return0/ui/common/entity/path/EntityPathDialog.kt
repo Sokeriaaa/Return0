@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.res.EntityPathRes
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 
 @Composable
 fun EntityPathDialog(

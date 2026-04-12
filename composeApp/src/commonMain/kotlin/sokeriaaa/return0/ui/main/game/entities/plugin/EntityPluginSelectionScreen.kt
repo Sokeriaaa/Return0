@@ -69,14 +69,14 @@ import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
-import sokeriaaa.return0.ui.common.AppAdaptiveScaffold
-import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 import sokeriaaa.return0.ui.common.widgets.stickyHeaderedDropdownVisibility
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AdaptiveScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.rememberAdaptiveScaffoldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,7 +93,7 @@ fun EntityPluginSelectionScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
-    val state = rememberAppAdaptiveScaffoldState(windowAdaptiveInfo)
+    val state = rememberAdaptiveScaffoldState(windowAdaptiveInfo)
     var selectedPlugin: PluginInfo? by remember { mutableStateOf(null) }
     val onBack: () -> Unit = {
         if (state.isWideScreen || !state.isShowingPane) {
@@ -110,7 +110,7 @@ fun EntityPluginSelectionScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    AppAdaptiveScaffold(
+    AdaptiveScaffold(
         viewModel = viewModel,
         state = state,
         topBar = {
@@ -146,8 +146,8 @@ fun EntityPluginSelectionScreen(
             )
         },
         paneContent = {
-            val entityProfile = viewModel.entityProfile ?: return@AppAdaptiveScaffold
-            val pluginInfo = selectedPlugin ?: return@AppAdaptiveScaffold
+            val entityProfile = viewModel.entityProfile ?: return@AdaptiveScaffold
+            val pluginInfo = selectedPlugin ?: return@AdaptiveScaffold
             LazyColumn(
                 modifier = Modifier,
             ) {

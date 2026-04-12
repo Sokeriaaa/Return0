@@ -102,12 +102,12 @@ import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
-import sokeriaaa.return0.ui.common.BlockBackPressed
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
+import sokeriaaa.sugarkane.compose.widgets.nav.BlockBackPressed
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 /**

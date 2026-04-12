@@ -80,8 +80,6 @@ import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
 import sokeriaaa.return0.mvi.viewmodels.TeamsViewModel
-import sokeriaaa.return0.ui.common.BlockBackPressed
-import sokeriaaa.return0.ui.common.ModalOverlay
 import sokeriaaa.return0.ui.common.entity.EntitySelectionDialog
 import sokeriaaa.return0.ui.common.event.EventShowChoice
 import sokeriaaa.return0.ui.common.event.EventShowChoiceState
@@ -90,14 +88,16 @@ import sokeriaaa.return0.ui.common.event.EventShowTextState
 import sokeriaaa.return0.ui.common.event.EventShowTips
 import sokeriaaa.return0.ui.common.event.EventShowTipsState
 import sokeriaaa.return0.ui.common.event.TypeReturn0Dialog
-import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppNavigateDrawerItem
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigatePopUpTo
 import sokeriaaa.return0.ui.nav.navigateSingleTop
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
+import sokeriaaa.sugarkane.compose.widgets.nav.BlockBackPressed
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
+import sokeriaaa.sugarkane.compose.widgets.screen.ModalOverlay
 
 /**
  * The main gaming field.
@@ -323,8 +323,7 @@ fun GameScreen(
                     eventShowChoiceState.visible ||
                     viewModel.isMovingByEvent ||
                     viewModel.isSwitchingFile,
-            dim = eventShowTextState.visible ||
-                    eventShowChoiceState.visible,
+            dimAlpha = if (eventShowTextState.visible || eventShowChoiceState.visible) 0.2f else 0f
         ) {
             // ShowText
             AnimatedVisibility(
