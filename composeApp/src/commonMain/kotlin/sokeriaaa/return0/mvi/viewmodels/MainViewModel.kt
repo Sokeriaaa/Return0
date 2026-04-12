@@ -35,9 +35,9 @@ import sokeriaaa.return0.mvi.intents.MainIntent
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class MainViewModel : BaseViewModel(), KoinComponent {
 

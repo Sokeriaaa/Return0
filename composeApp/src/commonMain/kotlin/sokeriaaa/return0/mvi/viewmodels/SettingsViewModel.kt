@@ -19,7 +19,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo.Entry
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class SettingsViewModel(
     val isInGame: Boolean,

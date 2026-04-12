@@ -41,8 +41,8 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 import kotlin.random.Random
 
 class GameViewModel : BaseViewModel(), EventContext.Callback, KoinComponent {

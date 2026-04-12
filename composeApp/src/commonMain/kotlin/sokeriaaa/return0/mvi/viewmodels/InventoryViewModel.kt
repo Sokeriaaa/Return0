@@ -27,9 +27,9 @@ import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.inventory.GameInventoryRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class InventoryViewModel : BaseViewModel(), KoinComponent {
 

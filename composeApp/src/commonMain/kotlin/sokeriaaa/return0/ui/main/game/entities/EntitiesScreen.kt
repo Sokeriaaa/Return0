@@ -37,8 +37,8 @@ import sokeriaaa.return0.ui.common.entity.EntityProfileItem
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +53,7 @@ fun EntitiesScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

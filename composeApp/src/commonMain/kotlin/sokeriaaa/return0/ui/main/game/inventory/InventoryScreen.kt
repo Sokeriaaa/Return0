@@ -45,7 +45,7 @@ import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.rememberAppAdaptiveScaffoldState
 import sokeriaaa.return0.ui.common.res.InventoryRes
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

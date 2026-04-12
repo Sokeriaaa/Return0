@@ -39,8 +39,8 @@ import return0.composeapp.generated.resources.ic_outline_assignment_24
 import sokeriaaa.return0.models.story.quest.QuestDisplay
 import sokeriaaa.return0.mvi.viewmodels.QuestsViewModel
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +55,7 @@ fun QuestsScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

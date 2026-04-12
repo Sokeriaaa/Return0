@@ -25,8 +25,8 @@ import org.koin.core.component.inject
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.room.table.SaveMetaTable
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class SaveViewModel(
     private val isSaving: Boolean,

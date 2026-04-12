@@ -70,8 +70,8 @@ import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 import sokeriaaa.return0.ui.common.widgets.item.CommonItemCard
 import sokeriaaa.return0.ui.theme.AppColor
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @Composable
 fun ShoppingCartScreen(
@@ -82,7 +82,7 @@ fun ShoppingCartScreen(
     mainNavHostController: NavHostController,
     windowAdaptiveInfo: WindowAdaptiveInfo,
 ) {
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             ShoppingCartTitle(

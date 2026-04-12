@@ -29,8 +29,8 @@ import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.EmulatorPresetIntent
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class EmulatorPresetViewModel : BaseViewModel(), KoinComponent {
 

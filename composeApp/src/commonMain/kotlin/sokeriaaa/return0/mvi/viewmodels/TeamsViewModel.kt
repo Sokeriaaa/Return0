@@ -32,9 +32,9 @@ import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.mvi.intents.TeamsIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class TeamsViewModel : BaseViewModel(), KoinComponent {
 

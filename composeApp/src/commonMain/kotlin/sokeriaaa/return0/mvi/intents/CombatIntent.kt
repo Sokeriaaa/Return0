@@ -17,7 +17,7 @@ package sokeriaaa.return0.mvi.intents
 import sokeriaaa.return0.models.action.function.Skill
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 /**
  * Intents for [sokeriaaa.return0.mvi.viewmodels.CombatViewModel].

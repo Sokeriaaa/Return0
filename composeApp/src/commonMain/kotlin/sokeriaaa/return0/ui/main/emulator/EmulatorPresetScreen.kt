@@ -81,7 +81,7 @@ import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,7 +121,7 @@ fun EmulatorPresetScreen(
             }
         )
     }
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

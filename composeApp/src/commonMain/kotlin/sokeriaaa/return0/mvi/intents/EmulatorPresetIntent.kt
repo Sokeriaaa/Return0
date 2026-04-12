@@ -15,7 +15,7 @@
 package sokeriaaa.return0.mvi.intents
 
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 sealed class EmulatorPresetIntent : BaseIntent {
     data class OpenPresetDialog(val presetIndex: EmulatorIndexTable) : EmulatorPresetIntent()

@@ -29,9 +29,9 @@ import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class EntityDetailsViewModel(
     val entityName: String,

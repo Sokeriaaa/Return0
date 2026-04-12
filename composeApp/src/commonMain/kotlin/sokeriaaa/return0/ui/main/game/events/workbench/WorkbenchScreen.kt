@@ -30,7 +30,7 @@ import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.WorkbenchViewModel
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +51,7 @@ fun WorkbenchScreen(
         mainNavHostController.navigateUp()
     }
     AppBackHandler(onBack = onBack)
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(

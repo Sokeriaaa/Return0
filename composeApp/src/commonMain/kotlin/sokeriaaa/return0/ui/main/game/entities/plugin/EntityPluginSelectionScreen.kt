@@ -76,7 +76,7 @@ import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 import sokeriaaa.return0.ui.common.widgets.stickyHeaderedDropdownVisibility
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

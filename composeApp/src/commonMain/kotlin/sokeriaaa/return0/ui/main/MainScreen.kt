@@ -61,7 +61,7 @@ import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @Composable
 fun MainScreen(
@@ -161,7 +161,7 @@ private fun RealMainScreen(
         factory = koinInject(),
         viewModelStoreOwner = koinInject(),
     )
-    BaseScaffold(
+    AppScaffold(
         modifier = modifier,
         viewModel = viewModel,
     ) { paddingValues ->

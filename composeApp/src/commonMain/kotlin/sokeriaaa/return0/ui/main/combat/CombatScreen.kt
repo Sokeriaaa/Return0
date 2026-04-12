@@ -108,7 +108,7 @@ import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 /**
  * The combat screen, for where the user to combat with bugs.
@@ -130,7 +130,7 @@ fun CombatScreen(
     // Block back pressed on the combat screen.
     // Player can leave this screen only when the combat is finished.
     BlockBackPressed()
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             CenterAlignedTopAppBar(

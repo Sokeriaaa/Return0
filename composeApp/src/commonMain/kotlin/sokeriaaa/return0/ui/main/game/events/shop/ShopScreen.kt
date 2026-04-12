@@ -86,7 +86,7 @@ import sokeriaaa.return0.ui.common.widgets.AppFilledTonalIconButton
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 @Composable
 fun ShopScreen(

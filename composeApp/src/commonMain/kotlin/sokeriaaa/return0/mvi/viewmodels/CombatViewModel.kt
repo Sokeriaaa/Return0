@@ -44,8 +44,8 @@ import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 import sokeriaaa.return0.ui.theme.AppColor
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
 
 class CombatViewModel : BaseViewModel(), Arena.Callback, KoinComponent {
 

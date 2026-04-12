@@ -91,9 +91,9 @@ import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
-import sokeriaaa.sugarkane.compose.mvi.CommonIntent
-import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,7 +116,7 @@ fun EntityDetailsScreen(
     LaunchedEffect(Unit) {
         viewModel.onIntent(CommonIntent.Refresh)
     }
-    BaseScaffold(
+    AppScaffold(
         viewModel = viewModel,
         topBar = {
             TopAppBar(
@@ -131,7 +131,7 @@ fun EntityDetailsScreen(
             )
         }
     ) { paddingValues ->
-        val entity = viewModel.entityProfile ?: return@BaseScaffold
+        val entity = viewModel.entityProfile ?: return@AppScaffold
         if (windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(600)) {
             Row(modifier = Modifier.padding(paddingValues = paddingValues)) {
                 LazyColumn(

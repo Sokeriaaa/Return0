@@ -14,6 +14,6 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 class InventoryIntent : BaseIntent

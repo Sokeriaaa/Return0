@@ -16,7 +16,7 @@ package sokeriaaa.return0.mvi.intents
 
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 sealed class GameIntent : BaseIntent {
     /**

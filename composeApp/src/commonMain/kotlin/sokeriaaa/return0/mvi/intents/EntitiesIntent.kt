@@ -15,7 +15,7 @@
 package sokeriaaa.return0.mvi.intents
 
 import sokeriaaa.return0.mvi.viewmodels.EntitiesViewModel
-import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 
 sealed class EntitiesIntent : BaseIntent {
     data class ChangeSorter(val orderBy: EntitiesViewModel.OrderBy) : EntitiesIntent()
