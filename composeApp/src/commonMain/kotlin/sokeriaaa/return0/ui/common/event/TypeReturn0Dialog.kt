@@ -36,7 +36,7 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_complete_code
 import return0.composeapp.generated.resources.game_complete_code_run
 import return0.composeapp.generated.resources.game_complete_code_run_failed
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppTextButton
 
 
 /**

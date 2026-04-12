@@ -77,9 +77,9 @@ import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.intents.EmulatorPresetIntent
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
-import sokeriaaa.return0.ui.common.widgets.AppIconButton
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppIconButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppTextButton
 import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 

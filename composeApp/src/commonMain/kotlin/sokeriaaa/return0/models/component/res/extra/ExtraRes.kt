@@ -43,7 +43,7 @@ import sokeriaaa.return0.models.component.res.value.valueResource
 import sokeriaaa.return0.shared.data.models.component.extras.CombatExtra
 import sokeriaaa.return0.shared.data.models.component.extras.CommonExtra
 import sokeriaaa.return0.shared.data.models.component.extras.Extra
-import sokeriaaa.return0.ui.common.text.replaceAnnotatedString
+import sokeriaaa.sugarkane.compose.helper.replaceAnnotatedString
 
 @Composable
 fun extraResource(extra: Extra): AnnotatedString = buildAnnotatedString {

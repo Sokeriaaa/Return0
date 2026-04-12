@@ -43,7 +43,7 @@ import return0.composeapp.generated.resources.game_select_entity
 import return0.composeapp.generated.resources.game_select_entity_warn
 import return0.composeapp.generated.resources.ok
 import sokeriaaa.return0.models.entity.display.EntityProfile
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppTextButton
 
 /**
  * Select an entity in current team. Mainly for item usages.

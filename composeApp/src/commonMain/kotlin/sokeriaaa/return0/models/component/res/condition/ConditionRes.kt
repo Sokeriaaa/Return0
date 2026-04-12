@@ -46,7 +46,7 @@ import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.Condition
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.EventCondition
-import sokeriaaa.return0.ui.common.text.replaceAnnotatedString
+import sokeriaaa.sugarkane.compose.helper.replaceAnnotatedString
 
 @Composable
 fun conditionResource(condition: Condition): AnnotatedString {

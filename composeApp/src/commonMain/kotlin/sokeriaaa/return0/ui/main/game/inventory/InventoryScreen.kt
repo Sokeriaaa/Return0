@@ -41,8 +41,8 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_inventory
 import sokeriaaa.return0.mvi.viewmodels.InventoryViewModel
 import sokeriaaa.return0.ui.common.res.InventoryRes
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
 import sokeriaaa.sugarkane.compose.widgets.nav.AppBackHandler
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AdaptiveScaffold
 import sokeriaaa.sugarkane.compose.widgets.scaffold.rememberAdaptiveScaffoldState

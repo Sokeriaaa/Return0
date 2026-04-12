@@ -28,7 +28,7 @@ import return0.composeapp.generated.resources.game_workbench
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.WorkbenchViewModel
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
 import sokeriaaa.sugarkane.compose.widgets.nav.AppBackHandler
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 

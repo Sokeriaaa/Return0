@@ -49,7 +49,7 @@ import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.widgets.AppDropdownSelector
-import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppTextButton
 import kotlin.math.roundToInt
 
 /**

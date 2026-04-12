@@ -58,9 +58,9 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.MainViewModel
-import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
+import sokeriaaa.sugarkane.compose.widgets.button.AppFilledTonalButton
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 @Composable

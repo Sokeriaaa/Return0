@@ -87,7 +87,7 @@ import sokeriaaa.return0.shared.data.models.component.values.EventValue
 import sokeriaaa.return0.shared.data.models.component.values.PluginValue
 import sokeriaaa.return0.shared.data.models.component.values.TimeValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
-import sokeriaaa.return0.ui.common.text.replaceAnnotatedString
+import sokeriaaa.sugarkane.compose.helper.replaceAnnotatedString
 
 @Composable
 fun valueResource(value: Value): AnnotatedString {

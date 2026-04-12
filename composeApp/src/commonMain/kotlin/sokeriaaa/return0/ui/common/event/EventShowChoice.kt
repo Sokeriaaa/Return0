@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.ic_outline_check_24
 import sokeriaaa.return0.models.story.event.EventEffect
-import sokeriaaa.return0.ui.common.widgets.AppButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppButton
 
 /**
  * Show the choices.

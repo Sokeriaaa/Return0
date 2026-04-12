@@ -53,8 +53,8 @@ import return0.composeapp.generated.resources.settings_gameplay_display_item_des
 import return0.composeapp.generated.resources.settings_gameplay_display_item_desc_desc
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.mvi.viewmodels.SettingsViewModel
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppRadioGroup
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
 import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 

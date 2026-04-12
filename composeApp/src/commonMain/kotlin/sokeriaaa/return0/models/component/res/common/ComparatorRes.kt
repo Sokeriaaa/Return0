@@ -25,7 +25,7 @@ import return0.composeapp.generated.resources.component_comparator_lt
 import return0.composeapp.generated.resources.component_comparator_lt_eq
 import return0.composeapp.generated.resources.component_comparator_neq
 import sokeriaaa.return0.shared.data.models.component.common.Comparator
-import sokeriaaa.return0.ui.common.text.replaceAnnotatedString
+import sokeriaaa.sugarkane.compose.helper.replaceAnnotatedString
 
 @Composable
 fun comparatorResource(

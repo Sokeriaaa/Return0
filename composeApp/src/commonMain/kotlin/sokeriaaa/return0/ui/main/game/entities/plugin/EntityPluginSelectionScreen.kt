@@ -69,11 +69,11 @@ import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
 import sokeriaaa.return0.mvi.viewmodels.EntityDetailsViewModel
 import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
-import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 import sokeriaaa.return0.ui.common.widgets.stickyHeaderedDropdownVisibility
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppFilledTonalButton
 import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AdaptiveScaffold
 import sokeriaaa.sugarkane.compose.widgets.scaffold.rememberAdaptiveScaffoldState

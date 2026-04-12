@@ -60,8 +60,8 @@ import sokeriaaa.return0.shared.data.api.combat.entityData
 import sokeriaaa.return0.shared.data.api.combat.level
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
-import sokeriaaa.return0.ui.common.widgets.AppFilledIconButton
 import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
+import sokeriaaa.sugarkane.compose.widgets.button.AppFilledIconButton
 import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 
 /**

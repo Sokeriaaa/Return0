@@ -84,7 +84,6 @@ import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.ui.common.entity.EntityExpCircularIndicator
 import sokeriaaa.return0.ui.common.entity.EntityHPBar
 import sokeriaaa.return0.ui.common.entity.path.EntityPathDialog
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.ClickableOutlinedEmojiCard
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
@@ -92,6 +91,7 @@ import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
 import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
 import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 

@@ -43,8 +43,8 @@ import sokeriaaa.return0.shared.data.models.entity.path.EntityPath
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginConst
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 import sokeriaaa.return0.ui.common.widgets.AddCard
-import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.main.game.entities.plugin.EntityPluginDisplay
+import sokeriaaa.sugarkane.compose.widgets.button.AppButton
 
 @Composable
 fun EntityPluginPage(

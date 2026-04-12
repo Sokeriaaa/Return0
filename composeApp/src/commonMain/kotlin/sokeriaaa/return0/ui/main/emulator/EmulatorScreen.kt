@@ -65,13 +65,13 @@ import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
 import sokeriaaa.return0.shared.data.models.combat.ArenaConfig
-import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppDropdownMenuItem
-import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.main.emulator.page.EmulatorPage
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
+import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppIconButton
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AppScaffold
 
 /**

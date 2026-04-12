@@ -72,8 +72,8 @@ import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.ui.common.entity.function.EntityFunctionCard
-import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
-import sokeriaaa.return0.ui.common.widgets.AppOutlinedButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppFilledTonalButton
+import sokeriaaa.sugarkane.compose.widgets.button.AppOutlinedButton
 
 
 /**
