@@ -60,8 +60,6 @@ import return0.composeapp.generated.resources.ic_outline_lists_24
 import return0.composeapp.generated.resources.ic_outline_more_horiz_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.more_operations
-import sokeriaaa.common.compose.mvi.CommonIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.intents.CombatIntent
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
@@ -73,6 +71,8 @@ import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.main.emulator.page.EmulatorPage
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 /**
  * EmulatorScreen.

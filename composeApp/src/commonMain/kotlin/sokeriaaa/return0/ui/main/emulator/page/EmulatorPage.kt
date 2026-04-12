@@ -54,7 +54,6 @@ import return0.composeapp.generated.resources.emulator_picker_remove_warn
 import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_baseline_add_24
 import return0.composeapp.generated.resources.ic_baseline_delete_24
-import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.shared.data.api.combat.entityData
@@ -63,6 +62,7 @@ import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppFilledIconButton
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
 
 /**
  * The pages of EmulatorScreen.

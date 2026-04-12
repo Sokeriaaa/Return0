@@ -21,21 +21,22 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_team_warn_empty_team_exists
 import return0.composeapp.generated.resources.game_team_warn_limit
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameTeamRepo
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.models.entity.display.EntityProfile
 import sokeriaaa.return0.mvi.intents.TeamsIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 
-class TeamsViewModel : BaseViewModel() {
+class TeamsViewModel : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _entityRepo: GameEntityRepo by inject()

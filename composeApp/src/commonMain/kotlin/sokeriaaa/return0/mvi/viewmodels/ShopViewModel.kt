@@ -19,13 +19,11 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_shop_purchase_successful
 import return0.composeapp.generated.resources.game_shop_warn_insufficient
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
@@ -40,9 +38,12 @@ import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.event.interactive.ItemEntry
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 import kotlin.random.Random
 
-class ShopViewModel : BaseViewModel() {
+class ShopViewModel : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()

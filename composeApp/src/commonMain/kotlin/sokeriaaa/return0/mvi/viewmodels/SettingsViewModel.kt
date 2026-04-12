@@ -15,14 +15,15 @@
 package sokeriaaa.return0.mvi.viewmodels
 
 import androidx.lifecycle.viewmodel.CreationExtras
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo.Entry
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
 
 class SettingsViewModel(
     val isInGame: Boolean,
-) : BaseViewModel() {
+) : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _settingsRepo: SettingsRepo by inject()

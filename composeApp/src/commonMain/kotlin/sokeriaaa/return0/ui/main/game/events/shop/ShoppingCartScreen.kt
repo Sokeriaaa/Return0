@@ -55,8 +55,6 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_checkout_24
 import return0.composeapp.generated.resources.ic_outline_upcoming_24
 import return0.composeapp.generated.resources.ok
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.ShopIntent
 import sokeriaaa.return0.mvi.viewmodels.ShopViewModel
@@ -72,6 +70,8 @@ import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.currency.CurrencyRow
 import sokeriaaa.return0.ui.common.widgets.item.CommonItemCard
 import sokeriaaa.return0.ui.theme.AppColor
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @Composable
 fun ShoppingCartScreen(

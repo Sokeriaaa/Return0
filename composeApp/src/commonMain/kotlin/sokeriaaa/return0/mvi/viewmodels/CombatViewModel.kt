@@ -22,9 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
@@ -45,8 +44,10 @@ import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
 import sokeriaaa.return0.ui.theme.AppColor
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
 
-class CombatViewModel : BaseViewModel(), Arena.Callback {
+class CombatViewModel : BaseViewModel(), Arena.Callback, KoinComponent {
 
     // Repo.
     private val _gameStateRepo: GameStateRepo by inject()

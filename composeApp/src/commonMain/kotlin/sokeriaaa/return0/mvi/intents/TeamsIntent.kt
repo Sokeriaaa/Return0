@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.common.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
 
 sealed class TeamsIntent : BaseIntent {
     data class ActivateTeam(

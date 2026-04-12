@@ -18,12 +18,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.emulator_preset_save_success
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.emulator.EmulatorRepo
@@ -31,11 +29,14 @@ import sokeriaaa.return0.mvi.intents.EmulatorIntent
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
 import sokeriaaa.return0.shared.data.models.entity.EntityData
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 
 /**
  * The emulator that allows to start custom combats for testing/debugging.
  */
-class EmulatorViewModel : BaseViewModel() {
+class EmulatorViewModel : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()

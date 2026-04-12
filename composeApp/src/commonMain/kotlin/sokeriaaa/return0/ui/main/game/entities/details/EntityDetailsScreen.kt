@@ -75,9 +75,6 @@ import return0.composeapp.generated.resources.status_def
 import return0.composeapp.generated.resources.status_hp
 import return0.composeapp.generated.resources.status_sp
 import return0.composeapp.generated.resources.status_spd
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.CommonIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
@@ -94,6 +91,9 @@ import sokeriaaa.return0.ui.main.game.entities.details.page.EntityFunctionPage
 import sokeriaaa.return0.ui.main.game.entities.details.page.EntityPluginPage
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

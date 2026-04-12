@@ -36,11 +36,11 @@ import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_menu_quests
 import return0.composeapp.generated.resources.general_location
 import return0.composeapp.generated.resources.ic_outline_assignment_24
-import sokeriaaa.common.compose.mvi.CommonIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.story.quest.QuestDisplay
 import sokeriaaa.return0.mvi.viewmodels.QuestsViewModel
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

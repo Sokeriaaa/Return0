@@ -25,12 +25,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import return0.composeapp.generated.resources.Res
 import return0.composeapp.generated.resources.game_workbench
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
 import sokeriaaa.return0.mvi.viewmodels.WorkbenchViewModel
 import sokeriaaa.return0.ui.common.AppBackHandler
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

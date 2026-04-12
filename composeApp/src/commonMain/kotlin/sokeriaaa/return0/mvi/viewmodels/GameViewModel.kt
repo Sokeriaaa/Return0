@@ -26,9 +26,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.combat.CombatResult
@@ -42,9 +41,11 @@ import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.shared.data.models.story.event.Event
 import sokeriaaa.return0.shared.data.models.story.map.MapData
 import sokeriaaa.return0.shared.data.models.story.map.MapEvent
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
 import kotlin.random.Random
 
-class GameViewModel : BaseViewModel(), EventContext.Callback {
+class GameViewModel : BaseViewModel(), EventContext.Callback, KoinComponent {
 
     // Repo
     private val _gameStateRepo: GameStateRepo by inject()

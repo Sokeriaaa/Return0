@@ -60,9 +60,6 @@ import return0.composeapp.generated.resources.game_team_activate
 import return0.composeapp.generated.resources.game_team_activated
 import return0.composeapp.generated.resources.game_team_default
 import return0.composeapp.generated.resources.game_team_new
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.CommonIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.common.AppConstants
 import sokeriaaa.return0.applib.room.table.EntityTable
 import sokeriaaa.return0.mvi.intents.TeamsIntent
@@ -73,6 +70,9 @@ import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppButton
 import sokeriaaa.return0.ui.common.widgets.AppRadioGroup
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

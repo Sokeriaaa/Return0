@@ -64,7 +64,6 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_extension_24
 import return0.composeapp.generated.resources.ic_outline_extension_off_24
 import return0.composeapp.generated.resources.ic_outline_lock_24
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
@@ -77,6 +76,7 @@ import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiHeader
 import sokeriaaa.return0.ui.common.widgets.stickyHeaderedDropdownVisibility
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

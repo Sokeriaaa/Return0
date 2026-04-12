@@ -71,7 +71,6 @@ import return0.composeapp.generated.resources.ic_outline_check_24
 import return0.composeapp.generated.resources.ic_outline_close_24
 import return0.composeapp.generated.resources.ic_outline_edit_square_24
 import return0.composeapp.generated.resources.ok
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.mvi.intents.EmulatorIntent
@@ -82,6 +81,7 @@ import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppIconButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

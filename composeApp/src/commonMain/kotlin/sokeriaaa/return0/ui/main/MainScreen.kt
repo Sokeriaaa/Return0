@@ -54,7 +54,6 @@ import return0.composeapp.generated.resources.loading_precent
 import return0.composeapp.generated.resources.new_game
 import return0.composeapp.generated.resources.retry
 import return0.composeapp.generated.resources.settings
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.MainIntent
 import sokeriaaa.return0.mvi.viewmodels.GameViewModel
@@ -62,6 +61,7 @@ import sokeriaaa.return0.mvi.viewmodels.MainViewModel
 import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigateSingleTop
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @Composable
 fun MainScreen(

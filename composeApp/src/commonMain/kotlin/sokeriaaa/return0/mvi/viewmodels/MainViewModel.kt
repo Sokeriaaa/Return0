@@ -21,11 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.common.kmp.helpers.JsonHelper
 import sokeriaaa.return0.applib.locale.LocaleHelper
 import sokeriaaa.return0.applib.locale.getSystemLanguage
@@ -37,8 +35,11 @@ import sokeriaaa.return0.mvi.intents.MainIntent
 import sokeriaaa.return0.shared.data.models.entity.EntityGrowth
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 
-class MainViewModel : BaseViewModel() {
+class MainViewModel : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()

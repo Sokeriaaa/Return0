@@ -51,12 +51,12 @@ import return0.composeapp.generated.resources.settings_combat_auto
 import return0.composeapp.generated.resources.settings_combat_auto_desc
 import return0.composeapp.generated.resources.settings_gameplay_display_item_desc
 import return0.composeapp.generated.resources.settings_gameplay_display_item_desc_desc
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.mvi.viewmodels.SettingsViewModel
 import sokeriaaa.return0.ui.common.widgets.AppAlertDialog
 import sokeriaaa.return0.ui.common.widgets.AppBackIconButton
 import sokeriaaa.return0.ui.common.widgets.AppRadioGroup
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -71,8 +71,6 @@ import return0.composeapp.generated.resources.ic_outline_logout_24
 import return0.composeapp.generated.resources.ic_outline_menu_24
 import return0.composeapp.generated.resources.ic_outline_save_24
 import return0.composeapp.generated.resources.ic_outline_settings_24
-import sokeriaaa.common.compose.mvi.CommonIntent
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
 import sokeriaaa.return0.mvi.intents.CombatIntent
@@ -98,6 +96,8 @@ import sokeriaaa.return0.ui.common.widgets.AppNavigateDrawerItem
 import sokeriaaa.return0.ui.nav.Scene
 import sokeriaaa.return0.ui.nav.navigatePopUpTo
 import sokeriaaa.return0.ui.nav.navigateSingleTop
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 /**
  * The main gaming field.

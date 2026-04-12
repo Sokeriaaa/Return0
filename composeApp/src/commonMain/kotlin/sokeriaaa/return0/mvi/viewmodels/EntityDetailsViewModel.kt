@@ -20,10 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.compose.mvi.BaseIntent
-import sokeriaaa.common.compose.mvi.BaseViewModel
-import sokeriaaa.common.compose.mvi.CommonIntent
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
@@ -31,10 +29,13 @@ import sokeriaaa.return0.applib.repository.game.entity.GamePluginRepo
 import sokeriaaa.return0.models.entity.display.ExtendedEntityProfile
 import sokeriaaa.return0.models.entity.plugin.display.PluginInfo
 import sokeriaaa.return0.mvi.intents.EntityDetailsIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.CommonIntent
 
 class EntityDetailsViewModel(
     val entityName: String,
-) : BaseViewModel() {
+) : BaseViewModel(), KoinComponent {
 
     // Repo
     private val _archiveRepo: ArchiveRepo by inject()

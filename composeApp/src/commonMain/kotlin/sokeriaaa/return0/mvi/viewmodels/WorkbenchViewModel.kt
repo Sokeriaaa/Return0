@@ -14,6 +14,6 @@
  */
 package sokeriaaa.return0.mvi.viewmodels
 
-import sokeriaaa.common.compose.mvi.BaseViewModel
+import sokeriaaa.sugarkane.compose.mvi.BaseViewModel
 
 class WorkbenchViewModel : BaseViewModel()

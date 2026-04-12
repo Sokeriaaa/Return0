@@ -14,10 +14,10 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.EntityState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
 
 sealed class EmulatorIntent : BaseIntent {
     data class AddEntity(val entityState: EntityState) : EmulatorIntent()

@@ -97,7 +97,6 @@ import return0.composeapp.generated.resources.general_level_w_value
 import return0.composeapp.generated.resources.ic_outline_autopause_24
 import return0.composeapp.generated.resources.ic_outline_autoplay_24
 import return0.composeapp.generated.resources.ic_outline_logout_24
-import sokeriaaa.common.compose.ui.base.BaseScaffold
 import sokeriaaa.return0.models.action.effect.Effect
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.entity.Entity
@@ -109,6 +108,7 @@ import sokeriaaa.return0.ui.common.widgets.AppFilledTonalButton
 import sokeriaaa.return0.ui.common.widgets.AppTextButton
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimator
 import sokeriaaa.return0.ui.main.combat.animation.EntityAnimatorManager
+import sokeriaaa.sugarkane.compose.ui.base.BaseScaffold
 
 /**
  * The combat screen, for where the user to combat with bugs.

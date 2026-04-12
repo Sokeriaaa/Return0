@@ -14,9 +14,9 @@
  */
 package sokeriaaa.return0.mvi.intents
 
-import sokeriaaa.common.compose.mvi.BaseIntent
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.shared.data.models.story.event.Event
+import sokeriaaa.sugarkane.compose.mvi.BaseIntent
 
 sealed class ShopIntent : BaseIntent {
     data class Initialize(
