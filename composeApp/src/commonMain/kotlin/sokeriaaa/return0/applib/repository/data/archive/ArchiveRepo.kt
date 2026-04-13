@@ -2,7 +2,6 @@ package sokeriaaa.return0.applib.repository.data.archive
 
 import org.jetbrains.compose.resources.MissingResourceException
 import return0.composeapp.generated.resources.Res
-import sokeriaaa.common.kmp.helpers.JsonHelper
 import sokeriaaa.return0.applib.repository.data.archive.entity.ArchiveEntityRepo
 import sokeriaaa.return0.shared.data.models.Manifest
 import sokeriaaa.return0.shared.data.models.action.effect.EffectData
@@ -14,6 +13,7 @@ import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectivenes
 import sokeriaaa.return0.shared.data.models.entity.plugin.PluginData
 import sokeriaaa.return0.shared.data.models.story.inventory.ItemData
 import sokeriaaa.return0.shared.data.models.story.quest.QuestData
+import sokeriaaa.sugarkane.kelp.serialization.JsonHelper
 
 /**
  * Copyright (C) 2025 Sokeriaaa

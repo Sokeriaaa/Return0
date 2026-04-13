@@ -14,10 +14,10 @@
  */
 package sokeriaaa.return0.models.component.executor.value
 
-import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.models.component.context.EventContext
 import sokeriaaa.return0.shared.data.models.component.values.TimeValue
 import sokeriaaa.return0.shared.data.models.component.values.Value
+import sokeriaaa.sugarkane.kelp.time.TimeHelper
 
 suspend fun Value.Time.calculateTime(context: EventContext): Long = when (this) {
     TimeValue.Now -> context.now

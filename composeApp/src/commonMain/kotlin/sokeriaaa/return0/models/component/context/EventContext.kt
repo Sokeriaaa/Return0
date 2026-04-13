@@ -16,12 +16,12 @@ package sokeriaaa.return0.models.component.context
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.applib.repository.game.GameStateRepo
 import sokeriaaa.return0.models.combat.CombatResult
 import sokeriaaa.return0.models.story.event.EventEffect
+import sokeriaaa.sugarkane.kelp.time.TimeHelper
 import kotlin.random.Random
 
 /**

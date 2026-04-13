@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import return0.composeapp.generated.resources.Res
-import sokeriaaa.common.kmp.helpers.JsonHelper
 import sokeriaaa.return0.applib.locale.LocaleHelper
 import sokeriaaa.return0.applib.locale.getSystemLanguage
 import sokeriaaa.return0.applib.repository.data.ResourceRepo
@@ -38,6 +37,7 @@ import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectivenes
 import sokeriaaa.sugarkane.compose.mvi.intent.BaseIntent
 import sokeriaaa.sugarkane.compose.mvi.intent.CommonIntent
 import sokeriaaa.sugarkane.compose.mvi.viewmodel.BaseViewModel
+import sokeriaaa.sugarkane.kelp.serialization.JsonHelper
 
 class MainViewModel : BaseViewModel(), KoinComponent {
 

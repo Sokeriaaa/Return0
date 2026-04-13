@@ -61,7 +61,6 @@ import return0.composeapp.generated.resources.archive_category_defend
 import return0.composeapp.generated.resources.archive_category_defend_desc
 import return0.composeapp.generated.resources.archive_category_effectiveness
 import return0.composeapp.generated.resources.meta_category
-import sokeriaaa.common.kmp.helpers.DecimalHelper.toPrecision
 import sokeriaaa.return0.applib.repository.data.archive.ArchiveRepo
 import sokeriaaa.return0.shared.data.models.entity.category.Category
 import sokeriaaa.return0.shared.data.models.entity.category.CategoryEffectiveness
@@ -69,6 +68,7 @@ import sokeriaaa.return0.ui.common.widgets.OutlinedEmojiCard
 import sokeriaaa.return0.ui.theme.AppColor
 import sokeriaaa.return0.ui.theme.AppColor.alignedToPrimary
 import sokeriaaa.sugarkane.compose.widgets.button.AppBackIconButton
+import sokeriaaa.sugarkane.kelp.math.DecimalHelper.toPrecision
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -121,6 +121,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.materialKolor)
             implementation(libs.sugarkane.compose)
+            implementation(libs.sugarkane.kelp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

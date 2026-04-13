@@ -14,7 +14,6 @@
  */
 package sokeriaaa.return0.applib.repository.emulator
 
-import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
 import sokeriaaa.return0.applib.room.helper.TransactionManager
@@ -22,6 +21,7 @@ import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
 import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
 import sokeriaaa.return0.shared.data.models.combat.EnemyState
 import sokeriaaa.return0.shared.data.models.combat.PartyState
+import sokeriaaa.sugarkane.kelp.time.TimeHelper
 
 /**
  * Repository manages the emulator.

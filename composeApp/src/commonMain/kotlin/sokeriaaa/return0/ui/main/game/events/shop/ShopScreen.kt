@@ -64,7 +64,6 @@ import return0.composeapp.generated.resources.game_shop_warn_leave
 import return0.composeapp.generated.resources.ic_outline_add_shopping_cart_24
 import return0.composeapp.generated.resources.ic_outline_payments_24
 import return0.composeapp.generated.resources.ic_outline_shopping_cart_24
-import sokeriaaa.common.kmp.helpers.TimeHelper
 import sokeriaaa.return0.models.story.event.interactive.ShopItem
 import sokeriaaa.return0.mvi.intents.GameIntent
 import sokeriaaa.return0.mvi.intents.ShopIntent
@@ -87,6 +86,7 @@ import sokeriaaa.sugarkane.compose.widgets.dialog.AppAlertDialog
 import sokeriaaa.sugarkane.compose.widgets.nav.AppBackHandler
 import sokeriaaa.sugarkane.compose.widgets.scaffold.AdaptiveScaffold
 import sokeriaaa.sugarkane.compose.widgets.scaffold.rememberAdaptiveScaffoldState
+import sokeriaaa.sugarkane.kelp.time.TimeHelper
 
 @Composable
 fun ShopScreen(
