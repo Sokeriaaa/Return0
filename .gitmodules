@@ -1,9 +1,3 @@
-[submodule "composeApp/src/commonMain/kotlin/sokeriaaa/common/kmp"]
-	path = composeApp/src/commonMain/kotlin/sokeriaaa/common/kmp
-	url = https://github.com/Sokeriaaa/KMPShared.git
-[submodule "composeApp/src/commonTest/kotlin/sokeriaaa/common/kmp/test"]
-	path = composeApp/src/commonTest/kotlin/sokeriaaa/common/kmp/test
-	url = https://github.com/Sokeriaaa/KMPShared-test.git
 [submodule "composeApp/src/commonMain/kotlin/sokeriaaa/return0/shared"]
     path = composeApp/src/commonMain/kotlin/sokeriaaa/return0/shared
     url = https://github.com/Sokeriaaa/Return0-shared.git
