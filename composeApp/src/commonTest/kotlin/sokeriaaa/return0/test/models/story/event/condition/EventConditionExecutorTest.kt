@@ -15,7 +15,6 @@
 package sokeriaaa.return0.test.models.story.event.condition
 
 import kotlinx.coroutines.test.runTest
-import sokeriaaa.common.kmp.test.helpers.FakeRandom
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.shared.data.api.component.condition.and
 import sokeriaaa.return0.shared.data.api.component.condition.eq
@@ -35,6 +34,7 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
+import sokeriaaa.sugarkane.wrench.random.FakeRandom
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

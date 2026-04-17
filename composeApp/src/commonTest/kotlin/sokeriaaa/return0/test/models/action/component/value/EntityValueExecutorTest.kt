@@ -16,7 +16,6 @@ package sokeriaaa.return0.test.models.action.component.value
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import sokeriaaa.common.kmp.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.applib.repository.game.entity.GameEntityRepo
 import sokeriaaa.return0.models.action.attachShield
 import sokeriaaa.return0.models.action.effect.generateEffectFor
@@ -32,6 +31,7 @@ import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.sugarkane.wrench.helper.AssertHelper.assertFloatEquals
 import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

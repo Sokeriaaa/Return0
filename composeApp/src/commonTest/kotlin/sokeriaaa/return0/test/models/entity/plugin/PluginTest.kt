@@ -15,7 +15,6 @@
 package sokeriaaa.return0.test.models.entity.plugin
 
 import org.koin.core.component.KoinComponent
-import sokeriaaa.common.kmp.test.helpers.TestingHelper.assertFloatEquals
 import sokeriaaa.return0.models.entity.plugin.generatePlugin
 import sokeriaaa.return0.shared.data.api.component.value.Value
 import sokeriaaa.return0.shared.data.models.combat.EntityState
@@ -27,6 +26,7 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.sugarkane.wrench.helper.AssertHelper.assertFloatEquals
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
