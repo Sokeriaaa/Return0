@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -12,14 +12,23 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.applib.modules
 
-import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.worker.WebWorkerDriver
-import app.cash.sqldelight.driver.worker.expected.Worker
+import androidx.sqlite.driver.web.WebWorkerSQLiteDriver
+import org.koin.core.module.Module
+import org.koin.dsl.module
+import org.w3c.dom.Worker
 
-internal actual val driver: SqlDriver = WebWorkerDriver(
-    Worker(
-        js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)""")
-    )
-)
+actual val subPlatformModules: Module = module {
+    // WebWorkerSQLiteDriver
+    single {
+        @OptIn(ExperimentalWasmJsInterop::class)
+        WebWorkerSQLiteDriver(
+            worker = Worker(
+                scriptURL = js(
+                    code = """new URL("sqlite-web-worker/worker.js", import.meta.url)""",
+                ),
+            ),
+        )
+    }
+}

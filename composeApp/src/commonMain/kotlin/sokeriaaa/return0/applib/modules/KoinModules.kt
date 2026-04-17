@@ -39,6 +39,8 @@ import sokeriaaa.return0.applib.repository.game.saved.SavedValuesRepo
 import sokeriaaa.return0.applib.repository.save.SaveRepo
 import sokeriaaa.return0.applib.repository.settings.SettingsRepo
 import sokeriaaa.return0.applib.room.AppDatabase
+import sokeriaaa.return0.applib.room.helper.RoomTransactionManager
+import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.mvi.viewmodels.CombatViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorPresetViewModel
 import sokeriaaa.return0.mvi.viewmodels.EmulatorViewModel
@@ -174,8 +176,9 @@ object KoinModules {
         single { get<AppDatabase>().getSaveMetaDao() }
         single { get<AppDatabase>().getStatisticsDao() }
         single { get<AppDatabase>().getTeamDao() }
+        // Database: RoomTransaction
+        single<TransactionManager> { RoomTransactionManager(get()) }
     }
-
 }
 
 expect val platformModules: Module

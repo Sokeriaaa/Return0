@@ -14,6 +14,11 @@
  */
 package sokeriaaa.return0.applib.room
 
+import androidx.room3.ConstructedBy
+import androidx.room3.Database
+import androidx.room3.RoomDatabase
+import androidx.room3.RoomDatabaseConstructor
+import androidx.sqlite.SQLiteDriver
 import sokeriaaa.return0.applib.room.dao.CurrencyDao
 import sokeriaaa.return0.applib.room.dao.EmulatorEntryDao
 import sokeriaaa.return0.applib.room.dao.EmulatorIndexDao
@@ -30,8 +35,47 @@ import sokeriaaa.return0.applib.room.dao.SavedTimestampDao
 import sokeriaaa.return0.applib.room.dao.SavedVariableDao
 import sokeriaaa.return0.applib.room.dao.StatisticsDao
 import sokeriaaa.return0.applib.room.dao.TeamDao
+import sokeriaaa.return0.applib.room.table.CurrencyTable
+import sokeriaaa.return0.applib.room.table.EmulatorEntryTable
+import sokeriaaa.return0.applib.room.table.EmulatorIndexTable
+import sokeriaaa.return0.applib.room.table.EntityTable
+import sokeriaaa.return0.applib.room.table.EventRelocationTable
+import sokeriaaa.return0.applib.room.table.IndexedHubTable
+import sokeriaaa.return0.applib.room.table.InventoryTable
+import sokeriaaa.return0.applib.room.table.PluginConstTable
+import sokeriaaa.return0.applib.room.table.PluginInventoryTable
+import sokeriaaa.return0.applib.room.table.QuestTable
+import sokeriaaa.return0.applib.room.table.SaveMetaTable
+import sokeriaaa.return0.applib.room.table.SavedSwitchTable
+import sokeriaaa.return0.applib.room.table.SavedTimestampTable
+import sokeriaaa.return0.applib.room.table.SavedVariableTable
+import sokeriaaa.return0.applib.room.table.StatisticsTable
+import sokeriaaa.return0.applib.room.table.TeamTable
+import kotlin.coroutines.CoroutineContext
 
-expect abstract class AppDatabase {
+@Database(
+    version = 1,
+    entities = [
+        CurrencyTable::class,
+        EmulatorEntryTable::class,
+        EmulatorIndexTable::class,
+        EntityTable::class,
+        EventRelocationTable::class,
+        IndexedHubTable::class,
+        InventoryTable::class,
+        PluginConstTable::class,
+        PluginInventoryTable::class,
+        QuestTable::class,
+        SaveMetaTable::class,
+        SavedSwitchTable::class,
+        SavedTimestampTable::class,
+        SavedVariableTable::class,
+        StatisticsTable::class,
+        TeamTable::class,
+    ]
+)
+@ConstructedBy(AppDatabaseConstructor::class)
+abstract class AppDatabase : RoomDatabase() {
     abstract fun getCurrencyDao(): CurrencyDao
     abstract fun getEmulatorEntryDao(): EmulatorEntryDao
     abstract fun getEmulatorIndexDao(): EmulatorIndexDao
@@ -48,4 +92,28 @@ expect abstract class AppDatabase {
     abstract fun getSaveMetaDao(): SaveMetaDao
     abstract fun getStatisticsDao(): StatisticsDao
     abstract fun getTeamDao(): TeamDao
+
+    companion object {
+        const val DATABASE_NAME = "return0_database"
+
+        fun createDatabase(
+            builder: Builder<AppDatabase>,
+            driver: SQLiteDriver,
+            queryCoroutineContext: CoroutineContext,
+        ): AppDatabase {
+            return builder
+                .addMigrations(
+                    // TODO Future migrations insert here.
+                )
+                .setDriver(driver)
+                .setQueryCoroutineContext(queryCoroutineContext)
+                .build()
+        }
+    }
+}
+
+// The Room compiler generates the `actual` implementations.
+@Suppress("KotlinNoActualForExpect")
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
+    override fun initialize(): AppDatabase
 }

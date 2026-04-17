@@ -14,7 +14,7 @@
  */
 package sokeriaaa.return0.test.applib.room
 
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 import sokeriaaa.return0.applib.room.AppDatabase
 
 expect fun getTestDatabaseBuilder(): RoomDatabase.Builder<AppDatabase>

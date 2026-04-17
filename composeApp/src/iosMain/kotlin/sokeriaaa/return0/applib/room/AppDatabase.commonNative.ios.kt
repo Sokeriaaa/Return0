@@ -14,15 +14,15 @@
  */
 package sokeriaaa.return0.applib.room
 
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room3.Room
+import androidx.room3.RoomDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
-    val dbFilePath = "${documentDirectory()}/${AppDatabase.DB_NAME}.db"
+    val dbFilePath = "${documentDirectory()}/${AppDatabase.DATABASE_NAME}.db"
     return Room.databaseBuilder<AppDatabase>(
         name = dbFilePath,
     )

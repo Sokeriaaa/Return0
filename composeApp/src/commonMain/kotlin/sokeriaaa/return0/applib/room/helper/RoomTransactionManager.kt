@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -12,12 +12,19 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room
+package sokeriaaa.return0.applib.room.helper
 
-import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.worker.WebWorkerDriver
+import androidx.room3.Transactor
+import androidx.room3.useWriterConnection
+import sokeriaaa.return0.applib.room.AppDatabase
 
-@OptIn(ExperimentalWasmJsInterop::class)
-internal actual val driver: SqlDriver = WebWorkerDriver(
-    js("""new Worker(new URL("./sqlitewasm.worker.js", import.meta.url))""")
-)
+class RoomTransactionManager(private val database: AppDatabase) : TransactionManager {
+    override suspend fun <T> withTransaction(block: suspend () -> T): T {
+        return database.useWriterConnection {
+            it.withTransaction(
+                type = Transactor.SQLiteTransactionType.IMMEDIATE,
+                block = { block() },
+            )
+        }
+    }
+}

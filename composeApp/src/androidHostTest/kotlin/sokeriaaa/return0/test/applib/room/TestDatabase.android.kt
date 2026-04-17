@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.test.applib.room
 
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room3.Room
+import androidx.room3.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.test.platform.app.InstrumentationRegistry
 import sokeriaaa.return0.applib.room.AppDatabase

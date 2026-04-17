@@ -14,12 +14,12 @@
  */
 package sokeriaaa.return0.applib.room
 
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room3.Room
+import androidx.room3.RoomDatabase
 import java.io.File
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
-    val dbFile = File(AppDatabase.DB_NAME + ".db")
+    val dbFile = File(AppDatabase.DATABASE_NAME + ".db")
     return Room.databaseBuilder<AppDatabase>(
         name = dbFile.absolutePath,
     )

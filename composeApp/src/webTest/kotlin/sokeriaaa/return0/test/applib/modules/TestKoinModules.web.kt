@@ -24,7 +24,6 @@ import sokeriaaa.return0.applib.room.helper.TransactionManager
 
 actual val platformModules: Module = module {
     // Database
-    single { SQDatabase(driver = driver) }
     single { AppDatabase.createDatabase(sqDatabase = get()) }
     // Database: Transaction
     single<TransactionManager> { SqlDelightTransaction(sqDatabase = get()) }

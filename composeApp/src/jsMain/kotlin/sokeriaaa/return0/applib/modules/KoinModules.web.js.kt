@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2025 Sokeriaaa
+ * Copyright (C) 2026 Sokeriaaa
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, version 3.
@@ -12,20 +12,23 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-package sokeriaaa.return0.applib.room.helper
+package sokeriaaa.return0.applib.modules
 
-import androidx.room.Transactor
-import androidx.room.useWriterConnection
-import sokeriaaa.return0.applib.room.AppDatabase
+import androidx.sqlite.driver.web.WebWorkerSQLiteDriver
+import org.koin.core.module.Module
+import org.koin.dsl.module
+import org.w3c.dom.Worker
 
-class RoomTransaction(
-    private val database: AppDatabase
-) : TransactionManager {
-    override suspend fun <T> withTransaction(block: suspend () -> T): T {
-        return database.useWriterConnection {
-            it.withTransaction(Transactor.SQLiteTransactionType.IMMEDIATE) {
-                block()
-            }
-        }
+actual val subPlatformModules: Module = module {
+    // WebWorkerSQLiteDriver
+    single {
+        @OptIn(ExperimentalWasmJsInterop::class)
+        WebWorkerSQLiteDriver(
+            worker = Worker(
+                scriptURL = js(
+                    code = """new URL("sqlite-web-worker/worker.js", import.meta.url)"""
+                ),
+            ),
+        )
     }
 }

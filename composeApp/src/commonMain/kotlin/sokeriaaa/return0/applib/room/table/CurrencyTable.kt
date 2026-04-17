@@ -14,8 +14,8 @@
  */
 package sokeriaaa.return0.applib.room.table
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
+import androidx.room3.ColumnInfo
+import androidx.room3.Entity
 import sokeriaaa.return0.shared.data.models.story.currency.CurrencyType
 
 /**

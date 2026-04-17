@@ -14,12 +14,12 @@
  */
 package sokeriaaa.return0.test.applib.modules
 
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import sokeriaaa.return0.applib.room.AppDatabase
-import sokeriaaa.return0.applib.room.helper.RoomTransaction
+import sokeriaaa.return0.applib.room.helper.RoomTransactionManager
 import sokeriaaa.return0.applib.room.helper.TransactionManager
 import sokeriaaa.return0.test.applib.room.getTestDatabaseBuilder
 
@@ -33,5 +33,5 @@ actual val platformModules: Module = module {
             .build()
     }
     // Database: Transaction
-    single<TransactionManager> { RoomTransaction(database = get()) }
+    single<TransactionManager> { RoomTransactionManager(database = get()) }
 }

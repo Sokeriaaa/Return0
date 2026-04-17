@@ -14,11 +14,11 @@
  */
 package sokeriaaa.return0.applib.room.table
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.Relation
+import androidx.room3.ColumnInfo
+import androidx.room3.Embedded
+import androidx.room3.Entity
+import androidx.room3.Index
+import androidx.room3.Relation
 
 /**
  * The plugin inventory.
