@@ -7,11 +7,10 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidMultiplatformLibrary)
-    alias(libs.plugins.androidxRoom)
+    alias(libs.plugins.androidxRoom3)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
-    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -20,9 +19,6 @@ kotlin {
         withHostTest {
             isIncludeAndroidResources = true
         }
-    }
-
-    androidLibrary {
         namespace = "sokeriaaa.return0.composeapp"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
 
@@ -35,7 +31,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -73,22 +68,18 @@ kotlin {
         val jvmTest by getting { dependsOn(commonNativeTest) }
 
         // iOS consolidation
-        val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
-        val iosX64Test by getting
         val iosArm64Test by getting
         val iosSimulatorArm64Test by getting
 
         val iosMain by creating {
             dependsOn(commonNativeMain)
-            iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
         }
         val iosTest by creating {
             dependsOn(commonNativeTest)
-            iosX64Test.dependsOn(this)
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
@@ -105,7 +96,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
-            implementation(libs.androidx.room.common)
+            implementation(libs.androidx.room3.common)
+            implementation(libs.androidx.room3.runtime)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -124,30 +116,23 @@ kotlin {
             implementation(libs.sugarkane.kelp)
         }
         commonTest.dependencies {
+            implementation(libs.androidx.room3.testing)
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.sugarkane.wrench)
         }
 
         commonNativeMain.dependencies {
-            implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
-        }
-        commonNativeTest.dependencies {
-            implementation(libs.androidx.room.testing)
         }
 
         webMain.dependencies {
             implementation(libs.russhwolf.multiplatform.settings)
             implementation(libs.russhwolf.multiplatform.settings.coroutines)
             implementation(libs.russhwolf.multiplatform.settings.make.observable)
-            implementation(libs.sqldelight.runtime)
-            implementation(libs.sqldelight.web.worker.driver)
-            implementation(npm("sql.js", "1.8.0"))
-            implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.2.1"))
-            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+            implementation(libs.androidx.sqlite.web)
         }
         androidHostTest.dependencies {
             // For testing in Android Studio directly.
@@ -167,46 +152,22 @@ kotlin {
     }
 }
 
-room {
+room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
-    androidRuntimeClasspath(compose.uiTooling)
+    androidRuntimeClasspath(libs.compose.ui.tooling)
     // Room compiler
     listOf(
         "kspAndroid",
         "kspJvm",
-        "kspIosX64",
-        "kspIosArm64",
-        "kspIosSimulatorArm64",
-    ).forEach {
-        add(configurationName = it, dependencyNotation = libs.androidx.room.compiler)
-    }
-    listOf(
-        "kspAndroid",
-        "kspJvm",
-        "kspIosX64",
         "kspIosArm64",
         "kspIosSimulatorArm64",
         "kspJs",
         "kspWasmJs",
     ).forEach {
-        add(configurationName = it, dependencyNotation = project(":room2sqldelight-ksp"))
-    }
-}
-
-sqldelight {
-    databases {
-        create("SQDatabase") {
-            packageName.set("sokeriaaa.return0.applib.room")
-            srcDirs(
-                // TODO Configure paths.
-                "build/generated/ksp/android/androidDebug/resources/sqldelight",
-                "src/commonMain/sqldelight",
-            )
-            generateAsync.set(true)
-        }
+        add(configurationName = it, dependencyNotation = libs.androidx.room3.compiler)
     }
 }
 

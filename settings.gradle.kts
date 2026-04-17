@@ -46,4 +46,3 @@ plugins {
 
 include(":androidApp")
 include(":composeApp")
-include(":room2sqldelight-ksp")
