@@ -38,7 +38,6 @@ import sokeriaaa.return0.shared.data.api.component.value.shr
 import sokeriaaa.return0.shared.data.api.component.value.sumOf
 import sokeriaaa.return0.shared.data.api.component.value.times
 import sokeriaaa.return0.shared.data.api.component.value.unaryMinus
-import sokeriaaa.return0.shared.data.models.component.common.Formatter
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.component.values.CommonValue
@@ -48,6 +47,7 @@ import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.sugarkane.kelp.math.components.Formatter
 import sokeriaaa.sugarkane.wrench.helper.AssertHelper.assertFloatEquals
 import sokeriaaa.sugarkane.wrench.random.FakeRandom
 import kotlin.random.Random

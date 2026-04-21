@@ -26,7 +26,6 @@ import sokeriaaa.return0.shared.data.api.component.condition.neq
 import sokeriaaa.return0.shared.data.api.component.condition.not
 import sokeriaaa.return0.shared.data.api.component.condition.or
 import sokeriaaa.return0.shared.data.api.component.value.Value
-import sokeriaaa.return0.shared.data.models.component.common.Comparator
 import sokeriaaa.return0.shared.data.models.component.conditions.CommonCondition
 import sokeriaaa.return0.shared.data.models.component.conditions.EventCondition
 import sokeriaaa.return0.shared.data.models.title.Title
@@ -34,6 +33,7 @@ import sokeriaaa.return0.test.annotations.AppRunner
 import sokeriaaa.return0.test.annotations.RunWith
 import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.story.event.BaseEventTest
+import sokeriaaa.sugarkane.kelp.math.components.CompareOp
 import sokeriaaa.sugarkane.wrench.random.FakeRandom
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -209,60 +209,60 @@ class EventConditionExecutorTest : BaseEventTest() {
         withContext(callback = callback) { context ->
             context.gameState.player.updateTitle(Title.LEAD)
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.GT, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GT, Title.SENIOR).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.GTEQ, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GTEQ, Title.SENIOR).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.LT, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LT, Title.SENIOR).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.LTEQ, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LTEQ, Title.SENIOR).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.EQ, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.EQ, Title.SENIOR).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.NEQ, Title.SENIOR).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.NEQ, Title.SENIOR).calculatedIn(context)
             )
 
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.GT, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GT, Title.LEAD).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.GTEQ, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GTEQ, Title.LEAD).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.LT, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LT, Title.LEAD).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.LTEQ, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LTEQ, Title.LEAD).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.EQ, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.EQ, Title.LEAD).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.NEQ, Title.LEAD).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.NEQ, Title.LEAD).calculatedIn(context)
             )
 
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.GT, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GT, Title.STAFF).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.GTEQ, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.GTEQ, Title.STAFF).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.LT, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LT, Title.STAFF).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.LTEQ, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.LTEQ, Title.STAFF).calculatedIn(context)
             )
             assertFalse(
-                EventCondition.PlayerTitle(Comparator.EQ, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.EQ, Title.STAFF).calculatedIn(context)
             )
             assertTrue(
-                EventCondition.PlayerTitle(Comparator.NEQ, Title.STAFF).calculatedIn(context)
+                EventCondition.PlayerTitle(CompareOp.NEQ, Title.STAFF).calculatedIn(context)
             )
         }
     }

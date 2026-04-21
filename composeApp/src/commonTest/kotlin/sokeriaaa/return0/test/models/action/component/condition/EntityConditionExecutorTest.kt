@@ -21,7 +21,6 @@ import sokeriaaa.return0.models.component.context.ActionExtraContext
 import sokeriaaa.return0.models.component.executor.condition.calculatedIn
 import sokeriaaa.return0.models.entity.Entity
 import sokeriaaa.return0.shared.data.api.component.value.Value
-import sokeriaaa.return0.shared.data.models.component.common.Comparator
 import sokeriaaa.return0.shared.data.models.component.conditions.EntityCondition
 import sokeriaaa.return0.shared.data.models.component.result.ActionResult
 import sokeriaaa.return0.shared.data.models.entity.category.Category
@@ -31,6 +30,7 @@ import sokeriaaa.return0.test.applib.modules.TestKoinModules
 import sokeriaaa.return0.test.models.action.effect.DummyEffects
 import sokeriaaa.return0.test.models.action.function.DummyFunction
 import sokeriaaa.return0.test.models.entity.DummyEntities
+import sokeriaaa.sugarkane.kelp.math.components.CompareOp
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -149,74 +149,74 @@ class EntityConditionExecutorTest {
 
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
 
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.HPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
@@ -230,37 +230,37 @@ class EntityConditionExecutorTest {
 
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LT,
+                comparator = CompareOp.LT,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.LTEQ,
+                comparator = CompareOp.LTEQ,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
@@ -268,37 +268,37 @@ class EntityConditionExecutorTest {
 
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertTrue(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate - 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GT,
+                comparator = CompareOp.GT,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )
         assertFalse(
             EntityCondition.Status.SPRate(
-                comparator = Comparator.GTEQ,
+                comparator = CompareOp.GTEQ,
                 rate = Value(rate + 0.1F),
             ).calculatedIn(context)
         )

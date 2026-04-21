@@ -24,22 +24,22 @@ import return0.composeapp.generated.resources.component_comparator_gt_eq
 import return0.composeapp.generated.resources.component_comparator_lt
 import return0.composeapp.generated.resources.component_comparator_lt_eq
 import return0.composeapp.generated.resources.component_comparator_neq
-import sokeriaaa.return0.shared.data.models.component.common.Comparator
 import sokeriaaa.sugarkane.compose.helper.replaceAnnotatedString
+import sokeriaaa.sugarkane.kelp.math.components.CompareOp
 
 @Composable
 fun comparatorResource(
-    comparator: Comparator,
+    comparator: CompareOp,
     left: AnnotatedString,
     right: AnnotatedString,
 ): CharSequence = stringResource(
     when (comparator) {
-        Comparator.GT -> Res.string.component_comparator_gt
-        Comparator.GTEQ -> Res.string.component_comparator_gt_eq
-        Comparator.LT -> Res.string.component_comparator_lt
-        Comparator.LTEQ -> Res.string.component_comparator_lt_eq
-        Comparator.EQ -> Res.string.component_comparator_eq
-        Comparator.NEQ -> Res.string.component_comparator_neq
+        CompareOp.GT -> Res.string.component_comparator_gt
+        CompareOp.GTEQ -> Res.string.component_comparator_gt_eq
+        CompareOp.LT -> Res.string.component_comparator_lt
+        CompareOp.LTEQ -> Res.string.component_comparator_lt_eq
+        CompareOp.EQ -> Res.string.component_comparator_eq
+        CompareOp.NEQ -> Res.string.component_comparator_neq
     }
 ).replaceAnnotatedString(
     oldValue = "{{slot0}}",
